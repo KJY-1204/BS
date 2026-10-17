@@ -19,6 +19,12 @@ namespace BS
     /// -bsAim deg       aim at a fixed angle in degrees (0 = right, 90 = up)
     /// -bsAimSweep d    turn the aim by d degrees per second
     /// -bsCombatLog     log health, revive gauge and combat statistics
+    /// -bsGrowthLog     log levels, experience, skill choices and skill results
+    /// -bsXpPerKill n   experience per kill (host)
+    /// -bsOfferSeconds s  time allowed to pick a skill (host)
+    /// -bsDevXp t n     (host) give every survivor n experience t seconds after the room starts
+    /// -bsAutoPick i d  (owner) pick choice i (1 to 3) d seconds after a choice opens; 0 never picks
+    /// -bsAutoSkill q|e s  (owner) press that skill key every s seconds
     /// -bsSurvivorHealth n  survivor maximum health (host), to keep survivors alive in load tests
     /// -bsMobSpeed v    mob speed (host)
     /// -bsMobHealth n   mob maximum health (host); a high value keeps mobs alive under fire for load tests
@@ -45,6 +51,16 @@ namespace BS
         public static float? AimDegrees { get; private set; }
         public static float AimSweepDegreesPerSecond { get; private set; }
         public static bool CombatLog { get; private set; }
+        public static bool GrowthLog { get; private set; }
+        public static int XpPerKill { get; private set; }
+        public static float OfferSeconds { get; private set; }
+        public static float DevXpTime { get; private set; } = -1f;
+        public static int DevXpAmount { get; private set; }
+        /// <summary>1 to 3: owner picks that choice automatically; 0 means never pick (let the time run out).</summary>
+        public static int AutoPickIndex { get; private set; }
+        public static float AutoPickDelay { get; private set; }
+        public static int AutoSkillSlot { get; private set; } = -1;
+        public static float AutoSkillInterval { get; private set; } = 1f;
         public static int SurvivorHealth { get; private set; }
         public static float MobSpeed { get; private set; }
         public static int MobHealth { get; private set; }
@@ -130,6 +146,32 @@ namespace BS
                         break;
                     case "-bsCombatLog":
                         CombatLog = true;
+                        break;
+                    case "-bsGrowthLog":
+                        GrowthLog = true;
+                        break;
+                    case "-bsXpPerKill" when i + 1 < args.Length:
+                        if (int.TryParse(args[i + 1], out int xpk)) XpPerKill = xpk;
+                        break;
+                    case "-bsOfferSeconds" when i + 1 < args.Length:
+                        if (float.TryParse(args[i + 1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float os)) OfferSeconds = os;
+                        break;
+                    case "-bsDevXp" when i + 2 < args.Length:
+                        float.TryParse(args[i + 1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float dxt);
+                        int.TryParse(args[i + 2], out int dxa);
+                        DevXpTime = dxt;
+                        DevXpAmount = dxa;
+                        break;
+                    case "-bsAutoPick" when i + 2 < args.Length:
+                        int.TryParse(args[i + 1], out int api);
+                        float.TryParse(args[i + 2], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float apd);
+                        AutoPickIndex = api;
+                        AutoPickDelay = apd;
+                        break;
+                    case "-bsAutoSkill" when i + 2 < args.Length:
+                        AutoSkillSlot = args[i + 1].ToLowerInvariant() == "e" ? 1 : 0;
+                        float.TryParse(args[i + 2], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float asi);
+                        AutoSkillInterval = Mathf.Max(0.05f, asi);
                         break;
                     case "-bsAim" when i + 1 < args.Length:
                         if (float.TryParse(args[i + 1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float aim))

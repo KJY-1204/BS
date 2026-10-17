@@ -65,6 +65,12 @@ namespace BS
             ProvisionalCreations = 0;
         }
 
+        /// <summary>
+        /// A snapshot with this server time arrived, whether or not it listed any mob. The display clock
+        /// follows these times, so shots and effects keep moving even while there are no mobs.
+        /// </summary>
+        public void OnSnapshotTime(float serverTime) => ObserveServerTime(serverTime);
+
         public void OnSnapshotEntry(ushort id, Vector2 position, float serverTime)
         {
             ObserveServerTime(serverTime);

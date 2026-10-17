@@ -15,19 +15,22 @@ Unity 6 (6000.3) 2D 뱀서라이크. 생존자 4명 대 보스 1명의 비대칭
 - 카메라: 각 클라이언트가 자기 캐릭터만 따라가며 아레나(32 x 20 유닛) 밖은 보이지 않음
 - 몹: 서버(호스트)만 시뮬레이션하고 클라이언트는 받은 위치를 보간해서 그린다 (아래 "몹")
 - 전투: 서버가 쿨타임, 투사체, 피해, 체력, 부활을 판정하고 클라이언트는 이벤트를 받아 그리기만 한다 (아래 "전투")
+- 성장: 서버가 경험치, 레벨, 스킬 선택, 마나, 키 스킬을 판정한다. 경험치와 마나와 선택지는 소유자에게만 보낸다 (아래 "성장")
 
 ```
 Assets/Scripts/
   Network/  SessionBootstrap, RoleTable, ArenaConfig, ArenaVisual, DevArgs
-  Player/   PlayerAvatar, PlayerCombat, PlayerRegistry
+  Player/   PlayerAvatar, PlayerCombat, PlayerGrowth, PlayerRegistry
   Camera/   CameraFollow
   Mobs/     MobSim, MobCodec, MobInterpolator (순수 C#)
             MobServer, MobClient, MobView, MobMessages, MobConfig
   Combat/   AttackSim, ProjectileSim, SurvivorSim, AimMath, AimSender, CombatCodec, ProjectileReplay (순수 C#)
-            CombatServer, CombatClient, CombatView, CombatConfig, SpriteFactory
-  UI/       NetworkMenu (IMGUI 테스트 메뉴), CombatHud (체력 표시)
+            CombatServer, CombatClient, CombatView, CombatConfig, SpriteFactory, SkillEffectReplay
+  Growth/   GrowthConfig, SkillCatalog, StatCalc, LevelingSim, SkillSim (순수 C#)
+            GrowthServer
+  UI/       NetworkMenu (IMGUI 테스트 메뉴), CombatHud (체력 표시), GrowthHud (경험치, 마나, 스킬, 선택 패널)
   Editor/   NetworkSceneSetup (BS > Setup Network Scene)
-Assets/Tests/EditMode/   EditMode 테스트 (몹, 전투, 코덱, 보간기, 재생)
+Assets/Tests/EditMode/   EditMode 테스트 (몹, 전투, 성장, 코덱, 보간기, 재생)
 tools/                   로그 비교 스크립트 (몹 위치, 전투 이벤트)
 ```
 
@@ -72,6 +75,26 @@ tools/                   로그 비교 스크립트 (몹 위치, 전투 이벤�
 - 생존자가 쓰러지면 움직이거나 쏠 수 없고 몹이 쫓지 않는다. 살아 있는 생존자가 근처(1.5 이내)에서 움직이지 않고 서 있으면 부활 게이지가 차고, 움직이면 0으로 돌아간다. 전원이 쓰러져도 방은 계속 유지되고 몹은 더 나오지 않는다(종료와 승패는 보스 change에서).
 - 클라이언트 화면의 투사체는 입력 후 약 0.2초 뒤에 보인다(서버 왕복 + 표시 지연). 소유자 화면에는 클릭 즉시 총구 섬광만 보여 준다.
 
+## 성장
+
+```
+ [서버] 몹 처치(투사체, 폭발) -> 처치 위치 10유닛 안의 살아 있는 생존자 전원이 같은 경험치
+        LevelingSim: 개인 레벨(상한 10), 레벨업 -> 선택지 3개(선행 조건을 만족하고 최대 랭크가 아닌 것 중 무작위)
+                     선택 제한 시간 10초, 지나면 서버가 무작위 선택. 연속 레벨업은 차례대로
+        SkillSim:    마나(시간 회복), 쿨타임, Q/E 스킬 판정
+        StatCalc:    레벨과 스킬 랭크로 최대 체력/마나, 투사체 피해, 쿨타임 계산 (레벨업해도 현재 체력과 마나는 회복하지 않음)
+            |
+            +-- 레벨: 모두에게 복제 (캐릭터 위 표시)
+            +-- 경험치, 마나, 랭크, 선택지: 소유자에게만
+            +-- 스킬 발동: 전투 이벤트(Skill)로 복제 -> 클라이언트는 링/오라 연출만
+ [소유자] Q/E = 스킬 요청, 선택 패널이 열려 있을 때만 숫자 키 1/2/3 = 번호만 서버로 전송
+```
+
+- 값은 모두 `GrowthConfig`와 `SkillCatalog`의 상수/데이터이고 가정값이다: 처치당 경험치 10, 필요 경험치 `30 + 20 x (레벨 - 1)`, 마나 100(초당 5 회복), 레벨당 체력 +10, 마나 +5, 피해 +1.
+- 임시 스킬 트리(캐릭터 구분 없음): 패시브 힘, 기민, 활력, 집중과 액티브 폭발(Q, 마나 30, 8초, 주변 범위 피해), 연사(E, 마나 25, 12초, 기민 랭크 1 필요, 잠시 발사 속도 증가).
+- 선택하지 않아도 게임은 멈추지 않는다. 쓰러져 있는 동안에도 선택 시간은 흐르고 제한 시간이 지나면 자동 선택된다. 잘못된 번호, 이미 닫힌 선택, 시간 초과 요청은 서버가 무시한다.
+- 방이 끝나면 성장 상태는 모두 초기화된다. 캐릭터 선택과 대기방은 다음 change에서 만든다.
+
 ## 실행 방법
 
 1. Unity 6000.3으로 프로젝트를 열고 `Assets/Scenes/SampleScene`을 연다.
@@ -80,13 +103,13 @@ tools/                   로그 비교 스크립트 (몹 위치, 전투 이벤�
    - **Host**: Relay 방을 만들고 접속 코드를 표시. "보스로 시작"을 켜면 호스트가 보스
    - **Join**: 접속 코드를 입력해 참가
    - **Host (직접) / Join (직접)**: Unity 서비스 없이 같은 PC/LAN에서 테스트
-4. 이동은 WASD 또는 방향키, 조준은 마우스, 발사는 왼쪽 버튼. 호스트가 생존자로 시작하면 주변으로 몹이 모여든다. 화면 왼쪽 아래에 체력이 표시된다.
+4. 이동은 WASD 또는 방향키, 조준은 마우스, 발사는 왼쪽 버튼, 스킬은 Q/E, 레벨업 선택은 숫자 키 1/2/3. 호스트가 생존자로 시작하면 주변으로 몹이 모여든다. 화면 왼쪽 아래에 체력, 마나, 경험치가 표시된다.
 
 Relay를 쓰려면 Unity 계정으로 로그인하고 프로젝트가 Unity 클라우드 프로젝트에 연결돼 있어야 한다.
 
 ## 테스트
 
-- EditMode 테스트 151개: `Window > General > Test Runner > EditMode`에서 실행한다. 몹 시뮬레이션, 스냅샷/이벤트 부호화(청크 크기 포함), 클라이언트 보간(스냅샷 유실, 무응답 제거, 임시 몹, 서버 시각에 맞춘 제거), 공격 쿨타임, 투사체 비행과 명중, 생존자 체력과 접촉 피해와 부활, 조준 전송 제한, 전투 이벤트 부호화, 클라이언트 투사체 재생을 다룬다.
+- EditMode 테스트 250개: `Window > General > Test Runner > EditMode`에서 실행한다. 몹 시뮬레이션, 스냅샷/이벤트 부호화(청크 크기 포함), 클라이언트 보간(스냅샷 유실, 무응답 제거, 임시 몹, 서버 시각에 맞춘 제거), 공격 쿨타임, 투사체 비행과 명중, 생존자 체력과 접촉 피해와 부활, 조준 전송 제한, 전투 이벤트 부호화, 클라이언트 투사체 재생, 경험치 분배와 레벨업, 선택지와 시간 초과 자동 선택, 마나와 스킬 판정, 스킬 연출 재생을 다룬다.
 - 네트워크 통합 테스트는 아래 실행 인자로 개발 빌드 여러 개를 띄워서 로그로 확인한다.
 
 ## 여러 명으로 테스트하기
@@ -117,9 +140,15 @@ Relay를 쓰려면 Unity 계정으로 로그인하고 프로젝트가 Unity 클�
 | `-bsCombatDump` | 모든 전투 이벤트를 서버 시각과 함께 로그 (서버와 클라이언트 비교용) |
 | `-bsDevKill <역할> <초>` | (호스트) 방이 시작되고 지정한 초 뒤에 해당 역할(1~4)의 생존자를 쓰러뜨림 |
 | `-bsDevMeet <A> <B> <초>` | (호스트) 지정한 초 뒤에 생존자 A를 생존자 B 옆으로 옮김 |
+| `-bsGrowthLog` | 레벨, 경험치, 선택, 스킬 결과 로그와 5초마다 성장 통계 |
+| `-bsXpPerKill <n>` | 몹 처치당 경험치 (호스트) |
+| `-bsOfferSeconds <초>` | 레벨업 선택 제한 시간 (호스트) |
+| `-bsDevXp <초> <n>` | (호스트) 방이 시작되고 지정한 초 뒤에 모든 생존자에게 경험치 n을 줌 |
+| `-bsAutoPick <번호> <초>` | (소유자) 선택이 열리고 지정한 초 뒤에 번호(1~3)를 고름. 번호 0이면 고르지 않아 자동 선택을 시험 |
+| `-bsAutoSkill <q 또는 e> <초>` | (소유자) 지정한 간격으로 해당 스킬 키를 누름 |
 | `-bsQuit <초>` | 지정 시간 후 종료 |
 
-`-bsMobTarget 0`은 자동 스폰을 끈다. 개발 인자 중 "(호스트)"가 붙은 값은 호스트에서만 적용된다.
+`-bsSurvivorHealth`는 성장의 최대 체력에도 더해진다(기본 체력 대신 이 값에서 시작). `-bsMobTarget 0`은 자동 스폰을 끈다. 개발 인자 중 "(호스트)"가 붙은 값은 호스트에서만 적용된다.
 
 예: 호스트 하나와 클라이언트를 직접 IP로 띄워 몹 100마리를 만들고 위치를 비교한다.
 
@@ -144,6 +173,17 @@ BS.exe -batchmode -nographics -logFile host.log -bsHost -bsMobTarget 0 -bsCombat
 BS.exe -batchmode -nographics -logFile c1.log -bsJoin 127.0.0.1 -bsCombatLog -bsMove 0 0 -bsQuit 45
 BS.exe -batchmode -nographics -logFile c2.log -bsJoin 127.0.0.1 -bsCombatLog -bsMove 0 0 -bsQuit 45
 ```
+
+성장 시험: 호스트와 클라이언트 3명. 12초에 모든 생존자에게 경험치 70을 줘 연속 레벨업을 만들고, 한 명은 선택하지 않아(`-bsAutoPick 0 0`) 시간 초과 자동 선택을 확인한다. 로그의 `growth: level up`, `offer opened`, `offer closed ... auto=True/False`, `skill fired`를 본다.
+
+```
+BS.exe -batchmode -nographics -logFile host.log -bsHost -bsMobTarget 30 -bsMobHealth 60 -bsSurvivorHealth 60000 -bsGrowthLog -bsCombatDump -bsXpPerKill 10 -bsOfferSeconds 4 -bsDevXp 12 70 -bsFire -bsAimSweep 60 -bsAutoSkill q 3 -bsAutoPick 1 1 -bsQuit 60
+BS.exe -batchmode -nographics -logFile c1.log -bsJoin 127.0.0.1 -bsGrowthLog -bsCombatDump -bsFire -bsAimSweep -50 -bsAutoPick 2 1 -bsAutoSkill e 4 -bsQuit 50
+BS.exe -batchmode -nographics -logFile c2.log -bsJoin 127.0.0.1 -bsGrowthLog -bsCombatDump -bsFire -bsAimSweep 30 -bsAutoPick 0 0 -bsAutoSkill q 5 -bsQuit 48
+python tools/compare_combat.py host.log c1.log c2.log
+```
+
+빌드는 Development Build여야 한다. 에디터 빌드 도구에서는 옵션에 `Development`를 지정한다(그렇지 않으면 `-bs...` 인자가 조용히 무시되고 프로세스가 멈춘 것처럼 보인다).
 
 에디터에서 `F9`는 소유자 위치를 강제로 밀어 보정 동작을 확인하는 디버그 키다.
 
@@ -195,6 +235,36 @@ BS.exe -batchmode -nographics -logFile c2.log -bsJoin 127.0.0.1 -bsCombatLog -bs
 - 호스트와 클라이언트가 같은 PC라서 지연이 낮고, 헤드리스 빌드라서 호스트 CPU와 프레임 시간은 대표값이 아니다.
 - 서버가 판정하는 시각과 클라이언트가 보는 몹 위치 사이에는 약 130ms 차이가 있다. 움직이는 몹을 보고 쏘면 약 0.33유닛 빗나갈 수 있고(몹 반지름 0.4 + 투사체 0.15 안), 지연 보상은 아직 없다.
 
+### 성장 (`add-survivor-growth`)
+
+실제 Relay로 호스트 1 + 클라이언트 3(생존자 4명 모두 사격, Q/E 스킬과 레벨업 선택을 자동으로 계속 사용), 몹 목표 100마리(체력 200), 약 2분. 경험치를 많이 줘서 모두 최대 레벨(10)에 도달한 뒤의 상태를 포함한다.
+
+| 항목 | 결과 | 기준 |
+|---|---|---|
+| 클라이언트당 몹 트래픽 (페이로드) | 약 5.3 KB/s (몹 약 49마리) | 50 KB/s 이하 |
+| 클라이언트당 전투 트래픽 (스킬 이벤트 포함, 페이로드) | 약 0.5 KB/s | 10 KB/s 이하 |
+| 서버 틱 시간 (몹 포함, 틱당) | 평균 0.036ms, 최대 약 0.12ms | |
+| 레벨 복제 | 모든 클라이언트가 모든 생존자의 레벨 변화를 같은 순서로 받음 (1 -> 10) | |
+
+직접 IP로 호스트 1 + 클라이언트 3, 12초에 경험치 70 지급:
+
+| 항목 | 결과 |
+|---|---|
+| 연속 레벨업 | 모든 생존자가 1 -> 3 (선택 2회가 차례대로 열림), 이후 처치 경험치로 4 |
+| 레벨업과 체력 | 최대 체력만 오르고 현재 체력은 그대로 (예: 최대 120, 현재 100) |
+| 선택 | 번호를 보낸 선택 8회, 시간 초과 자동 선택 3회 (선택하지 않는 클라이언트) |
+| 선택지 비공개 | 각 클라이언트 로그에는 자기 선택지만 나타남 (서버 로그의 소유자별 개수와 같음) |
+| 스킬 | 폭발 1회 발동 후 쿨타임 거절, 배우지 않은 스킬과 쓰러진 상태의 요청은 거절 |
+| 전투 이벤트 (스킬 포함) | 서버 675개를 클라이언트 3명이 연결된 구간에서 하나도 빠뜨리거나 더하지 않고 받음 |
+| 이전 change 회귀 | EditMode 250개 통과, 몹 위치 일치(차이 0.05 이하), 전투 이벤트 일치, 쓰러짐 -> 부활(체력 50%) 정상 |
+
+측정 방법과 한계:
+
+- 경험치, 마나, 랭크는 소유자에게만 가는 복제 값이라 위 페이로드 표에는 들어 있지 않다. 크기가 작고(레벨업과 스킬 사용 때만 바뀜) 따로 측정하지는 않았다.
+- 시험에서는 몹이 많이 죽으면서 몹 수가 약 40~50마리에 머물렀다. 100마리 상태의 트래픽은 몹 동기화 측정(10.37 KB/s)을 본다.
+- 최대 레벨에 빨리 도달해서 레벨업 직후의 트래픽 변화는 직접 IP 시험의 로그로만 확인했다.
+- 호스트와 클라이언트가 같은 PC이고 헤드리스 빌드라서 지연이 낮고 CPU와 프레임 시간은 대표값이 아니다.
+
 ## 알려진 한계
 
 - 호스트가 나가면 방이 끝난다 (호스트 이전 없음). 클라이언트는 접속 화면으로 돌아간다.
@@ -204,7 +274,8 @@ BS.exe -batchmode -nographics -logFile c2.log -bsJoin 127.0.0.1 -bsCombatLog -bs
 - 테스트 메뉴는 IMGUI이고 정식 로비 UI와 Steam 연동은 범위 밖이다.
 - 몹은 한 종류(직선 추적)이고 서로 겹치는 정도는 분리만 하며 장애물 회피는 없다.
 - 몹 수가 하드 상한(100)을 넘으면 청크 분할은 지원하지만 대역폭과 호스트 CPU는 다시 측정해야 한다.
-- 공격은 캐릭터 구분 없는 직선 투사체 한 종류다. 캐릭터별 공격과 스킬은 다음 change에서 같은 이벤트 방식으로 확장한다.
+- 공격은 캐릭터 구분 없는 직선 투사체 한 종류이고 스킬 트리도 모두 같은 임시 트리다. 캐릭터별 공격, 스킬, 스킬 트리와 대기방의 캐릭터 선택은 다음 change에서 같은 이벤트 방식으로 확장한다.
+- 폭발에 맞고 살아남은 몹은 체력 막대를 그리지 않는다(투사체 명중만 막대를 갱신한다). 이동 속도 성장은 아직 없다.
 - 지연 보상이 없다. 서버는 서버 시각의 몹 위치로 판정하므로, 지연이 큰 환경에서는 화면상 맞았는데 빗나가는 경우가 늘 수 있다.
 - 투사체는 입력 후 약 0.2초 뒤에 보인다. 소유자 화면에서는 총구 섬광만 즉시 보여 준다(투사체 예측은 아직 없다).
 - 쓰러진 생존자는 회색으로 표시되고 관전 카메라는 없다. 전멸해도 방은 끝나지 않는다.

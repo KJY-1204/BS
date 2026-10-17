@@ -22,10 +22,12 @@ namespace BS
         sealed class State
         {
             public int Health;
+            public int MaxHealth;
             public float Invulnerable;
             public float ReviveGauge;
         }
 
+        /// <summary>Maximum health a survivor starts with; each survivor's own maximum can then change.</summary>
         public int MaxHealth = CombatConfig.SurvivorMaxHealth;
         public int ContactDamage = CombatConfig.ContactDamage;
         public float InvulnerabilitySeconds = CombatConfig.InvulnerabilitySeconds;
@@ -42,7 +44,21 @@ namespace BS
 
         public void Register(ulong clientId)
         {
-            states[clientId] = new State { Health = MaxHealth };
+            states[clientId] = new State { Health = MaxHealth, MaxHealth = MaxHealth };
+        }
+
+        /// <summary>This survivor's own maximum health (the default for unknown survivors).</summary>
+        public int MaxHealthOf(ulong clientId) => states.TryGetValue(clientId, out State s) ? s.MaxHealth : MaxHealth;
+
+        /// <summary>
+        /// Changes one survivor's maximum health. Current health is not healed when the maximum rises,
+        /// and is only cut down if the maximum falls below it.
+        /// </summary>
+        public void SetMaxHealth(ulong clientId, int maxHealth)
+        {
+            if (!states.TryGetValue(clientId, out State s)) return;
+            s.MaxHealth = Math.Max(1, maxHealth);
+            if (s.Health > s.MaxHealth) s.Health = s.MaxHealth;
         }
 
         public void Unregister(ulong clientId) => states.Remove(clientId);
@@ -133,7 +149,7 @@ namespace BS
                 s.ReviveGauge += ReviveSeconds > 0f ? dt / ReviveSeconds : 1f;
                 if (s.ReviveGauge >= 1f)
                 {
-                    s.Health = Math.Max(1, Mathf.CeilToInt(MaxHealth * ReviveHealthFraction));
+                    s.Health = Math.Max(1, Mathf.CeilToInt(s.MaxHealth * ReviveHealthFraction));
                     s.Invulnerable = ReviveInvulnerabilitySeconds;
                     s.ReviveGauge = 0f;
                 }

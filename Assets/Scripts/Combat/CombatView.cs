@@ -50,8 +50,37 @@ namespace BS
         readonly List<HitEffect> effects = new List<HitEffect>();
         SpriteRenderer muzzle;
 
+        // Skill effects: expanding rings for Burst, one aura per survivor slot for Rapid Fire
+        const int MaxRings = 16;
+        /// <summary>How long a Burst ring lasts on screen (a field so a test can stretch it).</summary>
+        public float RingSeconds = 0.4f;
+        struct Ring
+        {
+            public Vector2 Center;
+            public float Radius;
+            public float Start;
+        }
+        readonly SpriteRenderer[] ringSprites = new SpriteRenderer[MaxRings];
+        readonly Ring[] rings = new Ring[MaxRings];
+        int nextRing;
+        readonly SpriteRenderer[] auraSprites = new SpriteRenderer[5];
+        readonly float[] auraEndsAt = new float[5];
+        readonly List<SkillEffect> skillEffects = new List<SkillEffect>();
+
         /// <summary>Mob health bars currently on screen (for tests and logs).</summary>
         public int VisibleBars => barsShown;
+
+        /// <summary>Burst rings and Rapid Fire auras currently drawn (for tests and logs).</summary>
+        public int VisibleSkillEffects
+        {
+            get
+            {
+                int n = 0;
+                foreach (SpriteRenderer r in ringSprites) if (r != null && r.enabled) n++;
+                foreach (SpriteRenderer r in auraSprites) if (r != null && r.enabled) n++;
+                return n;
+            }
+        }
         public int VisibleProjectiles => projectilesShown;
 
         void Awake()
@@ -65,6 +94,18 @@ namespace BS
             {
                 flashSprites[i] = SpriteFactory.CreateRenderer("HitFlash", transform, Color.white, 21);
                 flashSprites[i].enabled = false;
+            }
+
+            for (int i = 0; i < MaxRings; i++)
+            {
+                ringSprites[i] = SpriteFactory.CreateRingRenderer("SkillRing", transform, new Color(1f, 0.6f, 0.2f), 23);
+                ringSprites[i].enabled = false;
+            }
+
+            for (int i = 0; i < auraSprites.Length; i++)
+            {
+                auraSprites[i] = SpriteFactory.CreateRingRenderer("RapidFireAura", transform, new Color(1f, 0.9f, 0.3f), 24);
+                auraSprites[i].enabled = false;
             }
         }
 
@@ -85,9 +126,84 @@ namespace BS
             combat.DueEffects.Clear();
             foreach (HitEffect effect in effects) OnHit(effect);
 
+            skillEffects.Clear();
+            skillEffects.AddRange(combat.DueSkillEffects);
+            combat.DueSkillEffects.Clear();
+            foreach (SkillEffect effect in skillEffects) OnSkill(effect);
+
             DrawFlashes();
             DrawMobBars();
             DrawMuzzleFlash();
+            DrawRings();
+            DrawAuras();
+        }
+
+        // ---- Skill effects ----
+
+        void OnSkill(SkillEffect effect)
+        {
+            SkillDef def = SkillCatalog.Get(effect.SkillId);
+            if (def == null || effect.Rank < 1 || effect.Rank > def.MaxRank) return;
+
+            if (effect.SkillId == SkillIds.Burst)
+            {
+                rings[nextRing] = new Ring { Center = effect.Position, Radius = def.Radius[effect.Rank - 1], Start = Time.time };
+                nextRing = (nextRing + 1) % MaxRings;
+            }
+            else if (effect.SkillId == SkillIds.RapidFire && effect.Slot < auraEndsAt.Length)
+            {
+                auraEndsAt[effect.Slot] = Time.time + def.Duration[effect.Rank - 1];
+            }
+        }
+
+        void DrawRings()
+        {
+            for (int i = 0; i < MaxRings; i++)
+            {
+                SpriteRenderer sr = ringSprites[i];
+                float age = Time.time - rings[i].Start;
+                if (rings[i].Radius <= 0f || age > RingSeconds)
+                {
+                    if (sr.enabled) sr.enabled = false;
+                    continue;
+                }
+
+                float t = age / RingSeconds;
+                sr.enabled = true;
+                sr.transform.position = new Vector3(rings[i].Center.x, rings[i].Center.y, 0f);
+                sr.transform.localScale = Vector3.one * (rings[i].Radius * 2f * Mathf.Lerp(0.3f, 1f, t));
+                Color c = new Color(1f, 0.6f, 0.2f);
+                c.a = 1f - t;
+                sr.color = c;
+            }
+        }
+
+        void DrawAuras()
+        {
+            for (int slot = 0; slot < auraSprites.Length; slot++)
+            {
+                SpriteRenderer sr = auraSprites[slot];
+                PlayerGrowth owner = FindBySlot(slot);
+
+                bool active = Time.time < auraEndsAt[slot] && owner != null && owner.GetComponent<PlayerAvatar>().IsAlive;
+                sr.enabled = active;
+                if (!active) continue;
+
+                float pulse = 1.5f + 0.15f * Mathf.Sin(Time.time * 10f);
+                sr.transform.position = owner.transform.position;
+                sr.transform.localScale = Vector3.one * pulse;
+            }
+        }
+
+        static PlayerGrowth FindBySlot(int slot)
+        {
+            for (int i = 0; i < PlayerGrowth.All.Count; i++)
+            {
+                PlayerGrowth g = PlayerGrowth.All[i];
+                PlayerAvatar a = g != null ? g.GetComponent<PlayerAvatar>() : null;
+                if (a != null && a.Role == slot) return g;
+            }
+            return null;
         }
 
         // ---- Projectiles ----

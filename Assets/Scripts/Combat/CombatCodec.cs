@@ -15,7 +15,8 @@ namespace BS
     /// server time in milliseconds u32, count u16, then the events one after another.
     /// Fire: kind u8, projectile id u16, slot u8, x i16, y i16, angle u16.
     /// Hit: kind u8, projectile id u16, mob id u16, mob health percent u8, flags u8 (bit 0 killed), x i16, y i16.
-    /// End: kind u8, projectile id u16, x i16, y i16. Coordinates are 1/1000 world unit.
+    /// End: kind u8, projectile id u16, x i16, y i16.
+    /// Skill: kind u8, skill id u8, slot u8, x i16, y i16, rank u8. Coordinates are 1/1000 world unit.
     /// </summary>
     public static class CombatCodec
     {
@@ -23,6 +24,7 @@ namespace BS
         public const int FireSize = 10;
         public const int HitSize = 11;
         public const int EndSize = 7;
+        public const int SkillSize = 8;
 
         /// <summary>No single combat message may be larger than this.</summary>
         public const int MaxBatchBytes = 1000;
@@ -33,6 +35,7 @@ namespace BS
             {
                 case CombatEventKind.Fire: return FireSize;
                 case CombatEventKind.Hit: return HitSize;
+                case CombatEventKind.Skill: return SkillSize;
                 default: return EndSize;
             }
         }
@@ -62,6 +65,17 @@ namespace BS
             {
                 CombatEvent e = events[start + i];
                 buffer[o++] = (byte)e.Kind;
+
+                if (e.Kind == CombatEventKind.Skill)
+                {
+                    buffer[o++] = e.SkillId;
+                    buffer[o++] = slotOf != null ? slotOf(e.Owner) : e.Slot;
+                    WriteI16(buffer, ref o, MobCodec.Quantize(e.Position.x));
+                    WriteI16(buffer, ref o, MobCodec.Quantize(e.Position.y));
+                    buffer[o++] = e.Rank;
+                    continue;
+                }
+
                 WriteU16(buffer, ref o, e.ProjectileId);
 
                 switch (e.Kind)
@@ -106,11 +120,23 @@ namespace BS
             if (offset >= length) return false;
 
             var kind = (CombatEventKind)buffer[offset];
-            if (kind != CombatEventKind.Fire && kind != CombatEventKind.Hit && kind != CombatEventKind.End) return false;
+            if (kind != CombatEventKind.Fire && kind != CombatEventKind.Hit && kind != CombatEventKind.End && kind != CombatEventKind.Skill)
+                return false;
             if (offset + EventSize(kind) > length) return false;
 
             int o = offset + 1;
             e.Kind = kind;
+
+            if (kind == CombatEventKind.Skill)
+            {
+                e.SkillId = buffer[o++];
+                e.Slot = buffer[o++];
+                e.Position = new Vector2(MobCodec.Dequantize(ReadI16(buffer, ref o)), MobCodec.Dequantize(ReadI16(buffer, ref o)));
+                e.Rank = buffer[o++];
+                offset = o;
+                return true;
+            }
+
             e.ProjectileId = ReadU16(buffer, ref o);
 
             switch (kind)

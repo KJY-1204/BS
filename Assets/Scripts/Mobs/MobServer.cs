@@ -181,7 +181,9 @@ namespace BS
         void SendSnapshot()
         {
             int total = Sim.Count;
-            int chunks = MobCodec.ChunkCountFor(total);
+            // With no mobs there is nothing to list, but clients still need the time: their display clock
+            // (which also drives shots and skill effects) only moves when a snapshot arrives.
+            int chunks = Math.Max(1, MobCodec.ChunkCountFor(total));
             if (remoteClients.Count == 0) return;
 
             for (int c = 0; c < chunks; c++)

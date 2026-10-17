@@ -18,10 +18,17 @@ namespace BS
         public AttackSim Attacks { get; } = new AttackSim();
         public ProjectileSim Projectiles { get; } = new ProjectileSim();
 
+        /// <summary>Where mobs died in the latest step (shots only); growth reads it to hand out experience.</summary>
+        public IReadOnlyList<Vector2> KillsThisStep => killPositions;
+
+        /// <summary>The survivors that were registered when this room started, in registration order.</summary>
+        public IReadOnlyList<PlayerAvatar> RegisteredAvatars => registered;
+
         readonly List<PlayerAvatar> registered = new List<PlayerAvatar>();
         readonly List<SurvivorBody> bodies = new List<SurvivorBody>();
         readonly List<ShooterBody> shooters = new List<ShooterBody>();
         readonly List<CombatEvent> events = new List<CombatEvent>();
+        readonly List<Vector2> killPositions = new List<Vector2>();
         readonly List<ulong> remoteClients = new List<ulong>();
         readonly Dictionary<ulong, byte> slots = new Dictionary<ulong, byte>();
 
@@ -34,7 +41,7 @@ namespace BS
         // Measurement (dev logging)
         float statsTimer;
         long bytesSent;
-        int firesSent, hitsSent, killsSent, endsSent;
+        int firesSent, hitsSent, killsSent, endsSent, skillsSent;
 
         void Awake()
         {
@@ -85,6 +92,8 @@ namespace BS
             Attacks.Clear();
             Projectiles.Clear();
             events.Clear();
+            killPositions.Clear();
+            GrowthServer.Instance?.ResetAll();
         }
 
         /// <summary>Called when a survivor's character spawns on the server.</summary>
@@ -94,6 +103,7 @@ namespace BS
             slots[avatar.OwnerClientId] = avatar.Role;
             Survivors.Register(avatar.OwnerClientId);
             Attacks.Register(avatar.OwnerClientId);
+            GrowthServer.Instance?.Register(avatar);
         }
 
         public void UnregisterSurvivor(PlayerAvatar avatar)
@@ -106,6 +116,7 @@ namespace BS
             slots.Remove(avatar.OwnerClientId);
             Survivors.Unregister(avatar.OwnerClientId);
             Attacks.Unregister(avatar.OwnerClientId);
+            GrowthServer.Instance?.Unregister(avatar);
         }
 
         bool IsRegistered(ulong clientId)
@@ -124,6 +135,7 @@ namespace BS
 
         void FixedUpdate()
         {
+            killPositions.Clear();
             if (!running) return;
 
             float dt = Time.fixedDeltaTime;
@@ -150,12 +162,14 @@ namespace BS
                 PlayerAvatar a = registered[i];
                 if (a == null || !a.IsSpawned || a.Combat == null) continue;
                 ulong id = a.OwnerClientId;
-                a.Combat.ServerWrite(Survivors.Health(id), Survivors.IsAlive(id) ? 0f : Survivors.ReviveGauge(id));
+                a.Combat.ServerWrite(Survivors.Health(id), Survivors.IsAlive(id) ? 0f : Survivors.ReviveGauge(id), Survivors.MaxHealthOf(id));
             }
 
             events.Clear();
             Projectiles.DrainEvents(events);
-            if (events.Count > 0) PublishEvents();
+            for (int i = 0; i < events.Count; i++)
+                if (events[i].Kind == CombatEventKind.Hit && events[i].Killed) killPositions.Add(events[i].Position);
+            if (events.Count > 0) PublishEvents(events);
 
             // Mob kills made by projectiles this step go out now, with the same time as the hits.
             mobs.FlushEvents();
@@ -214,35 +228,46 @@ namespace BS
 
             int clients = remoteClients.Count;
             double perClient = clients > 0 ? bytesSent / (double)clients / statsTimer / 1024.0 : 0.0;
-            Debug.Log($"[BS] combat server: fires={firesSent} hits={hitsSent} kills={killsSent} ends={endsSent} " +
+            Debug.Log($"[BS] combat server: fires={firesSent} hits={hitsSent} kills={killsSent} ends={endsSent} skills={skillsSent} " +
                       $"projectiles={Projectiles.Count} survivors={Survivors.Count} clients={clients} payloadPerClient={perClient:F3}KB/s");
             statsTimer = 0f;
             bytesSent = 0;
-            firesSent = hitsSent = killsSent = endsSent = 0;
+            firesSent = hitsSent = killsSent = endsSent = skillsSent = 0;
         }
 
         // ---- Sending ----
 
-        void PublishEvents()
+        /// <summary>Sends events made outside the shot simulation (skills) in the same stream and with the same time.</summary>
+        public void Publish(IReadOnlyList<CombatEvent> list)
+        {
+            if (!running || list.Count == 0) return;
+            PublishEvents(list);
+        }
+
+        void PublishEvents(IReadOnlyList<CombatEvent> list)
         {
             uint timeMs = mobs.ServerTimeMs;
 
-            for (int i = 0; i < events.Count; i++)
+            for (int i = 0; i < list.Count; i++)
             {
-                switch (events[i].Kind)
+                switch (list[i].Kind)
                 {
                     case CombatEventKind.Fire: firesSent++; break;
-                    case CombatEventKind.Hit: hitsSent++; if (events[i].Killed) killsSent++; break;
+                    case CombatEventKind.Hit: hitsSent++; if (list[i].Killed) killsSent++; break;
+                    case CombatEventKind.Skill: skillsSent++; break;
                     default: endsSent++; break;
                 }
             }
 
             if (DevArgs.CombatDump)
-                for (int i = 0; i < events.Count; i++)
-                    Debug.Log($"[BS] combatdump server t={timeMs} {events[i].Kind} id={events[i].ProjectileId} mob={events[i].MobId} kill={(events[i].Killed ? 1 : 0)}");
+                for (int i = 0; i < list.Count; i++)
+                {
+                    int id = list[i].Kind == CombatEventKind.Skill ? list[i].SkillId : list[i].ProjectileId;
+                    Debug.Log($"[BS] combatdump server t={timeMs} {list[i].Kind} id={id} mob={list[i].MobId} kill={(list[i].Killed ? 1 : 0)}");
+                }
 
             // The host shows its own events at server time; everyone else gets them as a message.
-            CombatClient.Instance?.ApplyLocal(events, MobMessages.ServerTimeFromMs(timeMs), slotOf);
+            CombatClient.Instance?.ApplyLocal(list, MobMessages.ServerTimeFromMs(timeMs), slotOf);
 
             remoteClients.Clear();
             foreach (ulong id in nm.ConnectedClientsIds)
@@ -250,10 +275,10 @@ namespace BS
             if (remoteClients.Count == 0) return;
 
             int start = 0;
-            while (start < events.Count)
+            while (start < list.Count)
             {
-                int count = CombatCodec.CountThatFit(events, start);
-                int length = CombatCodec.WriteBatch(buffer, timeMs, events, start, count, slotOf);
+                int count = CombatCodec.CountThatFit(list, start);
+                int length = CombatCodec.WriteBatch(buffer, timeMs, list, start, count, slotOf);
                 using (var writer = new FastBufferWriter(length, Unity.Collections.Allocator.Temp))
                 {
                     writer.WriteBytesSafe(buffer, length);

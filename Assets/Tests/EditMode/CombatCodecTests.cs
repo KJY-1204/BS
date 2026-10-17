@@ -146,6 +146,95 @@ namespace BS.Tests
             Assert.AreEqual(events.Count, sent);
         }
 
+        static CombatEvent Skill(byte skill, byte slot, float x, float y, byte rank) =>
+            new CombatEvent { Kind = CombatEventKind.Skill, SkillId = skill, Slot = slot, Position = new Vector2(x, y), Rank = rank };
+
+        [Test]
+        public void Skill_RoundTrips()
+        {
+            var read = RoundTrip(new List<CombatEvent> { Skill(SkillIds.Burst, 3, -7.125f, 4.5f, 2) }, 4242u, out uint time);
+
+            Assert.AreEqual(4242u, time);
+            Assert.AreEqual(CombatEventKind.Skill, read[0].Kind);
+            Assert.AreEqual(SkillIds.Burst, read[0].SkillId);
+            Assert.AreEqual(3, read[0].Slot);
+            Assert.AreEqual(2, read[0].Rank);
+            Assert.Less(Vector2.Distance(new Vector2(-7.125f, 4.5f), read[0].Position), 0.0015f);
+        }
+
+        [Test]
+        public void Skill_TakesEightBytes()
+        {
+            var buffer = new byte[64];
+            var events = new List<CombatEvent> { Skill(SkillIds.RapidFire, 1, 0, 0, 1) };
+
+            int length = CombatCodec.WriteBatch(buffer, 1u, events, 0, 1, null);
+
+            Assert.AreEqual(CombatCodec.HeaderSize + CombatCodec.SkillSize, length);
+            Assert.AreEqual(8, CombatCodec.SkillSize);
+        }
+
+        [Test]
+        public void SkillEventsMixedWithShotsKeepTheirOrder()
+        {
+            var events = new List<CombatEvent>
+            {
+                Fire(1, 0, 0, 100), Skill(SkillIds.Burst, 2, 1, 1, 1), Hit(1, 5, 0, true, 3, 3), Skill(SkillIds.RapidFire, 4, 2, 2, 3), End(9, 1, 1),
+            };
+
+            var read = RoundTrip(events, 55u, out _);
+
+            Assert.AreEqual(events.Count, read.Count);
+            for (int i = 0; i < events.Count; i++) Assert.AreEqual(events[i].Kind, read[i].Kind, $"event {i}");
+            Assert.AreEqual(SkillIds.RapidFire, read[3].SkillId);
+            Assert.AreEqual(5, read[2].MobId);
+        }
+
+        [Test]
+        public void SkillOwnerSlotIsLookedUpWhenEncoding()
+        {
+            var events = new List<CombatEvent> { new CombatEvent { Kind = CombatEventKind.Skill, SkillId = 5, Owner = 42, Rank = 1 } };
+            var buffer = new byte[64];
+
+            int length = CombatCodec.WriteBatch(buffer, 1u, events, 0, 1, owner => owner == 42 ? (byte)3 : (byte)0);
+            int offset = CombatCodec.HeaderSize;
+            CombatCodec.TryReadEvent(buffer, length, ref offset, out CombatEvent e);
+
+            Assert.AreEqual(3, e.Slot);
+        }
+
+        [Test]
+        public void ATruncatedSkillEventIsRejected()
+        {
+            var buffer = new byte[64];
+            int length = CombatCodec.WriteBatch(buffer, 1u, new List<CombatEvent> { Skill(SkillIds.Burst, 1, 0, 0, 1) }, 0, 1, null);
+
+            int offset = CombatCodec.HeaderSize;
+            Assert.IsFalse(CombatCodec.TryReadEvent(buffer, length - 1, ref offset, out _));
+        }
+
+        [Test]
+        public void FourSurvivorsUsingSkillsAsOftenAsTheyCan_AddAlmostNothing()
+        {
+            // Two skills per survivor, each on its cooldown, one message per event (worst case).
+            float perSecond = 0f;
+            foreach (SkillDef def in SkillCatalog.All)
+                if (def.IsActive) perSecond += 4f / def.Cooldown * (CombatCodec.HeaderSize + CombatCodec.SkillSize);
+
+            Assert.Less(perSecond, 200f, "well under a quarter of a KB per second");
+        }
+
+        [Test]
+        public void ShotsPlusSkills_StayWithinTheCombatBudget()
+        {
+            float shots = 4f / CombatConfig.FireCooldownSeconds;
+            float bytes = shots * (CombatCodec.HeaderSize + CombatCodec.FireSize) + shots * (CombatCodec.HeaderSize + CombatCodec.HitSize);
+            foreach (SkillDef def in SkillCatalog.All)
+                if (def.IsActive) bytes += 4f / def.Cooldown * (CombatCodec.HeaderSize + CombatCodec.SkillSize);
+
+            Assert.Less(bytes, 10f * 1024f / 4f, "less than a quarter of the 10 KB/s budget");
+        }
+
         [Test]
         public void FourSurvivorsFiringNonstop_NeedAFractionOfTheCombatBudget()
         {

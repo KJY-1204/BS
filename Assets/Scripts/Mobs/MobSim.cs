@@ -234,6 +234,49 @@ namespace BS
             return true;
         }
 
+        readonly List<ushort> areaTargets = new List<ushort>();
+
+        /// <summary>
+        /// Damages every mob whose centre is within <paramref name="radius"/> of a point. Mobs that reach zero
+        /// health are removed as usual, and where each one died is appended to <paramref name="deaths"/>.
+        /// Returns how many mobs were hit.
+        /// </summary>
+        public int ApplyAreaDamage(Vector2 center, float radius, int damage, List<Vector2> deaths)
+        {
+            if (count == 0 || radius <= 0f) return 0;
+
+            EnsureGrid();
+            GetCellRange(center.x - radius, center.y - radius, center.x + radius, center.y + radius,
+                         out int x0, out int y0, out int x1, out int y1);
+
+            // Collect first: removing a mob while walking the grid would move others around.
+            areaTargets.Clear();
+            float radiusSq = radius * radius;
+            for (int cy = y0; cy <= y1; cy++)
+            {
+                for (int cx = x0; cx <= x1; cx++)
+                {
+                    int c = cy * gridW + cx;
+                    for (int k = cellStart[c]; k < cellStart[c + 1]; k++)
+                    {
+                        int m = cellItems[k];
+                        if ((positions[m] - center).sqrMagnitude <= radiusSq) areaTargets.Add(ids[m]);
+                    }
+                }
+            }
+
+            for (int i = 0; i < areaTargets.Count; i++)
+            {
+                ushort id = areaTargets[i];
+                Vector2 where = default;
+                if (indexOf.TryGetValue(id, out int index)) where = positions[index];
+
+                if (ApplyDamage(id, damage, out _, out bool killed) && killed && deaths != null)
+                    deaths.Add(where);
+            }
+            return areaTargets.Count;
+        }
+
         /// <summary>True when any mob's centre is within reach of the point (a survivor touching a mob).</summary>
         public bool AnyWithin(Vector2 center, float reach)
         {

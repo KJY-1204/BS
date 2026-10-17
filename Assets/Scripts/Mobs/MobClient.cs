@@ -130,6 +130,7 @@ namespace BS
             }
 
             float serverTime = MobMessages.ServerTime(tick);
+            Interpolator.OnSnapshotTime(serverTime);
             for (int i = 0; i < count; i++)
             {
                 MobCodec.ReadSnapshotEntry(scratch, i, out ushort id, out Vector2 position, out _);

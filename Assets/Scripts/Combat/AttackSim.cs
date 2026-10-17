@@ -25,6 +25,8 @@ namespace BS
             public ushort Angle;
             public bool Firing;
             public float Cooldown;
+            public int Damage = CombatConfig.ProjectileDamage;
+            public float CooldownMultiplier = 1f;
         }
 
         public float CooldownSeconds = CombatConfig.FireCooldownSeconds;
@@ -47,6 +49,19 @@ namespace BS
             s.Firing = firing;
         }
 
+        /// <summary>
+        /// Sets one shooter's projectile damage and cooldown multiplier (below 1 fires faster).
+        /// A new multiplier applies from the next shot; a cooldown already running is not cut short.
+        /// </summary>
+        public void SetModifiers(ulong clientId, int damage, float cooldownMultiplier)
+        {
+            if (!shooters.TryGetValue(clientId, out Shooter s)) return;
+            s.Damage = damage;
+            s.CooldownMultiplier = cooldownMultiplier;
+        }
+
+        public int DamageOf(ulong clientId) => shooters.TryGetValue(clientId, out Shooter s) ? s.Damage : CombatConfig.ProjectileDamage;
+
         public float CooldownRemaining(ulong clientId) => shooters.TryGetValue(clientId, out Shooter s) ? s.Cooldown : 0f;
 
         public void Step(float dt, IReadOnlyList<ShooterBody> bodies, ProjectileSim projectiles)
@@ -62,8 +77,8 @@ namespace BS
                 if (!s.Firing || s.Cooldown > 0f) continue;
 
                 // A refused shot (projectile cap) does not use up the cooldown.
-                if (projectiles.TryFire(body.ClientId, body.Position, s.Angle, out _))
-                    s.Cooldown = CooldownSeconds;
+                if (projectiles.TryFire(body.ClientId, body.Position, s.Angle, s.Damage, out _))
+                    s.Cooldown = CooldownSeconds * s.CooldownMultiplier;
             }
         }
     }

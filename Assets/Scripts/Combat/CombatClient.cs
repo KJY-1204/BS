@@ -16,6 +16,10 @@ namespace BS
         public static CombatClient Instance { get; private set; }
 
         public ProjectileReplay Replay { get; } = new ProjectileReplay();
+        public SkillEffectReplay SkillEffects { get; } = new SkillEffectReplay();
+
+        /// <summary>Skill effects whose display time has come; the view drains this every frame.</summary>
+        public List<SkillEffect> DueSkillEffects { get; } = new List<SkillEffect>();
 
         /// <summary>Hits that have become due on the display clock; the view drains this every frame.</summary>
         public List<HitEffect> DueEffects { get; } = new List<HitEffect>();
@@ -29,7 +33,7 @@ namespace BS
         // Measurement (dev logging)
         float statsTimer;
         long bytesReceived;
-        int fires, hits, kills, ends;
+        int fires, hits, kills, ends, skills;
 
         void Awake()
         {
@@ -59,6 +63,7 @@ namespace BS
         void HandleClientStarted()
         {
             Replay.Clear();
+            SkillEffects.Clear();
             ResetStats();
             if (nm.IsServer) return; // the host is fed by the server directly
 
@@ -70,13 +75,17 @@ namespace BS
         {
             Unregister();
             Replay.Clear();
+            SkillEffects.Clear();
             DueEffects.Clear();
+            DueSkillEffects.Clear();
         }
 
         void HandleServerStopped(bool wasHost)
         {
             Replay.Clear();
+            SkillEffects.Clear();
             DueEffects.Clear();
+            DueSkillEffects.Clear();
         }
 
         void Unregister()
@@ -117,6 +126,8 @@ namespace BS
 
             Replay.Advance(displayTime);
             Replay.DrainDueEffects(DueEffects);
+            SkillEffects.Advance(displayTime);
+            SkillEffects.DrainDue(DueSkillEffects);
 
             if (DevArgs.CombatLog && registered) UpdateStats();
         }
@@ -148,7 +159,10 @@ namespace BS
         void Apply(CombatEvent e, float serverTime)
         {
             if (DevArgs.CombatDump && registered)
-                Debug.Log($"[BS] combatdump client t={Mathf.RoundToInt(serverTime * 1000f)} {e.Kind} id={e.ProjectileId} mob={e.MobId} kill={(e.Killed ? 1 : 0)}");
+            {
+                int dumpId = e.Kind == CombatEventKind.Skill ? e.SkillId : e.ProjectileId;
+                Debug.Log($"[BS] combatdump client t={Mathf.RoundToInt(serverTime * 1000f)} {e.Kind} id={dumpId} mob={e.MobId} kill={(e.Killed ? 1 : 0)}");
+            }
 
             switch (e.Kind)
             {
@@ -160,6 +174,13 @@ namespace BS
                     hits++;
                     if (e.Killed) kills++;
                     Replay.OnHit(e.ProjectileId, e.MobId, e.MobHealthPercent, e.Killed, e.Position, serverTime);
+                    break;
+                case CombatEventKind.Skill:
+                    skills++;
+                    SkillEffects.OnSkill(new SkillEffect
+                    {
+                        SkillId = e.SkillId, Slot = e.Slot, Position = e.Position, Rank = e.Rank, ServerTime = serverTime,
+                    });
                     break;
                 default:
                     ends++;
@@ -175,7 +196,7 @@ namespace BS
             statsTimer += Time.unscaledDeltaTime;
             if (statsTimer < StatsSeconds) return;
 
-            Debug.Log($"[BS] combat client: recv={bytesReceived / statsTimer / 1024.0:F2}KB/s fires={fires} hits={hits} kills={kills} ends={ends} " +
+            Debug.Log($"[BS] combat client: recv={bytesReceived / statsTimer / 1024.0:F2}KB/s fires={fires} hits={hits} kills={kills} ends={ends} skills={skills} " +
                       $"projectilesOnScreen={Replay.Count} tracked={Replay.TrackedCount}");
             ResetStats();
         }
@@ -184,7 +205,7 @@ namespace BS
         {
             statsTimer = 0f;
             bytesReceived = 0;
-            fires = hits = kills = ends = 0;
+            fires = hits = kills = ends = skills = 0;
         }
     }
 }

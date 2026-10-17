@@ -9,6 +9,8 @@ namespace BS
         Fire = 1,
         Hit = 2,
         End = 3,
+        /// <summary>A skill was used (not tied to a projectile).</summary>
+        Skill = 4,
     }
 
     /// <summary>One thing that happened to a projectile, handed to the network layer.</summary>
@@ -23,6 +25,9 @@ namespace BS
         public Vector2 Position;
         /// <summary>Fire only: aim as a 16-bit angle.</summary>
         public ushort Angle;
+        /// <summary>Skill only: which skill and at what rank. The place is <see cref="Position"/>, the user is <see cref="Slot"/>.</summary>
+        public byte SkillId;
+        public byte Rank;
         /// <summary>Hit only.</summary>
         public ushort MobId;
         public byte MobHealthPercent;
@@ -52,6 +57,7 @@ namespace BS
 
         readonly ushort[] ids;
         readonly ulong[] owners;
+        readonly int[] damages;
         readonly Vector2[] positions;
         readonly Vector2[] directions;
         readonly float[] remaining;
@@ -66,6 +72,7 @@ namespace BS
             Cap = cap;
             ids = new ushort[cap];
             owners = new ulong[cap];
+            damages = new int[cap];
             positions = new Vector2[cap];
             directions = new Vector2[cap];
             remaining = new float[cap];
@@ -76,8 +83,15 @@ namespace BS
         public ulong OwnerAt(int index) => owners[index];
         public Vector2 PositionAt(int index) => positions[index];
 
-        /// <summary>Starts a projectile unless the cap is reached.</summary>
-        public bool TryFire(ulong owner, Vector2 origin, ushort angle, out ushort id)
+        /// <summary>Starts a projectile with the default damage unless the cap is reached.</summary>
+        public bool TryFire(ulong owner, Vector2 origin, ushort angle, out ushort id) =>
+            TryFire(owner, origin, angle, Damage, out id);
+
+        /// <summary>
+        /// Starts a projectile unless the cap is reached. The projectile keeps the damage it was fired with,
+        /// so a later change to its shooter's damage does not change shots already in flight.
+        /// </summary>
+        public bool TryFire(ulong owner, Vector2 origin, ushort angle, int damage, out ushort id)
         {
             if (count >= Cap) { id = 0; return false; }
 
@@ -85,6 +99,7 @@ namespace BS
             int i = count++;
             ids[i] = id;
             owners[i] = owner;
+            damages[i] = damage;
             positions[i] = origin;
             directions[i] = AimMath.Direction(angle);
             remaining[i] = Lifetime;
@@ -122,7 +137,7 @@ namespace BS
 
                 if (mobs != null && mobs.TryHitSegment(from, to, Radius, out ushort mobId, out Vector2 point))
                 {
-                    mobs.ApplyDamage(mobId, Damage, out int percent, out bool killed);
+                    mobs.ApplyDamage(mobId, damages[i], out int percent, out bool killed);
                     events.Add(new CombatEvent
                     {
                         Kind = CombatEventKind.Hit, ProjectileId = ids[i], Owner = owners[i], Position = point,
@@ -181,6 +196,7 @@ namespace BS
             {
                 ids[i] = ids[last];
                 owners[i] = owners[last];
+                damages[i] = damages[last];
                 positions[i] = positions[last];
                 directions[i] = directions[last];
                 remaining[i] = remaining[last];

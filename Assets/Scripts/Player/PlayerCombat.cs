@@ -12,6 +12,8 @@ namespace BS
     {
         readonly NetworkVariable<ushort> health = new NetworkVariable<ushort>(
             (ushort)CombatConfig.SurvivorMaxHealth, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+        readonly NetworkVariable<ushort> maxHealth = new NetworkVariable<ushort>(
+            (ushort)CombatConfig.SurvivorMaxHealth, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
         readonly NetworkVariable<byte> reviveGauge = new NetworkVariable<byte>(
             0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
@@ -35,7 +37,8 @@ namespace BS
         public float MuzzleFlashUntil { get; private set; }
 
         public int Health => health.Value;
-        public int MaxHealth => CombatConfig.SurvivorMaxHealth;
+        /// <summary>This survivor's own maximum health, which can rise as the survivor grows.</summary>
+        public int MaxHealth => maxHealth.Value;
         public bool IsDead => IsSpawned && health.Value == 0;
         /// <summary>Revive progress from 0 to 1 while this survivor is down.</summary>
         public float ReviveGauge => reviveGauge.Value / 100f;
@@ -107,10 +110,15 @@ namespace BS
         }
 
         /// <summary>Server only: copies the simulation's values to the replicated variables when they change.</summary>
-        public void ServerWrite(int healthValue, float gauge01)
+        public void ServerWrite(int healthValue, float gauge01, int maxHealthValue = -1)
         {
             ushort h = (ushort)Mathf.Clamp(healthValue, 0, ushort.MaxValue);
             byte g = (byte)Mathf.Clamp(Mathf.RoundToInt(gauge01 * 100f), 0, 100);
+            if (maxHealthValue > 0)
+            {
+                ushort m = (ushort)Mathf.Clamp(maxHealthValue, 1, ushort.MaxValue);
+                if (maxHealth.Value != m) maxHealth.Value = m;
+            }
             if (health.Value != h) health.Value = h;
             if (reviveGauge.Value != g) reviveGauge.Value = g;
         }
