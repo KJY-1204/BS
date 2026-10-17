@@ -155,6 +155,24 @@ namespace BS.Tests
         }
 
         [Test]
+        public void ServerTime_EventsAndSnapshotsShareOneTimeline()
+        {
+            const float interval = 1f / MobConfig.SnapshotHz;
+
+            // At a tick boundary the event time equals the snapshot time.
+            Assert.AreEqual(MobMessages.ServerTime(15) * 1000f, MobMessages.ServerTimeMs(15, 0f), 1f);
+            Assert.AreEqual(1000u, MobMessages.ServerTimeMs(15, 0f));
+
+            // In between it moves forward, and it never runs ahead of the next tick.
+            uint mid = MobMessages.ServerTimeMs(15, interval * 0.5f);
+            Assert.Greater(mid, 1000u);
+            Assert.LessOrEqual(MobMessages.ServerTimeMs(15, interval * 0.999f), MobMessages.ServerTimeMs(16, 0f) + 1u);
+
+            // Seconds conversion used by the client.
+            Assert.AreEqual(1.5f, MobMessages.ServerTimeFromMs(1500), 1e-4f);
+        }
+
+        [Test]
         public void MobTraffic_AtTheHardCapIsFarBelowTheBudget()
         {
             // Payload only: one chunk per snapshot at the configured rate.

@@ -1,0 +1,267 @@
+using System.Collections.Generic;
+using Unity.Netcode;
+using UnityEngine;
+
+namespace BS
+{
+    /// <summary>
+    /// Runs survivor combat on the server right after the mob step: contact damage, revival, firing,
+    /// projectiles and their hits. Results are copied to the replicated survivor values.
+    /// </summary>
+    [DefaultExecutionOrder(-50)]
+    [RequireComponent(typeof(MobServer))]
+    public class CombatServer : MonoBehaviour
+    {
+        public static CombatServer Instance { get; private set; }
+
+        public SurvivorSim Survivors { get; } = new SurvivorSim();
+        public AttackSim Attacks { get; } = new AttackSim();
+        public ProjectileSim Projectiles { get; } = new ProjectileSim();
+
+        readonly List<PlayerAvatar> registered = new List<PlayerAvatar>();
+        readonly List<SurvivorBody> bodies = new List<SurvivorBody>();
+        readonly List<ShooterBody> shooters = new List<ShooterBody>();
+        readonly List<CombatEvent> events = new List<CombatEvent>();
+        readonly List<ulong> remoteClients = new List<ulong>();
+        readonly Dictionary<ulong, byte> slots = new Dictionary<ulong, byte>();
+
+        MobServer mobs;
+        NetworkManager nm;
+        bool running;
+        byte[] buffer;
+        System.Func<ulong, byte> slotOf;
+
+        // Measurement (dev logging)
+        float statsTimer;
+        long bytesSent;
+        int firesSent, hitsSent, killsSent, endsSent;
+
+        void Awake()
+        {
+            Instance = this;
+            mobs = GetComponent<MobServer>();
+            if (DevArgs.SurvivorHealth > 0) Survivors.MaxHealth = DevArgs.SurvivorHealth;
+            if (DevArgs.MobSpeed > 0f) mobs.Sim.Speed = DevArgs.MobSpeed;
+            if (DevArgs.MobHealth > 0) mobs.Sim.MaxHealth = DevArgs.MobHealth;
+            buffer = new byte[CombatCodec.MaxBatchBytes + 64];
+            slotOf = SlotOf;
+        }
+
+        byte SlotOf(ulong clientId) => slots.TryGetValue(clientId, out byte slot) ? slot : (byte)0;
+
+        void Start()
+        {
+            nm = NetworkManager.Singleton;
+            nm.OnServerStarted += HandleServerStarted;
+            nm.OnServerStopped += HandleServerStopped;
+        }
+
+        void OnDestroy()
+        {
+            if (Instance == this) Instance = null;
+            if (nm == null) return;
+            nm.OnServerStarted -= HandleServerStarted;
+            nm.OnServerStopped -= HandleServerStopped;
+        }
+
+        void HandleServerStarted()
+        {
+            // The host's own character is created before this event fires, so nothing is reset here;
+            // everything is cleared when the room ends instead.
+            running = true;
+        }
+
+        void HandleServerStopped(bool wasHost)
+        {
+            running = false;
+            ResetAll();
+        }
+
+        void ResetAll()
+        {
+            registered.Clear();
+            slots.Clear();
+            Survivors.Clear();
+            Attacks.Clear();
+            Projectiles.Clear();
+            events.Clear();
+        }
+
+        /// <summary>Called when a survivor's character spawns on the server.</summary>
+        public void RegisterSurvivor(PlayerAvatar avatar)
+        {
+            if (!registered.Contains(avatar)) registered.Add(avatar);
+            slots[avatar.OwnerClientId] = avatar.Role;
+            Survivors.Register(avatar.OwnerClientId);
+            Attacks.Register(avatar.OwnerClientId);
+        }
+
+        public void UnregisterSurvivor(PlayerAvatar avatar)
+        {
+            // A character from a room that already ended can despawn after the next room registered the same
+            // client again. Only the character that is actually registered may remove the client's state.
+            if (!registered.Remove(avatar)) return;
+            if (IsRegistered(avatar.OwnerClientId)) return;
+
+            slots.Remove(avatar.OwnerClientId);
+            Survivors.Unregister(avatar.OwnerClientId);
+            Attacks.Unregister(avatar.OwnerClientId);
+        }
+
+        bool IsRegistered(ulong clientId)
+        {
+            for (int i = 0; i < registered.Count; i++)
+                if (registered[i] != null && registered[i].OwnerClientId == clientId) return true;
+            return false;
+        }
+
+        /// <summary>Latest aim and fire state from a player. Only living survivors can fire.</summary>
+        public void SetAim(ulong clientId, ushort angle, bool firing)
+        {
+            if (!running) return;
+            Attacks.SetAim(clientId, angle, firing && Survivors.IsAlive(clientId));
+        }
+
+        void FixedUpdate()
+        {
+            if (!running) return;
+
+            float dt = Time.fixedDeltaTime;
+
+            bodies.Clear();
+            for (int i = 0; i < registered.Count; i++)
+            {
+                PlayerAvatar a = registered[i];
+                if (a == null || !a.IsSpawned) continue;
+                bodies.Add(new SurvivorBody { ClientId = a.OwnerClientId, Position = a.transform.position, Moving = a.ServerMoving });
+            }
+
+            Survivors.Step(dt, bodies, mobs.Sim);
+
+            shooters.Clear();
+            for (int i = 0; i < bodies.Count; i++)
+                shooters.Add(new ShooterBody { ClientId = bodies[i].ClientId, Position = bodies[i].Position, CanFire = Survivors.IsAlive(bodies[i].ClientId) });
+
+            Attacks.Step(dt, shooters, Projectiles);
+            Projectiles.Step(dt, mobs.Sim);
+
+            for (int i = 0; i < registered.Count; i++)
+            {
+                PlayerAvatar a = registered[i];
+                if (a == null || !a.IsSpawned || a.Combat == null) continue;
+                ulong id = a.OwnerClientId;
+                a.Combat.ServerWrite(Survivors.Health(id), Survivors.IsAlive(id) ? 0f : Survivors.ReviveGauge(id));
+            }
+
+            events.Clear();
+            Projectiles.DrainEvents(events);
+            if (events.Count > 0) PublishEvents();
+
+            // Mob kills made by projectiles this step go out now, with the same time as the hits.
+            mobs.FlushEvents();
+        }
+
+        // Development scenarios (-bsDevKill, -bsDevMeet): run once, some seconds after the room started.
+        float roomStartedAt = -1f;
+        bool devKillDone, devMeetDone;
+
+        void RunDevScenarios()
+        {
+            if (roomStartedAt < 0f) roomStartedAt = Time.time;
+            float elapsed = Time.time - roomStartedAt;
+
+            if (!devKillDone && DevArgs.DevKillRole >= 0 && elapsed >= DevArgs.DevKillTime)
+            {
+                PlayerAvatar target = FindByRole((byte)DevArgs.DevKillRole);
+                if (target != null)
+                {
+                    devKillDone = true;
+                    Survivors.Kill(target.OwnerClientId);
+                    Debug.Log($"[BS] dev: killed survivor role {DevArgs.DevKillRole} (client {target.OwnerClientId})");
+                }
+            }
+
+            if (!devMeetDone && DevArgs.DevMeetRoleA >= 0 && elapsed >= DevArgs.DevMeetTime)
+            {
+                PlayerAvatar a = FindByRole((byte)DevArgs.DevMeetRoleA);
+                PlayerAvatar b = FindByRole((byte)DevArgs.DevMeetRoleB);
+                if (a != null && b != null)
+                {
+                    devMeetDone = true;
+                    a.ServerTeleport((Vector2)b.transform.position + new Vector2(1f, 0f));
+                    Debug.Log($"[BS] dev: moved role {DevArgs.DevMeetRoleA} next to role {DevArgs.DevMeetRoleB}");
+                }
+            }
+        }
+
+        PlayerAvatar FindByRole(byte role)
+        {
+            for (int i = 0; i < registered.Count; i++)
+                if (registered[i] != null && registered[i].Role == role) return registered[i];
+            return null;
+        }
+
+        void Update()
+        {
+            if (!running) { roomStartedAt = -1f; devKillDone = devMeetDone = false; return; }
+
+            RunDevScenarios();
+
+            if (!DevArgs.CombatLog) return;
+
+            statsTimer += Time.unscaledDeltaTime;
+            if (statsTimer < 5f) return;
+
+            int clients = remoteClients.Count;
+            double perClient = clients > 0 ? bytesSent / (double)clients / statsTimer / 1024.0 : 0.0;
+            Debug.Log($"[BS] combat server: fires={firesSent} hits={hitsSent} kills={killsSent} ends={endsSent} " +
+                      $"projectiles={Projectiles.Count} survivors={Survivors.Count} clients={clients} payloadPerClient={perClient:F3}KB/s");
+            statsTimer = 0f;
+            bytesSent = 0;
+            firesSent = hitsSent = killsSent = endsSent = 0;
+        }
+
+        // ---- Sending ----
+
+        void PublishEvents()
+        {
+            uint timeMs = mobs.ServerTimeMs;
+
+            for (int i = 0; i < events.Count; i++)
+            {
+                switch (events[i].Kind)
+                {
+                    case CombatEventKind.Fire: firesSent++; break;
+                    case CombatEventKind.Hit: hitsSent++; if (events[i].Killed) killsSent++; break;
+                    default: endsSent++; break;
+                }
+            }
+
+            if (DevArgs.CombatDump)
+                for (int i = 0; i < events.Count; i++)
+                    Debug.Log($"[BS] combatdump server t={timeMs} {events[i].Kind} id={events[i].ProjectileId} mob={events[i].MobId} kill={(events[i].Killed ? 1 : 0)}");
+
+            // The host shows its own events at server time; everyone else gets them as a message.
+            CombatClient.Instance?.ApplyLocal(events, MobMessages.ServerTimeFromMs(timeMs), slotOf);
+
+            remoteClients.Clear();
+            foreach (ulong id in nm.ConnectedClientsIds)
+                if (id != NetworkManager.ServerClientId) remoteClients.Add(id);
+            if (remoteClients.Count == 0) return;
+
+            int start = 0;
+            while (start < events.Count)
+            {
+                int count = CombatCodec.CountThatFit(events, start);
+                int length = CombatCodec.WriteBatch(buffer, timeMs, events, start, count, slotOf);
+                using (var writer = new FastBufferWriter(length, Unity.Collections.Allocator.Temp))
+                {
+                    writer.WriteBytesSafe(buffer, length);
+                    nm.CustomMessagingManager.SendNamedMessage(CombatMessages.Events, remoteClients, writer, NetworkDelivery.ReliableSequenced);
+                }
+                bytesSent += (long)length * remoteClients.Count;
+                start += count;
+            }
+        }
+    }
+}

@@ -20,6 +20,11 @@ namespace BS
             public readonly Vector2[] Position = new Vector2[SampleCount];
             public int Samples;
             public float LastReceived;
+            /// <summary>Display-clock time at which the server removed this mob (infinity while it is alive).</summary>
+            public float RemoveAtServerTime = float.PositiveInfinity;
+            /// <summary>Local time after which a pending removal happens even if the display clock stalls.</summary>
+            public float RemoveAtLocalTime = float.PositiveInfinity;
+            public bool RemovalPending => !float.IsPositiveInfinity(RemoveAtServerTime);
         }
 
         readonly List<Track> tracks = new List<Track>();
@@ -80,10 +85,30 @@ namespace BS
             AddSample(track, serverTime, position);
         }
 
+        /// <summary>Removes the mob right now.</summary>
         public void OnRemove(ushort id)
         {
             if (indexOf.TryGetValue(id, out int i)) RemoveAt(i);
             tombstones[id] = localTime + TombstoneSeconds;
+        }
+
+        /// <summary>
+        /// Removes the mob when the display clock reaches the time the server removed it, so a mob that was
+        /// killed stays visible until the shot that killed it arrives. A removal that is already due happens now.
+        /// </summary>
+        public void OnRemove(ushort id, float serverTime)
+        {
+            if (!hasClock || serverTime <= renderTime || !indexOf.TryGetValue(id, out int i))
+            {
+                OnRemove(id);
+                return;
+            }
+
+            Track track = tracks[i];
+            track.RemoveAtServerTime = serverTime;
+            // The display clock normally advances one to one with local time, which gives a fallback deadline
+            // for the case where no further snapshots arrive and the clock stops.
+            track.RemoveAtLocalTime = localTime + (serverTime - renderTime) + 0.05f;
         }
 
         public void Advance(float dt)
@@ -102,7 +127,16 @@ namespace BS
 
             for (int i = tracks.Count - 1; i >= 0; i--)
             {
-                if (localTime - tracks[i].LastReceived > StaleSeconds)
+                Track track = tracks[i];
+
+                if (track.RemovalPending)
+                {
+                    if (renderTime >= track.RemoveAtServerTime || localTime >= track.RemoveAtLocalTime)
+                        OnRemove(track.Id);
+                    continue;
+                }
+
+                if (localTime - track.LastReceived > StaleSeconds)
                 {
                     RemoveAt(i);
                     StaleRemovals++;

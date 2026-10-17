@@ -42,6 +42,14 @@ namespace BS
 
         public byte Role => role.Value;
 
+        public PlayerCombat Combat { get; private set; }
+
+        /// <summary>False while a survivor is down. The boss is always alive.</summary>
+        public bool IsAlive => Combat == null || !Combat.IsDead;
+
+        /// <summary>Server only: whether this player is giving move input right now.</summary>
+        public bool ServerMoving => IsAlive && serverInput.sqrMagnitude > 1e-4f;
+
         /// <summary>Called on the server before the object is spawned; applied once it is spawned.</summary>
         public void InitServer(byte assignedRole, Vector2 spawn)
         {
@@ -51,6 +59,7 @@ namespace BS
 
         void Awake()
         {
+            Combat = GetComponent<PlayerCombat>();
             if (body == null) body = GetComponentInChildren<SpriteRenderer>();
             if (body != null && body.sprite == null) body.sprite = CreateSquareSprite();
         }
@@ -62,6 +71,7 @@ namespace BS
                 role.Value = pendingRole;
                 serverPos.Value = pendingSpawn;
                 PlayerRegistry.Register(this);
+                if (pendingRole != RoleTable.BossRole) CombatServer.Instance?.RegisterSurvivor(this);
             }
 
             role.OnValueChanged += (_, __) => ApplyColor();
@@ -87,7 +97,11 @@ namespace BS
 
         public override void OnNetworkDespawn()
         {
-            if (IsServer) PlayerRegistry.Unregister(this);
+            if (IsServer)
+            {
+                PlayerRegistry.Unregister(this);
+                CombatServer.Instance?.UnregisterSurvivor(this);
+            }
 
             if (moveAction != null)
             {
@@ -104,6 +118,7 @@ namespace BS
             if (IsOwner)
             {
                 Vector2 dir = Vector2.ClampMagnitude(DevArgs.Move ?? moveAction.ReadValue<Vector2>(), 1f);
+                if (!IsAlive) dir = Vector2.zero; // a fallen survivor cannot move
                 SendInput(dir);
                 if (!IsServer) PredictOwner(dir);
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -122,9 +137,19 @@ namespace BS
         {
             if (!IsSpawned || !IsServer) return;
 
-            Vector2 next = ArenaConfig.ClampCharacter(serverPos.Value + serverInput * (moveSpeed * Time.fixedDeltaTime));
+            Vector2 input = IsAlive ? serverInput : Vector2.zero;
+            Vector2 next = ArenaConfig.ClampCharacter(serverPos.Value + input * (moveSpeed * Time.fixedDeltaTime));
             if (next != serverPos.Value) serverPos.Value = next;
             transform.position = next;
+        }
+
+        /// <summary>Server only: places the character somewhere (development scenarios). Owners snap to it.</summary>
+        public void ServerTeleport(Vector2 position)
+        {
+            if (!IsServer) return;
+            Vector2 clamped = ArenaConfig.ClampCharacter(position);
+            serverPos.Value = clamped;
+            transform.position = clamped;
         }
 
         void SendInput(Vector2 dir)
@@ -207,7 +232,16 @@ namespace BS
 
         void ApplyColor()
         {
-            if (body != null) body.color = RoleColors[Mathf.Min(role.Value, (byte)(RoleColors.Length - 1))];
+            if (body == null) return;
+
+            Color color = RoleColors[Mathf.Min(role.Value, (byte)(RoleColors.Length - 1))];
+            if (!IsAlive) color = Color.Lerp(color, new Color(0.25f, 0.25f, 0.28f), 0.75f); // fallen survivors are shown greyed out
+            body.color = color;
+        }
+
+        void LateUpdate()
+        {
+            if (IsSpawned) ApplyColor();
         }
 
         static Sprite CreateSquareSprite()

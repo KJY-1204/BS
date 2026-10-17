@@ -171,6 +171,88 @@ namespace BS.Tests
             Assert.AreEqual(10f, interp.PositionAt(0).x, 1e-4f);
         }
 
+        // ---- Removal at display time ----
+
+        [Test]
+        public void TimedRemoval_KeepsTheMobUntilTheDisplayClockReachesTheKillTime()
+        {
+            var interp = new MobInterpolator();
+            interp.OnSpawn(1, 0, Vector2.zero, 10f);
+            interp.OnSpawn(2, 0, Vector2.zero, 10f);
+
+            interp.OnRemove(1, 10.1f);
+            Assert.AreEqual(2, interp.Count, "removal is in the display future, so the mob stays for now");
+
+            float serverTime = 10f;
+            int removedAtFrame = -1;
+            for (int frame = 0; frame < 120 && removedAtFrame < 0; frame++)
+            {
+                // The server keeps sending positions for the surviving mob.
+                if (frame % 4 == 0) { serverTime += SnapshotInterval; interp.OnSnapshotEntry(2, Vector2.zero, serverTime); }
+                interp.Advance(Frame);
+
+                if (interp.Count == 1) removedAtFrame = frame;
+                else Assert.Less(interp.RenderTime, 10.1f + 0.001f, "must not outlive the kill time");
+            }
+
+            Assert.GreaterOrEqual(removedAtFrame, 1, "not removed at once");
+            Assert.GreaterOrEqual(interp.RenderTime, 10.1f - 0.03f, "removed when the display clock reached the kill time");
+            Assert.AreEqual(2, interp.IdAt(0));
+        }
+
+        [Test]
+        public void TimedRemoval_ThatIsAlreadyDueHappensImmediately()
+        {
+            var interp = new MobInterpolator();
+            interp.OnSpawn(1, 0, Vector2.zero, 10f);
+            interp.OnSnapshotEntry(1, Vector2.zero, 10.5f);
+            for (int i = 0; i < 60; i++) interp.Advance(Frame);
+
+            interp.OnRemove(1, 9f);
+
+            Assert.AreEqual(0, interp.Count);
+        }
+
+        [Test]
+        public void TimedRemoval_StillHappensWhenNoMoreSnapshotsArrive()
+        {
+            var interp = new MobInterpolator();
+            interp.OnSpawn(1, 0, Vector2.zero, 10f);
+            interp.OnSpawn(2, 0, Vector2.zero, 10f);
+            interp.OnRemove(1, 10.1f);
+
+            for (int i = 0; i < 60; i++) interp.Advance(Frame); // one second, the clock has nothing new to follow
+
+            Assert.AreEqual(1, interp.Count);
+            Assert.AreEqual(0, interp.StaleRemovals, "a requested removal is not a stale removal");
+        }
+
+        [Test]
+        public void TimedRemoval_IsNotReversedByLateSnapshots()
+        {
+            var interp = new MobInterpolator();
+            interp.OnSpawn(1, 0, Vector2.zero, 10f);
+            interp.OnSpawn(2, 0, Vector2.zero, 10f);
+            interp.OnRemove(1, 10.1f);
+            for (int i = 0; i < 60; i++) interp.Advance(Frame);
+            Assert.AreEqual(1, interp.Count);
+
+            interp.OnSnapshotEntry(1, new Vector2(1, 1), 10.05f);
+
+            Assert.AreEqual(1, interp.Count);
+        }
+
+        [Test]
+        public void TimedRemoval_WithoutAClockOrAMobIsHarmless()
+        {
+            var interp = new MobInterpolator();
+            Assert.DoesNotThrow(() => interp.OnRemove(7, 5f));
+
+            interp.OnSpawn(8, 0, Vector2.zero, 10f);
+            Assert.DoesNotThrow(() => interp.OnRemove(99, 10.2f));
+            Assert.AreEqual(1, interp.Count);
+        }
+
         [Test]
         public void Clear_DropsEverything()
         {

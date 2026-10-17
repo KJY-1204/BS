@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8923833667960138006}
   - component: {fileID: 5136334383045081802}
   - component: {fileID: 2886781288924451719}
+  - component: {fileID: 4918943093107810858}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -46,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1559210330
+  GlobalObjectIdHash: 4166614865
   InScenePlacedSourceGlobalObjectIdHash: 0
   m_InScenePlacedDisabledByDefault: 0
   DeferredDespawnTick: 0
@@ -79,6 +80,19 @@ MonoBehaviour:
   idleCorrectionRate: 10
   remoteSmoothing: 15
   body: {fileID: 6867593284572424031}
+--- !u!114 &4918943093107810858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 725386733751274943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3ee919935da52749a30bc122f72c831, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BS.Runtime::BS.PlayerCombat
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &7984474296552843944
 GameObject:
   m_ObjectHideFlags: 0

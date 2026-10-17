@@ -22,6 +22,9 @@ namespace BS
 
         public MobSim Sim { get; private set; }
 
+        /// <summary>Server time in milliseconds on the same timeline as the snapshot ticks.</summary>
+        public uint ServerTimeMs => MobMessages.ServerTimeMs(tick, snapshotAccumulator);
+
         readonly List<SurvivorInfo> survivors = new List<SurvivorInfo>();
         readonly List<MobEvent> events = new List<MobEvent>();
         readonly List<ulong> remoteClients = new List<ulong>();
@@ -42,7 +45,7 @@ namespace BS
 
         void Awake()
         {
-            int target = DevArgs.MobTarget > 0 ? Math.Min(DevArgs.MobTarget, MobConfig.HardCap) : MobConfig.DefaultTarget;
+            int target = DevArgs.MobTarget.HasValue ? Math.Clamp(DevArgs.MobTarget.Value, 0, MobConfig.HardCap) : MobConfig.DefaultTarget;
             Sim = new MobSim(MobConfig.HardCap, target);
             buffer = new byte[Math.Max(MobCodec.MaxChunkBytes, MobCodec.EventBytes(Math.Max(MobConfig.HardCap, EventsPerMessage))) + 16];
         }
@@ -107,11 +110,7 @@ namespace BS
 
             if (DevArgs.MobChurn > 0f) ChurnForTesting();
 
-            events.Clear();
-            Sim.DrainEvents(events);
-
-            CollectRemoteClients();
-            if (events.Count > 0) SendEvents();
+            FlushEvents();
 
             snapshotAccumulator += Time.fixedDeltaTime;
             float interval = 1f / MobConfig.SnapshotHz;
@@ -145,6 +144,19 @@ namespace BS
 
         // ---- Sending ----
 
+        /// <summary>Sends any spawn and removal events queued by the simulation (also called by combat after its step).</summary>
+        public void FlushEvents()
+        {
+            if (!running) return;
+
+            events.Clear();
+            Sim.DrainEvents(events);
+            if (events.Count == 0) return;
+
+            CollectRemoteClients();
+            SendEvents();
+        }
+
         void CollectRemoteClients()
         {
             remoteClients.Clear();
@@ -156,10 +168,11 @@ namespace BS
         {
             if (remoteClients.Count == 0) return;
 
+            uint timeMs = ServerTimeMs;
             for (int start = 0; start < events.Count; start += EventsPerMessage)
             {
                 int count = Math.Min(EventsPerMessage, events.Count - start);
-                int length = MobCodec.WriteEvents(buffer, tick, events, start, count);
+                int length = MobCodec.WriteEvents(buffer, timeMs, events, start, count);
                 Send(MobMessages.Events, length, NetworkDelivery.ReliableSequenced);
                 bytesEvents += (long)length * remoteClients.Count;
             }
@@ -183,7 +196,7 @@ namespace BS
 
         void SendFullState(ulong clientId)
         {
-            int length = MobCodec.WriteFullState(buffer, tick, Sim);
+            int length = MobCodec.WriteFullState(buffer, ServerTimeMs, Sim);
             using (var writer = new FastBufferWriter(length, Allocator.Temp))
             {
                 writer.WriteBytesSafe(buffer, length);

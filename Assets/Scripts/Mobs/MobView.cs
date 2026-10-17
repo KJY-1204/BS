@@ -65,6 +65,9 @@ namespace BS
             active = count;
         }
 
+        /// <summary>The mobs being drawn right now (null when no room is running).</summary>
+        public IMobSource Source => CurrentSource();
+
         IMobSource CurrentSource()
         {
             if (nm == null || !nm.IsListening) return null;

@@ -15,6 +15,16 @@ namespace BS
     /// -bsMobLog        log mob counts, traffic and timing every 5 seconds
     /// -bsMobTarget n   automatic mob spawning target (capped at the hard cap)
     /// -bsMobDump       every 5 s log all mob positions (server: sent state, client: what is displayed)
+    /// -bsFire          hold fire all the time
+    /// -bsAim deg       aim at a fixed angle in degrees (0 = right, 90 = up)
+    /// -bsAimSweep d    turn the aim by d degrees per second
+    /// -bsCombatLog     log health, revive gauge and combat statistics
+    /// -bsSurvivorHealth n  survivor maximum health (host), to keep survivors alive in load tests
+    /// -bsMobSpeed v    mob speed (host)
+    /// -bsMobHealth n   mob maximum health (host); a high value keeps mobs alive under fire for load tests
+    /// -bsCombatDump    log every combat event with its time (server and clients) for comparison
+    /// -bsDevKill r t   (host) kill the survivor with role r (1 to 4) t seconds after the room starts
+    /// -bsDevMeet a b t (host) move survivor a next to survivor b t seconds after the room starts
     /// -bsMobChurn s    host removes a random mob every s seconds (exercises removal over the network)
     /// -bsMobDropEvents client ignores spawn/remove events (exercises provisional mobs and stale removal)
     /// -bsDisplaceAt s  push the local (predicted) position 5 units away s seconds after spawn
@@ -31,9 +41,23 @@ namespace BS
         public static bool Log { get; private set; }
         public static bool MobLog { get; private set; }
         public static bool MobDump { get; private set; }
+        public static bool Fire { get; private set; }
+        public static float? AimDegrees { get; private set; }
+        public static float AimSweepDegreesPerSecond { get; private set; }
+        public static bool CombatLog { get; private set; }
+        public static int SurvivorHealth { get; private set; }
+        public static float MobSpeed { get; private set; }
+        public static int MobHealth { get; private set; }
+        public static bool CombatDump { get; private set; }
+        public static int DevKillRole { get; private set; } = -1;
+        public static float DevKillTime { get; private set; }
+        public static int DevMeetRoleA { get; private set; } = -1;
+        public static int DevMeetRoleB { get; private set; } = -1;
+        public static float DevMeetTime { get; private set; }
         public static float MobChurn { get; private set; }
         public static bool MobDropEvents { get; private set; }
-        public static int MobTarget { get; private set; }
+        /// <summary>Automatic spawn target from -bsMobTarget; null when not given (0 turns automatic spawning off).</summary>
+        public static int? MobTarget { get; private set; }
         public static float DisplaceAt { get; private set; } = -1f;
 
         static DevArgs()
@@ -72,6 +96,49 @@ namespace BS
                     case "-bsMobDump":
                         MobDump = true;
                         break;
+                    case "-bsFire":
+                        Fire = true;
+                        break;
+                    case "-bsCombatDump":
+                        CombatDump = true;
+                        break;
+                    case "-bsSurvivorHealth" when i + 1 < args.Length:
+                        int.TryParse(args[i + 1], out int sh);
+                        SurvivorHealth = sh;
+                        break;
+                    case "-bsMobHealth" when i + 1 < args.Length:
+                        int.TryParse(args[i + 1], out int mh);
+                        MobHealth = mh;
+                        break;
+                    case "-bsMobSpeed" when i + 1 < args.Length:
+                        float.TryParse(args[i + 1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float ms);
+                        MobSpeed = ms;
+                        break;
+                    case "-bsDevKill" when i + 2 < args.Length:
+                        int.TryParse(args[i + 1], out int killRole);
+                        float.TryParse(args[i + 2], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float killTime);
+                        DevKillRole = killRole;
+                        DevKillTime = killTime;
+                        break;
+                    case "-bsDevMeet" when i + 3 < args.Length:
+                        int.TryParse(args[i + 1], out int meetA);
+                        int.TryParse(args[i + 2], out int meetB);
+                        float.TryParse(args[i + 3], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float meetTime);
+                        DevMeetRoleA = meetA;
+                        DevMeetRoleB = meetB;
+                        DevMeetTime = meetTime;
+                        break;
+                    case "-bsCombatLog":
+                        CombatLog = true;
+                        break;
+                    case "-bsAim" when i + 1 < args.Length:
+                        if (float.TryParse(args[i + 1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float aim))
+                            AimDegrees = aim;
+                        break;
+                    case "-bsAimSweep" when i + 1 < args.Length:
+                        if (float.TryParse(args[i + 1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float sweep))
+                            AimSweepDegreesPerSecond = sweep;
+                        break;
                     case "-bsMobDropEvents":
                         MobDropEvents = true;
                         break;
@@ -80,8 +147,7 @@ namespace BS
                             MobChurn = churn;
                         break;
                     case "-bsMobTarget" when i + 1 < args.Length:
-                        int.TryParse(args[i + 1], out int mt);
-                        MobTarget = mt;
+                        if (int.TryParse(args[i + 1], out int mt)) MobTarget = mt;
                         break;
                     case "-bsDisplaceAt" when i + 1 < args.Length:
                         if (float.TryParse(args[i + 1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float d))

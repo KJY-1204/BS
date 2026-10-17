@@ -15,7 +15,7 @@ namespace BS
         public const int SnapshotHeaderSize = 8;
         public const int SnapshotEntrySize = 7;
 
-        // Event batch: tick u32, count u16, then count x { kind u8, id u16, type u8, x i16, y i16 }
+        // Event batch: server time in milliseconds u32, count u16, then count x { kind u8, id u16, type u8, x i16, y i16 }
         public const int EventHeaderSize = 6;
         public const int EventEntrySize = 8;
         public const byte KindSpawn = 1;
@@ -87,10 +87,10 @@ namespace BS
 
         // ---- Events ----
 
-        public static int WriteEvents(byte[] buffer, uint tick, IReadOnlyList<MobEvent> events, int start, int count)
+        public static int WriteEvents(byte[] buffer, uint timeMs, IReadOnlyList<MobEvent> events, int start, int count)
         {
             int o = 0;
-            WriteU32(buffer, ref o, tick);
+            WriteU32(buffer, ref o, timeMs);
             WriteU16(buffer, ref o, (ushort)count);
 
             for (int i = 0; i < count; i++)
@@ -106,11 +106,11 @@ namespace BS
         }
 
         /// <summary>Every mob as a spawn event; sent to a player who joins a room in progress.</summary>
-        public static int WriteFullState(byte[] buffer, uint tick, IMobSource source)
+        public static int WriteFullState(byte[] buffer, uint timeMs, IMobSource source)
         {
             int count = source.Count;
             int o = 0;
-            WriteU32(buffer, ref o, tick);
+            WriteU32(buffer, ref o, timeMs);
             WriteU16(buffer, ref o, (ushort)count);
 
             for (int i = 0; i < count; i++)
@@ -125,13 +125,13 @@ namespace BS
             return o;
         }
 
-        public static bool TryReadEventsHeader(byte[] buffer, int length, out uint tick, out int count)
+        public static bool TryReadEventsHeader(byte[] buffer, int length, out uint timeMs, out int count)
         {
-            tick = 0; count = 0;
+            timeMs = 0; count = 0;
             if (length < EventHeaderSize) return false;
 
             int o = 0;
-            tick = ReadU32(buffer, ref o);
+            timeMs = ReadU32(buffer, ref o);
             count = ReadU16(buffer, ref o);
             return length >= EventBytes(count);
         }

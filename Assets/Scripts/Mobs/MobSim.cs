@@ -46,7 +46,10 @@ namespace BS
         public float SpawnPerSecond = MobConfig.SpawnPerSecond;
         public float Radius = MobConfig.Radius;
         public float SpawnMinSurvivorDistance = MobConfig.SpawnMinSurvivorDistance;
+        public int MaxHealth = MobConfig.MobMaxHealth;
 
+        readonly int[] health;
+        bool gridDirty = true;
         readonly ushort[] ids;
         readonly byte[] types;
         readonly Vector2[] positions;
@@ -78,6 +81,7 @@ namespace BS
             rng = new System.Random(seed);
 
             ids = new ushort[hardCap];
+            health = new int[hardCap];
             types = new byte[hardCap];
             positions = new Vector2[hardCap];
             displacement = new Vector2[hardCap];
@@ -109,9 +113,11 @@ namespace BS
             int i = count++;
             ids[i] = id;
             types[i] = type;
+            health[i] = MaxHealth;
             positions[i] = ClampToArena(position);
             overrideKind[i] = OverrideNone;
             indexOf[id] = i;
+            gridDirty = true;
 
             events.Add(new MobEvent { IsSpawn = true, Id = id, Type = type, Position = positions[i] });
             return true;
@@ -126,6 +132,7 @@ namespace BS
             {
                 ids[i] = ids[last];
                 types[i] = types[last];
+                health[i] = health[last];
                 positions[i] = positions[last];
                 overrideKind[i] = overrideKind[last];
                 overrideClient[i] = overrideClient[last];
@@ -135,8 +142,118 @@ namespace BS
 
             count--;
             indexOf.Remove(id);
+            gridDirty = true;
             events.Add(new MobEvent { IsSpawn = false, Id = id });
             return true;
+        }
+
+        public int HealthAt(int index) => health[index];
+
+        public bool TryGetHealth(ushort id, out int value)
+        {
+            if (indexOf.TryGetValue(id, out int i)) { value = health[i]; return true; }
+            value = 0;
+            return false;
+        }
+
+        /// <summary>
+        /// Reduces a mob's health. At zero the mob is removed (with the usual removal event).
+        /// Returns false when the mob does not exist.
+        /// </summary>
+        public bool ApplyDamage(ushort id, int damage, out int healthPercent, out bool killed)
+        {
+            healthPercent = 0;
+            killed = false;
+            if (!indexOf.TryGetValue(id, out int i)) return false;
+
+            health[i] = Math.Max(0, health[i] - Math.Max(0, damage));
+            healthPercent = MaxHealth > 0 ? health[i] * 100 / MaxHealth : 0;
+
+            if (health[i] <= 0)
+            {
+                killed = true;
+                Remove(id);
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Finds the first mob a swept circle touches while moving from a to b. The circle has the given
+        /// radius; mobs use their own radius. Returns the point where the circle first touches the mob.
+        /// </summary>
+        public bool TryHitSegment(Vector2 a, Vector2 b, float radius, out ushort mobId, out Vector2 hitPoint)
+        {
+            mobId = 0;
+            hitPoint = default;
+            if (count == 0) return false;
+
+            EnsureGrid();
+
+            float reach = radius + Radius;
+            Vector2 ab = b - a;
+            float lengthSq = ab.sqrMagnitude;
+            float length = Mathf.Sqrt(lengthSq);
+
+            GetCellRange(Mathf.Min(a.x, b.x) - reach, Mathf.Min(a.y, b.y) - reach,
+                         Mathf.Max(a.x, b.x) + reach, Mathf.Max(a.y, b.y) + reach,
+                         out int x0, out int y0, out int x1, out int y1);
+
+            float bestEntry = float.MaxValue;
+            int best = -1;
+
+            for (int cy = y0; cy <= y1; cy++)
+            {
+                for (int cx = x0; cx <= x1; cx++)
+                {
+                    int c = cy * gridW + cx;
+                    for (int k = cellStart[c]; k < cellStart[c + 1]; k++)
+                    {
+                        int m = cellItems[k];
+                        Vector2 center = positions[m];
+
+                        float tProj = lengthSq > 1e-8f ? Mathf.Clamp01(Vector2.Dot(center - a, ab) / lengthSq) : 0f;
+                        Vector2 closest = a + ab * tProj;
+                        float d = Vector2.Distance(center, closest);
+                        if (d > reach) continue;
+
+                        float back = length > 1e-5f ? Mathf.Sqrt(Mathf.Max(0f, reach * reach - d * d)) / length : 0f;
+                        float entry = Mathf.Clamp01(tProj - back);
+                        if (entry < bestEntry || (Mathf.Approximately(entry, bestEntry) && ids[m] < ids[best]))
+                        {
+                            bestEntry = entry;
+                            best = m;
+                        }
+                    }
+                }
+            }
+
+            if (best < 0) return false;
+
+            mobId = ids[best];
+            hitPoint = a + ab * bestEntry;
+            return true;
+        }
+
+        /// <summary>True when any mob's centre is within reach of the point (a survivor touching a mob).</summary>
+        public bool AnyWithin(Vector2 center, float reach)
+        {
+            if (count == 0) return false;
+
+            EnsureGrid();
+            GetCellRange(center.x - reach, center.y - reach, center.x + reach, center.y + reach,
+                         out int x0, out int y0, out int x1, out int y1);
+
+            float reachSq = reach * reach;
+            for (int cy = y0; cy <= y1; cy++)
+            {
+                for (int cx = x0; cx <= x1; cx++)
+                {
+                    int c = cy * gridW + cx;
+                    for (int k = cellStart[c]; k < cellStart[c + 1]; k++)
+                        if ((positions[cellItems[k]] - center).sqrMagnitude <= reachSq) return true;
+                }
+            }
+            return false;
         }
 
         /// <summary>Drops every mob without emitting events (the room ended).</summary>
@@ -161,6 +278,7 @@ namespace BS
             Chase(dt, survivors);
             Separate();
             for (int i = 0; i < count; i++) positions[i] = ClampToArena(positions[i]);
+            gridDirty = true; // queries rebuild the grid on demand
         }
 
         // ---- Target override (used later by boss commands) ----
@@ -380,8 +498,25 @@ namespace BS
             displacement[j] += push;
         }
 
+        void EnsureGrid()
+        {
+            if (gridDirty) BuildGrid();
+        }
+
+        void GetCellRange(float minX, float minY, float maxX, float maxY, out int x0, out int y0, out int x1, out int y1)
+        {
+            x0 = CellX(minX);
+            x1 = CellX(maxX);
+            y0 = CellY(minY);
+            y1 = CellY(maxY);
+        }
+
+        int CellX(float x) => Mathf.Clamp(Mathf.FloorToInt((x + ArenaConfig.Width * 0.5f) / CellSize) + 1, 0, gridW - 1);
+        int CellY(float y) => Mathf.Clamp(Mathf.FloorToInt((y + ArenaConfig.Height * 0.5f) / CellSize) + 1, 0, gridH - 1);
+
         void BuildGrid()
         {
+            gridDirty = false;
             Array.Clear(cellFill, 0, cellFill.Length);
             for (int i = 0; i < count; i++)
             {
@@ -406,12 +541,7 @@ namespace BS
             }
         }
 
-        int CellIndex(Vector2 p)
-        {
-            int gx = Mathf.Clamp(Mathf.FloorToInt((p.x + ArenaConfig.Width * 0.5f) / CellSize) + 1, 0, gridW - 1);
-            int gy = Mathf.Clamp(Mathf.FloorToInt((p.y + ArenaConfig.Height * 0.5f) / CellSize) + 1, 0, gridH - 1);
-            return gy * gridW + gx;
-        }
+        int CellIndex(Vector2 p) => CellY(p.y) * gridW + CellX(p.x);
 
         Vector2 ClampToArena(Vector2 p)
         {

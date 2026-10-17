@@ -8,6 +8,8 @@ namespace BS
         /// <summary>Automatic spawning stops at this many mobs.</summary>
         public const int DefaultTarget = 80;
 
+        public const int MobMaxHealth = 30;
+
         public const float Speed = 2.5f;
         public const float SpawnPerSecond = 2f;
         public const float Radius = 0.4f;

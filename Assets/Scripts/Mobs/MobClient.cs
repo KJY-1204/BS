@@ -145,14 +145,14 @@ namespace BS
         {
             if (!isFullState && DevArgs.MobDropEvents) return; // dev only: pretend spawn/remove events were lost
             if (!ReadPayload(reader, out int length)) return;
-            if (!MobCodec.TryReadEventsHeader(scratch, length, out uint tick, out int count)) return;
+            if (!MobCodec.TryReadEventsHeader(scratch, length, out uint timeMs, out int count)) return;
 
-            float serverTime = MobMessages.ServerTime(tick);
+            float serverTime = MobMessages.ServerTimeFromMs(timeMs);
             for (int i = 0; i < count; i++)
             {
                 MobEvent e = MobCodec.ReadEvent(scratch, i);
                 if (e.IsSpawn) Interpolator.OnSpawn(e.Id, e.Type, e.Position, serverTime);
-                else Interpolator.OnRemove(e.Id);
+                else Interpolator.OnRemove(e.Id, serverTime);
             }
 
             if (isFullState && DevArgs.MobLog)

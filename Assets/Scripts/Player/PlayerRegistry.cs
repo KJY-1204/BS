@@ -34,8 +34,7 @@ namespace BS
                 {
                     ClientId = avatar.OwnerClientId,
                     Position = avatar.transform.position,
-                    // Health and death arrive with combat; until then every survivor counts as alive.
-                    Alive = true,
+                    Alive = avatar.IsAlive,
                 });
             }
         }
