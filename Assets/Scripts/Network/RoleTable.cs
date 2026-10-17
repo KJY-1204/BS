@@ -262,6 +262,8 @@ namespace BS
             foreach (LobbySlot slot in spawnList) if (slot.Role == BossRole) withBoss = true;
             BossDef boss = BossCatalog.ForMatch();
             match.Start(withBoss, boss.MatchSeconds);
+            MobServer.Instance?.BeginMatch(match.Enabled);
+            SummonServer.Instance?.BeginMatch();
             bossLeft = false;
             hasBoss.Value = match.Enabled;
             secondsLeft.Value = (ushort)Mathf.Clamp(match.SecondsLeft, 0, ushort.MaxValue);
@@ -347,6 +349,7 @@ namespace BS
         {
             CombatServer.Instance?.ResetMatch();
             MobServer.Instance?.ResetMatch();
+            SummonServer.Instance?.ResetMatch();
         }
 
         void SpawnCharacter(ulong clientId, byte role, byte character)

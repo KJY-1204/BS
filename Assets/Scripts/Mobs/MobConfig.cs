@@ -12,6 +12,9 @@ namespace BS
 
         public const float Speed = 2.5f;
         public const float SpawnPerSecond = 2f;
+        /// <summary>In a match with a boss the automatic spawning is only a floor; the boss's summons are the main source.</summary>
+        public const float BossMatchSpawnPerSecond = 0.5f;
+        public const int BossMatchAutoTarget = 20;
         public const float Radius = 0.4f;
         /// <summary>Automatic spawns avoid positions closer than this to any survivor.</summary>
         public const float SpawnMinSurvivorDistance = 5f;

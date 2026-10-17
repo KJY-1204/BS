@@ -60,6 +60,19 @@ namespace BS
             nm.OnServerStopped += HandleServerStopped;
         }
 
+        /// <summary>
+        /// A match is starting: with a boss the automatic spawning is only a floor (the boss's summons are the main source),
+        /// without one it keeps the old rate. -bsMobTarget still sets the automatic target in either case.
+        /// </summary>
+        public void BeginMatch(bool withBoss)
+        {
+            Sim.SpawnPerSecond = withBoss ? MobConfig.BossMatchSpawnPerSecond : MobConfig.SpawnPerSecond;
+            int target = withBoss ? MobConfig.BossMatchAutoTarget : MobConfig.DefaultTarget;
+            if (DevArgs.MobTarget.HasValue) target = DevArgs.MobTarget.Value;
+            Sim.TargetCount = Math.Clamp(target, 0, MobConfig.HardCap);
+            if (DevArgs.MobLog) Debug.Log($"[BS] mobs server: match values withBoss={withBoss} spawnPerSecond={Sim.SpawnPerSecond} autoTarget={Sim.TargetCount}");
+        }
+
         /// <summary>A match ended but the room goes on: every mob is gone and the next match starts empty.</summary>
         public void ResetMatch()
         {
@@ -153,7 +166,7 @@ namespace BS
 
             int clients = remoteClients.Count;
             double perClientKBps = clients > 0 ? (bytesSnapshot + bytesEvents + bytesFull) / (double)clients / statsTimer / 1024.0 : 0.0;
-            Debug.Log($"[BS] mobs server: mobs={Sim.Count} target={Sim.TargetCount} clients={clients} " +
+            Debug.Log($"[BS] mobs server: mobs={Sim.Count} auto={Sim.AutoCount} summoned={Sim.SummonedCount} target={Sim.TargetCount} clients={clients} " +
                       $"payloadPerClient={perClientKBps:F2}KB/s (snap={bytesSnapshot / statsTimer / 1024.0:F2} evt={bytesEvents / statsTimer / 1024.0:F2} full={bytesFull / statsTimer / 1024.0:F2} KB/s all clients) " +
                       $"tickMs avg={(tickSamples > 0 ? tickMsTotal / tickSamples : 0):F3} max={tickMsMax:F3}");
             ResetStats();

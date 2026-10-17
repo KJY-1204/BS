@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2886781288924451719}
   - component: {fileID: 4918943093107810858}
   - component: {fileID: 4525041894196502301}
+  - component: {fileID: 8456222244726510609}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -48,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3301166315
+  GlobalObjectIdHash: 1016887144
   InScenePlacedSourceGlobalObjectIdHash: 0
   m_InScenePlacedDisabledByDefault: 0
   DeferredDespawnTick: 0
@@ -106,6 +107,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8f6c3b76658c394daa5c358da5ca8a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: BS.Runtime::BS.PlayerGrowth
+  ShowTopMostFoldoutHeaderGroup: 1
+--- !u!114 &8456222244726510609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 725386733751274943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9af25531cef3a7744b7e9b05252dc69d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BS.Runtime::BS.PlayerSummon
   ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &7984474296552843944
 GameObject:

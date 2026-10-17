@@ -52,11 +52,13 @@ namespace BS.Editor
             mobsGo.AddComponent<MobServer>();
             mobsGo.AddComponent<CombatServer>();
             mobsGo.AddComponent<GrowthServer>();
+            mobsGo.AddComponent<SummonServer>();
             mobsGo.AddComponent<CombatClient>();
             mobsGo.AddComponent<CombatView>();
             mobsGo.AddComponent<CombatHud>();
             mobsGo.AddComponent<GrowthHud>();
             mobsGo.AddComponent<MatchHud>();
+            mobsGo.AddComponent<SummonHud>();
             mobsGo.AddComponent<MobClient>();
             mobsGo.AddComponent<MobView>();
 
@@ -84,6 +86,7 @@ namespace BS.Editor
             var avatar = root.AddComponent<PlayerAvatar>();
             root.AddComponent<PlayerCombat>();
             root.AddComponent<PlayerGrowth>();
+            root.AddComponent<PlayerSummon>();
 
             var body = new GameObject("Body");
             body.transform.SetParent(root.transform, false);

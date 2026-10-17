@@ -33,6 +33,12 @@ namespace BS
     /// -bsBossHealth n   (host) the boss's maximum health
     /// -bsMatchSeconds s (host) the time limit of a match with a boss
     /// -bsBossChase     (boss player) walk toward the nearest survivor on its own
+    /// -bsAutoSummon s  (boss player) summon every s seconds
+    /// -bsAutoOrderPlayer r s (boss player) s seconds after the match starts, order the survivor with role r
+    /// -bsAutoOrderPoint x y s (boss player) s seconds after the match starts, order the point (x, y)
+    /// -bsAutoClear s   (boss player) s seconds after the match starts, clear the order
+    /// -bsTrySummon s   (survivor) s seconds after the match starts, send a summon and an order request; the server should ignore them
+    /// -bsSummonEnergy n (host) the boss's maximum and starting summon energy
     /// -bsDevSkills r  (host) every survivor starts the match with their character's Q and E skills at rank r
     /// -bsSurvivorHealth n  survivor maximum health (host), to keep survivors alive in load tests
     /// -bsMobSpeed v    mob speed (host)
@@ -75,6 +81,14 @@ namespace BS
         public static int BossHealth { get; private set; }
         public static float MatchSeconds { get; private set; }
         public static bool BossChase { get; private set; }
+        public static float AutoSummonSeconds { get; private set; } = -1f;
+        public static int AutoOrderPlayerRole { get; private set; } = -1;
+        public static float AutoOrderPlayerSeconds { get; private set; } = -1f;
+        public static Vector2? AutoOrderPoint { get; private set; }
+        public static float AutoOrderPointSeconds { get; private set; } = -1f;
+        public static float AutoClearSeconds { get; private set; } = -1f;
+        public static int SummonEnergy { get; private set; }
+        public static float TrySummonSeconds { get; private set; } = -1f;
         public static float AutoStartSeconds { get; private set; } = -1f;
         public static int AutoStartSurvivors { get; private set; } = 1;
         public static float AutoEndSeconds { get; private set; } = -1f;
@@ -145,6 +159,35 @@ namespace BS
                         break;
                     case "-bsMatchSeconds" when i + 1 < args.Length:
                         if (float.TryParse(args[i + 1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float ms2)) MatchSeconds = ms2;
+                        break;
+                    case "-bsAutoSummon" when i + 1 < args.Length:
+                        if (float.TryParse(args[i + 1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float asum)) AutoSummonSeconds = asum;
+                        break;
+                    case "-bsAutoOrderPlayer" when i + 2 < args.Length:
+                        if (int.TryParse(args[i + 1], out int aor) &&
+                            float.TryParse(args[i + 2], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float aos))
+                        {
+                            AutoOrderPlayerRole = aor;
+                            AutoOrderPlayerSeconds = aos;
+                        }
+                        break;
+                    case "-bsAutoOrderPoint" when i + 3 < args.Length:
+                        if (float.TryParse(args[i + 1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float apx) &&
+                            float.TryParse(args[i + 2], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float apy) &&
+                            float.TryParse(args[i + 3], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float aps))
+                        {
+                            AutoOrderPoint = new Vector2(apx, apy);
+                            AutoOrderPointSeconds = aps;
+                        }
+                        break;
+                    case "-bsAutoClear" when i + 1 < args.Length:
+                        if (float.TryParse(args[i + 1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float acl)) AutoClearSeconds = acl;
+                        break;
+                    case "-bsTrySummon" when i + 1 < args.Length:
+                        if (float.TryParse(args[i + 1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float tsm)) TrySummonSeconds = tsm;
+                        break;
+                    case "-bsSummonEnergy" when i + 1 < args.Length:
+                        if (int.TryParse(args[i + 1], out int se)) SummonEnergy = se;
                         break;
                     case "-bsBossChase":
                         BossChase = true;

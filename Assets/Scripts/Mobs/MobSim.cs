@@ -34,6 +34,14 @@ namespace BS
     /// </summary>
     public sealed class MobSim : IMobSource
     {
+        /// <summary>Mob type of an automatically spawned mob. The type is also what clients use to tell the origins apart.</summary>
+        public const byte TypeAuto = 0;
+        /// <summary>Mob type of a mob the boss summoned.</summary>
+        public const byte TypeSummoned = 1;
+
+        /// <summary>A mob under a position order that gets this close has arrived and goes back to chasing survivors.</summary>
+        public const float ArrivalRadius = 0.4f;
+
         const byte OverrideNone = 0;
         const byte OverridePlayer = 1;
         const byte OverridePosition = 2;
@@ -41,6 +49,7 @@ namespace BS
         const float CellSize = 1f;
 
         public int HardCap { get; }
+        /// <summary>How many automatically spawned mobs there may be at once (summoned mobs are not counted).</summary>
         public int TargetCount;
         public float Speed = MobConfig.Speed;
         public float SpawnPerSecond = MobConfig.SpawnPerSecond;
@@ -77,6 +86,7 @@ namespace BS
         readonly int[] cellOfMob;
 
         int count;
+        int summonedCount;
         ushort nextId = 1;
         float spawnAccumulator;
 
@@ -104,6 +114,9 @@ namespace BS
         }
 
         public int Count => count;
+        public int SummonedCount => summonedCount;
+        public int AutoCount => count - summonedCount;
+        public bool IsSummoned(int index) => types[index] == TypeSummoned;
         public ushort IdAt(int index) => ids[index];
         public byte TypeAt(int index) => types[index];
         public Vector2 PositionAt(int index) => positions[index];
@@ -123,6 +136,7 @@ namespace BS
             positions[i] = ClampToArena(position);
             overrideKind[i] = OverrideNone;
             indexOf[id] = i;
+            if (type == TypeSummoned) summonedCount++;
             gridDirty = true;
 
             events.Add(new MobEvent { IsSpawn = true, Id = id, Type = type, Position = positions[i] });
@@ -132,6 +146,8 @@ namespace BS
         public bool Remove(ushort id)
         {
             if (!indexOf.TryGetValue(id, out int i)) return false;
+
+            if (types[i] == TypeSummoned) summonedCount--;
 
             int last = count - 1;
             if (i != last)
@@ -481,6 +497,7 @@ namespace BS
         public void Clear()
         {
             count = 0;
+            summonedCount = 0;
             indexOf.Clear();
             events.Clear();
             spawnAccumulator = 0f;
@@ -524,7 +541,7 @@ namespace BS
         {
             if (!indexOf.TryGetValue(id, out int i)) return false;
             overrideKind[i] = OverridePosition;
-            overridePosition[i] = position;
+            overridePosition[i] = ClampToArena(position);
             return true;
         }
 
@@ -532,6 +549,32 @@ namespace BS
         {
             if (!indexOf.TryGetValue(id, out int i)) return false;
             overrideKind[i] = OverrideNone;
+            return true;
+        }
+
+        /// <summary>Gives every summoned mob the same target (automatic mobs are left alone). Returns how many mobs it touched.</summary>
+        public int ApplyOrderToSummoned(bool hasPlayer, ulong clientId, bool hasPosition, Vector2 position)
+        {
+            int touched = 0;
+            for (int i = 0; i < count; i++)
+            {
+                if (types[i] != TypeSummoned) continue;
+                touched++;
+                if (hasPlayer) { overrideKind[i] = OverridePlayer; overrideClient[i] = clientId; }
+                else if (hasPosition) { overrideKind[i] = OverridePosition; overridePosition[i] = ClampToArena(position); }
+                else overrideKind[i] = OverrideNone;
+            }
+            return touched;
+        }
+
+        /// <summary>The target a mob is currently under an order to, for tests and logs.</summary>
+        public bool TryGetOverride(ushort id, out bool isPlayer, out ulong clientId, out Vector2 position)
+        {
+            isPlayer = false; clientId = 0; position = default;
+            if (!indexOf.TryGetValue(id, out int i) || overrideKind[i] == OverrideNone) return false;
+            isPlayer = overrideKind[i] == OverridePlayer;
+            clientId = overrideClient[i];
+            position = overridePosition[i];
             return true;
         }
 
@@ -559,14 +602,14 @@ namespace BS
         {
             if (!AnyAlive(survivors)) { spawnAccumulator = 0f; return; }
 
-            if (count >= TargetCount) { spawnAccumulator = 0f; return; }
+            if (AutoCount >= TargetCount) { spawnAccumulator = 0f; return; }
 
             spawnAccumulator += SpawnPerSecond * dt;
-            while (spawnAccumulator >= 1f && count < TargetCount)
+            while (spawnAccumulator >= 1f && AutoCount < TargetCount)
             {
                 spawnAccumulator -= 1f;
                 if (TryPickSpawnPosition(survivors, out Vector2 position))
-                    TrySpawn(position, 0, out _);
+                    TrySpawn(position, TypeAuto, out _);
             }
         }
 
@@ -627,6 +670,16 @@ namespace BS
 
                 Vector2 toTarget = target - positions[i];
                 float distance = toTarget.magnitude;
+
+                // A position order is a destination: on arrival the mob goes back to chasing the nearest survivor.
+                if (overrideKind[i] == OverridePosition && distance <= ArrivalRadius)
+                {
+                    overrideKind[i] = OverrideNone;
+                    if (!TryFindNearestSurvivor(positions[i], survivors, out target)) continue;
+                    toTarget = target - positions[i];
+                    distance = toTarget.magnitude;
+                }
+
                 if (distance < 1e-4f) continue;
 
                 positions[i] += toTarget * (Mathf.Min(step, distance) / distance);
