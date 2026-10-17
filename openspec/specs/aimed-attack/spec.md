@@ -73,13 +73,6 @@ A projectile that can hit one mob SHALL damage the first mob it touches and disa
 - **WHEN** a projectile moves farther in one simulation step than a mob's width
 - **THEN** it still hits a mob that lies on its path
 
-### Requirement: Projectiles only harm mobs
-A projectile SHALL NOT damage the boss character or any survivor, and SHALL pass through them.
-
-#### Scenario: Teammate in the way
-- **WHEN** a projectile passes through another survivor's position
-- **THEN** that survivor takes no damage and the projectile continues
-
 ### Requirement: Only living survivors can fire
 A survivor SHALL be able to fire only while alive, and the boss SHALL NOT be able to fire survivor projectiles.
 
@@ -115,3 +108,14 @@ The firing cooldown SHALL follow each survivor's own value, which can be shorten
 #### Scenario: Effect ends
 - **WHEN** the skill effect ends
 - **THEN** the survivor's cooldown is the normal one again
+
+### Requirement: Projectiles harm mobs and the boss only
+A projectile SHALL damage mobs and the boss, and SHALL NOT damage any survivor, passing through them.
+
+#### Scenario: Teammate in the way
+- **WHEN** a projectile passes through another survivor's position
+- **THEN** that survivor takes no damage and the projectile continues
+
+#### Scenario: The boss in the way
+- **WHEN** a projectile touches the boss
+- **THEN** the boss takes the projectile's damage as the boss-combat rules say

@@ -6,17 +6,6 @@ Defines the two states of a room, waiting and playing: what is shown while playe
 
 ## Requirements
 
-### Requirement: A room is either waiting or playing
-The server SHALL keep every room in exactly one of two states, waiting (lobby) or playing, and SHALL tell every client the current state. A newly created room SHALL be waiting. Characters, mobs, projectiles and growth SHALL exist only while the room is playing.
-
-#### Scenario: New room
-- **WHEN** a host opens a room
-- **THEN** the room is waiting, and no character or mob exists
-
-#### Scenario: Everyone sees the state
-- **WHEN** the room changes state
-- **THEN** every connected client shows the new state
-
 ### Requirement: The waiting room shows who is here
 While the room is waiting, every player SHALL see each connected player, that player's role (boss or survivor slot), and, for survivors, the character that player has chosen or that none is chosen yet.
 
@@ -59,7 +48,7 @@ When the room starts playing, the server SHALL spawn one character for each surv
 - **THEN** every survivor starts at level 1 with full health, full mana, no learned skills and no experience
 
 ### Requirement: Joining is closed while playing
-A room that is playing SHALL refuse new players with a clear reason, and the players already in the room SHALL NOT be affected. A room that is waiting SHALL accept players as long as it has room.
+A room whose match is playing or finished SHALL refuse new players with a clear reason, and the players already in the room SHALL NOT be affected. A room that is waiting SHALL accept players as long as it has room.
 
 #### Scenario: Join during play
 - **WHEN** a new player tries to join a playing room
@@ -69,8 +58,12 @@ A room that is playing SHALL refuse new players with a clear reason, and the pla
 - **WHEN** a new player joins a waiting room that has a free slot
 - **THEN** the player enters the waiting room
 
+#### Scenario: Join after a result
+- **WHEN** a new player tries to join a room whose match has finished and shows its result
+- **THEN** the join is rejected with a reason shown to that player, and the room is unchanged
+
 ### Requirement: The host can return the room to waiting
-The host SHALL be able to end the match from a playing room, and the server SHALL then remove every character, mob, projectile and skill effect and reset all growth, and put the room back to waiting with the same connected players. Every character chosen before SHALL stay chosen and SHALL be changeable. Only the host SHALL be able to end the match.
+The host SHALL be able to end the match from a playing room or a finished room, and the server SHALL then remove every character, mob, projectile and skill effect and reset all growth and the result, and put the room back to waiting with the same connected players. Every character chosen before SHALL stay chosen and SHALL be changeable. Only the host SHALL be able to end the match.
 
 #### Scenario: Host ends the match
 - **WHEN** the host ends a playing match
@@ -83,6 +76,10 @@ The host SHALL be able to end the match from a playing room, and the server SHAL
 #### Scenario: A client tries to end the match
 - **WHEN** a client other than the host sends an end request
 - **THEN** the match continues
+
+#### Scenario: Returning after a result
+- **WHEN** the host ends a finished match
+- **THEN** every client sees the waiting room with the same players and no result
 
 ### Requirement: A match survives players leaving
 A playing room SHALL keep running when a client leaves, and SHALL free that client's slot and character. A client who leaves during play SHALL NOT be able to rejoin the running match; they can join once the room is waiting again.
@@ -97,3 +94,22 @@ When the host disconnects, in either state, the room SHALL end and every remaini
 #### Scenario: Host leaves a waiting room
 - **WHEN** the host leaves a waiting room
 - **THEN** every client returns to the connection screen with a notice
+
+### Requirement: A room is waiting, playing or finished
+The server SHALL keep every room in exactly one of three states, waiting (lobby), playing or finished, and SHALL tell every client the current state. A newly created room SHALL be waiting. Characters, mobs, projectiles and growth SHALL exist only while the room is playing or finished, and nothing of a match SHALL advance while the room is finished. A room SHALL become finished only when the match ends with a result, and SHALL leave the finished state only by returning to waiting.
+
+#### Scenario: New room
+- **WHEN** a host opens a room
+- **THEN** the room is waiting, and no character or mob exists
+
+#### Scenario: Everyone sees the state
+- **WHEN** the room changes state
+- **THEN** every connected client shows the new state
+
+#### Scenario: A match with a result
+- **WHEN** a match ends because the boss fell
+- **THEN** the room is finished, its characters are still on every screen and the result is shown
+
+#### Scenario: Starting a finished room
+- **WHEN** anyone asks to start a match in a finished room
+- **THEN** the request is ignored and the room stays finished
