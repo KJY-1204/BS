@@ -95,3 +95,10 @@ A revived survivor SHALL come back with the configured fraction of that survivor
 #### Scenario: Revived with a raised maximum
 - **WHEN** a survivor with a maximum of 120 is revived and the fraction is half
 - **THEN** the survivor comes back with 60 health
+
+### Requirement: Survivors start with their character's health
+A survivor SHALL start the match with full health of that survivor's character's starting maximum, and every player SHALL see that maximum for every survivor.
+
+#### Scenario: Different starting maximums
+- **WHEN** a match starts with two survivors whose characters have different starting maximum health
+- **THEN** each has full health and a health bar over its own maximum on every client
