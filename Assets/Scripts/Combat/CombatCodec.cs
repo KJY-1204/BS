@@ -18,6 +18,7 @@ namespace BS
     /// projectile keeps flying, bit 2 the target is a survivor and the id is its slot), x i16, y i16.
     /// End: kind u8, projectile id u16, x i16, y i16.
     /// Skill: kind u8, skill id u8, slot u8, x i16, y i16, rank u8, aim angle u16. Coordinates are 1/1000 world unit.
+    /// Explosion: kind u8, x i16, y i16, radius u8 (tenths of a world unit).
     /// </summary>
     public static class CombatCodec
     {
@@ -26,6 +27,10 @@ namespace BS
         public const int HitSize = 11;
         public const int EndSize = 7;
         public const int SkillSize = 10;
+        public const int ExplosionSize = 6;
+
+        /// <summary>The blast radius as it is sent: tenths of a unit, at most 25.5.</summary>
+        public static byte QuantizeRadius(float radius) => (byte)Mathf.Clamp(Mathf.RoundToInt(radius * 10f), 0, 255);
 
         /// <summary>No single combat message may be larger than this.</summary>
         public const int MaxBatchBytes = 1000;
@@ -37,6 +42,7 @@ namespace BS
                 case CombatEventKind.Fire: return FireSize;
                 case CombatEventKind.Hit: return HitSize;
                 case CombatEventKind.Skill: return SkillSize;
+                case CombatEventKind.Explosion: return ExplosionSize;
                 default: return EndSize;
             }
         }
@@ -66,6 +72,14 @@ namespace BS
             {
                 CombatEvent e = events[start + i];
                 buffer[o++] = (byte)e.Kind;
+
+                if (e.Kind == CombatEventKind.Explosion)
+                {
+                    WriteI16(buffer, ref o, MobCodec.Quantize(e.Position.x));
+                    WriteI16(buffer, ref o, MobCodec.Quantize(e.Position.y));
+                    buffer[o++] = e.Radius10;
+                    continue;
+                }
 
                 if (e.Kind == CombatEventKind.Skill)
                 {
@@ -122,12 +136,21 @@ namespace BS
             if (offset >= length) return false;
 
             var kind = (CombatEventKind)buffer[offset];
-            if (kind != CombatEventKind.Fire && kind != CombatEventKind.Hit && kind != CombatEventKind.End && kind != CombatEventKind.Skill)
+            if (kind != CombatEventKind.Fire && kind != CombatEventKind.Hit && kind != CombatEventKind.End && kind != CombatEventKind.Skill &&
+                kind != CombatEventKind.Explosion)
                 return false;
             if (offset + EventSize(kind) > length) return false;
 
             int o = offset + 1;
             e.Kind = kind;
+
+            if (kind == CombatEventKind.Explosion)
+            {
+                e.Position = new Vector2(MobCodec.Dequantize(ReadI16(buffer, ref o)), MobCodec.Dequantize(ReadI16(buffer, ref o)));
+                e.Radius10 = buffer[o++];
+                offset = o;
+                return true;
+            }
 
             if (kind == CombatEventKind.Skill)
             {

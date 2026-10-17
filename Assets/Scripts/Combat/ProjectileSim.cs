@@ -11,6 +11,8 @@ namespace BS
         End = 3,
         /// <summary>A skill was used (not tied to a projectile).</summary>
         Skill = 4,
+        /// <summary>An exploding mob blasted.</summary>
+        Explosion = 5,
     }
 
     /// <summary>One thing that happened to a projectile, handed to the network layer.</summary>
@@ -34,6 +36,8 @@ namespace BS
         public bool Killed;
         /// <summary>Hit only: a piercing projectile that keeps flying after this hit.</summary>
         public bool Continues;
+        /// <summary>Explosion only: the blast radius in tenths of a world unit (the place is <see cref="Position"/>).</summary>
+        public byte Radius10;
         /// <summary>Hit only: the target was a survivor (a boss projectile). Then <see cref="MobId"/> is the survivor's slot.</summary>
         public bool SurvivorTarget;
     }

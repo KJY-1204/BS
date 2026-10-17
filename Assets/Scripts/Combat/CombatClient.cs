@@ -17,6 +17,10 @@ namespace BS
 
         public ProjectileReplay Replay { get; } = new ProjectileReplay();
         public SkillEffectReplay SkillEffects { get; } = new SkillEffectReplay();
+        public ExplosionReplay Explosions { get; } = new ExplosionReplay();
+
+        /// <summary>Blasts whose display time has come; the view drains this every frame.</summary>
+        public List<ExplosionEffect> DueExplosions { get; } = new List<ExplosionEffect>();
 
         /// <summary>Skill effects whose display time has come; the view drains this every frame.</summary>
         public List<SkillEffect> DueSkillEffects { get; } = new List<SkillEffect>();
@@ -33,12 +37,13 @@ namespace BS
         // Measurement (dev logging)
         float statsTimer;
         long bytesReceived;
-        int fires, hits, kills, ends, skills;
+        int fires, hits, kills, ends, skills, explosions;
 
         /// <summary>The shape of the projectiles of whoever stands in a shooter slot, from the room's character table.</summary>
         static ProjectileShape ShapeOfShooterSlot(byte slot)
         {
             if (slot == RoleTable.BossRole) return BossAttack.Shape; // a shot from the boss's slot is a boss shot
+            if (slot == CombatServer.MobShooterSlot) return MobShot.Shape; // and one from the mob slot is a ranged mob's shot
             RoleTable table = RoleTable.Instance;
             CharacterDef character = table != null ? CharacterCatalog.Get(table.CharacterOfRole(slot)) : null;
             return character != null ? character.Attack.Shape : ProjectileShape.Default;
@@ -67,8 +72,10 @@ namespace BS
             if (phase != RoomPhase.Waiting) return;
             Replay.Clear();
             SkillEffects.Clear();
+            Explosions.Clear();
             DueEffects.Clear();
             DueSkillEffects.Clear();
+            DueExplosions.Clear();
         }
 
         void OnDestroy()
@@ -86,6 +93,7 @@ namespace BS
         {
             Replay.Clear();
             SkillEffects.Clear();
+            Explosions.Clear();
             ResetStats();
             if (nm.IsServer) return; // the host is fed by the server directly
 
@@ -98,16 +106,20 @@ namespace BS
             Unregister();
             Replay.Clear();
             SkillEffects.Clear();
+            Explosions.Clear();
             DueEffects.Clear();
             DueSkillEffects.Clear();
+            DueExplosions.Clear();
         }
 
         void HandleServerStopped(bool wasHost)
         {
             Replay.Clear();
             SkillEffects.Clear();
+            Explosions.Clear();
             DueEffects.Clear();
             DueSkillEffects.Clear();
+            DueExplosions.Clear();
         }
 
         void Unregister()
@@ -150,6 +162,8 @@ namespace BS
             Replay.DrainDueEffects(DueEffects);
             SkillEffects.Advance(displayTime);
             SkillEffects.DrainDue(DueSkillEffects);
+            Explosions.Advance(displayTime);
+            Explosions.DrainDue(DueExplosions);
 
             if (DevArgs.CombatLog && registered) UpdateStats();
         }
@@ -182,7 +196,7 @@ namespace BS
         {
             if (DevArgs.CombatDump && registered)
             {
-                int dumpId = e.Kind == CombatEventKind.Skill ? e.SkillId : e.ProjectileId;
+                int dumpId = e.Kind == CombatEventKind.Skill ? e.SkillId : e.Kind == CombatEventKind.Explosion ? e.Radius10 : e.ProjectileId;
                 Debug.Log($"[BS] combatdump client t={Mathf.RoundToInt(serverTime * 1000f)} {e.Kind} id={dumpId} mob={e.MobId} kill={(e.Killed ? 1 : 0)} cont={(e.Continues ? 1 : 0)} angle={e.Angle} surv={(e.SurvivorTarget ? 1 : 0)}");
             }
 
@@ -204,6 +218,10 @@ namespace BS
                         SkillId = e.SkillId, Slot = e.Slot, Position = e.Position, Rank = e.Rank, Angle = e.Angle, ServerTime = serverTime,
                     });
                     break;
+                case CombatEventKind.Explosion:
+                    explosions++;
+                    Explosions.OnExplosion(new ExplosionEffect { Position = e.Position, Radius = e.Radius10 / 10f, ServerTime = serverTime });
+                    break;
                 default:
                     ends++;
                     Replay.OnEnd(e.ProjectileId, e.Position, serverTime);
@@ -218,7 +236,7 @@ namespace BS
             statsTimer += Time.unscaledDeltaTime;
             if (statsTimer < StatsSeconds) return;
 
-            Debug.Log($"[BS] combat client: recv={bytesReceived / statsTimer / 1024.0:F2}KB/s fires={fires} hits={hits} kills={kills} ends={ends} skills={skills} " +
+            Debug.Log($"[BS] combat client: recv={bytesReceived / statsTimer / 1024.0:F2}KB/s fires={fires} hits={hits} kills={kills} ends={ends} skills={skills} explosions={explosions} " +
                       $"projectilesOnScreen={Replay.Count} tracked={Replay.TrackedCount}");
             ResetStats();
         }
@@ -227,7 +245,7 @@ namespace BS
         {
             statsTimer = 0f;
             bytesReceived = 0;
-            fires = hits = kills = ends = skills = 0;
+            fires = hits = kills = ends = skills = explosions = 0;
         }
     }
 }

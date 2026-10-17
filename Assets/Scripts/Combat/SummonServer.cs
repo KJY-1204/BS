@@ -122,7 +122,7 @@ namespace BS
             for (int i = 0; i < mobs.Count; i++)
                 if (mobs.IsSummoned(i) && mobs.KindAt(i) < kinds.Length) kinds[mobs.KindAt(i)]++;
             Debug.Log($"[BS] summon stats: order={Sim.Order} orderClient={Sim.OrderClient} energy={Sim.Energy:F1} summoned={summoned} " +
-                      $"kinds={kinds[0]}/{kinds[1]}/{kinds[2]} underOrder={underOrder} meanDistance:{sb}");
+                      $"kinds={string.Join("/", kinds)} underOrder={underOrder} meanDistance:{sb}");
         }
 
         // ---- Requests from the boss player ----

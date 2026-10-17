@@ -19,9 +19,9 @@ namespace BS.Tests
         }
 
         [Test]
-        public void ThereAreThreeKindsWithNames()
+        public void ThereAreFiveKindsWithNames()
         {
-            Assert.AreEqual(3, MobKinds.Count);
+            Assert.AreEqual(5, MobKinds.Count);
             for (byte k = 0; k < MobKinds.Count; k++)
             {
                 Assert.IsTrue(MobKinds.IsValid(k));

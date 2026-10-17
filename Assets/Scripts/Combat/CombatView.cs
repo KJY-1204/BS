@@ -176,6 +176,10 @@ namespace BS
             combat.DueSkillEffects.Clear();
             foreach (SkillEffect effect in skillEffects) OnSkill(effect);
 
+            // A mob's blast is a short ring of its radius (a placeholder shape).
+            foreach (ExplosionEffect blast in combat.DueExplosions) AddRing(blast.Position, blast.Radius, new Color(1f, 0.85f, 0.2f), 0.35f, 0.2f);
+            combat.DueExplosions.Clear();
+
             DrawFlashes();
             DrawMobBars();
             DrawMuzzleFlash();
@@ -354,8 +358,9 @@ namespace BS
                 // A shot looks like its shooter's character: that character's color, and as wide as it really is.
                 byte slot = replay.SlotAt(i);
                 RoleTable table = RoleTable.Instance;
-                CharacterDef character = slot != RoleTable.BossRole && table != null ? CharacterCatalog.Get(table.CharacterOfRole(slot)) : null;
+                CharacterDef character = slot != RoleTable.BossRole && slot != CombatServer.MobShooterSlot && table != null ? CharacterCatalog.Get(table.CharacterOfRole(slot)) : null;
                 if (slot == RoleTable.BossRole) sr.color = BossCatalog.Default.Color;
+                else if (slot == CombatServer.MobShooterSlot) sr.color = MobKinds.Get(MobKinds.Ranged).Color;
                 else sr.color = character != null ? character.Color : SlotColors[Mathf.Min(slot, SlotColors.Length - 1)];
                 float size = Mathf.Max(0.15f, replay.ShapeAt(i).Radius * 2f);
                 sr.transform.localScale = new Vector3(size, size, 1f);

@@ -38,7 +38,19 @@ namespace BS
         string notice = "";
         float noticeUntil;
         int autoSummonCount;
-        bool heldKind1, heldKind2, heldKind3;
+        readonly bool[] heldKinds = new bool[MobKinds.Count];
+
+        static UnityEngine.InputSystem.Controls.KeyControl KindKey(Keyboard keyboard, int kind)
+        {
+            switch (kind)
+            {
+                case 0: return keyboard.digit1Key;
+                case 1: return keyboard.digit2Key;
+                case 2: return keyboard.digit3Key;
+                case 3: return keyboard.digit4Key;
+                default: return keyboard.digit5Key;
+            }
+        }
 
         /// <summary>The mob kind the boss player has chosen to summon. Kept on the owner's machine and sent with each request.</summary>
         public byte SelectedKind { get; private set; } = MobKinds.Basic;
@@ -177,13 +189,12 @@ namespace BS
             // The left mouse button fires the boss's shots (see PlayerCombat); summoning is on Space.
             // A key held down picks its kind once, by comparing with the last frame's state (this also works when the window
             // is not focused and input arrives between frames).
-            bool d1 = keyboard != null && keyboard.digit1Key.isPressed;
-            bool d2 = keyboard != null && keyboard.digit2Key.isPressed;
-            bool d3 = keyboard != null && keyboard.digit3Key.isPressed;
-            if (d1 && !heldKind1) SelectedKind = MobKinds.Basic;
-            else if (d2 && !heldKind2) SelectedKind = MobKinds.Fast;
-            else if (d3 && !heldKind3) SelectedKind = MobKinds.Tough;
-            heldKind1 = d1; heldKind2 = d2; heldKind3 = d3;
+            for (int k = 0; k < MobKinds.Count && keyboard != null; k++)
+            {
+                bool down = KindKey(keyboard, k).isPressed;
+                if (down && !heldKinds[k]) SelectedKind = (byte)k;
+                heldKinds[k] = down;
+            }
 
             bool summon = keyboard != null && keyboard.spaceKey.isPressed;
             if (summon && Time.unscaledTime - lastSendTime >= MinSendInterval) SendSummon();

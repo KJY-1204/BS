@@ -61,7 +61,7 @@ namespace BS
             Fill(new Rect(x, y, width, 18f), new Color(0f, 0f, 0f, 0.65f));
             Fill(new Rect(x + 2f, y + 2f, (width - 4f) * fraction, 14f), EnergyColor);
             GUI.Label(new Rect(x, y - 1f, width, 20f), $"소환 기운  {Mathf.FloorToInt(summon.Energy)} / {Mathf.FloorToInt(summon.MaxEnergy)}", center);
-            GUI.Label(new Rect(x - 40f, y + 20f, width + 80f, 20f), "왼쪽 클릭 발사   Space 소환   1/2/3 종류   오른쪽 클릭 목표 지정   C 지정 해제", small);
+            GUI.Label(new Rect(x - 40f, y + 20f, width + 80f, 20f), "왼쪽 클릭 발사   Space 소환   1~5 종류   오른쪽 클릭 목표 지정   C 지정 해제", small);
 
             string notice = summon.Notice;
             if (!string.IsNullOrEmpty(notice))
@@ -77,7 +77,7 @@ namespace BS
 
         void DrawKinds(PlayerSummon summon)
         {
-            const float cell = 112f;
+            const float cell = 104f;
             const float height = 22f;
             float x = Screen.width * 0.5f - cell * MobKinds.Count * 0.5f;
             float y = Screen.height - 124f;

@@ -111,6 +111,23 @@ namespace BS
         }
 
         /// <summary>
+        /// A blast: every living survivor whose center is within the radius of the point takes the damage through the usual rule, so a
+        /// protected or fallen survivor takes none. Returns how many survivors were hurt.
+        /// </summary>
+        public int ApplyBlast(Vector2 center, float radius, int damage, IReadOnlyList<SurvivorBody> bodies)
+        {
+            int hurt = 0;
+            float limit = radius * radius;
+            for (int i = 0; i < bodies.Count; i++)
+            {
+                SurvivorBody body = bodies[i];
+                if ((body.Position - center).sqrMagnitude > limit) continue;
+                if (ApplyDamage(body.ClientId, damage)) hurt++;
+            }
+            return hurt;
+        }
+
+        /// <summary>
         /// Restores health up to this survivor's maximum. A dead or unknown survivor is not healed.
         /// Returns how much was actually restored.
         /// </summary>

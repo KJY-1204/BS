@@ -10,7 +10,7 @@ import re
 import sys
 from collections import Counter
 
-PATTERN = re.compile(r"\[BS\] combatdump (server|client) t=(\d+) (Fire|Hit|End|Skill) id=(\d+) mob=(\d+) kill=(\d)(?: cont=(\d) angle=(\d+))?(?:.*? surv=(\d))?")
+PATTERN = re.compile(r"\[BS\] combatdump (server|client) t=(\d+) (Fire|Hit|End|Skill|Explosion) id=(\d+) mob=(\d+) kill=(\d)(?: cont=(\d) angle=(\d+))?(?:.*? surv=(\d))?")
 
 
 def parse(path, kind):

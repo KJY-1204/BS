@@ -19,6 +19,25 @@ namespace BS
         public Vector2 Position;
     }
 
+    /// <summary>A shot a ranged mob wants to fire this step; the server turns it into a projectile.</summary>
+    public struct MobShotRequest
+    {
+        public ushort MobId;
+        public Vector2 Origin;
+        /// <summary>Aim as a 16-bit angle, toward the nearest living survivor at the moment of the shot.</summary>
+        public ushort Angle;
+        public byte Kind;
+    }
+
+    /// <summary>An exploding mob that blasted this step (it has already been removed); the server hurts the survivors around it.</summary>
+    public struct MobBlast
+    {
+        public ushort MobId;
+        public Vector2 Position;
+        public float Radius;
+        public int Damage;
+    }
+
     /// <summary>Read access used by the view; implemented by the server simulation and the client interpolator.</summary>
     public interface IMobSource
     {
@@ -75,6 +94,12 @@ namespace BS
         readonly byte[] overrideKind;
         readonly ulong[] overrideClient;
         readonly Vector2[] overridePosition;
+        // Behavior state: the time until a ranged mob's next shot, or until a lit exploder blasts.
+        readonly float[] timer;
+        readonly bool[] fuseLit;
+        readonly System.Random behaviorRng;
+        readonly List<MobShotRequest> shotRequests = new List<MobShotRequest>();
+        readonly List<MobBlast> blasts = new List<MobBlast>();
 
         readonly Dictionary<ushort, int> indexOf = new Dictionary<ushort, int>();
         readonly List<MobEvent> events = new List<MobEvent>();
@@ -98,8 +123,11 @@ namespace BS
             HardCap = hardCap;
             TargetCount = Math.Min(targetCount, hardCap);
             rng = new System.Random(seed);
+            behaviorRng = new System.Random(seed + 7919); // apart from rng, so behaviors never change where automatic mobs appear
 
             ids = new ushort[hardCap];
+            timer = new float[hardCap];
+            fuseLit = new bool[hardCap];
             health = new int[hardCap];
             types = new byte[hardCap];
             positions = new Vector2[hardCap];
@@ -149,6 +177,10 @@ namespace BS
             health[i] = MaxHealthOf(MobKinds.KindOf(type));
             positions[i] = ClampToArena(position, RadiusOf(MobKinds.KindOf(type)));
             overrideKind[i] = OverrideNone;
+            fuseLit[i] = false;
+            MobKindDef def = MobKinds.Get(MobKinds.KindOf(type));
+            // A ranged mob waits a varying part of its cooldown before the first shot, so mobs made together do not fire together.
+            timer[i] = def.Behavior == MobBehavior.Ranged ? def.ShotCooldownSeconds * (0.4f + 0.6f * (float)behaviorRng.NextDouble()) : 0f;
             indexOf[id] = i;
             if (MobKinds.IsSummoned(type)) summonedCount++;
             gridDirty = true;
@@ -173,6 +205,8 @@ namespace BS
                 overrideKind[i] = overrideKind[last];
                 overrideClient[i] = overrideClient[last];
                 overridePosition[i] = overridePosition[last];
+                timer[i] = timer[last];
+                fuseLit[i] = fuseLit[last];
                 indexOf[ids[i]] = i;
             }
 
@@ -553,9 +587,32 @@ namespace BS
             summonedCount = 0;
             indexOf.Clear();
             events.Clear();
+            shotRequests.Clear();
+            blasts.Clear();
             spawnAccumulator = 0f;
             FrozenSeconds = 0f;
         }
+
+        /// <summary>
+        /// Hands over what mobs did this step on their own: shots to fire and blasts that happened. The lists belong to the latest
+        /// step and are emptied when the next step starts, so the server takes them once per tick.
+        /// </summary>
+        public void DrainActions(List<MobShotRequest> shots, List<MobBlast> blastsOut)
+        {
+            shots.AddRange(shotRequests);
+            blastsOut.AddRange(blasts);
+            shotRequests.Clear();
+            blasts.Clear();
+        }
+
+        /// <summary>A shot a mob asked for could not be fired (the projectile cap): the mob may ask again right away.</summary>
+        public void RefundShot(ushort mobId)
+        {
+            if (indexOf.TryGetValue(mobId, out int i)) timer[i] = 0f;
+        }
+
+        /// <summary>True while the exploding mob's fuse is running (for tests and logs).</summary>
+        public bool IsFuseLit(ushort mobId) => indexOf.TryGetValue(mobId, out int i) && fuseLit[i];
 
         /// <summary>Moves queued spawn/remove events into the list and empties the queue.</summary>
         public void DrainEvents(List<MobEvent> into)
@@ -566,6 +623,9 @@ namespace BS
 
         public void Step(float dt, IReadOnlyList<SurvivorInfo> survivors)
         {
+            shotRequests.Clear();
+            blasts.Clear();
+
             if (FrozenSeconds > 0f)
             {
                 // Time is stopped: nothing moves and nothing new appears. Mobs can still be damaged and killed.
@@ -575,6 +635,7 @@ namespace BS
 
             AutoSpawn(dt, survivors);
             Chase(dt, survivors);
+            UpdateBehaviors(dt, survivors);
             Separate();
             for (int i = 0; i < count; i++) positions[i] = ClampToArena(positions[i], RadiusOf(MobKinds.KindOf(types[i])));
             gridDirty = true; // queries rebuild the grid on demand
@@ -733,10 +794,69 @@ namespace BS
                     distance = toTarget.magnitude;
                 }
 
+                // Ranged and exploding mobs stop: a ranged mob that has come within its hold distance of a survivor it chases
+                // (a point it is ordered to is a destination, not something to keep a distance from) and an exploder whose fuse is lit.
+                MobKindDef def = MobKinds.Get(MobKinds.KindOf(types[i]));
+                if (def.Behavior == MobBehavior.Ranged && overrideKind[i] != OverridePosition && distance <= def.HoldDistance) continue;
+                if (def.Behavior == MobBehavior.Exploder && fuseLit[i]) continue;
+
                 if (distance < 1e-4f) continue;
 
                 positions[i] += toTarget * (Mathf.Min(step, distance) / distance);
             }
+        }
+
+        /// <summary>
+        /// Runs what the kinds do besides moving: a ranged mob asks to shoot the nearest living survivor within its range when its
+        /// cooldown has passed, and an exploder lights its fuse when a living survivor is close and blasts when the fuse ends.
+        /// </summary>
+        void UpdateBehaviors(float dt, IReadOnlyList<SurvivorInfo> survivors)
+        {
+            // From the end, so removing a blasted mob (the last mob takes its place) never skips one.
+            for (int i = count - 1; i >= 0; i--)
+            {
+                MobKindDef def = MobKinds.Get(MobKinds.KindOf(types[i]));
+                if (def.Behavior == MobBehavior.Chase) continue;
+
+                if (def.Behavior == MobBehavior.Ranged)
+                {
+                    timer[i] = Math.Max(0f, timer[i] - dt);
+                    if (timer[i] > 0f) continue;
+                    if (!TryFindNearestSurvivor(positions[i], survivors, out Vector2 target)) continue;
+                    Vector2 toTarget = target - positions[i];
+                    if (toTarget.magnitude > def.ShootRange) continue;
+
+                    shotRequests.Add(new MobShotRequest
+                    {
+                        MobId = ids[i], Origin = positions[i], Angle = AimMath.FromDirection(toTarget), Kind = MobKinds.KindOf(types[i]),
+                    });
+                    timer[i] = def.ShotCooldownSeconds;
+                    continue;
+                }
+
+                // Exploder
+                if (!fuseLit[i])
+                {
+                    if (!AnySurvivorWithin(positions[i], def.TriggerDistance, survivors)) continue;
+                    fuseLit[i] = true;
+                    timer[i] = def.FuseSeconds;
+                    continue;
+                }
+
+                timer[i] -= dt;
+                if (timer[i] > 0f) continue;
+
+                blasts.Add(new MobBlast { MobId = ids[i], Position = positions[i], Radius = def.BlastRadius, Damage = def.BlastDamage });
+                Remove(ids[i]);
+            }
+        }
+
+        static bool AnySurvivorWithin(Vector2 from, float distance, IReadOnlyList<SurvivorInfo> survivors)
+        {
+            float limit = distance * distance;
+            for (int s = 0; s < survivors.Count; s++)
+                if (survivors[s].Alive && (survivors[s].Position - from).sqrMagnitude <= limit) return true;
+            return false;
         }
 
         bool TryGetTargetPosition(int i, IReadOnlyList<SurvivorInfo> survivors, out Vector2 target)

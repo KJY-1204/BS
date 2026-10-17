@@ -14,6 +14,11 @@ namespace BS
     {
         public static CombatServer Instance { get; private set; }
 
+        /// <summary>The owner a ranged mob's projectiles carry. It is not a client, and its shooter slot tells clients which shape to draw.</summary>
+        public const ulong MobShooterOwner = ulong.MaxValue - 1;
+        /// <summary>The shooter slot of every mob's projectile (0 is the boss, 1 to 4 the survivors).</summary>
+        public const byte MobShooterSlot = 5;
+
         public SurvivorSim Survivors { get; } = new SurvivorSim();
         public AttackSim Attacks { get; } = new AttackSim();
         public ProjectileSim Projectiles { get; } = new ProjectileSim();
@@ -31,6 +36,8 @@ namespace BS
         readonly List<SurvivorBody> bodies = new List<SurvivorBody>();
         readonly List<ShooterBody> shooters = new List<ShooterBody>();
         readonly List<CombatEvent> events = new List<CombatEvent>();
+        readonly MobActionRunner mobActions = new MobActionRunner();
+        readonly List<CombatEvent> blastEvents = new List<CombatEvent>();
         readonly List<Vector2> killPositions = new List<Vector2>();
         readonly List<ulong> remoteClients = new List<ulong>();
         readonly Dictionary<ulong, byte> slots = new Dictionary<ulong, byte>();
@@ -48,6 +55,7 @@ namespace BS
         long bytesSent;
         int firesSent, hitsSent, killsSent, endsSent, skillsSent;
         int bossFiresSent, survivorHitsSent;
+        int mobShotsSent, blastsSent, blastHitsSent;
 
         void Awake()
         {
@@ -63,7 +71,11 @@ namespace BS
 
         ulong BossOwnerId => bossAvatar != null ? bossAvatar.OwnerClientId : ulong.MaxValue;
 
-        byte SlotOf(ulong clientId) => slots.TryGetValue(clientId, out byte slot) ? slot : (byte)0;
+        byte SlotOf(ulong clientId)
+        {
+            if (clientId == MobShooterOwner) return MobShooterSlot;
+            return slots.TryGetValue(clientId, out byte slot) ? slot : (byte)0;
+        }
 
         void Start()
         {
@@ -104,6 +116,7 @@ namespace BS
             Attacks.Clear();
             Projectiles.Clear();
             events.Clear();
+            blastEvents.Clear();
             killPositions.Clear();
             Boss.Clear();
             bossAvatar = null;
@@ -204,6 +217,7 @@ namespace BS
             }
 
             Survivors.Step(dt, bodies, mobs.Sim, Boss.Exists ? Boss : null);
+            ProcessMobActions();
 
             shooters.Clear();
             for (int i = 0; i < bodies.Count; i++)
@@ -233,12 +247,26 @@ namespace BS
 
             events.Clear();
             Projectiles.DrainEvents(events);
+            events.AddRange(blastEvents);
+            blastEvents.Clear();
             for (int i = 0; i < events.Count; i++)
                 if (events[i].Kind == CombatEventKind.Hit && events[i].Killed && !events[i].SurvivorTarget && events[i].MobId != BossSim.MobId) killPositions.Add(events[i].Position);
             if (events.Count > 0) PublishEvents(events);
 
             // Mob kills made by projectiles this step go out now, with the same time as the hits.
             mobs.FlushEvents();
+        }
+
+        /// <summary>
+        /// What mobs did on their own this tick: ranged mobs fire their shots as projectiles (a shot the cap refuses gives the mob its
+        /// cooldown back) and exploding mobs blast the survivors around them, which every client is told about.
+        /// </summary>
+        void ProcessMobActions()
+        {
+            MobActionResult result = mobActions.Run(mobs.Sim, Projectiles, Survivors, bodies, MobShooterOwner, blastEvents);
+            mobShotsSent += result.ShotsFired;
+            blastsSent += result.Blasts;
+            blastHitsSent += result.SurvivorsHurt;
         }
 
         /// <summary>Copies the boss's health to its replicated values so every client shows the bar.</summary>
@@ -304,11 +332,12 @@ namespace BS
             int clients = remoteClients.Count;
             double perClient = clients > 0 ? bytesSent / (double)clients / statsTimer / 1024.0 : 0.0;
             Debug.Log($"[BS] combat server: fires={firesSent} hits={hitsSent} kills={killsSent} ends={endsSent} skills={skillsSent} " +
-                      $"bossFires={bossFiresSent} survivorHits={survivorHitsSent} {BossStatsText()} projectiles={Projectiles.Count} survivors={Survivors.Count} clients={clients} payloadPerClient={perClient:F3}KB/s");
+                      $"bossFires={bossFiresSent} survivorHits={survivorHitsSent} mobShots={mobShotsSent} blasts={blastsSent} blastHits={blastHitsSent} {BossStatsText()} projectiles={Projectiles.Count} survivors={Survivors.Count} clients={clients} payloadPerClient={perClient:F3}KB/s");
             statsTimer = 0f;
             bytesSent = 0;
             firesSent = hitsSent = killsSent = endsSent = skillsSent = 0;
             bossFiresSent = survivorHitsSent = 0;
+            mobShotsSent = blastsSent = blastHitsSent = 0;
         }
 
         /// <summary>The boss's health and what it fires with at that health (dev logging).</summary>
@@ -343,6 +372,7 @@ namespace BS
                         else if (list[i].Killed) killsSent++;
                         break;
                     case CombatEventKind.Skill: skillsSent++; break;
+                    case CombatEventKind.Explosion: break;
                     default: endsSent++; break;
                 }
             }
@@ -350,7 +380,7 @@ namespace BS
             if (DevArgs.CombatDump)
                 for (int i = 0; i < list.Count; i++)
                 {
-                    int id = list[i].Kind == CombatEventKind.Skill ? list[i].SkillId : list[i].ProjectileId;
+                    int id = list[i].Kind == CombatEventKind.Skill ? list[i].SkillId : list[i].Kind == CombatEventKind.Explosion ? list[i].Radius10 : list[i].ProjectileId;
                     Debug.Log($"[BS] combatdump server t={timeMs} {list[i].Kind} id={id} mob={list[i].MobId} kill={(list[i].Killed ? 1 : 0)} cont={(list[i].Continues ? 1 : 0)} angle={list[i].Angle} owner={list[i].Owner} surv={(list[i].SurvivorTarget ? 1 : 0)}");
                 }
 

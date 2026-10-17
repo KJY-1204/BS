@@ -2,6 +2,17 @@ using UnityEngine;
 
 namespace BS
 {
+    /// <summary>What a kind of mob does besides moving toward its target.</summary>
+    public enum MobBehavior : byte
+    {
+        /// <summary>Moves toward the target and hurts a survivor by touching it, as every mob did before behaviors existed.</summary>
+        Chase = 0,
+        /// <summary>Stops at a distance from its target and shoots the nearest survivor.</summary>
+        Ranged = 1,
+        /// <summary>Runs in, stops for a short fuse when a survivor is close and blasts the survivors around it.</summary>
+        Exploder = 2,
+    }
+
     /// <summary>
     /// One kind of mob as data. Every stat is a multiple of the basic mob's value, so changing the basic value changes every
     /// kind with it. Rules read these numbers and never a kind's identity.
@@ -18,7 +29,30 @@ namespace BS
         /// <summary>Multiplies the number of mobs one summon tries to create.</summary>
         public float GroupMultiple = 1f;
         public Color Color;
+
+        public MobBehavior Behavior = MobBehavior.Chase;
+
+        // Ranged: stops this close to its target, shoots the nearest survivor within the range, once per cooldown.
+        public float HoldDistance;
+        public float ShootRange;
+        public float ShotCooldownSeconds;
+        public int ShotDamage;
+
+        // Exploder: a survivor this close starts the fuse; when it ends survivors within the blast radius take the damage.
+        public float TriggerDistance;
+        public float FuseSeconds;
+        public float BlastRadius;
+        public int BlastDamage;
     }
+
+    /// <summary>The projectile a ranged mob fires, read by the server and by every client so a shot is drawn from its fire event alone.</summary>
+    public static class MobShot
+    {
+        public static ProjectileShape Shape => new ProjectileShape { Speed = 8f, Lifetime = 1.6f, Radius = 0.2f, Pierce = 1 };
+    }
+
+    /// <summary>
+    /// One kind of mob as data.
 
     /// <summary>
     /// The mob kinds and the one byte that tells a mob's origin and kind to every client: bit 0 is the origin (0 automatic,
@@ -30,7 +64,9 @@ namespace BS
         public const byte Basic = 0;
         public const byte Fast = 1;
         public const byte Tough = 2;
-        public const int Count = 3;
+        public const byte Ranged = 3;
+        public const byte Exploder = 4;
+        public const int Count = 5;
 
         public const byte OriginAuto = 0;
         public const byte OriginSummoned = 1;
@@ -48,6 +84,12 @@ namespace BS
                              CostMultiple = 0.8f, GroupMultiple = 1.25f, Color = new Color(0.2f, 0.75f, 0.8f) },
             new MobKindDef { Name = "단단한 몹", SpeedMultiple = 0.6f, HealthMultiple = 4f, RadiusMultiple = 1.25f, ContactDamageMultiple = 1.5f,
                              CostMultiple = 3f, GroupMultiple = 0.5f, Color = new Color(0.5f, 0.28f, 0.14f) },
+            new MobKindDef { Name = "원거리 몹", SpeedMultiple = 1f, HealthMultiple = 0.8f, RadiusMultiple = 1f, ContactDamageMultiple = 0.6f,
+                             CostMultiple = 2f, GroupMultiple = 0.5f, Color = new Color(0.6f, 0.4f, 0.9f),
+                             Behavior = MobBehavior.Ranged, HoldDistance = 6f, ShootRange = 9f, ShotCooldownSeconds = 2.5f, ShotDamage = 8 },
+            new MobKindDef { Name = "폭발 몹", SpeedMultiple = 1.4f, HealthMultiple = 0.6f, RadiusMultiple = 1f, ContactDamageMultiple = 0.5f,
+                             CostMultiple = 1.6f, GroupMultiple = 0.75f, Color = new Color(0.95f, 0.85f, 0.2f),
+                             Behavior = MobBehavior.Exploder, TriggerDistance = 1.6f, FuseSeconds = 0.7f, BlastRadius = 2.2f, BlastDamage = 25 },
         };
 
         /// <summary>The color of a basic mob that a boss summoned; the other kinds keep their own color whatever the origin.</summary>
