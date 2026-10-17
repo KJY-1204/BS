@@ -77,7 +77,7 @@ namespace BS
 
             healthBack.enabled = healthFill.enabled = true;
             reviveBack.enabled = reviveFill.enabled = survivor && dead;
-            aimMarker.enabled = survivor && IsOwner && !dead;
+            aimMarker.enabled = IsOwner && (survivor ? !dead : RoleTable.MatchRunning);
 
             if (!survivor)
             {
@@ -148,19 +148,21 @@ namespace BS
         void Update()
         {
             if (!IsSpawned || !IsOwner) return;
-            if (avatar == null || avatar.Role == RoleTable.BossRole) return;
+            if (avatar == null) return;
+            bool boss = avatar.Role == RoleTable.BossRole;
             if (!RoleTable.MatchRunning) { firing = false; return; } // the match is over: no more shooting
 
-            ReadInput();
+            ReadInput(boss);
 
             // A fallen survivor cannot fire; stop sending fire while down so the server state is clean.
-            bool wantFire = firing && !IsDead;
+            // (The boss has no survivor health: the server decides whether it still stands.)
+            bool wantFire = firing && (boss || !IsDead);
 
             // Cosmetic only: show the muzzle flash right away when a shot should be leaving.
             localCooldown = Mathf.Max(0f, localCooldown - Time.deltaTime);
             if (wantFire && localCooldown <= 0f)
             {
-                localCooldown = CombatConfig.FireCooldownSeconds;
+                localCooldown = boss ? BossAttack.CooldownSeconds : CombatConfig.FireCooldownSeconds;
                 MuzzleFlashUntil = Time.time + 0.06f;
             }
             if (sender.ShouldSend(Time.unscaledTime, aimAngle, wantFire))
@@ -176,9 +178,11 @@ namespace BS
             CombatServer.Instance?.SetAim(OwnerClientId, angle, fire);
         }
 
-        void ReadInput()
+        void ReadInput(bool boss)
         {
-            if (DevArgs.Fire) firing = true;
+            // The development auto-fire is per kind: -bsFire for survivors, -bsBossFire for the boss.
+            bool devFire = boss ? DevArgs.BossFire : DevArgs.Fire;
+            if (devFire) firing = true;
 
             Mouse mouse = Mouse.current;
             Gamepad pad = Gamepad.current;
@@ -203,7 +207,7 @@ namespace BS
                 if (toPointer.sqrMagnitude > 0.01f) aimAngle = AimMath.FromDirection(toPointer);
             }
 
-            if (!DevArgs.Fire)
+            if (!devFire)
             {
                 bool mouseFire = mouse != null && mouse.leftButton.isPressed;
                 bool padFire = pad != null && pad.rightTrigger.ReadValue() > 0.5f;

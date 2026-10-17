@@ -28,6 +28,8 @@ namespace BS
             public int Damage = CombatConfig.ProjectileDamage;
             public float CooldownMultiplier = 1f;
             public AttackDef Attack = AttackDef.Default;
+            /// <summary>True for the boss: its projectiles hurt survivors and pass through mobs.</summary>
+            public bool Hostile;
         }
 
         readonly Dictionary<ulong, Shooter> shooters = new Dictionary<ulong, Shooter>();
@@ -39,6 +41,10 @@ namespace BS
 
         /// <summary>Adds a shooter that attacks the way its character does.</summary>
         public void Register(ulong clientId, AttackDef attack) => shooters[clientId] = new Shooter { Attack = attack };
+
+        /// <summary>Adds a shooter whose projectiles are hostile (the boss): they hurt survivors, not mobs.</summary>
+        public void Register(ulong clientId, AttackDef attack, bool hostile) =>
+            shooters[clientId] = new Shooter { Attack = attack, Hostile = hostile };
 
         /// <summary>The latest aim received from a shooter, which skills with a direction use.</summary>
         public ushort AimOf(ulong clientId) => shooters.TryGetValue(clientId, out Shooter s) ? s.Angle : (ushort)0;
@@ -98,6 +104,7 @@ namespace BS
                         Angle = AimMath.ShotAngle(s.Angle, attack.Shots, attack.SpreadDegrees, shot),
                         Damage = damage,
                         Shape = attack.Shape,
+                        Hostile = s.Hostile,
                     };
                     if (!projectiles.TryFire(spec, out _)) break;
                     fired++;

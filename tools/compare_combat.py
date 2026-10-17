@@ -2,7 +2,7 @@
 
 Run the host and the clients with -bsCombatDump. Every combat event is logged with its server time; this
 checks that each client received exactly the events the server sent (same kind, projectile and mob, same time,
-the piercing mark and the aim angle).
+the piercing mark, the aim angle and whether the target was a survivor).
 
 Only the time span a client was connected for is compared: events before its first received event (it had not
 joined yet) and after its last one (it had already quit) are not counted as missing."""
@@ -10,7 +10,7 @@ import re
 import sys
 from collections import Counter
 
-PATTERN = re.compile(r"\[BS\] combatdump (server|client) t=(\d+) (Fire|Hit|End|Skill) id=(\d+) mob=(\d+) kill=(\d)(?: cont=(\d) angle=(\d+))?")
+PATTERN = re.compile(r"\[BS\] combatdump (server|client) t=(\d+) (Fire|Hit|End|Skill) id=(\d+) mob=(\d+) kill=(\d)(?: cont=(\d) angle=(\d+))?(?:.*? surv=(\d))?")
 
 
 def parse(path, kind):
@@ -20,14 +20,15 @@ def parse(path, kind):
         if m and m.group(1) == kind:
             cont = int(m.group(7)) if m.group(7) else 0
             angle = int(m.group(8)) if m.group(8) else 0
-            events.append((int(m.group(2)), m.group(3), int(m.group(4)), int(m.group(5)), int(m.group(6)), cont, angle))
+            surv = int(m.group(9)) if m.group(9) else 0
+            events.append((int(m.group(2)), m.group(3), int(m.group(4)), int(m.group(5)), int(m.group(6)), cont, angle, surv))
     return events
 
 
 def main():
     server = parse(sys.argv[1], "server")
     kinds = Counter(e[1] for e in server)
-    print(f"server: {len(server)} events  {dict(kinds)}  kills={sum(e[4] for e in server)}")
+    print(f"server: {len(server)} events  {dict(kinds)}  kills={sum(e[4] for e in server)}  survivorHits={sum(e[7] for e in server)}")
 
     ok = True
     for path in sys.argv[2:]:

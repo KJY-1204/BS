@@ -15,7 +15,9 @@ namespace BS
     /// -bsMobLog        log mob counts, traffic and timing every 5 seconds
     /// -bsMobTarget n   automatic mob spawning target (capped at the hard cap)
     /// -bsMobDump       every 5 s log all mob positions (server: sent state, client: what is displayed)
-    /// -bsFire          hold fire all the time
+    /// -bsFire          hold fire all the time (survivors only)
+    /// -bsBossFire      (the boss player) hold fire all the time
+    /// -bsBossShotDamage n  (host) the damage of a boss shot at full boss health
     /// -bsAim deg       aim at a fixed angle in degrees (0 = right, 90 = up)
     /// -bsAimSweep d    turn the aim by d degrees per second
     /// -bsCombatLog     log health, revive gauge and combat statistics
@@ -63,6 +65,8 @@ namespace BS
         public static bool MobLog { get; private set; }
         public static bool MobDump { get; private set; }
         public static bool Fire { get; private set; }
+        public static bool BossFire { get; private set; }
+        public static int BossShotDamage { get; private set; }
         public static float? AimDegrees { get; private set; }
         public static float AimSweepDegreesPerSecond { get; private set; }
         public static bool CombatLog { get; private set; }
@@ -147,6 +151,12 @@ namespace BS
                         break;
                     case "-bsFire":
                         Fire = true;
+                        break;
+                    case "-bsBossFire":
+                        BossFire = true;
+                        break;
+                    case "-bsBossShotDamage" when i + 1 < args.Length:
+                        if (int.TryParse(args[i + 1], out int bsd)) BossShotDamage = bsd;
                         break;
                     case "-bsCombatDump":
                         CombatDump = true;

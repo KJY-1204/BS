@@ -34,6 +34,8 @@ namespace BS
         public bool Killed;
         /// <summary>Hit only: a piercing projectile that keeps flying after this hit.</summary>
         public bool Continues;
+        /// <summary>Hit only: the target was a survivor (a boss projectile). Then <see cref="MobId"/> is the survivor's slot.</summary>
+        public bool SurvivorTarget;
     }
 
     /// <summary>Everything the simulation needs to start one projectile.</summary>
@@ -44,6 +46,8 @@ namespace BS
         public ushort Angle;
         public int Damage;
         public ProjectileShape Shape;
+        /// <summary>A boss projectile: it hurts survivors and passes through mobs and the boss.</summary>
+        public bool Hostile;
     }
 
     /// <summary>Read access to live projectiles, used by the view on the host.</summary>
@@ -53,6 +57,23 @@ namespace BS
         ushort IdAt(int index);
         ulong OwnerAt(int index);
         Vector2 PositionAt(int index);
+    }
+
+    /// <summary>What a boss projectile needs to know about the survivors to hit one.</summary>
+    public interface ISurvivorTargets
+    {
+        int Count { get; }
+        /// <summary>The survivor's slot (1 to 4), which the hit event carries.</summary>
+        byte SlotAt(int index);
+        Vector2 PositionAt(int index);
+        float Radius { get; }
+        /// <summary>True while this survivor can be hurt (alive and not within the protection time).</summary>
+        bool CanBeHit(int index);
+        /// <summary>
+        /// Damages a survivor. Returns false when it cannot be hurt; otherwise reports the health that is left as a
+        /// percentage and whether this hit made the survivor fall.
+        /// </summary>
+        bool TakeDamage(int index, int damage, out int healthPercent, out bool fell);
     }
 
     /// <summary>
@@ -80,12 +101,14 @@ namespace BS
         readonly float[] speeds;
         readonly float[] radii;
         readonly int[] pierceLeft;
+        readonly bool[] hostile;
         readonly byte[] hitCounts;
         readonly ushort[] hitMobs;
         readonly Dictionary<ushort, int> indexOf = new Dictionary<ushort, int>();
         readonly List<CombatEvent> events = new List<CombatEvent>();
         readonly List<MobSim.SegmentHit> segmentHits = new List<MobSim.SegmentHit>();
         readonly List<ushort> alreadyHit = new List<ushort>();
+        readonly List<MobSim.SegmentHit> survivorHits = new List<MobSim.SegmentHit>();
 
         int count;
         ushort nextId = 1;
@@ -102,6 +125,7 @@ namespace BS
             speeds = new float[cap];
             radii = new float[cap];
             pierceLeft = new int[cap];
+            hostile = new bool[cap];
             hitCounts = new byte[cap];
             hitMobs = new ushort[cap * MaxPierce];
         }
@@ -143,6 +167,7 @@ namespace BS
             radii[i] = spec.Shape.Radius;
             pierceLeft[i] = Math.Max(1, Math.Min(MaxPierce, spec.Shape.Pierce));
             hitCounts[i] = 0;
+            hostile[i] = spec.Hostile;
             indexOf[id] = i;
 
             events.Add(new CombatEvent { Kind = CombatEventKind.Fire, ProjectileId = id, Owner = spec.Owner, Position = spec.Origin, Angle = spec.Angle });
@@ -166,7 +191,13 @@ namespace BS
         public void Step(float dt, MobSim mobs) => Step(dt, mobs, null);
 
         /// <summary>Moves every projectile and resolves hits against the mobs and the boss.</summary>
-        public void Step(float dt, MobSim mobs, IBossTarget boss)
+        public void Step(float dt, MobSim mobs, IBossTarget boss) => Step(dt, mobs, boss, null);
+
+        /// <summary>
+        /// Moves every projectile and resolves hits. Projectiles of survivors hit mobs and the boss; hostile ones (the
+        /// boss's) hit survivors only.
+        /// </summary>
+        public void Step(float dt, MobSim mobs, IBossTarget boss, ISurvivorTargets survivors)
         {
             for (int i = count - 1; i >= 0; i--)
             {
@@ -178,7 +209,7 @@ namespace BS
 
                 bool leftArena = ClipToArena(from, ref to);
 
-                if ((mobs != null || boss != null) && HitTargetsOnTheWay(i, from, to, mobs, boss))
+                if ((mobs != null || boss != null || survivors != null) && HitTargetsOnTheWay(i, from, to, mobs, boss, survivors))
                 {
                     RemoveAt(i);
                     continue;
@@ -201,8 +232,10 @@ namespace BS
         /// Damages the mobs the projectile touched on its way, nearest first, each at most once. Returns true when the
         /// projectile used up its last allowed hit and must be removed.
         /// </summary>
-        bool HitTargetsOnTheWay(int i, Vector2 from, Vector2 to, MobSim mobs, IBossTarget boss)
+        bool HitTargetsOnTheWay(int i, Vector2 from, Vector2 to, MobSim mobs, IBossTarget boss, ISurvivorTargets survivors)
         {
+            if (hostile[i]) return HitSurvivorOnTheWay(i, from, to, survivors);
+
             alreadyHit.Clear();
             int baseIndex = i * MaxPierce;
             for (int k = 0; k < hitCounts[i]; k++) alreadyHit.Add(hitMobs[baseIndex + k]);
@@ -240,6 +273,59 @@ namespace BS
                 if (last) return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// A hostile projectile stops at the nearest survivor on its way that can be hurt. A survivor who cannot be hurt
+        /// (fallen, or within the protection time) is not a target: the projectile passes through. Returns true when it
+        /// hit and must be removed.
+        /// </summary>
+        bool HitSurvivorOnTheWay(int i, Vector2 from, Vector2 to, ISurvivorTargets survivors)
+        {
+            if (survivors == null) return false;
+
+            survivorHits.Clear();
+            float reach = radii[i] + survivors.Radius;
+            for (int k = 0; k < survivors.Count; k++)
+            {
+                if (!survivors.CanBeHit(k)) continue;
+                if (!SweepCircle(from, to, reach, survivors.PositionAt(k), out float entry)) continue;
+                survivorHits.Add(new MobSim.SegmentHit { MobId = (ushort)k, T = entry, Point = from + (to - from) * entry });
+            }
+            if (survivorHits.Count == 0) return false;
+
+            survivorHits.Sort(HitOrder.Instance);
+            for (int h = 0; h < survivorHits.Count; h++)
+            {
+                MobSim.SegmentHit hit = survivorHits[h];
+                int index = hit.MobId;
+                if (!survivors.TakeDamage(index, damages[i], out int percent, out bool fell)) continue;
+
+                events.Add(new CombatEvent
+                {
+                    Kind = CombatEventKind.Hit, ProjectileId = ids[i], Owner = owners[i], Position = hit.Point,
+                    MobId = survivors.SlotAt(index), MobHealthPercent = (byte)percent, Killed = fell, Continues = false,
+                    SurvivorTarget = true,
+                });
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>True when the swept segment a to b passes within <paramref name="reach"/> of the center; entry is how far along it first touches.</summary>
+        static bool SweepCircle(Vector2 a, Vector2 b, float reach, Vector2 center, out float entry)
+        {
+            Vector2 ab = b - a;
+            float lengthSq = ab.sqrMagnitude;
+            float length = Mathf.Sqrt(lengthSq);
+            float tProj = lengthSq > 1e-8f ? Mathf.Clamp01(Vector2.Dot(center - a, ab) / lengthSq) : 0f;
+            float d = Vector2.Distance(center, a + ab * tProj);
+            entry = 0f;
+            if (d > reach) return false;
+
+            float back = length > 1e-5f ? Mathf.Sqrt(Mathf.Max(0f, reach * reach - d * d)) / length : 0f;
+            entry = Mathf.Clamp01(tProj - back);
+            return true;
         }
 
         sealed class HitOrder : IComparer<MobSim.SegmentHit>
@@ -318,6 +404,7 @@ namespace BS
                 speeds[i] = speeds[last];
                 radii[i] = radii[last];
                 pierceLeft[i] = pierceLeft[last];
+                hostile[i] = hostile[last];
                 hitCounts[i] = hitCounts[last];
                 Array.Copy(hitMobs, last * MaxPierce, hitMobs, i * MaxPierce, MaxPierce);
                 indexOf[ids[i]] = i;

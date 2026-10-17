@@ -11,6 +11,8 @@ namespace BS
         public ushort MobId;
         public byte HealthPercent;
         public bool Killed;
+        /// <summary>The target was a survivor (a boss shot): <see cref="MobId"/> is then the survivor's slot, not a mob.</summary>
+        public bool Survivor;
     }
 
     /// <summary>
@@ -96,7 +98,7 @@ namespace BS
             tracks.Add(track);
         }
 
-        public void OnHit(ushort id, ushort mobId, byte healthPercent, bool killed, Vector2 position, float serverTime, bool continues = false)
+        public void OnHit(ushort id, ushort mobId, byte healthPercent, bool killed, Vector2 position, float serverTime, bool continues = false, bool survivor = false)
         {
             if (!indexOf.TryGetValue(id, out int i)) return;
 
@@ -107,7 +109,7 @@ namespace BS
                 pendingEffects.Add(new TimedEffect
                 {
                     Time = serverTime,
-                    Effect = new HitEffect { Position = position, MobId = mobId, HealthPercent = healthPercent, Killed = killed },
+                    Effect = new HitEffect { Position = position, MobId = mobId, HealthPercent = healthPercent, Killed = killed, Survivor = survivor },
                 });
                 return;
             }
@@ -117,7 +119,7 @@ namespace BS
             t.End = serverTime;
             t.EndPosition = position;
             t.IsHit = true;
-            t.Effect = new HitEffect { Position = position, MobId = mobId, HealthPercent = healthPercent, Killed = killed };
+            t.Effect = new HitEffect { Position = position, MobId = mobId, HealthPercent = healthPercent, Killed = killed, Survivor = survivor };
         }
 
         public void OnEnd(ushort id, Vector2 position, float serverTime)

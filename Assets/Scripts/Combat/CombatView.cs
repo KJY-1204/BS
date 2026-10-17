@@ -354,8 +354,9 @@ namespace BS
                 // A shot looks like its shooter's character: that character's color, and as wide as it really is.
                 byte slot = replay.SlotAt(i);
                 RoleTable table = RoleTable.Instance;
-                CharacterDef character = table != null ? CharacterCatalog.Get(table.CharacterOfRole(slot)) : null;
-                sr.color = character != null ? character.Color : SlotColors[Mathf.Min(slot, SlotColors.Length - 1)];
+                CharacterDef character = slot != RoleTable.BossRole && table != null ? CharacterCatalog.Get(table.CharacterOfRole(slot)) : null;
+                if (slot == RoleTable.BossRole) sr.color = BossCatalog.Default.Color;
+                else sr.color = character != null ? character.Color : SlotColors[Mathf.Min(slot, SlotColors.Length - 1)];
                 float size = Mathf.Max(0.15f, replay.ShapeAt(i).Radius * 2f);
                 sr.transform.localScale = new Vector3(size, size, 1f);
             }
@@ -370,6 +371,9 @@ namespace BS
         {
             flashes[nextFlash] = new Flash { Position = effect.Position, Start = Time.time, Killed = effect.Killed };
             nextFlash = (nextFlash + 1) % MaxFlashes;
+
+            // A hit on a survivor shows its flash only: the survivor's own bar is drawn from its replicated health.
+            if (effect.Survivor) return;
 
             // A hit on the boss shows its flash only: its bar is drawn from its replicated health over its character.
             if (effect.MobId == BossSim.MobId) return;

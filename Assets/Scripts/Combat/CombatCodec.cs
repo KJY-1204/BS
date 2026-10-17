@@ -15,7 +15,7 @@ namespace BS
     /// server time in milliseconds u32, count u16, then the events one after another.
     /// Fire: kind u8, projectile id u16, slot u8, x i16, y i16, angle u16.
     /// Hit: kind u8, projectile id u16, mob id u16, mob health percent u8, flags u8 (bit 0 killed, bit 1 the
-    /// projectile keeps flying), x i16, y i16.
+    /// projectile keeps flying, bit 2 the target is a survivor and the id is its slot), x i16, y i16.
     /// End: kind u8, projectile id u16, x i16, y i16.
     /// Skill: kind u8, skill id u8, slot u8, x i16, y i16, rank u8, aim angle u16. Coordinates are 1/1000 world unit.
     /// </summary>
@@ -91,7 +91,7 @@ namespace BS
                     case CombatEventKind.Hit:
                         WriteU16(buffer, ref o, e.MobId);
                         buffer[o++] = e.MobHealthPercent;
-                        buffer[o++] = (byte)((e.Killed ? 1 : 0) | (e.Continues ? 2 : 0));
+                        buffer[o++] = (byte)((e.Killed ? 1 : 0) | (e.Continues ? 2 : 0) | (e.SurvivorTarget ? 4 : 0));
                         WriteI16(buffer, ref o, MobCodec.Quantize(e.Position.x));
                         WriteI16(buffer, ref o, MobCodec.Quantize(e.Position.y));
                         break;
@@ -155,6 +155,7 @@ namespace BS
                     byte flags = buffer[o++];
                     e.Killed = (flags & 1) != 0;
                     e.Continues = (flags & 2) != 0;
+                    e.SurvivorTarget = (flags & 4) != 0;
                     e.Position = new Vector2(MobCodec.Dequantize(ReadI16(buffer, ref o)), MobCodec.Dequantize(ReadI16(buffer, ref o)));
                     break;
                 default:

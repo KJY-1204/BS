@@ -36,6 +36,7 @@ namespace BS
         readonly Dictionary<ulong, byte> slots = new Dictionary<ulong, byte>();
 
         PlayerAvatar bossAvatar;
+        SurvivorTargets survivorTargets;
         MobServer mobs;
         NetworkManager nm;
         bool running;
@@ -46,6 +47,7 @@ namespace BS
         float statsTimer;
         long bytesSent;
         int firesSent, hitsSent, killsSent, endsSent, skillsSent;
+        int bossFiresSent, survivorHitsSent;
 
         void Awake()
         {
@@ -56,7 +58,10 @@ namespace BS
             if (DevArgs.MobHealth > 0) mobs.Sim.MaxHealth = DevArgs.MobHealth;
             buffer = new byte[CombatCodec.MaxBatchBytes + 64];
             slotOf = SlotOf;
+            survivorTargets = new SurvivorTargets(Survivors, slotOf);
         }
+
+        ulong BossOwnerId => bossAvatar != null ? bossAvatar.OwnerClientId : ulong.MaxValue;
 
         byte SlotOf(ulong clientId) => slots.TryGetValue(clientId, out byte slot) ? slot : (byte)0;
 
@@ -110,16 +115,27 @@ namespace BS
         {
             bossAvatar = avatar;
             Boss.Reset(BossCatalog.ForMatch(), avatar.transform.position);
-            Debug.Log($"[BS] boss registered: owner={avatar.OwnerClientId} health={Boss.MaxHealth}");
+
+            // The boss shoots like a survivor does, but its shots are hostile: they hurt survivors and pass through mobs.
+            slots[avatar.OwnerClientId] = RoleTable.BossRole;
+            Attacks.Register(avatar.OwnerClientId, BossAttack.Def, true);
+            Debug.Log($"[BS] boss registered: owner={avatar.OwnerClientId} health={Boss.MaxHealth} shotDamage={BossShotDamage}");
         }
 
         /// <summary>Called when the boss's character despawns (the boss player left, or the match ended).</summary>
         public void UnregisterBoss(PlayerAvatar avatar)
         {
             if (bossAvatar != avatar) return;
+            Attacks.Unregister(avatar.OwnerClientId);
+            slots.Remove(avatar.OwnerClientId);
             bossAvatar = null;
             Boss.Clear();
         }
+
+        /// <summary>The damage of a boss shot at full boss health (the development override replaces the shared value).</summary>
+        public static int BossShotDamage => DevArgs.BossShotDamage > 0 ? DevArgs.BossShotDamage : BossAttack.BaseDamage;
+
+        bool IsBossOwner(ulong clientId) => bossAvatar != null && bossAvatar.OwnerClientId == clientId;
 
         /// <summary>Called when a survivor's character spawns on the server.</summary>
         public void RegisterSurvivor(PlayerAvatar avatar)
@@ -162,11 +178,12 @@ namespace BS
             return false;
         }
 
-        /// <summary>Latest aim and fire state from a player. Only living survivors can fire.</summary>
+        /// <summary>Latest aim and fire state from a player. Only living survivors and the standing boss can fire.</summary>
         public void SetAim(ulong clientId, ushort angle, bool firing)
         {
             if (!running || !RoleTable.MatchRunning) return;
-            Attacks.SetAim(clientId, angle, firing && Survivors.IsAlive(clientId));
+            bool canFire = IsBossOwner(clientId) ? Boss.CanBeHit : Survivors.IsAlive(clientId);
+            Attacks.SetAim(clientId, angle, firing && canFire);
         }
 
         void FixedUpdate()
@@ -192,8 +209,17 @@ namespace BS
             for (int i = 0; i < bodies.Count; i++)
                 shooters.Add(new ShooterBody { ClientId = bodies[i].ClientId, Position = bodies[i].Position, CanFire = Survivors.IsAlive(bodies[i].ClientId) });
 
+            // The boss shoots too: a weaker boss fires faster and harder, from its health at the moment each shot leaves.
+            if (bossAvatar != null && bossAvatar.IsSpawned && Boss.Exists)
+            {
+                float fraction = Boss.MaxHealth > 0 ? Boss.Health / (float)Boss.MaxHealth : 0f;
+                Attacks.SetModifiers(bossAvatar.OwnerClientId, BossAttack.Damage(BossShotDamage, fraction), BossAttack.CooldownMultiplier(fraction));
+                shooters.Add(new ShooterBody { ClientId = bossAvatar.OwnerClientId, Position = Boss.Position, CanFire = Boss.CanBeHit });
+            }
+
+            survivorTargets.SetBodies(bodies);
             Attacks.Step(dt, shooters, Projectiles);
-            Projectiles.Step(dt, mobs.Sim, Boss.Exists ? Boss : null);
+            Projectiles.Step(dt, mobs.Sim, Boss.Exists ? Boss : null, survivorTargets);
 
             for (int i = 0; i < registered.Count; i++)
             {
@@ -208,7 +234,7 @@ namespace BS
             events.Clear();
             Projectiles.DrainEvents(events);
             for (int i = 0; i < events.Count; i++)
-                if (events[i].Kind == CombatEventKind.Hit && events[i].Killed && events[i].MobId != BossSim.MobId) killPositions.Add(events[i].Position);
+                if (events[i].Kind == CombatEventKind.Hit && events[i].Killed && !events[i].SurvivorTarget && events[i].MobId != BossSim.MobId) killPositions.Add(events[i].Position);
             if (events.Count > 0) PublishEvents(events);
 
             // Mob kills made by projectiles this step go out now, with the same time as the hits.
@@ -278,10 +304,19 @@ namespace BS
             int clients = remoteClients.Count;
             double perClient = clients > 0 ? bytesSent / (double)clients / statsTimer / 1024.0 : 0.0;
             Debug.Log($"[BS] combat server: fires={firesSent} hits={hitsSent} kills={killsSent} ends={endsSent} skills={skillsSent} " +
-                      $"projectiles={Projectiles.Count} survivors={Survivors.Count} clients={clients} payloadPerClient={perClient:F3}KB/s");
+                      $"bossFires={bossFiresSent} survivorHits={survivorHitsSent} {BossStatsText()} projectiles={Projectiles.Count} survivors={Survivors.Count} clients={clients} payloadPerClient={perClient:F3}KB/s");
             statsTimer = 0f;
             bytesSent = 0;
             firesSent = hitsSent = killsSent = endsSent = skillsSent = 0;
+            bossFiresSent = survivorHitsSent = 0;
+        }
+
+        /// <summary>The boss's health and what it fires with at that health (dev logging).</summary>
+        string BossStatsText()
+        {
+            if (!Boss.Exists) return "boss=none";
+            float fraction = Boss.MaxHealth > 0 ? Boss.Health / (float)Boss.MaxHealth : 0f;
+            return $"boss={Boss.HealthPercent}% shotDamage={BossAttack.Damage(BossShotDamage, fraction)} cooldownMult={BossAttack.CooldownMultiplier(fraction):F2}";
         }
 
         // ---- Sending ----
@@ -301,8 +336,12 @@ namespace BS
             {
                 switch (list[i].Kind)
                 {
-                    case CombatEventKind.Fire: firesSent++; break;
-                    case CombatEventKind.Hit: hitsSent++; if (list[i].Killed) killsSent++; break;
+                    case CombatEventKind.Fire: firesSent++; if (list[i].Owner == BossOwnerId) bossFiresSent++; break;
+                    case CombatEventKind.Hit:
+                        hitsSent++;
+                        if (list[i].SurvivorTarget) survivorHitsSent++;
+                        else if (list[i].Killed) killsSent++;
+                        break;
                     case CombatEventKind.Skill: skillsSent++; break;
                     default: endsSent++; break;
                 }
@@ -312,7 +351,7 @@ namespace BS
                 for (int i = 0; i < list.Count; i++)
                 {
                     int id = list[i].Kind == CombatEventKind.Skill ? list[i].SkillId : list[i].ProjectileId;
-                    Debug.Log($"[BS] combatdump server t={timeMs} {list[i].Kind} id={id} mob={list[i].MobId} kill={(list[i].Killed ? 1 : 0)} cont={(list[i].Continues ? 1 : 0)} angle={list[i].Angle} owner={list[i].Owner}");
+                    Debug.Log($"[BS] combatdump server t={timeMs} {list[i].Kind} id={id} mob={list[i].MobId} kill={(list[i].Killed ? 1 : 0)} cont={(list[i].Continues ? 1 : 0)} angle={list[i].Angle} owner={list[i].Owner} surv={(list[i].SurvivorTarget ? 1 : 0)}");
                 }
 
             // The host shows its own events at server time; everyone else gets them as a message.

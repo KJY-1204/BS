@@ -38,6 +38,7 @@ namespace BS
         /// <summary>The shape of the projectiles of whoever stands in a shooter slot, from the room's character table.</summary>
         static ProjectileShape ShapeOfShooterSlot(byte slot)
         {
+            if (slot == RoleTable.BossRole) return BossAttack.Shape; // a shot from the boss's slot is a boss shot
             RoleTable table = RoleTable.Instance;
             CharacterDef character = table != null ? CharacterCatalog.Get(table.CharacterOfRole(slot)) : null;
             return character != null ? character.Attack.Shape : ProjectileShape.Default;
@@ -182,7 +183,7 @@ namespace BS
             if (DevArgs.CombatDump && registered)
             {
                 int dumpId = e.Kind == CombatEventKind.Skill ? e.SkillId : e.ProjectileId;
-                Debug.Log($"[BS] combatdump client t={Mathf.RoundToInt(serverTime * 1000f)} {e.Kind} id={dumpId} mob={e.MobId} kill={(e.Killed ? 1 : 0)} cont={(e.Continues ? 1 : 0)} angle={e.Angle}");
+                Debug.Log($"[BS] combatdump client t={Mathf.RoundToInt(serverTime * 1000f)} {e.Kind} id={dumpId} mob={e.MobId} kill={(e.Killed ? 1 : 0)} cont={(e.Continues ? 1 : 0)} angle={e.Angle} surv={(e.SurvivorTarget ? 1 : 0)}");
             }
 
             switch (e.Kind)
@@ -194,7 +195,7 @@ namespace BS
                 case CombatEventKind.Hit:
                     hits++;
                     if (e.Killed) kills++;
-                    Replay.OnHit(e.ProjectileId, e.MobId, e.MobHealthPercent, e.Killed, e.Position, serverTime, e.Continues);
+                    Replay.OnHit(e.ProjectileId, e.MobId, e.MobHealthPercent, e.Killed, e.Position, serverTime, e.Continues, e.SurvivorTarget);
                     break;
                 case CombatEventKind.Skill:
                     skills++;

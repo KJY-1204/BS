@@ -168,7 +168,8 @@ namespace BS
             Mouse mouse = Mouse.current;
             Keyboard keyboard = Keyboard.current;
 
-            bool summon = (mouse != null && mouse.leftButton.isPressed) || (keyboard != null && keyboard.spaceKey.isPressed);
+            // The left mouse button fires the boss's shots (see PlayerCombat); summoning is on Space.
+            bool summon = keyboard != null && keyboard.spaceKey.isPressed;
             if (summon && Time.unscaledTime - lastSendTime >= MinSendInterval) SendSummon();
 
             if (mouse != null && mouse.rightButton.wasPressedThisFrame && Camera.main != null)
