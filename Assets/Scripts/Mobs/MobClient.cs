@@ -36,6 +36,15 @@ namespace BS
             nm = NetworkManager.Singleton;
             nm.OnClientStarted += HandleClientStarted;
             nm.OnClientStopped += HandleClientStopped;
+            RoleTable.PhaseChanged += OnPhaseChanged;
+        }
+
+        /// <summary>A match ended and the room is waiting again: nothing from the match stays on screen.</summary>
+        void OnPhaseChanged(RoomPhase phase)
+        {
+            if (phase != RoomPhase.Waiting) return;
+            if (DevArgs.MobLog) Debug.Log($"[BS] mobs client: match ended, clearing {Interpolator.Count} mobs");
+            Interpolator.Clear();
         }
 
         void OnDestroy()
@@ -43,6 +52,7 @@ namespace BS
             if (nm == null) return;
             nm.OnClientStarted -= HandleClientStarted;
             nm.OnClientStopped -= HandleClientStopped;
+            RoleTable.PhaseChanged -= OnPhaseChanged;
             Unregister();
         }
 

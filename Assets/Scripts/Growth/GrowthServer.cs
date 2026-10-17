@@ -113,7 +113,7 @@ namespace BS
             entries[id] = entry;
 
             Leveling.Register(id);
-            entry.Stats = StatCalc.Compute(1, Leveling.Ranks(id));
+            entry.Stats = StatCalc.Compute(1, Leveling.Ranks(id), CharacterCatalog.Get(avatar.CharacterId));
             Skills.Register(id, entry.Stats.MaxMana, entry.Stats.ManaRegenPerSecond);
             ApplyStats(id, entry);
             WriteReplicated(id, entry);
@@ -278,9 +278,9 @@ namespace BS
         /// <summary>Works out a survivor's stats and hands them to the simulations that use them.</summary>
         void ApplyStats(ulong id, Entry entry)
         {
-            entry.Stats = StatCalc.Compute(Leveling.Level(id), Leveling.Ranks(id));
-            int maxHealth = entry.Stats.MaxHealth;
+            entry.Stats = StatCalc.Compute(Leveling.Level(id), Leveling.Ranks(id), CharacterCatalog.Get(entry.Avatar.CharacterId));
             // -bsSurvivorHealth replaces the starting health in load tests; growth still adds on top of it.
+            int maxHealth = entry.Stats.MaxHealth;
             if (DevArgs.SurvivorHealth > 0) maxHealth += DevArgs.SurvivorHealth - CombatConfig.SurvivorMaxHealth;
             combat.Survivors.SetMaxHealth(id, maxHealth);
             Skills.SetStats(id, entry.Stats.MaxMana, entry.Stats.ManaRegenPerSecond);
@@ -316,6 +316,8 @@ namespace BS
 
         void RunDevScenario()
         {
+            // Counts from the start of the match, which is when the first survivor exists.
+            if (entries.Count == 0) { roomStartedAt = -1f; devXpDone = false; return; }
             if (roomStartedAt < 0f) roomStartedAt = Time.time;
             if (devXpDone || DevArgs.DevXpTime < 0f || Time.time - roomStartedAt < DevArgs.DevXpTime) return;
             if (entries.Count == 0) return;

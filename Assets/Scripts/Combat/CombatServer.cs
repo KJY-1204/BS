@@ -84,6 +84,9 @@ namespace BS
             ResetAll();
         }
 
+        /// <summary>A match ended but the room goes on: every survivor, shot and growth state is gone.</summary>
+        public void ResetMatch() => ResetAll();
+
         void ResetAll()
         {
             registered.Clear();
@@ -101,9 +104,20 @@ namespace BS
         {
             if (!registered.Contains(avatar)) registered.Add(avatar);
             slots[avatar.OwnerClientId] = avatar.Role;
-            Survivors.Register(avatar.OwnerClientId);
+            Survivors.Register(avatar.OwnerClientId, StartingMaxHealth(CharacterCatalog.Get(avatar.CharacterId)));
             Attacks.Register(avatar.OwnerClientId);
             GrowthServer.Instance?.Register(avatar);
+        }
+
+        /// <summary>
+        /// The health a survivor of this character starts with. The development override replaces the shared starting
+        /// health, so a character keeps its difference from the others.
+        /// </summary>
+        public static int StartingMaxHealth(CharacterDef character)
+        {
+            int health = character != null ? character.MaxHealth : CombatConfig.SurvivorMaxHealth;
+            if (DevArgs.SurvivorHealth > 0) health += DevArgs.SurvivorHealth - CombatConfig.SurvivorMaxHealth;
+            return health;
         }
 
         public void UnregisterSurvivor(PlayerAvatar avatar)
@@ -219,7 +233,9 @@ namespace BS
         {
             if (!running) { roomStartedAt = -1f; devKillDone = devMeetDone = false; return; }
 
-            RunDevScenarios();
+            // The scenarios count from the start of the match, which is when the first survivor exists.
+            if (registered.Count == 0) { roomStartedAt = -1f; devKillDone = devMeetDone = false; }
+            else RunDevScenarios();
 
             if (!DevArgs.CombatLog) return;
 

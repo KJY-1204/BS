@@ -56,9 +56,11 @@ namespace BS
         {
             response.CreatePlayerObject = false;
             int connected = NetworkManager.Singleton.ConnectedClientsIds.Count;
-            response.Approved = connected < MaxPlayers;
-            if (!response.Approved) response.Reason = "방이 가득 찼습니다.";
-            Debug.Log($"[BS] connection request from client {request.ClientNetworkId}: {(response.Approved ? "approved" : "rejected (room full)")} ({connected}/{MaxPlayers})");
+            bool playing = RoleTable.Instance != null && RoleTable.Instance.Phase == RoomPhase.Playing;
+            response.Approved = connected < MaxPlayers && !playing;
+            if (!response.Approved) response.Reason = playing ? "이미 게임이 진행 중입니다." : "방이 가득 찼습니다.";
+            Debug.Log($"[BS] connection request from client {request.ClientNetworkId}: " +
+                      $"{(response.Approved ? "approved" : playing ? "rejected (match running)" : "rejected (room full)")} ({connected}/{MaxPlayers})");
         }
 
         void OnClientDisconnected(ulong clientId)

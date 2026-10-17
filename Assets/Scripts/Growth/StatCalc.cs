@@ -17,8 +17,18 @@ namespace BS
     {
         public const float MinCooldownMultiplier = 0.2f;
 
-        public static SurvivorStats Compute(int level, IReadOnlyList<int> ranks)
+        public static SurvivorStats Compute(int level, IReadOnlyList<int> ranks) => Compute(level, ranks, null);
+
+        /// <summary>
+        /// Starting health, mana and mana recovery come from the character (the shared defaults when there is none);
+        /// what levels and skills add is the same for every character.
+        /// </summary>
+        public static SurvivorStats Compute(int level, IReadOnlyList<int> ranks, CharacterDef character)
         {
+            int baseHealth = character != null ? character.MaxHealth : CombatConfig.SurvivorMaxHealth;
+            int baseMana = character != null ? character.MaxMana : GrowthConfig.BaseMaxMana;
+            float baseRegen = character != null ? character.ManaRegenPerSecond : GrowthConfig.BaseManaRegenPerSecond;
+
             int gained = level > 1 ? level - 1 : 0;
 
             int power = SkillCatalog.RankOf(ranks, SkillIds.Power);
@@ -31,9 +41,9 @@ namespace BS
 
             return new SurvivorStats
             {
-                MaxHealth = CombatConfig.SurvivorMaxHealth + GrowthConfig.HealthPerLevel * gained + SkillCatalog.VitalityHealthPerRank * vitality,
-                MaxMana = GrowthConfig.BaseMaxMana + GrowthConfig.ManaPerLevel * gained + SkillCatalog.FocusManaPerRank * focus,
-                ManaRegenPerSecond = GrowthConfig.BaseManaRegenPerSecond + SkillCatalog.FocusRegenPerRank * focus,
+                MaxHealth = baseHealth + GrowthConfig.HealthPerLevel * gained + SkillCatalog.VitalityHealthPerRank * vitality,
+                MaxMana = baseMana + GrowthConfig.ManaPerLevel * gained + SkillCatalog.FocusManaPerRank * focus,
+                ManaRegenPerSecond = baseRegen + SkillCatalog.FocusRegenPerRank * focus,
                 ProjectileDamage = CombatConfig.ProjectileDamage + GrowthConfig.DamagePerLevel * gained + SkillCatalog.PowerDamagePerRank * power,
                 CooldownMultiplier = multiplier,
             };

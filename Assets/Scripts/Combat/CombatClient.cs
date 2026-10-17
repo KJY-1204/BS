@@ -48,10 +48,22 @@ namespace BS
             nm.OnClientStarted += HandleClientStarted;
             nm.OnClientStopped += HandleClientStopped;
             nm.OnServerStopped += HandleServerStopped;
+            RoleTable.PhaseChanged += OnPhaseChanged;
+        }
+
+        /// <summary>A match ended and the room is waiting again: no shot or skill effect of it stays on screen.</summary>
+        void OnPhaseChanged(RoomPhase phase)
+        {
+            if (phase != RoomPhase.Waiting) return;
+            Replay.Clear();
+            SkillEffects.Clear();
+            DueEffects.Clear();
+            DueSkillEffects.Clear();
         }
 
         void OnDestroy()
         {
+            RoleTable.PhaseChanged -= OnPhaseChanged;
             if (Instance == this) Instance = null;
             if (nm == null) return;
             nm.OnClientStarted -= HandleClientStarted;

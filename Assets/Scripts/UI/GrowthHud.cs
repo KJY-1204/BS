@@ -156,8 +156,9 @@ namespace BS
                 Vector3 screen = cam.WorldToScreenPoint(g.transform.position + new Vector3(0f, 1.15f, 0f));
                 if (screen.z < 0f) continue;
 
-                Rect label = new Rect(screen.x - 30f, Screen.height - screen.y - 10f, 60f, 20f);
-                GUI.Label(label, $"Lv {g.Level}", levelLabel);
+                CharacterDef def = CharacterCatalog.Get(a.CharacterId);
+                Rect label = new Rect(screen.x - 60f, Screen.height - screen.y - 10f, 120f, 20f);
+                GUI.Label(label, def != null ? $"{def.Name}  Lv {g.Level}" : $"Lv {g.Level}", levelLabel);
             }
         }
 

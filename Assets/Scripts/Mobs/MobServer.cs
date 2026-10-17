@@ -20,6 +20,8 @@ namespace BS
         const int DumpEveryTicks = 75; // 5 s at 15 Hz
         const float StatsSeconds = 5f;
 
+        public static MobServer Instance { get; private set; }
+
         public MobSim Sim { get; private set; }
 
         /// <summary>Server time in milliseconds on the same timeline as the snapshot ticks.</summary>
@@ -45,6 +47,7 @@ namespace BS
 
         void Awake()
         {
+            Instance = this;
             int target = DevArgs.MobTarget.HasValue ? Math.Clamp(DevArgs.MobTarget.Value, 0, MobConfig.HardCap) : MobConfig.DefaultTarget;
             Sim = new MobSim(MobConfig.HardCap, target);
             buffer = new byte[Math.Max(MobCodec.MaxChunkBytes, MobCodec.EventBytes(Math.Max(MobConfig.HardCap, EventsPerMessage))) + 16];
@@ -57,8 +60,16 @@ namespace BS
             nm.OnServerStopped += HandleServerStopped;
         }
 
+        /// <summary>A match ended but the room goes on: every mob is gone and the next match starts empty.</summary>
+        public void ResetMatch()
+        {
+            Sim.Clear();
+            events.Clear();
+        }
+
         void OnDestroy()
         {
+            if (Instance == this) Instance = null;
             if (nm == null) return;
             nm.OnServerStarted -= HandleServerStarted;
             nm.OnServerStopped -= HandleServerStopped;

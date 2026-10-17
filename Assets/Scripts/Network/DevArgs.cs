@@ -25,6 +25,11 @@ namespace BS
     /// -bsDevXp t n     (host) give every survivor n experience t seconds after the room starts
     /// -bsAutoPick i d  (owner) pick choice i (1 to 3) d seconds after a choice opens; 0 never picks
     /// -bsAutoSkill q|e s  (owner) press that skill key every s seconds
+    /// -bsCharacter n   (any player) choose character n (1 to 4) shortly after joining the waiting room
+    /// -bsAutoStart s n (host) start the match s seconds after n survivors are in and every survivor has chosen
+    /// -bsAutoEnd s     (host) end the first match s seconds after it started, returning to the waiting room
+    /// -bsTryStart s    (client) send a start request s seconds after joining; the server should ignore it
+    /// -bsTryEnd s      (client) send an end-match request s seconds after joining; the server should ignore it
     /// -bsSurvivorHealth n  survivor maximum health (host), to keep survivors alive in load tests
     /// -bsMobSpeed v    mob speed (host)
     /// -bsMobHealth n   mob maximum health (host); a high value keeps mobs alive under fire for load tests
@@ -61,6 +66,12 @@ namespace BS
         public static float AutoPickDelay { get; private set; }
         public static int AutoSkillSlot { get; private set; } = -1;
         public static float AutoSkillInterval { get; private set; } = 1f;
+        public static int Character { get; private set; }
+        public static float AutoStartSeconds { get; private set; } = -1f;
+        public static int AutoStartSurvivors { get; private set; } = 1;
+        public static float AutoEndSeconds { get; private set; } = -1f;
+        public static float TryStartSeconds { get; private set; } = -1f;
+        public static float TryEndSeconds { get; private set; } = -1f;
         public static int SurvivorHealth { get; private set; }
         public static float MobSpeed { get; private set; }
         public static int MobHealth { get; private set; }
@@ -117,6 +128,24 @@ namespace BS
                         break;
                     case "-bsCombatDump":
                         CombatDump = true;
+                        break;
+                    case "-bsCharacter" when i + 1 < args.Length:
+                        if (int.TryParse(args[i + 1], out int ch)) Character = ch;
+                        break;
+                    case "-bsAutoStart" when i + 2 < args.Length:
+                        float.TryParse(args[i + 1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float ast);
+                        int.TryParse(args[i + 2], out int asn);
+                        AutoStartSeconds = ast;
+                        AutoStartSurvivors = Mathf.Max(1, asn);
+                        break;
+                    case "-bsAutoEnd" when i + 1 < args.Length:
+                        if (float.TryParse(args[i + 1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float aen)) AutoEndSeconds = aen;
+                        break;
+                    case "-bsTryStart" when i + 1 < args.Length:
+                        if (float.TryParse(args[i + 1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float tst)) TryStartSeconds = tst;
+                        break;
+                    case "-bsTryEnd" when i + 1 < args.Length:
+                        if (float.TryParse(args[i + 1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float ten)) TryEndSeconds = ten;
                         break;
                     case "-bsSurvivorHealth" when i + 1 < args.Length:
                         int.TryParse(args[i + 1], out int sh);

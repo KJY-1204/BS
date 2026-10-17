@@ -11,6 +11,7 @@ Unity 6 (6000.3) 2D 뱀서라이크. 생존자 4명 대 보스 1명의 비대칭
 - 서버 권한형 리슨 서버(호스트-클라이언트), Netcode for GameObjects
 - Relay 방: Unity Multiplayer Services (접속 코드로 참가). 직접 IP 모드는 로컬 테스트용
 - 한 방 최대 5명: 보스 1 + 생존자 슬롯 1~4. 역할은 서버의 `RoleTable`이 배정
+- 방 상태: 대기(Lobby)와 진행(Playing). 접속하면 대기방에 들어가 캐릭터를 고르고, 호스트가 시작하면 그때 캐릭터와 몹이 생긴다 (아래 "대기방과 캐릭터")
 - 이동: 소유자가 입력을 서버로 보내고, 서버가 위치를 계산해 복제. 소유자는 같은 규칙으로 먼저 움직이고 서버와 어긋나면 보정
 - 카메라: 각 클라이언트가 자기 캐릭터만 따라가며 아레나(32 x 20 유닛) 밖은 보이지 않음
 - 몹: 서버(호스트)만 시뮬레이션하고 클라이언트는 받은 위치를 보간해서 그린다 (아래 "몹")
@@ -20,6 +21,8 @@ Unity 6 (6000.3) 2D 뱀서라이크. 생존자 4명 대 보스 1명의 비대칭
 ```
 Assets/Scripts/
   Network/  SessionBootstrap, RoleTable, ArenaConfig, ArenaVisual, DevArgs
+  Lobby/    LobbySim (순수 C#: 방 상태, 캐릭터 선택, 시작 조건)
+  Characters/ CharacterCatalog (캐릭터 데이터)
   Player/   PlayerAvatar, PlayerCombat, PlayerGrowth, PlayerRegistry
   Camera/   CameraFollow
   Mobs/     MobSim, MobCodec, MobInterpolator (순수 C#)
@@ -30,7 +33,7 @@ Assets/Scripts/
             GrowthServer
   UI/       NetworkMenu (IMGUI 테스트 메뉴), CombatHud (체력 표시), GrowthHud (경험치, 마나, 스킬, 선택 패널)
   Editor/   NetworkSceneSetup (BS > Setup Network Scene)
-Assets/Tests/EditMode/   EditMode 테스트 (몹, 전투, 성장, 코덱, 보간기, 재생)
+Assets/Tests/EditMode/   EditMode 테스트 (몹, 전투, 성장, 대기방, 캐릭터, 코덱, 보간기, 재생)
 tools/                   로그 비교 스크립트 (몹 위치, 전투 이벤트)
 ```
 
@@ -75,6 +78,30 @@ tools/                   로그 비교 스크립트 (몹 위치, 전투 이벤�
 - 생존자가 쓰러지면 움직이거나 쏠 수 없고 몹이 쫓지 않는다. 살아 있는 생존자가 근처(1.5 이내)에서 움직이지 않고 서 있으면 부활 게이지가 차고, 움직이면 0으로 돌아간다. 전원이 쓰러져도 방은 계속 유지되고 몹은 더 나오지 않는다(종료와 승패는 보스 change에서).
 - 클라이언트 화면의 투사체는 입력 후 약 0.2초 뒤에 보인다(서버 왕복 + 표시 지연). 소유자 화면에는 클릭 즉시 총구 섬광만 보여 준다.
 
+## 대기방과 캐릭터
+
+```
+ 접속 --> [대기 Waiting] --호스트 시작--> [진행 Playing] --호스트 "대기방으로 돌아가기"--> [대기]
+            캐릭터 선택                    캐릭터/몹/전투/성장                 (선택 유지, 모두 정리)
+            (캐릭터와 몹 없음)             진행 중 새 접속 거절
+```
+
+- 판정은 서버의 `LobbySim`(순수 C#)이 하고, `RoleTable`이 그 결과를 복제와 RPC로 옮긴다. 클라이언트는 캐릭터 번호만 보낸다(0 = 해제).
+- 한 캐릭터는 한 사람만 쓴다. 서버에 먼저 도착한 요청이 이기고, 잡힌 캐릭터를 고르면 거절 문구가 나온다. 다른 캐릭터로 바꾸면 이전 캐릭터가 바로 풀린다. 나간 사람의 캐릭터도 풀린다. 보스는 고르지 않는다.
+- 호스트의 시작 버튼은 생존자가 1명 이상이고 생존자 전원이 캐릭터를 골랐을 때만 눌린다. 호스트가 아닌 사람의 시작/종료 요청은 무시된다.
+- 진행 중인 방은 새 참가자를 "이미 게임이 진행 중입니다."로 거절한다. 진행 중에 나간 사람은 그 판에 다시 들어올 수 없고 대기방으로 돌아온 뒤에 들어올 수 있다.
+- 판을 끝내면 캐릭터, 몹, 투사체, 스킬 연출, 레벨/경험치/스킬을 모두 지우고 같은 사람들이 대기방으로 돌아온다. 고른 캐릭터는 그대로이고 바꿀 수 있다. 호스트가 나가면 방이 끝나는 것은 그대로다.
+- 캐릭터는 `CharacterCatalog`의 데이터다(가정값, 플레이로 조절). 이번에는 공격과 스킬 트리가 4명 모두 같고, 시작 수치와 이동 속도와 색만 다르다. 레벨과 스킬로 느는 양은 모두 같다.
+
+| 캐릭터 | 시작 체력 | 시작 마나 | 마나 회복/초 | 이동 속도 | 색 |
+|---|---|---|---|---|---|
+| 레이무 | 100 | 100 | 5 | 6.0 | 분홍 |
+| 마리사 | 80 | 130 | 6 | 5.5 | 노랑 |
+| 사쿠야 | 90 | 90 | 5 | 7.0 | 파랑 |
+| 사나에 | 120 | 110 | 5 | 5.5 | 초록 |
+
+보스는 이동 속도 6.0이다. 캐릭터 이름만 사용하고 원작 그림은 쓰지 않는다. 팬 작품 표기는 에셋을 넣는 단계에서 다시 확인한다.
+
 ## 성장
 
 ```
@@ -103,13 +130,14 @@ tools/                   로그 비교 스크립트 (몹 위치, 전투 이벤�
    - **Host**: Relay 방을 만들고 접속 코드를 표시. "보스로 시작"을 켜면 호스트가 보스
    - **Join**: 접속 코드를 입력해 참가
    - **Host (직접) / Join (직접)**: Unity 서비스 없이 같은 PC/LAN에서 테스트
-4. 이동은 WASD 또는 방향키, 조준은 마우스, 발사는 왼쪽 버튼, 스킬은 Q/E, 레벨업 선택은 숫자 키 1/2/3. 호스트가 생존자로 시작하면 주변으로 몹이 모여든다. 화면 왼쪽 아래에 체력, 마나, 경험치가 표시된다.
+4. 접속하면 대기방이 보인다. 생존자는 캐릭터 버튼으로 캐릭터를 고르고, 모두 고르면 호스트가 "시작"을 누른다. 진행 중에 호스트는 "대기방으로 돌아가기"로 판을 끝낼 수 있다.
+5. 이동은 WASD 또는 방향키, 조준은 마우스, 발사는 왼쪽 버튼, 스킬은 Q/E, 레벨업 선택은 숫자 키 1/2/3. 호스트가 생존자로 시작하면 주변으로 몹이 모여든다. 화면 왼쪽 아래에 체력, 마나, 경험치가 표시된다.
 
 Relay를 쓰려면 Unity 계정으로 로그인하고 프로젝트가 Unity 클라우드 프로젝트에 연결돼 있어야 한다.
 
 ## 테스트
 
-- EditMode 테스트 250개: `Window > General > Test Runner > EditMode`에서 실행한다. 몹 시뮬레이션, 스냅샷/이벤트 부호화(청크 크기 포함), 클라이언트 보간(스냅샷 유실, 무응답 제거, 임시 몹, 서버 시각에 맞춘 제거), 공격 쿨타임, 투사체 비행과 명중, 생존자 체력과 접촉 피해와 부활, 조준 전송 제한, 전투 이벤트 부호화, 클라이언트 투사체 재생, 경험치 분배와 레벨업, 선택지와 시간 초과 자동 선택, 마나와 스킬 판정, 스킬 연출 재생을 다룬다.
+- EditMode 테스트 293개: `Window > General > Test Runner > EditMode`에서 실행한다. 몹 시뮬레이션, 스냅샷/이벤트 부호화(청크 크기 포함), 클라이언트 보간(스냅샷 유실, 무응답 제거, 임시 몹, 서버 시각에 맞춘 제거), 공격 쿨타임, 투사체 비행과 명중, 생존자 체력과 접촉 피해와 부활, 조준 전송 제한, 전투 이벤트 부호화, 클라이언트 투사체 재생, 경험치 분배와 레벨업, 선택지와 시간 초과 자동 선택, 마나와 스킬 판정, 스킬 연출 재생, 캐릭터 데이터와 캐릭터별 시작 수치, 방 상태와 캐릭터 선택(경쟁, 변경, 해제, 시작 조건, 권한, 진행 중 접속)을 다룬다.
 - 네트워크 통합 테스트는 아래 실행 인자로 개발 빌드 여러 개를 띄워서 로그로 확인한다.
 
 ## 여러 명으로 테스트하기
@@ -146,41 +174,64 @@ Relay를 쓰려면 Unity 계정으로 로그인하고 프로젝트가 Unity 클�
 | `-bsDevXp <초> <n>` | (호스트) 방이 시작되고 지정한 초 뒤에 모든 생존자에게 경험치 n을 줌 |
 | `-bsAutoPick <번호> <초>` | (소유자) 선택이 열리고 지정한 초 뒤에 번호(1~3)를 고름. 번호 0이면 고르지 않아 자동 선택을 시험 |
 | `-bsAutoSkill <q 또는 e> <초>` | (소유자) 지정한 간격으로 해당 스킬 키를 누름 |
+| `-bsCharacter <n>` | 대기방에 들어간 뒤 캐릭터 n(1~4)을 자동 선택. 이미 잡혀서 거절되면 남은 캐릭터 중 하나를 고름 |
+| `-bsAutoStart <초> <n>` | (호스트) 생존자 n명이 모두 캐릭터를 고른 뒤 지정한 초가 지나면 시작. 대기방으로 돌아올 때마다 같은 조건으로 다시 시작 |
+| `-bsAutoEnd <초>` | (호스트) 첫 판이 시작되고 지정한 초 뒤에 판을 끝내고 대기방으로 돌아감 |
+| `-bsTryStart <초>`, `-bsTryEnd <초>` | (클라이언트) 접속하고 지정한 초 뒤에 시작/종료 요청을 보냄. 서버가 무시해야 한다 |
 | `-bsQuit <초>` | 지정 시간 후 종료 |
 
-`-bsSurvivorHealth`는 성장의 최대 체력에도 더해진다(기본 체력 대신 이 값에서 시작). `-bsMobTarget 0`은 자동 스폰을 끈다. 개발 인자 중 "(호스트)"가 붙은 값은 호스트에서만 적용된다.
+접속하면 바로 시작되던 예전 방식은 없다. 모든 시험은 대기방을 거치므로 호스트에 `-bsCharacter`와 `-bsAutoStart`가, 클라이언트에 `-bsCharacter`가 필요하다. `-bsDevKill`, `-bsDevMeet`, `-bsDevXp`의 "방이 시작되고"는 판이 시작되고를 뜻한다. `-bsSurvivorHealth`는 성장의 최대 체력과 캐릭터 시작 체력에 더해진다(기본 체력 대신 이 값에서 시작하고 캐릭터 차이는 유지). `-bsMobTarget 0`은 자동 스폰을 끈다. 개발 인자 중 "(호스트)"가 붙은 값은 호스트에서만 적용된다.
 
 예: 호스트 하나와 클라이언트를 직접 IP로 띄워 몹 100마리를 만들고 위치를 비교한다.
 
 ```
-BS.exe -batchmode -nographics -logFile host.log -bsHost -bsMobTarget 100 -bsMobLog -bsMobDump -bsQuit 85
-BS.exe -batchmode -nographics -logFile c1.log -bsJoin 127.0.0.1 -bsMobLog -bsMobDump -bsMove 1 0 -bsQuit 70
+BS.exe -batchmode -nographics -logFile host.log -bsHost -bsCharacter 1 -bsAutoStart 2 2 -bsMobTarget 100 -bsMobLog -bsMobDump -bsQuit 85
+BS.exe -batchmode -nographics -logFile c1.log -bsJoin 127.0.0.1 -bsCharacter 2 -bsMobLog -bsMobDump -bsMove 1 0 -bsQuit 70
 python tools/compare_mobdumps.py host.log c1.log
 ```
 
 전투 이벤트를 비교하려면 모든 프로세스에 `-bsCombatDump`를 주고 `python tools/compare_combat.py host.log c1.log c2.log`를 실행한다. 도구는 각 클라이언트가 연결돼 있던 구간만 비교한다.
 
 ```
-BS.exe -batchmode -nographics -logFile host.log -bsHost -bsMobTarget 100 -bsMobHealth 100000 -bsSurvivorHealth 100000 -bsCombatDump -bsFire -bsAimSweep 50 -bsMove 0 0 -bsQuit 80
-BS.exe -batchmode -nographics -logFile c1.log -bsJoin 127.0.0.1 -bsCombatDump -bsFire -bsAimSweep -60 -bsMove 0 0 -bsQuit 70
+BS.exe -batchmode -nographics -logFile host.log -bsHost -bsCharacter 1 -bsAutoStart 2 2 -bsMobTarget 100 -bsMobHealth 100000 -bsSurvivorHealth 100000 -bsCombatDump -bsFire -bsAimSweep 50 -bsMove 0 0 -bsQuit 80
+BS.exe -batchmode -nographics -logFile c1.log -bsJoin 127.0.0.1 -bsCharacter 2 -bsCombatDump -bsFire -bsAimSweep -60 -bsMove 0 0 -bsQuit 70
 python tools/compare_combat.py host.log c1.log
 ```
 
 부활 시험: 몹 없이 호스트가 역할 2를 8초에 쓰러뜨리고 역할 3을 10초에 그 옆으로 옮긴다. 가만히 서 있는 구조자 옆에서 게이지가 4초 동안 1%씩 차올라 체력 50으로 부활하고, 구조자가 움직이면(`-bsMove 0.3 0`) 게이지가 차지 않는다.
 
 ```
-BS.exe -batchmode -nographics -logFile host.log -bsHost -bsMobTarget 0 -bsCombatLog -bsMove 0 0 -bsDevKill 2 8 -bsDevMeet 3 2 10 -bsQuit 35
-BS.exe -batchmode -nographics -logFile c1.log -bsJoin 127.0.0.1 -bsCombatLog -bsMove 0 0 -bsQuit 45
-BS.exe -batchmode -nographics -logFile c2.log -bsJoin 127.0.0.1 -bsCombatLog -bsMove 0 0 -bsQuit 45
+BS.exe -batchmode -nographics -logFile host.log -bsHost -bsCharacter 1 -bsAutoStart 2 3 -bsMobTarget 0 -bsCombatLog -bsMove 0 0 -bsDevKill 2 8 -bsDevMeet 3 2 10 -bsQuit 40
+BS.exe -batchmode -nographics -logFile c1.log -bsJoin 127.0.0.1 -bsCharacter 2 -bsCombatLog -bsMove 0 0 -bsQuit 45
+BS.exe -batchmode -nographics -logFile c2.log -bsJoin 127.0.0.1 -bsCharacter 3 -bsCombatLog -bsMove 0 0 -bsQuit 45
 ```
 
 성장 시험: 호스트와 클라이언트 3명. 12초에 모든 생존자에게 경험치 70을 줘 연속 레벨업을 만들고, 한 명은 선택하지 않아(`-bsAutoPick 0 0`) 시간 초과 자동 선택을 확인한다. 로그의 `growth: level up`, `offer opened`, `offer closed ... auto=True/False`, `skill fired`를 본다.
 
 ```
-BS.exe -batchmode -nographics -logFile host.log -bsHost -bsMobTarget 30 -bsMobHealth 60 -bsSurvivorHealth 60000 -bsGrowthLog -bsCombatDump -bsXpPerKill 10 -bsOfferSeconds 4 -bsDevXp 12 70 -bsFire -bsAimSweep 60 -bsAutoSkill q 3 -bsAutoPick 1 1 -bsQuit 60
-BS.exe -batchmode -nographics -logFile c1.log -bsJoin 127.0.0.1 -bsGrowthLog -bsCombatDump -bsFire -bsAimSweep -50 -bsAutoPick 2 1 -bsAutoSkill e 4 -bsQuit 50
-BS.exe -batchmode -nographics -logFile c2.log -bsJoin 127.0.0.1 -bsGrowthLog -bsCombatDump -bsFire -bsAimSweep 30 -bsAutoPick 0 0 -bsAutoSkill q 5 -bsQuit 48
+BS.exe -batchmode -nographics -logFile host.log -bsHost -bsCharacter 1 -bsAutoStart 3 3 -bsMobTarget 30 -bsMobHealth 60 -bsSurvivorHealth 60000 -bsGrowthLog -bsCombatDump -bsXpPerKill 10 -bsOfferSeconds 4 -bsDevXp 12 70 -bsFire -bsAimSweep 60 -bsAutoSkill q 3 -bsAutoPick 1 1 -bsQuit 66
+BS.exe -batchmode -nographics -logFile c1.log -bsJoin 127.0.0.1 -bsCharacter 2 -bsGrowthLog -bsCombatDump -bsFire -bsAimSweep -50 -bsAutoPick 2 1 -bsAutoSkill e 4 -bsQuit 56
+BS.exe -batchmode -nographics -logFile c2.log -bsJoin 127.0.0.1 -bsCharacter 3 -bsGrowthLog -bsCombatDump -bsFire -bsAimSweep 30 -bsAutoPick 0 0 -bsAutoSkill q 5 -bsQuit 54
 python tools/compare_combat.py host.log c1.log c2.log
+```
+
+대기방 시험: 호스트와 클라이언트 3명이 대기방을 거쳐 시작하고, 두 클라이언트가 같은 캐릭터를 동시에 고르며(한쪽만 이기고 다른 쪽은 거절 후 다른 캐릭터), 한 클라이언트는 시작/종료 요청을 보내 무시되게 한다. 시작한 뒤에 들어오는 참가자가 거절되는지는 20초 뒤에 늦게 띄운 클라이언트로 본다. 로그의 `lobby: ...` 줄을 본다.
+
+```
+BS.exe -batchmode -nographics -logFile host.log -bsHost -bsCharacter 2 -bsAutoStart 4 3 -bsMobTarget 30 -bsMobHealth 80 -bsSurvivorHealth 60000 -bsCombatDump -bsFire -bsAimSweep 55 -bsQuit 50
+BS.exe -batchmode -nographics -logFile c1.log -bsJoin 127.0.0.1 -bsCharacter 3 -bsCombatDump -bsFire -bsAimSweep -45 -bsQuit 42
+BS.exe -batchmode -nographics -logFile c2.log -bsJoin 127.0.0.1 -bsCharacter 1 -bsCombatDump -bsFire -bsAimSweep 30 -bsQuit 40
+BS.exe -batchmode -nographics -logFile c3.log -bsJoin 127.0.0.1 -bsCharacter 1 -bsTryStart 1 -bsTryEnd 2 -bsCombatDump -bsFire -bsQuit 38
+(20초 뒤) BS.exe -batchmode -nographics -logFile c4.log -bsJoin 127.0.0.1 -bsCharacter 4 -bsQuit 12
+python tools/compare_combat.py host.log c1.log c2.log c3.log
+```
+
+판 종료와 둘째 판: 호스트가 첫 판을 16초에 끝내고 8초 뒤 다시 시작한다. 클라이언트 로그의 `match ended, clearing N mobs`와, 호스트 로그의 둘째 판 시작 직후 `growth server:` 줄(모두 레벨 1, 경험치 0)을 본다.
+
+```
+BS.exe -batchmode -nographics -logFile host.log -bsHost -bsCharacter 1 -bsAutoStart 8 3 -bsAutoEnd 16 -bsMobTarget 60 -bsMobHealth 90 -bsSurvivorHealth 60000 -bsGrowthLog -bsCombatDump -bsMobLog -bsXpPerKill 20 -bsFire -bsAimSweep 55 -bsQuit 70
+BS.exe -batchmode -nographics -logFile c1.log -bsJoin 127.0.0.1 -bsCharacter 2 -bsGrowthLog -bsCombatDump -bsMobLog -bsFire -bsAimSweep -45 -bsQuit 62
+BS.exe -batchmode -nographics -logFile c2.log -bsJoin 127.0.0.1 -bsCharacter 3 -bsGrowthLog -bsCombatDump -bsMobLog -bsFire -bsAimSweep 30 -bsQuit 60
 ```
 
 빌드는 Development Build여야 한다. 에디터 빌드 도구에서는 옵션에 `Development`를 지정한다(그렇지 않으면 `-bs...` 인자가 조용히 무시되고 프로세스가 멈춘 것처럼 보인다).
@@ -265,6 +316,38 @@ python tools/compare_combat.py host.log c1.log c2.log
 - 최대 레벨에 빨리 도달해서 레벨업 직후의 트래픽 변화는 직접 IP 시험의 로그로만 확인했다.
 - 호스트와 클라이언트가 같은 PC이고 헤드리스 빌드라서 지연이 낮고 CPU와 프레임 시간은 대표값이 아니다.
 
+### 대기방과 캐릭터 (`add-lobby-characters`)
+
+실제 Relay로 호스트 1 + 클라이언트 3(마리사, 사쿠야, 레이무, 사나에 한 명씩), 몹 목표 100마리(체력 200, 최대 89마리까지 올라감), 대기방을 거쳐 시작해 75초 진행, 판 종료, 대기방 복귀, 둘째 판 시작. 사쿠야(가장 빠름)는 계속 걸어 다녔고 시작 20초 뒤 다섯째 참가자가 접속을 시도했다.
+
+| 항목 | 결과 | 기준 |
+|---|---|---|
+| 대기방 흐름 (Relay) | 접속, 선택, 시작, 판 종료, 대기방 복귀, 둘째 판 시작이 모두 로그대로 진행 | |
+| 진행 중 접속 | 다섯째 참가자가 "이미 게임이 진행 중입니다."로 거절됨(Relay 경로로 사유가 전달됨) | 거절과 사유 표시 |
+| 소유자-서버 위치 차이 (사쿠야, 속도 7.0) | 걸을 때 최대 1.26유닛 | 보정 임계값 2.5유닛보다 작게 |
+| 클라이언트당 전투 트래픽 (스킬 이벤트 포함, 페이로드) | 평균 약 0.38 KB/s (최대 0.44) | 10 KB/s 이하 |
+| 클라이언트당 몹 트래픽 (페이로드) | 평균 약 4.9 KB/s (최대 약 9) | 50 KB/s 이하 |
+| 서버 틱 시간 (몹 포함) | 평균 약 0.04ms, 최대 약 2.1ms(한 번) | |
+| 전투 이벤트 (두 판 전체, 스킬 포함) | 서버 4853개를 클라이언트 3명이 연결된 구간에서 하나도 빠뜨리거나 더하지 않고 받음 | 일치 |
+
+직접 IP 시험 (호스트 1 + 클라이언트 3):
+
+| 항목 | 결과 |
+|---|---|
+| 선택 경쟁 | 같은 캐릭터를 거의 동시에 고른 둘 중 서버에 먼저 온 쪽이 갖고, 다른 쪽은 거절된 뒤 남은 캐릭터를 고름 |
+| 권한 | 클라이언트가 보낸 시작/종료 요청은 `NotHost`로 무시됨, 상태 변화 없음 |
+| 시작 전 | 캐릭터 0, 등록된 생존자 0, 몹 0(목표 30인데도) |
+| 시작 뒤 | 모든 프로세스가 같은 4명의 캐릭터와 역할을 가짐. 최대 체력은 캐릭터별(마리사 -20, 사쿠야 -10, 레이무 0, 사나에 +20)로 모든 프로세스에서 같게 보임 |
+| 진행 중 이탈 | 나간 사람의 캐릭터가 풀리고 등록 생존자가 줄며 방은 계속됨, 예외 없음 |
+| 판 종료와 둘째 판 | 몹 19마리가 있던 상태에서 종료. 클라이언트는 모두 몹을 비웠고 대기 중 몹 0을 유지. 둘째 판은 레벨 1, 경험치 0, 캐릭터별 시작 마나로 시작하고 몹은 0에서 다시 늘어남. 캐릭터 6번 스폰(판마다 3명) |
+| 이전 change 회귀 | EditMode 293개 통과, 몹 위치 일치(차이 0.000), 전투 이벤트 일치, 쓰러짐 -> 부활(최대 체력의 50%), 성장 선택과 스킬(직접 15회, 자동 6회, 스킬 발동 3회) 일치 |
+
+측정 방법과 한계:
+
+- 트래픽은 메시지 페이로드 기준이고 헤더는 포함하지 않았다. 호스트와 클라이언트가 같은 PC이고 헤드리스 빌드라서 CPU와 프레임 시간은 대표값이 아니다.
+- 소유자-서버 차이는 1초마다 찍는 로그로 걷는 동안 몇 번(4개 샘플)만 잰 값이다. 임계값의 절반이라 여유가 크지는 않으므로 지연이 큰 환경에서는 임계값을 올려야 할 수 있다.
+- 시험은 서바이버가 죽지 않게 체력을 크게 올렸다(`-bsSurvivorHealth`).
+
 ## 알려진 한계
 
 - 호스트가 나가면 방이 끝난다 (호스트 이전 없음). 클라이언트는 접속 화면으로 돌아간다.
@@ -274,7 +357,10 @@ python tools/compare_combat.py host.log c1.log c2.log
 - 테스트 메뉴는 IMGUI이고 정식 로비 UI와 Steam 연동은 범위 밖이다.
 - 몹은 한 종류(직선 추적)이고 서로 겹치는 정도는 분리만 하며 장애물 회피는 없다.
 - 몹 수가 하드 상한(100)을 넘으면 청크 분할은 지원하지만 대역폭과 호스트 CPU는 다시 측정해야 한다.
-- 공격은 캐릭터 구분 없는 직선 투사체 한 종류이고 스킬 트리도 모두 같은 임시 트리다. 캐릭터별 공격, 스킬, 스킬 트리와 대기방의 캐릭터 선택은 다음 change에서 같은 이벤트 방식으로 확장한다.
+- 공격은 캐릭터 구분 없는 직선 투사체 한 종류이고 스킬 트리도 모두 같은 임시 트리다. 캐릭터별 공격, 스킬, 스킬 트리는 다음 change에서 `CharacterDef`에 붙여 같은 이벤트 방식으로 확장한다.
+- 진행 중에 끊긴 사람은 그 판에 돌아올 수 없다(재접속과 진행 중 관전은 없음). 같은 빌드끼리만 접속한다는 전제이고 빌드 버전 검사는 없다.
+- 대기방 화면은 IMGUI 임시 화면이다. 준비 완료 버튼, 캐릭터 설명, 호스트 이외의 방 설정은 없다.
+- 보스는 대기방에 있지만 보스 전용 동작은 아직 없다. 보스 속도는 고정 6.0이다.
 - 폭발에 맞고 살아남은 몹은 체력 막대를 그리지 않는다(투사체 명중만 막대를 갱신한다). 이동 속도 성장은 아직 없다.
 - 지연 보상이 없다. 서버는 서버 시각의 몹 위치로 판정하므로, 지연이 큰 환경에서는 화면상 맞았는데 빗나가는 경우가 늘 수 있다.
 - 투사체는 입력 후 약 0.2초 뒤에 보인다. 소유자 화면에서는 총구 섬광만 즉시 보여 준다(투사체 예측은 아직 없다).

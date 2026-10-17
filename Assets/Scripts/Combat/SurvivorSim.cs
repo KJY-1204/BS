@@ -47,6 +47,13 @@ namespace BS
             states[clientId] = new State { Health = MaxHealth, MaxHealth = MaxHealth };
         }
 
+        /// <summary>Registers a survivor that starts with full health of its own maximum.</summary>
+        public void Register(ulong clientId, int maxHealth)
+        {
+            int max = Math.Max(1, maxHealth);
+            states[clientId] = new State { Health = max, MaxHealth = max };
+        }
+
         /// <summary>This survivor's own maximum health (the default for unknown survivors).</summary>
         public int MaxHealthOf(ulong clientId) => states.TryGetValue(clientId, out State s) ? s.MaxHealth : MaxHealth;
 

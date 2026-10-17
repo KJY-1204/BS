@@ -19,6 +19,7 @@ namespace BS
             new Color(0.7f, 0.4f, 0.9f),    // survivor 4
         };
 
+        [Tooltip("Used only when the character has no data of its own.")]
         [SerializeField] float moveSpeed = 6f;
         [Tooltip("Owner is snapped to the server position when farther than this (world units).")]
         [SerializeField] float correctionThreshold = 2.5f;
@@ -32,15 +33,33 @@ namespace BS
         readonly NetworkVariable<byte> role = new NetworkVariable<byte>(
             0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
+        readonly NetworkVariable<byte> character = new NetworkVariable<byte>(
+            CharacterIds.None, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
         InputAction moveAction;
         Vector2 serverInput;
         Vector2 lastSentInput;
         Vector2 predicted;
 
         byte pendingRole;
+        byte pendingCharacter;
         Vector2 pendingSpawn;
 
         public byte Role => role.Value;
+
+        /// <summary>The character this player plays (0 for the boss), known to every client.</summary>
+        public byte CharacterId => IsSpawned ? character.Value : pendingCharacter;
+
+        /// <summary>Movement speed from the character's data; the server and the owner's own movement use the same value.</summary>
+        public float MoveSpeed
+        {
+            get
+            {
+                if (role.Value == RoleTable.BossRole) return CharacterCatalog.BossMoveSpeed;
+                CharacterDef def = CharacterCatalog.Get(character.Value);
+                return def != null ? def.MoveSpeed : moveSpeed;
+            }
+        }
 
         public PlayerCombat Combat { get; private set; }
 
@@ -51,10 +70,11 @@ namespace BS
         public bool ServerMoving => IsAlive && serverInput.sqrMagnitude > 1e-4f;
 
         /// <summary>Called on the server before the object is spawned; applied once it is spawned.</summary>
-        public void InitServer(byte assignedRole, Vector2 spawn)
+        public void InitServer(byte assignedRole, Vector2 spawn, byte characterId = CharacterIds.None)
         {
             pendingRole = assignedRole;
             pendingSpawn = spawn;
+            pendingCharacter = characterId;
         }
 
         void Awake()
@@ -69,6 +89,7 @@ namespace BS
             if (IsServer)
             {
                 role.Value = pendingRole;
+                character.Value = pendingCharacter;
                 serverPos.Value = pendingSpawn;
                 PlayerRegistry.Register(this);
                 if (pendingRole != RoleTable.BossRole) CombatServer.Instance?.RegisterSurvivor(this);
@@ -138,7 +159,7 @@ namespace BS
             if (!IsSpawned || !IsServer) return;
 
             Vector2 input = IsAlive ? serverInput : Vector2.zero;
-            Vector2 next = ArenaConfig.ClampCharacter(serverPos.Value + input * (moveSpeed * Time.fixedDeltaTime));
+            Vector2 next = ArenaConfig.ClampCharacter(serverPos.Value + input * (MoveSpeed * Time.fixedDeltaTime));
             if (next != serverPos.Value) serverPos.Value = next;
             transform.position = next;
         }
@@ -182,7 +203,7 @@ namespace BS
             }
             else
             {
-                predicted = ArenaConfig.ClampCharacter(predicted + dir * (moveSpeed * Time.deltaTime));
+                predicted = ArenaConfig.ClampCharacter(predicted + dir * (MoveSpeed * Time.deltaTime));
             }
 
             transform.position = predicted;
@@ -234,7 +255,8 @@ namespace BS
         {
             if (body == null) return;
 
-            Color color = RoleColors[Mathf.Min(role.Value, (byte)(RoleColors.Length - 1))];
+            CharacterDef def = role.Value == RoleTable.BossRole ? null : CharacterCatalog.Get(character.Value);
+            Color color = def != null ? def.Color : RoleColors[Mathf.Min(role.Value, (byte)(RoleColors.Length - 1))];
             if (!IsAlive) color = Color.Lerp(color, new Color(0.25f, 0.25f, 0.28f), 0.75f); // fallen survivors are shown greyed out
             body.color = color;
         }
