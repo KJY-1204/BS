@@ -46,9 +46,13 @@ Every client SHALL show each survivor with its character's color, and the charac
 - **WHEN** a match starts
 - **THEN** each client shows each survivor in that survivor's character color, and the character names can be shown for every survivor
 
-### Requirement: Common rules are not character specific yet
-This version SHALL give every character the same basic attack and the same skill tree. Starting values, speed and color are the only differences between characters.
+### Requirement: Attack and active skills are the character's, passives are shared
+A character SHALL define its basic attack and own its two active skills, while the passive skills, the level-up growth and the skill selection rules SHALL stay the same for every character.
 
-#### Scenario: Same attack
+#### Scenario: Same passives
+- **WHEN** two survivors of different characters are offered passive skills
+- **THEN** both can learn the same passives with the same effects
+
+#### Scenario: Different attack
 - **WHEN** two survivors of different characters fire
-- **THEN** their shots have the same speed, range and damage rules (apart from the common growth), and both can learn the same skills
+- **THEN** their attacks follow their own character's data
