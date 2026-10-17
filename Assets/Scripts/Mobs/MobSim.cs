@@ -34,9 +34,12 @@ namespace BS
     /// </summary>
     public sealed class MobSim : IMobSource
     {
-        /// <summary>Mob type of an automatically spawned mob. The type is also what clients use to tell the origins apart.</summary>
+        /// <summary>
+        /// Type of an automatically spawned basic mob. A mob's type is one byte that holds its origin (bit 0) and its kind (the
+        /// bits above), see <see cref="MobKinds"/>; it is what clients use to draw the mob.
+        /// </summary>
         public const byte TypeAuto = 0;
-        /// <summary>Mob type of a mob the boss summoned.</summary>
+        /// <summary>Type of a basic mob the boss summoned.</summary>
         public const byte TypeSummoned = 1;
 
         /// <summary>A mob under a position order that gets this close has arrived and goes back to chasing survivors.</summary>
@@ -116,7 +119,18 @@ namespace BS
         public int Count => count;
         public int SummonedCount => summonedCount;
         public int AutoCount => count - summonedCount;
-        public bool IsSummoned(int index) => types[index] == TypeSummoned;
+        public bool IsSummoned(int index) => MobKinds.IsSummoned(types[index]);
+        public byte KindAt(int index) => MobKinds.KindOf(types[index]);
+
+        // The basic values are the fields above; a kind's value is the field times the kind's multiple.
+        public float SpeedOf(byte kind) => Speed * MobKinds.Get(kind).SpeedMultiple;
+        public float RadiusOf(byte kind) => Radius * MobKinds.Get(kind).RadiusMultiple;
+        public int MaxHealthOf(byte kind) => Mathf.Max(1, Mathf.RoundToInt(MaxHealth * MobKinds.Get(kind).HealthMultiple));
+        /// <summary>How many times the basic contact damage this mob's touch deals.</summary>
+        public float ContactMultipleOf(byte kind) => MobKinds.Get(kind).ContactDamageMultiple;
+
+        /// <summary>The largest body radius any mob can have, which widens grid queries so no mob is missed.</summary>
+        float LargestRadius => Radius * MobKinds.LargestRadiusMultiple;
         public ushort IdAt(int index) => ids[index];
         public byte TypeAt(int index) => types[index];
         public Vector2 PositionAt(int index) => positions[index];
@@ -132,11 +146,11 @@ namespace BS
             int i = count++;
             ids[i] = id;
             types[i] = type;
-            health[i] = MaxHealth;
-            positions[i] = ClampToArena(position);
+            health[i] = MaxHealthOf(MobKinds.KindOf(type));
+            positions[i] = ClampToArena(position, RadiusOf(MobKinds.KindOf(type)));
             overrideKind[i] = OverrideNone;
             indexOf[id] = i;
-            if (type == TypeSummoned) summonedCount++;
+            if (MobKinds.IsSummoned(type)) summonedCount++;
             gridDirty = true;
 
             events.Add(new MobEvent { IsSpawn = true, Id = id, Type = type, Position = positions[i] });
@@ -147,7 +161,7 @@ namespace BS
         {
             if (!indexOf.TryGetValue(id, out int i)) return false;
 
-            if (types[i] == TypeSummoned) summonedCount--;
+            if (MobKinds.IsSummoned(types[i])) summonedCount--;
 
             int last = count - 1;
             if (i != last)
@@ -189,7 +203,8 @@ namespace BS
             if (!indexOf.TryGetValue(id, out int i)) return false;
 
             health[i] = Math.Max(0, health[i] - Math.Max(0, damage));
-            healthPercent = MaxHealth > 0 ? health[i] * 100 / MaxHealth : 0;
+            int max = MaxHealthOf(MobKinds.KindOf(types[i]));
+            healthPercent = max > 0 ? health[i] * 100 / max : 0;
 
             if (health[i] <= 0)
             {
@@ -211,13 +226,13 @@ namespace BS
 
             EnsureGrid();
 
-            float reach = radius + Radius;
+            float widest = radius + LargestRadius;
             Vector2 ab = b - a;
             float lengthSq = ab.sqrMagnitude;
             float length = Mathf.Sqrt(lengthSq);
 
-            GetCellRange(Mathf.Min(a.x, b.x) - reach, Mathf.Min(a.y, b.y) - reach,
-                         Mathf.Max(a.x, b.x) + reach, Mathf.Max(a.y, b.y) + reach,
+            GetCellRange(Mathf.Min(a.x, b.x) - widest, Mathf.Min(a.y, b.y) - widest,
+                         Mathf.Max(a.x, b.x) + widest, Mathf.Max(a.y, b.y) + widest,
                          out int x0, out int y0, out int x1, out int y1);
 
             float bestEntry = float.MaxValue;
@@ -232,6 +247,7 @@ namespace BS
                     {
                         int m = cellItems[k];
                         Vector2 center = positions[m];
+                        float reach = radius + RadiusOf(MobKinds.KindOf(types[m]));
 
                         float tProj = lengthSq > 1e-8f ? Mathf.Clamp01(Vector2.Dot(center - a, ab) / lengthSq) : 0f;
                         Vector2 closest = a + ab * tProj;
@@ -276,13 +292,13 @@ namespace BS
 
             EnsureGrid();
 
-            float reach = radius + Radius;
+            float widest = radius + LargestRadius;
             Vector2 ab = b - a;
             float lengthSq = ab.sqrMagnitude;
             float length = Mathf.Sqrt(lengthSq);
 
-            GetCellRange(Mathf.Min(a.x, b.x) - reach, Mathf.Min(a.y, b.y) - reach,
-                         Mathf.Max(a.x, b.x) + reach, Mathf.Max(a.y, b.y) + reach,
+            GetCellRange(Mathf.Min(a.x, b.x) - widest, Mathf.Min(a.y, b.y) - widest,
+                         Mathf.Max(a.x, b.x) + widest, Mathf.Max(a.y, b.y) + widest,
                          out int x0, out int y0, out int x1, out int y1);
 
             for (int cy = y0; cy <= y1; cy++)
@@ -296,6 +312,7 @@ namespace BS
                         if (IsExcluded(ids[m], exclude)) continue;
 
                         Vector2 center = positions[m];
+                        float reach = radius + RadiusOf(MobKinds.KindOf(types[m]));
                         float tProj = lengthSq > 1e-8f ? Mathf.Clamp01(Vector2.Dot(center - a, ab) / lengthSq) : 0f;
                         Vector2 closest = a + ab * tProj;
                         float d = Vector2.Distance(center, closest);
@@ -421,7 +438,7 @@ namespace BS
                 if (!indexOf.TryGetValue(areaTargets[i], out int m)) continue;
                 Vector2 away = positions[m] - center;
                 Vector2 dir = away.sqrMagnitude < 1e-8f ? Vector2.up : away.normalized;
-                positions[m] = ClampToArena(positions[m] + dir * distance);
+                positions[m] = ClampToArena(positions[m] + dir * distance, RadiusOf(MobKinds.KindOf(types[m])));
             }
 
             gridDirty = true;
@@ -493,6 +510,42 @@ namespace BS
             return false;
         }
 
+        /// <summary>
+        /// The highest contact-damage multiple among the mobs touching a survivor whose body has the given radius (a mob touches when
+        /// its center is within its own radius plus the survivor's). Returns false when none touches.
+        /// </summary>
+        public bool MaxContactMultipleWithin(Vector2 center, float survivorRadius, out float multiple)
+        {
+            multiple = 0f;
+            if (count == 0) return false;
+
+            EnsureGrid();
+            float widest = survivorRadius + LargestRadius;
+            GetCellRange(center.x - widest, center.y - widest, center.x + widest, center.y + widest,
+                         out int x0, out int y0, out int x1, out int y1);
+
+            bool touched = false;
+            for (int cy = y0; cy <= y1; cy++)
+            {
+                for (int cx = x0; cx <= x1; cx++)
+                {
+                    int c = cy * gridW + cx;
+                    for (int k = cellStart[c]; k < cellStart[c + 1]; k++)
+                    {
+                        int m = cellItems[k];
+                        byte kind = MobKinds.KindOf(types[m]);
+                        float reach = survivorRadius + RadiusOf(kind);
+                        if ((positions[m] - center).sqrMagnitude > reach * reach) continue;
+
+                        float own = ContactMultipleOf(kind);
+                        if (!touched || own > multiple) multiple = own;
+                        touched = true;
+                    }
+                }
+            }
+            return touched;
+        }
+
         /// <summary>Drops every mob without emitting events (the room ended).</summary>
         public void Clear()
         {
@@ -523,7 +576,7 @@ namespace BS
             AutoSpawn(dt, survivors);
             Chase(dt, survivors);
             Separate();
-            for (int i = 0; i < count; i++) positions[i] = ClampToArena(positions[i]);
+            for (int i = 0; i < count; i++) positions[i] = ClampToArena(positions[i], RadiusOf(MobKinds.KindOf(types[i])));
             gridDirty = true; // queries rebuild the grid on demand
         }
 
@@ -558,7 +611,7 @@ namespace BS
             int touched = 0;
             for (int i = 0; i < count; i++)
             {
-                if (types[i] != TypeSummoned) continue;
+                if (!MobKinds.IsSummoned(types[i])) continue;
                 touched++;
                 if (hasPlayer) { overrideKind[i] = OverridePlayer; overrideClient[i] = clientId; }
                 else if (hasPosition) { overrideKind[i] = OverridePosition; overridePosition[i] = ClampToArena(position); }
@@ -663,9 +716,9 @@ namespace BS
 
         void Chase(float dt, IReadOnlyList<SurvivorInfo> survivors)
         {
-            float step = Speed * dt;
             for (int i = 0; i < count; i++)
             {
+                float step = SpeedOf(MobKinds.KindOf(types[i])) * dt;
                 if (!TryGetTargetPosition(i, survivors, out Vector2 target)) continue;
 
                 Vector2 toTarget = target - positions[i];
@@ -732,9 +785,9 @@ namespace BS
             BuildGrid();
             for (int i = 0; i < count; i++) displacement[i] = Vector2.zero;
 
-            float minDistance = Radius * 2f;
             for (int i = 0; i < count; i++)
             {
+                float radiusI = RadiusOf(MobKinds.KindOf(types[i]));
                 int cell = cellOfMob[i];
                 int cx = cell % gridW;
                 int cy = cell / gridW;
@@ -748,7 +801,7 @@ namespace BS
                         {
                             int j = cellItems[k];
                             if (j <= i) continue;
-                            PushApart(i, j, minDistance);
+                            PushApart(i, j, radiusI + RadiusOf(MobKinds.KindOf(types[j])));
                         }
                     }
                 }
@@ -826,10 +879,12 @@ namespace BS
 
         int CellIndex(Vector2 p) => CellY(p.y) * gridW + CellX(p.x);
 
-        Vector2 ClampToArena(Vector2 p)
+        Vector2 ClampToArena(Vector2 p) => ClampToArena(p, Radius);
+
+        Vector2 ClampToArena(Vector2 p, float radius)
         {
-            float hx = ArenaConfig.Width * 0.5f - Radius;
-            float hy = ArenaConfig.Height * 0.5f - Radius;
+            float hx = ArenaConfig.Width * 0.5f - radius;
+            float hy = ArenaConfig.Height * 0.5f - radius;
             return new Vector2(Mathf.Clamp(p.x, -hx, hx), Mathf.Clamp(p.y, -hy, hy));
         }
     }

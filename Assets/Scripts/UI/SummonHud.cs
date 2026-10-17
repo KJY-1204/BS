@@ -37,6 +37,7 @@ namespace BS
 
             EnsureStyles();
             DrawEnergy(summon);
+            DrawKinds(summon);
             DrawOrderText(summon);
             DrawMarker(summon);
         }
@@ -60,7 +61,7 @@ namespace BS
             Fill(new Rect(x, y, width, 18f), new Color(0f, 0f, 0f, 0.65f));
             Fill(new Rect(x + 2f, y + 2f, (width - 4f) * fraction, 14f), EnergyColor);
             GUI.Label(new Rect(x, y - 1f, width, 20f), $"소환 기운  {Mathf.FloorToInt(summon.Energy)} / {Mathf.FloorToInt(summon.MaxEnergy)}", center);
-            GUI.Label(new Rect(x - 40f, y + 20f, width + 80f, 20f), "왼쪽 클릭 발사   Space 소환   오른쪽 클릭 목표 지정   C 지정 해제", small);
+            GUI.Label(new Rect(x - 40f, y + 20f, width + 80f, 20f), "왼쪽 클릭 발사   Space 소환   1/2/3 종류   오른쪽 클릭 목표 지정   C 지정 해제", small);
 
             string notice = summon.Notice;
             if (!string.IsNullOrEmpty(notice))
@@ -69,6 +70,34 @@ namespace BS
                 GUI.contentColor = new Color(1f, 0.55f, 0.45f);
                 GUI.Label(new Rect(x, y - 26f, width, 22f), notice, center);
                 GUI.contentColor = previous;
+            }
+        }
+
+        // ---- The kinds the boss can summon ----
+
+        void DrawKinds(PlayerSummon summon)
+        {
+            const float cell = 112f;
+            const float height = 22f;
+            float x = Screen.width * 0.5f - cell * MobKinds.Count * 0.5f;
+            float y = Screen.height - 124f;
+
+            for (int k = 0; k < MobKinds.Count; k++)
+            {
+                MobKindDef def = MobKinds.Get((byte)k);
+                Rect rect = new Rect(x + k * cell, y, cell - 4f, height);
+                bool chosen = summon.SelectedKind == k;
+
+                Fill(rect, chosen ? new Color(1f, 1f, 1f, 0.28f) : new Color(0f, 0f, 0f, 0.5f));
+                Fill(new Rect(rect.x, rect.y, 5f, rect.height), def.Color);
+                if (chosen)
+                {
+                    Fill(new Rect(rect.x, rect.y + rect.height - 2f, rect.width, 2f), MarkerColor);
+                }
+
+                // The cost shown is the cost of one mob at the default summon settings.
+                int cost = Mathf.RoundToInt(SummonConfig.Default.CostPerMob * def.CostMultiple);
+                GUI.Label(new Rect(rect.x + 6f, rect.y, rect.width - 6f, rect.height), $"{k + 1} {def.Name} ({cost})", small);
             }
         }
 

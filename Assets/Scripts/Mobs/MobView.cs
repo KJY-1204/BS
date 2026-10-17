@@ -10,13 +10,6 @@ namespace BS
     /// </summary>
     public class MobView : MonoBehaviour
     {
-        static readonly Color[] TypeColors =
-        {
-            new Color(0.95f, 0.55f, 0.15f),
-            new Color(0.8f, 0.2f, 0.6f),
-            new Color(0.2f, 0.75f, 0.8f),
-        };
-
         MobServer server;
         MobClient client;
         NetworkManager nm;
@@ -56,7 +49,12 @@ namespace BS
 
                 Vector2 p = source.PositionAt(i);
                 sr.transform.localPosition = new Vector3(p.x, p.y, 0f);
-                sr.color = TypeColors[Mathf.Min(source.TypeAt(i), TypeColors.Length - 1)];
+
+                // The type byte holds the origin and the kind: the color tells them apart and the size is the kind's body.
+                byte type = source.TypeAt(i);
+                sr.color = MobKinds.ColorOf(type);
+                float size = MobConfig.Radius * 2f * MobKinds.Get(MobKinds.KindOf(type)).RadiusMultiple;
+                sr.transform.localScale = new Vector3(size, size, 1f);
             }
 
             for (int i = count; i < active; i++)

@@ -35,6 +35,7 @@ namespace BS
     /// -bsBossHealth n   (host) the boss's maximum health
     /// -bsMatchSeconds s (host) the time limit of a match with a boss
     /// -bsBossChase     (boss player) walk toward the nearest survivor on its own
+    /// -bsAutoSummonKind k[,k...]  (the boss player) the mob kinds the automatic summons ask for, in turn (0 basic, 1 fast, 2 tough)
     /// -bsAutoSummon s  (boss player) summon every s seconds
     /// -bsAutoOrderPlayer r s (boss player) s seconds after the match starts, order the survivor with role r
     /// -bsAutoOrderPoint x y s (boss player) s seconds after the match starts, order the point (x, y)
@@ -86,6 +87,8 @@ namespace BS
         public static float MatchSeconds { get; private set; }
         public static bool BossChase { get; private set; }
         public static float AutoSummonSeconds { get; private set; } = -1f;
+        /// <summary>The kinds the automatic summons ask for, one after another. Empty means the kind the player chose.</summary>
+        public static int[] AutoSummonKinds { get; private set; } = new int[0];
         public static int AutoOrderPlayerRole { get; private set; } = -1;
         public static float AutoOrderPlayerSeconds { get; private set; } = -1f;
         public static Vector2? AutoOrderPoint { get; private set; }
@@ -170,6 +173,14 @@ namespace BS
                     case "-bsMatchSeconds" when i + 1 < args.Length:
                         if (float.TryParse(args[i + 1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float ms2)) MatchSeconds = ms2;
                         break;
+                    case "-bsAutoSummonKind" when i + 1 < args.Length:
+                    {
+                        string[] parts = args[i + 1].Split(',');
+                        var list = new System.Collections.Generic.List<int>();
+                        foreach (string part in parts) if (int.TryParse(part, out int ak)) list.Add(ak);
+                        AutoSummonKinds = list.ToArray();
+                        break;
+                    }
                     case "-bsAutoSummon" when i + 1 < args.Length:
                         if (float.TryParse(args[i + 1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float asum)) AutoSummonSeconds = asum;
                         break;

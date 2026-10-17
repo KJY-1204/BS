@@ -118,12 +118,16 @@ namespace BS
                     if (mobs.IsSummoned(i)) total += Vector2.Distance(mobs.PositionAt(i), survivors[s].Position);
                 sb.Append($" client{survivors[s].ClientId}={(summoned > 0 ? total / summoned : 0):F1}");
             }
-            Debug.Log($"[BS] summon stats: order={Sim.Order} orderClient={Sim.OrderClient} energy={Sim.Energy:F1} summoned={summoned} underOrder={underOrder} meanDistance:{sb}");
+            var kinds = new int[MobKinds.Count];
+            for (int i = 0; i < mobs.Count; i++)
+                if (mobs.IsSummoned(i) && mobs.KindAt(i) < kinds.Length) kinds[mobs.KindAt(i)]++;
+            Debug.Log($"[BS] summon stats: order={Sim.Order} orderClient={Sim.OrderClient} energy={Sim.Energy:F1} summoned={summoned} " +
+                      $"kinds={kinds[0]}/{kinds[1]}/{kinds[2]} underOrder={underOrder} meanDistance:{sb}");
         }
 
         // ---- Requests from the boss player ----
 
-        public void OnSummonRequest(ulong clientId)
+        public void OnSummonRequest(ulong clientId, byte kind = MobKinds.Basic)
         {
             if (!running) return;
 
@@ -131,11 +135,11 @@ namespace BS
             bool fromBoss = boss != null && boss.OwnerClientId == clientId;
             if (!TryMakeContext(boss, out SummonContext ctx)) { Tell(boss, SummonResult.Unavailable, fromBoss); return; }
 
-            SummonResult result = Sim.Summon(ctx, fromBoss, out int created);
+            SummonResult result = Sim.Summon(ctx, fromBoss, kind, out int created);
             if (created > 0) MobServer.Instance?.FlushEvents(); // the spawn events go out in the same tick as the mobs
 
             if (DevArgs.MobLog)
-                Debug.Log($"[BS] summon: result={result} created={created} energy={Sim.Energy:F1}/{Sim.Config.MaxEnergy:F0} " +
+                Debug.Log($"[BS] summon: result={result} kind={kind} created={created} energy={Sim.Energy:F1}/{Sim.Config.MaxEnergy:F0} " +
                           $"mobs={ctx.Mobs.Count} auto={ctx.Mobs.AutoCount} summoned={ctx.Mobs.SummonedCount} fromBoss={fromBoss}");
 
             if (result != SummonResult.Created) Tell(boss, result, fromBoss);

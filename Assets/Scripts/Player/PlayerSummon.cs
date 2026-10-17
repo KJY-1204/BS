@@ -37,6 +37,11 @@ namespace BS
 
         string notice = "";
         float noticeUntil;
+        int autoSummonCount;
+        bool heldKind1, heldKind2, heldKind3;
+
+        /// <summary>The mob kind the boss player has chosen to summon. Kept on the owner's machine and sent with each request.</summary>
+        public byte SelectedKind { get; private set; } = MobKinds.Basic;
 
         public float Energy => energy.Value;
         public float MaxEnergy => maxEnergy.Value;
@@ -83,9 +88,9 @@ namespace BS
         public void ServerSendResult(SummonResult result) => ResultRpc((byte)result);
 
         [Rpc(SendTo.Server)]
-        void SummonRpc()
+        void SummonRpc(byte kind)
         {
-            SummonServer.Instance?.OnSummonRequest(OwnerClientId);
+            SummonServer.Instance?.OnSummonRequest(OwnerClientId, kind);
         }
 
         [Rpc(SendTo.Server)]
@@ -112,6 +117,7 @@ namespace BS
                 case SummonResult.FieldFull: Say("몹이 가득 찼습니다"); break;
                 case SummonResult.NoRoom: Say("소환할 자리가 없습니다"); break;
                 case SummonResult.Partial: Say("일부만 소환했습니다"); break;
+                case SummonResult.UnknownKind: Say("알 수 없는 종류입니다"); break;
             }
             if (DevArgs.MobLog) Debug.Log($"[BS] summon result (boss): {(SummonResult)result}");
         }
@@ -145,7 +151,7 @@ namespace BS
                 RoleTable.MatchRunning && Time.unscaledTime - spawnedAt >= DevArgs.TrySummonSeconds)
             {
                 tryDone = true;
-                SummonRpc();
+                SummonRpc(MobKinds.Tough);
                 OrderRpc(Vector2.zero);
                 ClearOrderRpc();
             }
@@ -169,6 +175,16 @@ namespace BS
             Keyboard keyboard = Keyboard.current;
 
             // The left mouse button fires the boss's shots (see PlayerCombat); summoning is on Space.
+            // A key held down picks its kind once, by comparing with the last frame's state (this also works when the window
+            // is not focused and input arrives between frames).
+            bool d1 = keyboard != null && keyboard.digit1Key.isPressed;
+            bool d2 = keyboard != null && keyboard.digit2Key.isPressed;
+            bool d3 = keyboard != null && keyboard.digit3Key.isPressed;
+            if (d1 && !heldKind1) SelectedKind = MobKinds.Basic;
+            else if (d2 && !heldKind2) SelectedKind = MobKinds.Fast;
+            else if (d3 && !heldKind3) SelectedKind = MobKinds.Tough;
+            heldKind1 = d1; heldKind2 = d2; heldKind3 = d3;
+
             bool summon = keyboard != null && keyboard.spaceKey.isPressed;
             if (summon && Time.unscaledTime - lastSendTime >= MinSendInterval) SendSummon();
 
@@ -187,7 +203,7 @@ namespace BS
             if (DevArgs.AutoSummonSeconds > 0f && since >= nextAutoSummon)
             {
                 nextAutoSummon += DevArgs.AutoSummonSeconds;
-                SendSummon();
+                SendSummon(true);
             }
         }
 
@@ -221,11 +237,17 @@ namespace BS
             }
         }
 
-        void SendSummon()
+        void SendSummon(bool automatic = false)
         {
             lastSendTime = Time.unscaledTime;
-            if (IsServer) SummonServer.Instance?.OnSummonRequest(OwnerClientId);
-            else SummonRpc();
+
+            // The development automation can ask for a list of kinds in turn (even one that does not exist); a player asks for the chosen kind.
+            byte kind = SelectedKind;
+            int[] kinds = DevArgs.AutoSummonKinds;
+            if (automatic && kinds.Length > 0) kind = (byte)Mathf.Clamp(kinds[autoSummonCount++ % kinds.Length], 0, 255);
+
+            if (IsServer) SummonServer.Instance?.OnSummonRequest(OwnerClientId, kind);
+            else SummonRpc(kind);
         }
 
         void SendOrder(Vector2 pointer)

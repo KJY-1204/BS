@@ -39,6 +39,8 @@ namespace BS
         Unavailable = 6,
         /// <summary>The request did not come from the boss.</summary>
         Ignored = 7,
+        /// <summary>The request named a mob kind that does not exist.</summary>
+        UnknownKind = 8,
     }
 
     public enum OrderKind : byte
@@ -114,25 +116,43 @@ namespace BS
         /// Summons a group around the boss. Creates as many mobs as the energy pays for, the field has room for and positions
         /// allow, up to the group size, and takes energy only for the mobs it created.
         /// </summary>
-        public SummonResult Summon(in SummonContext ctx, bool fromBoss, out int created)
+        public SummonResult Summon(in SummonContext ctx, bool fromBoss, out int created) =>
+            Summon(ctx, fromBoss, MobKinds.Basic, out created);
+
+        /// <summary>The energy one mob of a kind costs.</summary>
+        public float CostOf(byte kind) => Config.CostPerMob * MobKinds.Get(kind).CostMultiple;
+
+        /// <summary>How many mobs one summon of a kind tries to create (at least one).</summary>
+        public int GroupSizeOf(byte kind) => Math.Max(1, Mathf.RoundToInt(Config.GroupSize * MobKinds.Get(kind).GroupMultiple));
+
+        /// <summary>
+        /// Summons a group of the given kind. A kind that does not exist is refused without taking energy or starting the
+        /// cooldown, the same as every other refusal.
+        /// </summary>
+        public SummonResult Summon(in SummonContext ctx, bool fromBoss, byte kind, out int created)
         {
             created = 0;
             if (!fromBoss) return SummonResult.Ignored;
             if (!ctx.MatchRunning || !ctx.BossStanding) return SummonResult.Unavailable;
+            if (!MobKinds.IsValid(kind)) return SummonResult.UnknownKind;
             if (CooldownLeft > 0f) return SummonResult.Cooldown;
 
             MobSim mobs = ctx.Mobs;
             int room = mobs.HardCap - mobs.Count;
             if (room <= 0) return SummonResult.FieldFull;
 
-            int affordable = Config.CostPerMob > 0f ? Mathf.FloorToInt(Energy / Config.CostPerMob + 1e-4f) : Config.GroupSize;
+            float cost = CostOf(kind);
+            int group = GroupSizeOf(kind);
+            int affordable = cost > 0f ? Mathf.FloorToInt(Energy / cost + 1e-4f) : group;
             if (affordable <= 0) return SummonResult.NoEnergy;
 
-            int wanted = Math.Min(Config.GroupSize, Math.Min(affordable, room));
+            float radius = mobs.RadiusOf(kind);
+            byte type = MobKinds.Encode(MobKinds.OriginSummoned, kind);
+            int wanted = Math.Min(group, Math.Min(affordable, room));
             for (int i = 0; i < wanted; i++)
             {
-                if (!TryPickPosition(ctx, out Vector2 position)) continue;
-                if (!mobs.TrySpawn(position, MobSim.TypeSummoned, out ushort id)) break;
+                if (!TryPickPosition(ctx, radius, out Vector2 position)) continue;
+                if (!mobs.TrySpawn(position, type, out ushort id)) break;
 
                 ApplyOrderTo(mobs, id);
                 created++;
@@ -140,12 +160,12 @@ namespace BS
 
             if (created == 0) return SummonResult.NoRoom;
 
-            Energy = Mathf.Max(0f, Energy - created * Config.CostPerMob);
+            Energy = Mathf.Max(0f, Energy - created * cost);
             CooldownLeft = Config.CooldownSeconds;
-            return created == Config.GroupSize ? SummonResult.Created : SummonResult.Partial;
+            return created == group ? SummonResult.Created : SummonResult.Partial;
         }
 
-        bool TryPickPosition(in SummonContext ctx, out Vector2 position)
+        bool TryPickPosition(in SummonContext ctx, float radius, out Vector2 position)
         {
             position = default;
             float safeSq = Config.SafeDistance * Config.SafeDistance;
@@ -154,7 +174,7 @@ namespace BS
             {
                 float angle = (float)rng.NextDouble() * Mathf.PI * 2f;
                 float distance = Config.RingMin + (float)rng.NextDouble() * (Config.RingMax - Config.RingMin);
-                Vector2 p = ClampToArena(ctx.BossPosition + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * distance, ctx.Mobs.Radius);
+                Vector2 p = ClampToArena(ctx.BossPosition + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * distance, radius);
 
                 bool safe = true;
                 for (int s = 0; s < ctx.Survivors.Count && safe; s++)

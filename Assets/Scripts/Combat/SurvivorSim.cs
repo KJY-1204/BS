@@ -188,12 +188,14 @@ namespace BS
         {
             if (mobs == null || mobs.IsFrozen) return; // stopped mobs do not hurt
 
-            float reach = Radius + mobs.Radius;
             for (int i = 0; i < bodies.Count; i++)
             {
                 SurvivorBody body = bodies[i];
                 if (!IsAlive(body.ClientId)) continue;
-                if (mobs.AnyWithin(body.Position, reach)) ApplyDamage(body.ClientId, ContactDamage);
+
+                // One hit per protection time, as hard as the hardest mob touching.
+                if (mobs.MaxContactMultipleWithin(body.Position, Radius, out float multiple))
+                    ApplyDamage(body.ClientId, Mathf.Max(1, Mathf.RoundToInt(ContactDamage * multiple)));
             }
         }
 
