@@ -353,6 +353,14 @@ namespace BS
             }
         }
 
+        /// <summary>The character the player in a role holds (0 when nobody is in that role or none is chosen).</summary>
+        public byte CharacterOfRole(byte role)
+        {
+            for (int i = 0; i < Slots.Count; i++)
+                if (Slots[i].Role == role) return Slots[i].Character;
+            return CharacterIds.None;
+        }
+
         public bool TryGetSlot(ulong clientId, out PlayerSlot slot)
         {
             int i = FindSlot(clientId);

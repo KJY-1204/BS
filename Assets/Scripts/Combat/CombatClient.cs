@@ -35,9 +35,18 @@ namespace BS
         long bytesReceived;
         int fires, hits, kills, ends, skills;
 
+        /// <summary>The shape of the projectiles of whoever stands in a shooter slot, from the room's character table.</summary>
+        static ProjectileShape ShapeOfShooterSlot(byte slot)
+        {
+            RoleTable table = RoleTable.Instance;
+            CharacterDef character = table != null ? CharacterCatalog.Get(table.CharacterOfRole(slot)) : null;
+            return character != null ? character.Attack.Shape : ProjectileShape.Default;
+        }
+
         void Awake()
         {
             Instance = this;
+            Replay.ShapeOfSlot = ShapeOfShooterSlot;
             mobServer = GetComponent<MobServer>();
             mobClient = GetComponent<MobClient>();
         }
@@ -173,7 +182,7 @@ namespace BS
             if (DevArgs.CombatDump && registered)
             {
                 int dumpId = e.Kind == CombatEventKind.Skill ? e.SkillId : e.ProjectileId;
-                Debug.Log($"[BS] combatdump client t={Mathf.RoundToInt(serverTime * 1000f)} {e.Kind} id={dumpId} mob={e.MobId} kill={(e.Killed ? 1 : 0)}");
+                Debug.Log($"[BS] combatdump client t={Mathf.RoundToInt(serverTime * 1000f)} {e.Kind} id={dumpId} mob={e.MobId} kill={(e.Killed ? 1 : 0)} cont={(e.Continues ? 1 : 0)} angle={e.Angle}");
             }
 
             switch (e.Kind)
@@ -185,13 +194,13 @@ namespace BS
                 case CombatEventKind.Hit:
                     hits++;
                     if (e.Killed) kills++;
-                    Replay.OnHit(e.ProjectileId, e.MobId, e.MobHealthPercent, e.Killed, e.Position, serverTime);
+                    Replay.OnHit(e.ProjectileId, e.MobId, e.MobHealthPercent, e.Killed, e.Position, serverTime, e.Continues);
                     break;
                 case CombatEventKind.Skill:
                     skills++;
                     SkillEffects.OnSkill(new SkillEffect
                     {
-                        SkillId = e.SkillId, Slot = e.Slot, Position = e.Position, Rank = e.Rank, ServerTime = serverTime,
+                        SkillId = e.SkillId, Slot = e.Slot, Position = e.Position, Rank = e.Rank, Angle = e.Angle, ServerTime = serverTime,
                     });
                     break;
                 default:

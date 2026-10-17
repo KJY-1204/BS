@@ -39,19 +39,20 @@ namespace BS.Tests
         [Test]
         public void ActiveSkills_HaveSlotsCostsAndRankValues()
         {
-            var slots = new HashSet<int>();
+            var slots = new HashSet<(byte, int)>();
             foreach (SkillDef def in SkillCatalog.All)
             {
                 if (!def.IsActive) { Assert.AreEqual(-1, def.Slot, def.Name); continue; }
 
                 Assert.GreaterOrEqual(def.Slot, 0);
                 Assert.Less(def.Slot, SkillCatalog.SkillSlots);
-                Assert.IsTrue(slots.Add(def.Slot), "two skills share a slot");
+                Assert.AreNotEqual(CharacterIds.None, def.Character, "an active skill belongs to a character");
+                Assert.IsTrue(slots.Add((def.Character, def.Slot)), "two skills of one character share a slot");
                 Assert.Greater(def.ManaCost, 0);
                 Assert.Greater(def.Cooldown, 0f);
-                Assert.AreSame(def, SkillCatalog.ForSlot(def.Slot));
+                Assert.AreSame(def, SkillCatalog.ForSlot(def.Slot, def.Character));
             }
-            Assert.AreEqual(SkillCatalog.SkillSlots, slots.Count);
+            Assert.AreEqual(SkillCatalog.SkillSlots * CharacterCatalog.Count, slots.Count);
 
             SkillDef burst = SkillCatalog.Get(SkillIds.Burst);
             Assert.AreEqual(burst.MaxRank, burst.Radius.Length);
@@ -66,7 +67,8 @@ namespace BS.Tests
         {
             Assert.IsNull(SkillCatalog.Get(0));
             Assert.IsNull(SkillCatalog.Get(200));
-            Assert.IsNull(SkillCatalog.ForSlot(5));
+            Assert.IsNull(SkillCatalog.ForSlot(5, CharacterIds.Reimu));
+            Assert.IsNull(SkillCatalog.ForSlot(0, CharacterIds.None), "no character, no skills");
         }
 
         [Test]
@@ -76,19 +78,19 @@ namespace BS.Tests
             SkillDef rapid = SkillCatalog.Get(SkillIds.RapidFire);
             SkillDef haste = SkillCatalog.Get(SkillIds.Haste);
 
-            Assert.IsFalse(SkillCatalog.IsAvailable(rapid, ranks), "needs Haste first");
-            Assert.IsTrue(SkillCatalog.IsAvailable(haste, ranks));
+            Assert.IsFalse(SkillCatalog.IsAvailable(rapid, ranks, CharacterIds.Marisa), "needs Haste first");
+            Assert.IsTrue(SkillCatalog.IsAvailable(haste, ranks, CharacterIds.Marisa));
 
             ranks[SkillIds.Haste] = 1;
-            Assert.IsTrue(SkillCatalog.IsAvailable(rapid, ranks), "prerequisite met");
+            Assert.IsTrue(SkillCatalog.IsAvailable(rapid, ranks, CharacterIds.Marisa), "prerequisite met");
 
             ranks[SkillIds.Haste] = haste.MaxRank;
-            Assert.IsFalse(SkillCatalog.IsAvailable(haste, ranks), "at its maximum rank");
-            Assert.IsTrue(SkillCatalog.IsAvailable(rapid, ranks));
+            Assert.IsFalse(SkillCatalog.IsAvailable(haste, ranks, CharacterIds.Marisa), "at its maximum rank");
+            Assert.IsTrue(SkillCatalog.IsAvailable(rapid, ranks, CharacterIds.Marisa));
 
             ranks[SkillIds.RapidFire] = rapid.MaxRank;
-            Assert.IsFalse(SkillCatalog.IsAvailable(rapid, ranks));
-            Assert.IsFalse(SkillCatalog.IsAvailable(null, ranks));
+            Assert.IsFalse(SkillCatalog.IsAvailable(rapid, ranks, CharacterIds.Marisa));
+            Assert.IsFalse(SkillCatalog.IsAvailable(null, ranks, CharacterIds.Marisa));
         }
 
         [Test]

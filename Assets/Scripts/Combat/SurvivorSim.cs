@@ -99,6 +99,32 @@ namespace BS
             return true;
         }
 
+        /// <summary>
+        /// Restores health up to this survivor's maximum. A dead or unknown survivor is not healed.
+        /// Returns how much was actually restored.
+        /// </summary>
+        public int Heal(ulong clientId, int amount)
+        {
+            if (amount <= 0) return 0;
+            if (!states.TryGetValue(clientId, out State s) || s.Health <= 0) return 0;
+
+            int healed = Math.Min(amount, s.MaxHealth - s.Health);
+            if (healed <= 0) return 0;
+            s.Health += healed;
+            return healed;
+        }
+
+        /// <summary>
+        /// Makes a living survivor unhurtable for a time. A longer protection already running is not shortened.
+        /// </summary>
+        public bool GrantInvulnerability(ulong clientId, float seconds)
+        {
+            if (seconds <= 0f) return false;
+            if (!states.TryGetValue(clientId, out State s) || s.Health <= 0) return false;
+            if (seconds > s.Invulnerable) s.Invulnerable = seconds;
+            return true;
+        }
+
         /// <summary>Sets health to zero at once (development scenarios and tests).</summary>
         public void Kill(ulong clientId)
         {
@@ -129,7 +155,7 @@ namespace BS
 
         void ApplyContactDamage(IReadOnlyList<SurvivorBody> bodies, MobSim mobs)
         {
-            if (mobs == null) return;
+            if (mobs == null || mobs.IsFrozen) return; // stopped mobs do not hurt
 
             float reach = Radius + mobs.Radius;
             for (int i = 0; i < bodies.Count; i++)

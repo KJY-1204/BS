@@ -10,6 +10,8 @@ namespace BS
         public byte Slot;
         public Vector2 Position;
         public byte Rank;
+        /// <summary>The aim the caster had, for skills with a direction.</summary>
+        public ushort Angle;
         public float ServerTime;
     }
 

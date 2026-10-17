@@ -235,7 +235,8 @@ namespace BS
             if (DevArgs.AutoSkillSlot >= 0 && Time.unscaledTime >= nextAutoSkillAt)
             {
                 nextAutoSkillAt = Time.unscaledTime + DevArgs.AutoSkillInterval;
-                RequestSkill(DevArgs.AutoSkillSlot);
+                if (DevArgs.AutoSkillSlot == 2) { RequestSkill(0); RequestSkill(1); } // -bsAutoSkill qe presses both keys
+                else RequestSkill(DevArgs.AutoSkillSlot);
             }
         }
     }

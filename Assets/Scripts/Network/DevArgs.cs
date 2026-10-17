@@ -24,12 +24,13 @@ namespace BS
     /// -bsOfferSeconds s  time allowed to pick a skill (host)
     /// -bsDevXp t n     (host) give every survivor n experience t seconds after the room starts
     /// -bsAutoPick i d  (owner) pick choice i (1 to 3) d seconds after a choice opens; 0 never picks
-    /// -bsAutoSkill q|e s  (owner) press that skill key every s seconds
+    /// -bsAutoSkill q|e|qe s  (owner) press that skill key (or both) every s seconds
     /// -bsCharacter n   (any player) choose character n (1 to 4) shortly after joining the waiting room
     /// -bsAutoStart s n (host) start the match s seconds after n survivors are in and every survivor has chosen
     /// -bsAutoEnd s     (host) end the first match s seconds after it started, returning to the waiting room
     /// -bsTryStart s    (client) send a start request s seconds after joining; the server should ignore it
     /// -bsTryEnd s      (client) send an end-match request s seconds after joining; the server should ignore it
+    /// -bsDevSkills r  (host) every survivor starts the match with their character's Q and E skills at rank r
     /// -bsSurvivorHealth n  survivor maximum health (host), to keep survivors alive in load tests
     /// -bsMobSpeed v    mob speed (host)
     /// -bsMobHealth n   mob maximum health (host); a high value keeps mobs alive under fire for load tests
@@ -67,6 +68,7 @@ namespace BS
         public static int AutoSkillSlot { get; private set; } = -1;
         public static float AutoSkillInterval { get; private set; } = 1f;
         public static int Character { get; private set; }
+        public static int DevSkillsRank { get; private set; }
         public static float AutoStartSeconds { get; private set; } = -1f;
         public static int AutoStartSurvivors { get; private set; } = 1;
         public static float AutoEndSeconds { get; private set; } = -1f;
@@ -131,6 +133,9 @@ namespace BS
                         break;
                     case "-bsCharacter" when i + 1 < args.Length:
                         if (int.TryParse(args[i + 1], out int ch)) Character = ch;
+                        break;
+                    case "-bsDevSkills" when i + 1 < args.Length:
+                        if (int.TryParse(args[i + 1], out int dsr)) DevSkillsRank = dsr;
                         break;
                     case "-bsAutoStart" when i + 2 < args.Length:
                         float.TryParse(args[i + 1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float ast);
@@ -198,7 +203,7 @@ namespace BS
                         AutoPickDelay = apd;
                         break;
                     case "-bsAutoSkill" when i + 2 < args.Length:
-                        AutoSkillSlot = args[i + 1].ToLowerInvariant() == "e" ? 1 : 0;
+                        AutoSkillSlot = args[i + 1].ToLowerInvariant() == "qe" ? 2 : args[i + 1].ToLowerInvariant() == "e" ? 1 : 0;
                         float.TryParse(args[i + 2], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float asi);
                         AutoSkillInterval = Mathf.Max(0.05f, asi);
                         break;

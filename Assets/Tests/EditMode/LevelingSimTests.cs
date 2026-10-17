@@ -13,7 +13,7 @@ namespace BS.Tests
         static LevelingSim New(int seed = 1, params ulong[] clients)
         {
             var sim = new LevelingSim(new System.Random(seed));
-            foreach (ulong id in clients) sim.Register(id);
+            foreach (ulong id in clients) sim.Register(id, CharacterIds.Reimu);
             return sim;
         }
 
@@ -188,7 +188,7 @@ namespace BS.Tests
             byte[] choices = sim.CurrentChoices(A);
             Assert.AreEqual(3, choices.Length);
             Assert.AreEqual(3, choices.Distinct().Count());
-            foreach (byte id in choices) Assert.IsTrue(SkillCatalog.IsAvailable(SkillCatalog.Get(id), sim.Ranks(A)));
+            foreach (byte id in choices) Assert.IsTrue(SkillCatalog.IsAvailable(SkillCatalog.Get(id), sim.Ranks(A), CharacterIds.Reimu));
 
             GrowthEvent opened = Drain(sim).Single(e => e.Kind == GrowthEventKind.OfferOpened);
             Assert.AreEqual(A, opened.ClientId);
@@ -435,7 +435,7 @@ namespace BS.Tests
             sim.AddXp(A, 500);
 
             sim.Clear();
-            sim.Register(A);
+            sim.Register(A, CharacterIds.Reimu);
 
             Assert.AreEqual(1, sim.Level(A));
             Assert.AreEqual(0, sim.Xp(A));

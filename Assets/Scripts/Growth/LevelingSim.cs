@@ -56,6 +56,8 @@ namespace BS
             public int ChoiceCount;
             public float TimeLeft;
             public byte LastOfferId;
+            /// <summary>The character this survivor plays; decides which skills can be offered.</summary>
+            public byte Character;
         }
 
         public int MaxLevel = GrowthConfig.MaxLevel;
@@ -76,7 +78,10 @@ namespace BS
 
         public int Count => states.Count;
 
-        public void Register(ulong clientId) => states[clientId] = new State();
+        /// <summary>Adds a survivor of a character. Only common skills and that character's own can be offered.</summary>
+        public void Register(ulong clientId, byte character) => states[clientId] = new State { Character = character };
+
+        public byte CharacterOf(ulong clientId) => states.TryGetValue(clientId, out State s) ? s.Character : CharacterIds.None;
 
         public void Unregister(ulong clientId) => states.Remove(clientId);
 
@@ -99,6 +104,13 @@ namespace BS
             states.TryGetValue(clientId, out State s) ? s.Ranks : EmptyRanks;
 
         static readonly int[] EmptyRanks = new int[SkillCatalog.MaxSkillId + 1];
+
+        /// <summary>Development only: sets a skill's rank directly, without a choice.</summary>
+        public void GrantRank(ulong clientId, byte skillId, int rank)
+        {
+            if (!states.TryGetValue(clientId, out State s) || skillId == 0 || skillId > SkillCatalog.MaxSkillId) return;
+            s.Ranks[skillId] = Math.Max(0, Math.Min(SkillCatalog.MaxPackedRank, rank));
+        }
 
         public int RankOf(ulong clientId, byte skillId) => SkillCatalog.RankOf(Ranks(clientId), skillId);
 
@@ -224,7 +236,7 @@ namespace BS
                 available.Clear();
                 IReadOnlyList<SkillDef> all = SkillCatalog.All;
                 for (int i = 0; i < all.Count; i++)
-                    if (SkillCatalog.IsAvailable(all[i], s.Ranks)) available.Add(all[i]);
+                    if (SkillCatalog.IsAvailable(all[i], s.Ranks, s.Character)) available.Add(all[i]);
 
                 if (available.Count == 0) continue; // nothing left to learn: the level up is not held up
 

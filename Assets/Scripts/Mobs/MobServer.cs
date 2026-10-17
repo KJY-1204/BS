@@ -118,6 +118,7 @@ namespace BS
 
             PlayerRegistry.CollectSurvivors(survivors);
             Sim.Step(Time.fixedDeltaTime, survivors);
+            if (DevArgs.MobLog) LogFreezeChange();
 
             if (DevArgs.MobChurn > 0f) ChurnForTesting();
 
@@ -205,6 +206,23 @@ namespace BS
                 Send(MobMessages.Snapshot, length, NetworkDelivery.UnreliableSequenced);
                 bytesSnapshot += (long)length * remoteClients.Count;
             }
+        }
+
+        bool wasFrozen;
+
+        /// <summary>Dev log: when time stops and resumes, how many mobs there are and where they stand (to see they did not move).</summary>
+        void LogFreezeChange()
+        {
+            if (Sim.IsFrozen == wasFrozen) return;
+            wasFrozen = Sim.IsFrozen;
+
+            double checksum = 0;
+            for (int i = 0; i < Sim.Count; i++)
+            {
+                Vector2 p = Sim.PositionAt(i);
+                checksum += p.x * 31.0 + p.y * 17.0;
+            }
+            Debug.Log($"[BS] mobs server: time {(wasFrozen ? "stopped" : "resumed")} mobs={Sim.Count} checksum={checksum:F3} left={Sim.FrozenSeconds:F2}");
         }
 
         void SendFullState(ulong clientId)

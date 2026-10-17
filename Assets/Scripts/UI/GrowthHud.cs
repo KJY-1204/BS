@@ -34,7 +34,7 @@ namespace BS
             if (growth == null || avatar == null || avatar.Role == RoleTable.BossRole) return;
 
             DrawBars(growth);
-            DrawSkillSlots(growth);
+            DrawSkillSlots(growth, avatar.CharacterId);
             if (growth.OfferOpen) DrawOffer(growth);
         }
 
@@ -71,16 +71,16 @@ namespace BS
 
         // ---- Skill slots ----
 
-        void DrawSkillSlots(PlayerGrowth growth)
+        void DrawSkillSlots(PlayerGrowth growth, byte character)
         {
-            const float size = 64f;
+            const float size = 84f;
             const float gap = 12f;
             float startX = Screen.width * 0.5f - (size * SkillCatalog.SkillSlots + gap * (SkillCatalog.SkillSlots - 1)) * 0.5f;
             float y = Screen.height - size - 14f;
 
             for (int slot = 0; slot < SkillCatalog.SkillSlots; slot++)
             {
-                SkillDef def = SkillCatalog.ForSlot(slot);
+                SkillDef def = SkillCatalog.ForSlot(slot, character);
                 Rect box = new Rect(startX + slot * (size + gap), y, size, size);
                 int rank = def != null ? growth.RankOf(def.Id) : 0;
                 float cooldown = growth.CooldownLeft(slot);
@@ -99,8 +99,8 @@ namespace BS
                 string key = slot == 0 ? "Q" : "E";
                 GUI.Label(new Rect(box.x + 4f, box.y + 2f, 24f, 20f), key);
                 string name = def != null ? def.Name : "-";
-                GUI.Label(new Rect(box.x, box.y + 18f, box.width, 22f), learned ? name : "미습득", centered);
-                if (learned) GUI.Label(new Rect(box.x, box.y + 38f, box.width, 20f), cooldown > 0f ? $"{cooldown:F1}s" : $"랭크 {rank}", small);
+                GUI.Label(new Rect(box.x, box.y + 20f, box.width, 22f), learned ? name : "미습득", small);
+                if (learned) GUI.Label(new Rect(box.x, box.y + 40f, box.width, 20f), cooldown > 0f ? $"{cooldown:F1}s" : $"랭크 {rank}", small);
             }
 
             string notice = growth.Notice;

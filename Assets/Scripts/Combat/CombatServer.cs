@@ -105,7 +105,7 @@ namespace BS
             if (!registered.Contains(avatar)) registered.Add(avatar);
             slots[avatar.OwnerClientId] = avatar.Role;
             Survivors.Register(avatar.OwnerClientId, StartingMaxHealth(CharacterCatalog.Get(avatar.CharacterId)));
-            Attacks.Register(avatar.OwnerClientId);
+            Attacks.Register(avatar.OwnerClientId, CharacterCatalog.Get(avatar.CharacterId)?.Attack ?? AttackDef.Default);
             GrowthServer.Instance?.Register(avatar);
         }
 
@@ -279,7 +279,7 @@ namespace BS
                 for (int i = 0; i < list.Count; i++)
                 {
                     int id = list[i].Kind == CombatEventKind.Skill ? list[i].SkillId : list[i].ProjectileId;
-                    Debug.Log($"[BS] combatdump server t={timeMs} {list[i].Kind} id={id} mob={list[i].MobId} kill={(list[i].Killed ? 1 : 0)}");
+                    Debug.Log($"[BS] combatdump server t={timeMs} {list[i].Kind} id={id} mob={list[i].MobId} kill={(list[i].Killed ? 1 : 0)} cont={(list[i].Continues ? 1 : 0)} angle={list[i].Angle} owner={list[i].Owner}");
                 }
 
             // The host shows its own events at server time; everyone else gets them as a message.

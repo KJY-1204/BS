@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
@@ -37,6 +38,7 @@ namespace BS
         readonly List<ulong> order = new List<ulong>();
         readonly List<GrowthBody> bodies = new List<GrowthBody>();
         readonly List<Vector2> kills = new List<Vector2>();
+        readonly List<GrowthBody> skillBodies = new List<GrowthBody>();
         readonly List<GrowthEvent> growthEvents = new List<GrowthEvent>();
         readonly List<CombatEvent> skillEvents = new List<CombatEvent>();
         readonly List<SkillRequest> requests = new List<SkillRequest>();
@@ -112,11 +114,24 @@ namespace BS
             var entry = new Entry { Avatar = avatar, Growth = avatar.GetComponent<PlayerGrowth>() };
             entries[id] = entry;
 
-            Leveling.Register(id);
+            Leveling.Register(id, avatar.CharacterId);
+            GrantDevSkills(id, avatar.CharacterId);
             entry.Stats = StatCalc.Compute(1, Leveling.Ranks(id), CharacterCatalog.Get(avatar.CharacterId));
             Skills.Register(id, entry.Stats.MaxMana, entry.Stats.ManaRegenPerSecond);
             ApplyStats(id, entry);
             WriteReplicated(id, entry);
+        }
+
+        /// <summary>-bsDevSkills: the survivor starts with their character's Q and E skills at the given rank.</summary>
+        void GrantDevSkills(ulong id, byte character)
+        {
+            if (DevArgs.DevSkillsRank <= 0) return;
+            for (int slot = 0; slot < SkillCatalog.SkillSlots; slot++)
+            {
+                SkillDef def = SkillCatalog.ForSlot(slot, character);
+                if (def != null) Leveling.GrantRank(id, def.Id, Math.Min(DevArgs.DevSkillsRank, def.MaxRank));
+            }
+            Debug.Log($"[BS] dev: gave client {id} the skills of character {character} at rank {DevArgs.DevSkillsRank}");
         }
 
         public void Unregister(PlayerAvatar avatar)
@@ -177,13 +192,25 @@ namespace BS
         {
             bool areaDamage = false;
 
+            // Where every survivor stands and whether alive, for the skills that heal.
+            skillBodies.Clear();
+            if (requests.Count > 0)
+            {
+                foreach (KeyValuePair<ulong, Entry> pair in entries)
+                {
+                    Entry e = pair.Value;
+                    if (e.Avatar == null || !e.Avatar.IsSpawned) continue;
+                    skillBodies.Add(new GrowthBody { ClientId = pair.Key, Position = e.Avatar.transform.position, Alive = combat.Survivors.IsAlive(pair.Key) });
+                }
+            }
+
             for (int i = 0; i < requests.Count; i++)
             {
                 SkillRequest request = requests[i];
                 if (!entries.TryGetValue(request.ClientId, out Entry entry)) continue;
 
                 bool alive = combat.Survivors.IsAlive(request.ClientId);
-                SkillResult result = Skills.TryActivate(request.ClientId, request.Slot, alive, Leveling.Ranks(request.ClientId), out SkillActivation activation);
+                SkillResult result = Skills.TryActivate(request.ClientId, entry.Avatar.CharacterId, request.Slot, alive, Leveling.Ranks(request.ClientId), out SkillActivation activation);
 
                 if (entry.Growth != null)
                     entry.Growth.ServerSendSkillResult(request.Slot, result, result == SkillResult.Fired ? activation.Cooldown : 0f);
@@ -196,7 +223,23 @@ namespace BS
 
                 skillsFired++;
                 Vector2 where = entry.Avatar.transform.position;
-                if (SkillExecutor.Apply(activation, where, mobs.Sim, kills) > 0) areaDamage = true;
+                ushort aim = combat.Attacks.AimOf(request.ClientId);
+                CharacterDef character = CharacterCatalog.Get(entry.Avatar.CharacterId);
+
+                var context = new SkillContext
+                {
+                    CasterId = request.ClientId,
+                    Origin = where,
+                    AimAngle = aim,
+                    Mobs = mobs.Sim,
+                    Projectiles = combat.Projectiles,
+                    Survivors = combat.Survivors,
+                    Bodies = skillBodies,
+                    Shape = character != null ? character.Attack.Shape : ProjectileShape.Default,
+                    Deaths = kills,
+                };
+                int touched = SkillExecutor.Apply(activation, context);
+                if (touched > 0) areaDamage = true;
 
                 skillEvents.Add(new CombatEvent
                 {
@@ -205,10 +248,11 @@ namespace BS
                     SkillId = activation.SkillId,
                     Rank = (byte)activation.Rank,
                     Position = where,
+                    Angle = aim,
                 });
 
                 if (DevArgs.GrowthLog)
-                    Debug.Log($"[BS] skill fired client={request.ClientId} skill={activation.SkillId} rank={activation.Rank} at {where.x:F1},{where.y:F1}");
+                    Debug.Log($"[BS] skill fired client={request.ClientId} skill={activation.SkillId} rank={activation.Rank} at {where.x:F1},{where.y:F1} aim={aim} touched={touched}");
             }
 
             requests.Clear();

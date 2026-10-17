@@ -48,6 +48,12 @@ namespace BS
         public float SpawnMinSurvivorDistance = MobConfig.SpawnMinSurvivorDistance;
         public int MaxHealth = MobConfig.MobMaxHealth;
 
+        /// <summary>How much longer every mob stays stopped (see <see cref="Freeze"/>).</summary>
+        public float FrozenSeconds { get; private set; }
+
+        /// <summary>While true mobs do not move, do not spawn and do not hurt survivors.</summary>
+        public bool IsFrozen => FrozenSeconds > 0f;
+
         readonly int[] health;
         bool gridDirty = true;
         readonly ushort[] ids;
@@ -234,6 +240,178 @@ namespace BS
             return true;
         }
 
+        /// <summary>One mob a swept circle touched, with where along the sweep (0 to 1) and the point it first touched.</summary>
+        public struct SegmentHit
+        {
+            public ushort MobId;
+            public Vector2 Point;
+            public float T;
+        }
+
+        /// <summary>
+        /// Finds every mob a swept circle touches while moving from a to b, nearest first, leaving out the mobs in
+        /// <paramref name="exclude"/> (the ones a piercing projectile already hit). The hits are appended to
+        /// <paramref name="into"/>; nothing is damaged here. Returns how many were found.
+        /// </summary>
+        public int CollectSegmentHits(Vector2 a, Vector2 b, float radius, IReadOnlyList<ushort> exclude, List<SegmentHit> into)
+        {
+            int before = into.Count;
+            if (count == 0) return 0;
+
+            EnsureGrid();
+
+            float reach = radius + Radius;
+            Vector2 ab = b - a;
+            float lengthSq = ab.sqrMagnitude;
+            float length = Mathf.Sqrt(lengthSq);
+
+            GetCellRange(Mathf.Min(a.x, b.x) - reach, Mathf.Min(a.y, b.y) - reach,
+                         Mathf.Max(a.x, b.x) + reach, Mathf.Max(a.y, b.y) + reach,
+                         out int x0, out int y0, out int x1, out int y1);
+
+            for (int cy = y0; cy <= y1; cy++)
+            {
+                for (int cx = x0; cx <= x1; cx++)
+                {
+                    int c = cy * gridW + cx;
+                    for (int k = cellStart[c]; k < cellStart[c + 1]; k++)
+                    {
+                        int m = cellItems[k];
+                        if (IsExcluded(ids[m], exclude)) continue;
+
+                        Vector2 center = positions[m];
+                        float tProj = lengthSq > 1e-8f ? Mathf.Clamp01(Vector2.Dot(center - a, ab) / lengthSq) : 0f;
+                        Vector2 closest = a + ab * tProj;
+                        float d = Vector2.Distance(center, closest);
+                        if (d > reach) continue;
+
+                        float back = length > 1e-5f ? Mathf.Sqrt(Mathf.Max(0f, reach * reach - d * d)) / length : 0f;
+                        float entry = Mathf.Clamp01(tProj - back);
+                        into.Add(new SegmentHit { MobId = ids[m], T = entry, Point = a + ab * entry });
+                    }
+                }
+            }
+
+            // Nearest first; the id breaks ties so the order never depends on the grid layout.
+            if (into.Count - before > 1)
+            {
+                into.Sort(before, into.Count - before, SegmentHitOrder.Instance);
+            }
+            return into.Count - before;
+        }
+
+        sealed class SegmentHitOrder : IComparer<SegmentHit>
+        {
+            public static readonly SegmentHitOrder Instance = new SegmentHitOrder();
+
+            public int Compare(SegmentHit x, SegmentHit y)
+            {
+                int byT = x.T.CompareTo(y.T);
+                return byT != 0 ? byT : x.MobId.CompareTo(y.MobId);
+            }
+        }
+
+        static bool IsExcluded(ushort id, IReadOnlyList<ushort> exclude)
+        {
+            if (exclude == null) return false;
+            for (int i = 0; i < exclude.Count; i++)
+                if (exclude[i] == id) return true;
+            return false;
+        }
+
+        /// <summary>Stops every mob for a time. A stop already running is never shortened by a shorter one.</summary>
+        public void Freeze(float seconds)
+        {
+            if (seconds > FrozenSeconds) FrozenSeconds = seconds;
+        }
+
+        /// <summary>
+        /// Damages every mob whose centre is within <paramref name="halfWidth"/> of the line that starts at
+        /// <paramref name="origin"/> and runs <paramref name="length"/> along <paramref name="direction"/>. Where each
+        /// killed mob died is appended to <paramref name="deaths"/>. Returns how many mobs were hit.
+        /// </summary>
+        public int ApplyLineDamage(Vector2 origin, Vector2 direction, float length, float halfWidth, int damage, List<Vector2> deaths)
+        {
+            if (count == 0 || length <= 0f || halfWidth <= 0f || direction.sqrMagnitude < 1e-8f) return 0;
+
+            EnsureGrid();
+            Vector2 dir = direction.normalized;
+            Vector2 end = origin + dir * length;
+            GetCellRange(Mathf.Min(origin.x, end.x) - halfWidth, Mathf.Min(origin.y, end.y) - halfWidth,
+                         Mathf.Max(origin.x, end.x) + halfWidth, Mathf.Max(origin.y, end.y) + halfWidth,
+                         out int x0, out int y0, out int x1, out int y1);
+
+            areaTargets.Clear();
+            for (int cy = y0; cy <= y1; cy++)
+            {
+                for (int cx = x0; cx <= x1; cx++)
+                {
+                    int c = cy * gridW + cx;
+                    for (int k = cellStart[c]; k < cellStart[c + 1]; k++)
+                    {
+                        int m = cellItems[k];
+                        Vector2 along = positions[m] - origin;
+                        float t = Vector2.Dot(along, dir);
+                        if (t < 0f || t > length) continue;
+                        float side = Mathf.Abs(along.x * dir.y - along.y * dir.x);
+                        if (side <= halfWidth) areaTargets.Add(ids[m]);
+                    }
+                }
+            }
+
+            for (int i = 0; i < areaTargets.Count; i++)
+            {
+                ushort id = areaTargets[i];
+                Vector2 where = default;
+                if (indexOf.TryGetValue(id, out int index)) where = positions[index];
+
+                if (ApplyDamage(id, damage, out _, out bool killed) && killed && deaths != null)
+                    deaths.Add(where);
+            }
+            return areaTargets.Count;
+        }
+
+        /// <summary>
+        /// Pushes every mob whose centre is within <paramref name="radius"/> of a point straight away from it by
+        /// <paramref name="distance"/>, keeping it inside the arena. A mob exactly on the point is pushed up.
+        /// Health is not touched. Returns how many mobs were pushed.
+        /// </summary>
+        public int Push(Vector2 center, float radius, float distance)
+        {
+            if (count == 0 || radius <= 0f || distance <= 0f) return 0;
+
+            EnsureGrid();
+            GetCellRange(center.x - radius, center.y - radius, center.x + radius, center.y + radius,
+                         out int x0, out int y0, out int x1, out int y1);
+
+            // Collect first: pushing changes positions, which the grid was built from.
+            areaTargets.Clear();
+            float radiusSq = radius * radius;
+            for (int cy = y0; cy <= y1; cy++)
+            {
+                for (int cx = x0; cx <= x1; cx++)
+                {
+                    int c = cy * gridW + cx;
+                    for (int k = cellStart[c]; k < cellStart[c + 1]; k++)
+                    {
+                        int m = cellItems[k];
+                        if ((positions[m] - center).sqrMagnitude <= radiusSq) areaTargets.Add(ids[m]);
+                    }
+                }
+            }
+
+            for (int i = 0; i < areaTargets.Count; i++)
+            {
+                if (!indexOf.TryGetValue(areaTargets[i], out int m)) continue;
+                Vector2 away = positions[m] - center;
+                Vector2 dir = away.sqrMagnitude < 1e-8f ? Vector2.up : away.normalized;
+                positions[m] = ClampToArena(positions[m] + dir * distance);
+            }
+
+            gridDirty = true;
+            return areaTargets.Count;
+        }
+
         readonly List<ushort> areaTargets = new List<ushort>();
 
         /// <summary>
@@ -306,6 +484,7 @@ namespace BS
             indexOf.Clear();
             events.Clear();
             spawnAccumulator = 0f;
+            FrozenSeconds = 0f;
         }
 
         /// <summary>Moves queued spawn/remove events into the list and empties the queue.</summary>
@@ -317,6 +496,13 @@ namespace BS
 
         public void Step(float dt, IReadOnlyList<SurvivorInfo> survivors)
         {
+            if (FrozenSeconds > 0f)
+            {
+                // Time is stopped: nothing moves and nothing new appears. Mobs can still be damaged and killed.
+                FrozenSeconds = Math.Max(0f, FrozenSeconds - dt);
+                return;
+            }
+
             AutoSpawn(dt, survivors);
             Chase(dt, survivors);
             Separate();

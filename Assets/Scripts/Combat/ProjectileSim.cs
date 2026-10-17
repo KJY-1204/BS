@@ -32,6 +32,18 @@ namespace BS
         public ushort MobId;
         public byte MobHealthPercent;
         public bool Killed;
+        /// <summary>Hit only: a piercing projectile that keeps flying after this hit.</summary>
+        public bool Continues;
+    }
+
+    /// <summary>Everything the simulation needs to start one projectile.</summary>
+    public struct ProjectileSpec
+    {
+        public ulong Owner;
+        public Vector2 Origin;
+        public ushort Angle;
+        public int Damage;
+        public ProjectileShape Shape;
     }
 
     /// <summary>Read access to live projectiles, used by the view on the host.</summary>
@@ -44,8 +56,9 @@ namespace BS
     }
 
     /// <summary>
-    /// Server-side projectiles as plain data. They fly straight at a fixed speed, stop at the first mob
-    /// they touch (damaging it), at the arena edge, or when their lifetime ends.
+    /// Server-side projectiles as plain data. They fly straight at the speed of their shape and stop at the arena
+    /// edge or when their lifetime ends. A projectile stops at the first mob it touches unless its shape lets it
+    /// pierce, in which case it damages each of that many mobs once and stops after the last.
     /// </summary>
     public sealed class ProjectileSim : IProjectileSource
     {
@@ -55,14 +68,24 @@ namespace BS
         public float Radius = CombatConfig.ProjectileRadius;
         public int Damage = CombatConfig.ProjectileDamage;
 
+        /// <summary>Most mobs one projectile can remember having hit; a shape asking for more is capped.</summary>
+        public const int MaxPierce = 8;
+
         readonly ushort[] ids;
         readonly ulong[] owners;
         readonly int[] damages;
         readonly Vector2[] positions;
         readonly Vector2[] directions;
         readonly float[] remaining;
+        readonly float[] speeds;
+        readonly float[] radii;
+        readonly int[] pierceLeft;
+        readonly byte[] hitCounts;
+        readonly ushort[] hitMobs;
         readonly Dictionary<ushort, int> indexOf = new Dictionary<ushort, int>();
         readonly List<CombatEvent> events = new List<CombatEvent>();
+        readonly List<MobSim.SegmentHit> segmentHits = new List<MobSim.SegmentHit>();
+        readonly List<ushort> alreadyHit = new List<ushort>();
 
         int count;
         ushort nextId = 1;
@@ -76,6 +99,11 @@ namespace BS
             positions = new Vector2[cap];
             directions = new Vector2[cap];
             remaining = new float[cap];
+            speeds = new float[cap];
+            radii = new float[cap];
+            pierceLeft = new int[cap];
+            hitCounts = new byte[cap];
+            hitMobs = new ushort[cap * MaxPierce];
         }
 
         public int Count => count;
@@ -91,21 +119,33 @@ namespace BS
         /// Starts a projectile unless the cap is reached. The projectile keeps the damage it was fired with,
         /// so a later change to its shooter's damage does not change shots already in flight.
         /// </summary>
-        public bool TryFire(ulong owner, Vector2 origin, ushort angle, int damage, out ushort id)
+        public bool TryFire(ulong owner, Vector2 origin, ushort angle, int damage, out ushort id) =>
+            TryFire(new ProjectileSpec
+            {
+                Owner = owner, Origin = origin, Angle = angle, Damage = damage,
+                Shape = new ProjectileShape { Speed = Speed, Lifetime = Lifetime, Radius = Radius, Pierce = 1 },
+            }, out id);
+
+        /// <summary>Starts a projectile of any shape unless the cap is reached.</summary>
+        public bool TryFire(ProjectileSpec spec, out ushort id)
         {
             if (count >= Cap) { id = 0; return false; }
 
             id = NextFreeId();
             int i = count++;
             ids[i] = id;
-            owners[i] = owner;
-            damages[i] = damage;
-            positions[i] = origin;
-            directions[i] = AimMath.Direction(angle);
-            remaining[i] = Lifetime;
+            owners[i] = spec.Owner;
+            damages[i] = spec.Damage;
+            positions[i] = spec.Origin;
+            directions[i] = AimMath.Direction(spec.Angle);
+            remaining[i] = spec.Shape.Lifetime;
+            speeds[i] = spec.Shape.Speed;
+            radii[i] = spec.Shape.Radius;
+            pierceLeft[i] = Math.Max(1, Math.Min(MaxPierce, spec.Shape.Pierce));
+            hitCounts[i] = 0;
             indexOf[id] = i;
 
-            events.Add(new CombatEvent { Kind = CombatEventKind.Fire, ProjectileId = id, Owner = owner, Position = origin, Angle = angle });
+            events.Add(new CombatEvent { Kind = CombatEventKind.Fire, ProjectileId = id, Owner = spec.Owner, Position = spec.Origin, Angle = spec.Angle });
             return true;
         }
 
@@ -131,18 +171,12 @@ namespace BS
                 remaining[i] -= dt;
 
                 Vector2 from = positions[i];
-                Vector2 to = from + directions[i] * (Speed * travelTime);
+                Vector2 to = from + directions[i] * (speeds[i] * travelTime);
 
                 bool leftArena = ClipToArena(from, ref to);
 
-                if (mobs != null && mobs.TryHitSegment(from, to, Radius, out ushort mobId, out Vector2 point))
+                if (mobs != null && HitMobsOnTheWay(i, from, to, mobs))
                 {
-                    mobs.ApplyDamage(mobId, damages[i], out int percent, out bool killed);
-                    events.Add(new CombatEvent
-                    {
-                        Kind = CombatEventKind.Hit, ProjectileId = ids[i], Owner = owners[i], Position = point,
-                        MobId = mobId, MobHealthPercent = (byte)percent, Killed = killed,
-                    });
                     RemoveAt(i);
                     continue;
                 }
@@ -159,6 +193,40 @@ namespace BS
         }
 
         // ---- Internals ----
+
+        /// <summary>
+        /// Damages the mobs the projectile touched on its way, nearest first, each at most once. Returns true when the
+        /// projectile used up its last allowed hit and must be removed.
+        /// </summary>
+        bool HitMobsOnTheWay(int i, Vector2 from, Vector2 to, MobSim mobs)
+        {
+            alreadyHit.Clear();
+            int baseIndex = i * MaxPierce;
+            for (int k = 0; k < hitCounts[i]; k++) alreadyHit.Add(hitMobs[baseIndex + k]);
+
+            segmentHits.Clear();
+            if (mobs.CollectSegmentHits(from, to, radii[i], alreadyHit, segmentHits) == 0) return false;
+
+            for (int h = 0; h < segmentHits.Count; h++)
+            {
+                MobSim.SegmentHit hit = segmentHits[h];
+                if (!mobs.ApplyDamage(hit.MobId, damages[i], out int percent, out bool killed)) continue;
+
+                hitMobs[baseIndex + hitCounts[i]] = hit.MobId;
+                hitCounts[i]++;
+                pierceLeft[i]--;
+                bool last = pierceLeft[i] <= 0;
+
+                events.Add(new CombatEvent
+                {
+                    Kind = CombatEventKind.Hit, ProjectileId = ids[i], Owner = owners[i], Position = hit.Point,
+                    MobId = hit.MobId, MobHealthPercent = (byte)percent, Killed = killed, Continues = !last,
+                });
+
+                if (last) return true;
+            }
+            return false;
+        }
 
         ushort NextFreeId()
         {
@@ -200,6 +268,11 @@ namespace BS
                 positions[i] = positions[last];
                 directions[i] = directions[last];
                 remaining[i] = remaining[last];
+                speeds[i] = speeds[last];
+                radii[i] = radii[last];
+                pierceLeft[i] = pierceLeft[last];
+                hitCounts[i] = hitCounts[last];
+                Array.Copy(hitMobs, last * MaxPierce, hitMobs, i * MaxPierce, MaxPierce);
                 indexOf[ids[i]] = i;
             }
             count--;

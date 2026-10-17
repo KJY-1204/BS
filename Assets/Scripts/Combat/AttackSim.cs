@@ -14,9 +14,9 @@ namespace BS
     }
 
     /// <summary>
-    /// Server-side basic attack: remembers each survivor's latest aim and fire state and fires one projectile
-    /// per cooldown while fire is held. The cooldown keeps running after the button is released, so
-    /// pressing and releasing quickly cannot fire faster than holding.
+    /// Server-side basic attack: remembers each survivor's latest aim and fire state and fires the survivor's
+    /// character attack (one or several shots together) once per cooldown while fire is held. The cooldown keeps
+    /// running after the button is released, so pressing and releasing quickly cannot fire faster than holding.
     /// </summary>
     public sealed class AttackSim
     {
@@ -27,15 +27,23 @@ namespace BS
             public float Cooldown;
             public int Damage = CombatConfig.ProjectileDamage;
             public float CooldownMultiplier = 1f;
+            public AttackDef Attack = AttackDef.Default;
         }
-
-        public float CooldownSeconds = CombatConfig.FireCooldownSeconds;
 
         readonly Dictionary<ulong, Shooter> shooters = new Dictionary<ulong, Shooter>();
 
         public int Count => shooters.Count;
 
+        /// <summary>Adds a shooter with the plain single-shot attack.</summary>
         public void Register(ulong clientId) => shooters[clientId] = new Shooter();
+
+        /// <summary>Adds a shooter that attacks the way its character does.</summary>
+        public void Register(ulong clientId, AttackDef attack) => shooters[clientId] = new Shooter { Attack = attack };
+
+        /// <summary>The latest aim received from a shooter, which skills with a direction use.</summary>
+        public ushort AimOf(ulong clientId) => shooters.TryGetValue(clientId, out Shooter s) ? s.Angle : (ushort)0;
+
+        public AttackDef AttackOf(ulong clientId) => shooters.TryGetValue(clientId, out Shooter s) ? s.Attack : AttackDef.Default;
 
         public void Unregister(ulong clientId) => shooters.Remove(clientId);
 
@@ -76,9 +84,26 @@ namespace BS
                 if (!shooters.TryGetValue(body.ClientId, out Shooter s)) continue;
                 if (!s.Firing || s.Cooldown > 0f) continue;
 
-                // A refused shot (projectile cap) does not use up the cooldown.
-                if (projectiles.TryFire(body.ClientId, body.Position, s.Angle, s.Damage, out _))
-                    s.Cooldown = CooldownSeconds * s.CooldownMultiplier;
+                // The whole attack goes out together. If the projectile cap leaves room for only some of the
+                // shots, those fire; a shot refused by the cap does not use up the cooldown.
+                AttackDef attack = s.Attack;
+                int damage = Math.Max(1, Mathf.RoundToInt(s.Damage * attack.DamageMultiplier));
+                int fired = 0;
+                for (int shot = 0; shot < attack.Shots; shot++)
+                {
+                    var spec = new ProjectileSpec
+                    {
+                        Owner = body.ClientId,
+                        Origin = body.Position,
+                        Angle = AimMath.ShotAngle(s.Angle, attack.Shots, attack.SpreadDegrees, shot),
+                        Damage = damage,
+                        Shape = attack.Shape,
+                    };
+                    if (!projectiles.TryFire(spec, out _)) break;
+                    fired++;
+                }
+
+                if (fired > 0) s.Cooldown = attack.CooldownSeconds * s.CooldownMultiplier;
             }
         }
     }

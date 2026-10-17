@@ -9,6 +9,7 @@ namespace BS.Tests
         const ulong A = 1, B = 2;
         const float Dt = 0.02f;
         const int Q = 0, E = 1;
+        const byte Reimu = CharacterIds.Reimu, Marisa = CharacterIds.Marisa;
 
         static SkillSim New(params ulong[] clients)
         {
@@ -17,12 +18,13 @@ namespace BS.Tests
             return sim;
         }
 
-        static int[] Ranks(int burst = 0, int rapid = 0, int haste = 0)
+        static int[] Ranks(int burst = 0, int rapid = 0, int haste = 0, int barrier = 0)
         {
             var ranks = new int[SkillCatalog.MaxSkillId + 1];
             ranks[SkillIds.Burst] = burst;
             ranks[SkillIds.RapidFire] = rapid;
             ranks[SkillIds.Haste] = haste;
+            ranks[SkillIds.Barrier] = barrier;
             return ranks;
         }
 
@@ -45,7 +47,7 @@ namespace BS.Tests
         public void ManaRefillsAtTheRateOverTime()
         {
             SkillSim sim = New(A);
-            sim.TryActivate(A, Q, true, Ranks(burst: 1), out _);
+            sim.TryActivate(A, Reimu, Q, true, Ranks(burst: 1), out _);
             float after = sim.Mana(A);
 
             Run(sim, 1f);
@@ -60,7 +62,7 @@ namespace BS.Tests
             Run(sim, 30f);
             Assert.AreEqual(GrowthConfig.BaseMaxMana, sim.Mana(A));
 
-            sim.TryActivate(A, Q, true, Ranks(burst: 1), out _);
+            sim.TryActivate(A, Reimu, Q, true, Ranks(burst: 1), out _);
             Run(sim, 60f);
             Assert.AreEqual(GrowthConfig.BaseMaxMana, sim.Mana(A));
         }
@@ -69,7 +71,7 @@ namespace BS.Tests
         public void RaisingTheMaximum_DoesNotRefill()
         {
             SkillSim sim = New(A);
-            sim.TryActivate(A, Q, true, Ranks(burst: 1), out _);
+            sim.TryActivate(A, Reimu, Q, true, Ranks(burst: 1), out _);
             float before = sim.Mana(A);
 
             sim.SetStats(A, GrowthConfig.BaseMaxMana + 30, GrowthConfig.BaseManaRegenPerSecond);
@@ -90,7 +92,7 @@ namespace BS.Tests
         public void ManaRefillFollowsTheNewRate()
         {
             SkillSim sim = New(A);
-            sim.TryActivate(A, Q, true, Ranks(burst: 1), out _);
+            sim.TryActivate(A, Reimu, Q, true, Ranks(burst: 1), out _);
             float before = sim.Mana(A);
             sim.SetStats(A, GrowthConfig.BaseMaxMana, 20f);
 
@@ -107,7 +109,7 @@ namespace BS.Tests
             SkillSim sim = New(A);
             SkillDef burst = SkillCatalog.Get(SkillIds.Burst);
 
-            SkillResult result = sim.TryActivate(A, Q, true, Ranks(burst: 1), out SkillActivation act);
+            SkillResult result = sim.TryActivate(A, Reimu, Q, true, Ranks(burst: 1), out SkillActivation act);
 
             Assert.AreEqual(SkillResult.Fired, result);
             Assert.AreEqual(GrowthConfig.BaseMaxMana - burst.ManaCost, sim.Mana(A), 1e-4f);
@@ -123,8 +125,8 @@ namespace BS.Tests
         {
             SkillSim sim = New(A);
 
-            Assert.AreEqual(SkillResult.NotLearned, sim.TryActivate(A, Q, true, Ranks(), out _));
-            Assert.AreEqual(SkillResult.NotLearned, sim.TryActivate(A, E, true, Ranks(), out _));
+            Assert.AreEqual(SkillResult.NotLearned, sim.TryActivate(A, Reimu, Q, true, Ranks(), out _));
+            Assert.AreEqual(SkillResult.NotLearned, sim.TryActivate(A, Reimu, E, true, Ranks(), out _));
             Assert.AreEqual(GrowthConfig.BaseMaxMana, sim.Mana(A));
             Assert.AreEqual(0f, sim.CooldownLeft(A, Q));
         }
@@ -137,7 +139,7 @@ namespace BS.Tests
             SkillDef burst = SkillCatalog.Get(SkillIds.Burst);
             Assert.Less(20, burst.ManaCost);
 
-            SkillResult result = sim.TryActivate(A, Q, true, Ranks(burst: 1), out _);
+            SkillResult result = sim.TryActivate(A, Reimu, Q, true, Ranks(burst: 1), out _);
 
             Assert.AreEqual(SkillResult.NoMana, result);
             Assert.AreEqual(20f, sim.Mana(A));
@@ -148,13 +150,13 @@ namespace BS.Tests
         public void DuringTheCooldown_ItDoesNotFire()
         {
             SkillSim sim = New(A);
-            sim.TryActivate(A, Q, true, Ranks(burst: 1), out _);
+            sim.TryActivate(A, Reimu, Q, true, Ranks(burst: 1), out _);
             Run(sim, 2f);
 
-            Assert.AreEqual(SkillResult.Cooldown, sim.TryActivate(A, Q, true, Ranks(burst: 1), out _));
+            Assert.AreEqual(SkillResult.Cooldown, sim.TryActivate(A, Reimu, Q, true, Ranks(burst: 1), out _));
 
             Run(sim, SkillCatalog.Get(SkillIds.Burst).Cooldown);
-            Assert.AreEqual(SkillResult.Fired, sim.TryActivate(A, Q, true, Ranks(burst: 1), out _));
+            Assert.AreEqual(SkillResult.Fired, sim.TryActivate(A, Reimu, Q, true, Ranks(burst: 1), out _));
         }
 
         [Test]
@@ -162,7 +164,7 @@ namespace BS.Tests
         {
             SkillSim sim = New(A);
 
-            Assert.AreEqual(SkillResult.Dead, sim.TryActivate(A, Q, false, Ranks(burst: 1), out _));
+            Assert.AreEqual(SkillResult.Dead, sim.TryActivate(A, Reimu, Q, false, Ranks(burst: 1), out _));
             Assert.AreEqual(GrowthConfig.BaseMaxMana, sim.Mana(A));
         }
 
@@ -177,7 +179,7 @@ namespace BS.Tests
             for (int i = 0; i < 1000; i++)
             {
                 sim.Step(Dt);
-                if (sim.TryActivate(A, Q, true, Ranks(burst: 1), out _) == SkillResult.Fired) fired++;
+                if (sim.TryActivate(A, Reimu, Q, true, Ranks(burst: 1), out _) == SkillResult.Fired) fired++;
             }
 
             float cooldown = SkillCatalog.Get(SkillIds.Burst).Cooldown;
@@ -189,19 +191,19 @@ namespace BS.Tests
         {
             SkillSim sim = New(A);
 
-            Assert.AreEqual(SkillResult.UnknownSlot, sim.TryActivate(A, 7, true, Ranks(burst: 1), out _));
-            Assert.AreEqual(SkillResult.UnknownSlot, sim.TryActivate(A, -1, true, Ranks(burst: 1), out _));
-            Assert.AreEqual(SkillResult.UnknownSlot, sim.TryActivate(99, Q, true, Ranks(burst: 1), out _));
+            Assert.AreEqual(SkillResult.UnknownSlot, sim.TryActivate(A, Reimu, 7, true, Ranks(burst: 1), out _));
+            Assert.AreEqual(SkillResult.UnknownSlot, sim.TryActivate(A, Reimu, -1, true, Ranks(burst: 1), out _));
+            Assert.AreEqual(SkillResult.UnknownSlot, sim.TryActivate(99, Reimu, Q, true, Ranks(burst: 1), out _));
         }
 
         [Test]
         public void TheSlotsHaveTheirOwnCooldowns()
         {
             SkillSim sim = New(A);
-            int[] ranks = Ranks(burst: 1, rapid: 1, haste: 1);
+            int[] ranks = Ranks(burst: 1, barrier: 1);
 
-            Assert.AreEqual(SkillResult.Fired, sim.TryActivate(A, Q, true, ranks, out _));
-            Assert.AreEqual(SkillResult.Fired, sim.TryActivate(A, E, true, ranks, out _));
+            Assert.AreEqual(SkillResult.Fired, sim.TryActivate(A, Reimu, Q, true, ranks, out _));
+            Assert.AreEqual(SkillResult.Fired, sim.TryActivate(A, Reimu, E, true, ranks, out _));
             Assert.Greater(sim.CooldownLeft(A, Q), 0f);
             Assert.Greater(sim.CooldownLeft(A, E), 0f);
         }
@@ -212,9 +214,9 @@ namespace BS.Tests
             SkillSim sim = New(A);
             sim.SetStats(A, 1000, 0f);
 
-            sim.TryActivate(A, Q, true, Ranks(burst: 1), out SkillActivation one);
+            sim.TryActivate(A, Reimu, Q, true, Ranks(burst: 1), out SkillActivation one);
             Run(sim, 20f);
-            sim.TryActivate(A, Q, true, Ranks(burst: 3), out SkillActivation three);
+            sim.TryActivate(A, Reimu, Q, true, Ranks(burst: 3), out SkillActivation three);
 
             Assert.Greater(three.Radius, one.Radius);
             Assert.Greater(three.Damage, one.Damage);
@@ -229,7 +231,7 @@ namespace BS.Tests
             int[] ranks = Ranks(rapid: 1, haste: 1);
             Assert.AreEqual(1f, sim.AttackMultiplier(A));
 
-            SkillResult result = sim.TryActivate(A, E, true, ranks, out SkillActivation act);
+            SkillResult result = sim.TryActivate(A, Marisa, E, true, ranks, out SkillActivation act);
 
             Assert.AreEqual(SkillResult.Fired, result);
             SkillDef rapid = SkillCatalog.Get(SkillIds.RapidFire);
@@ -249,7 +251,7 @@ namespace BS.Tests
         public void RapidFire_EndsWhenTheSurvivorDies()
         {
             SkillSim sim = New(A);
-            sim.TryActivate(A, E, true, Ranks(rapid: 1, haste: 1), out _);
+            sim.TryActivate(A, Marisa, E, true, Ranks(rapid: 1, haste: 1), out _);
             Assert.Less(sim.AttackMultiplier(A), 1f);
 
             sim.EndBuff(A);
@@ -263,7 +265,7 @@ namespace BS.Tests
             SkillSim sim = New(A);
             sim.SetStats(A, 10, 0f);
 
-            sim.TryActivate(A, E, true, Ranks(rapid: 1, haste: 1), out _);
+            sim.TryActivate(A, Marisa, E, true, Ranks(rapid: 1, haste: 1), out _);
 
             Assert.AreEqual(1f, sim.AttackMultiplier(A));
         }
@@ -274,10 +276,10 @@ namespace BS.Tests
             SkillSim sim = New(A);
             sim.SetStats(A, 1000, 100f);
             int[] ranks = Ranks(rapid: 1, haste: 1);
-            sim.TryActivate(A, E, true, ranks, out _);
+            sim.TryActivate(A, Marisa, E, true, ranks, out _);
             Run(sim, SkillCatalog.Get(SkillIds.RapidFire).Cooldown);
 
-            sim.TryActivate(A, E, true, ranks, out _);
+            sim.TryActivate(A, Marisa, E, true, ranks, out _);
 
             Assert.AreEqual(SkillCatalog.Get(SkillIds.RapidFire).Duration[0], sim.BuffLeft(A), 1e-3f);
         }
@@ -288,7 +290,7 @@ namespace BS.Tests
         public void Burst_HitsMobsAroundTheSurvivorAndSparesTheRest()
         {
             SkillSim sim = New(A);
-            sim.TryActivate(A, Q, true, Ranks(burst: 1), out SkillActivation act);
+            sim.TryActivate(A, Reimu, Q, true, Ranks(burst: 1), out SkillActivation act);
             var mobs = new MobSim(targetCount: 0) { MaxHealth = 100 };
             Vector2 origin = new Vector2(2, 1);
             mobs.TrySpawn(origin + new Vector2(1, 0), 0, out ushort a);
@@ -314,9 +316,9 @@ namespace BS.Tests
             var skills = New(A);
             // Four per kill keeps three kills (12) below the first level threshold, so the amount can be read directly.
             var leveling = new LevelingSim(new System.Random(1)) { XpPerKill = 4 };
-            leveling.Register(A);
-            leveling.Register(B);
-            skills.TryActivate(A, Q, true, Ranks(burst: 3), out SkillActivation act);
+            leveling.Register(A, Reimu);
+            leveling.Register(B, Reimu);
+            skills.TryActivate(A, Reimu, Q, true, Ranks(burst: 3), out SkillActivation act);
 
             var mobs = new MobSim(targetCount: 0) { MaxHealth = 30 };
             Vector2 origin = Vector2.zero;
@@ -346,7 +348,7 @@ namespace BS.Tests
         public void RapidFire_HasNoAreaEffect()
         {
             SkillSim sim = New(A);
-            sim.TryActivate(A, E, true, Ranks(rapid: 1, haste: 1), out SkillActivation act);
+            sim.TryActivate(A, Marisa, E, true, Ranks(rapid: 1, haste: 1), out SkillActivation act);
             var mobs = new MobSim(targetCount: 0) { MaxHealth = 30 };
             mobs.TrySpawn(new Vector2(1, 0), 0, out _);
 
