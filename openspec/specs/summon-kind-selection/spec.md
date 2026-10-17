@@ -7,11 +7,15 @@ Defines how the boss player chooses which kind of mob to summon: the selection i
 ## Requirements
 
 ### Requirement: The boss chooses the kind to summon
-The boss player SHALL be able to choose one of the mob kinds with the keys 1, 2 and 3 (basic, fast, tough), and the summon command SHALL summon a group of the chosen kind. The choice SHALL stay until changed and SHALL start each match as the basic kind, so a boss who never chooses summons as before. The choice SHALL travel to the server with each summon request and SHALL NOT be kept by the server between requests.
+The boss player SHALL be able to choose one of the mob kinds with the keys 1 to 5 (basic, fast, tough, ranged, exploding), and the summon command SHALL summon a group of the chosen kind. The choice SHALL stay until changed and SHALL start each match as the basic kind, so a boss who never chooses summons as before. The choice SHALL travel to the server with each summon request and SHALL NOT be kept by the server between requests.
 
 #### Scenario: Choosing
 - **WHEN** the boss player presses the key of the tough kind and then summons
 - **THEN** the group that appears is of the tough kind
+
+#### Scenario: A new kind
+- **WHEN** the boss player presses the key of the exploding kind and then summons
+- **THEN** the group that appears is of the exploding kind
 
 #### Scenario: The choice stays
 - **WHEN** the boss summons twice after choosing the fast kind once
@@ -60,7 +64,7 @@ The boss player's screen SHALL list the kinds with their keys, names and costs a
 
 #### Scenario: Boss screen
 - **WHEN** a match is running and the boss player looks at the screen
-- **THEN** the three kinds are listed with key, name and cost, and the chosen kind is marked
+- **THEN** the five kinds are listed with key, name and cost, and the chosen kind is marked
 
 #### Scenario: Changing the choice
 - **WHEN** the boss player presses another kind's key

@@ -110,7 +110,7 @@ The firing cooldown SHALL follow each survivor's own value, which can be shorten
 - **THEN** the survivor's cooldown is the normal one again
 
 ### Requirement: Projectiles harm mobs and the boss only
-A survivor's projectile SHALL damage mobs and the boss, and SHALL NOT damage any survivor, passing through them. (The boss's own projectiles follow the boss-projectiles rules and hurt survivors only.)
+A survivor's projectile SHALL damage mobs and the boss, and SHALL NOT damage any survivor, passing through them. (The boss's own projectiles follow the boss-projectiles rules and a mob's shots follow the mob-behaviors rules; both hurt survivors only.)
 
 #### Scenario: Teammate in the way
 - **WHEN** a survivor's projectile passes through another survivor's position
@@ -123,3 +123,7 @@ A survivor's projectile SHALL damage mobs and the boss, and SHALL NOT damage any
 #### Scenario: A boss projectile in the way
 - **WHEN** a survivor's projectile passes through the position of a boss projectile
 - **THEN** neither is affected, because projectiles do not collide with each other
+
+#### Scenario: A mob's shot in the way
+- **WHEN** a survivor's projectile passes through the position of a mob's shot
+- **THEN** neither is affected, so a survivor cannot shoot a mob's shot down

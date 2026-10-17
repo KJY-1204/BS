@@ -7,7 +7,7 @@ Defines the kinds of mob: that a mob has a kind apart from its origin, how each 
 ## Requirements
 
 ### Requirement: Mob kinds are data
-The game SHALL define a small fixed set of mob kinds as data: for each kind a name, a speed, a maximum health, a body size and a contact damage, each given as a multiple of the basic kind's value, and the energy cost and group size the boss's summon uses for it. The set SHALL contain a basic kind that behaves exactly as mobs did before kinds existed, a fast kind (quicker, with less health and a slightly smaller body) and a tough kind (slower, with much more health, a bigger body and a harder touch). Every value SHALL be adjustable without changing rules elsewhere, and rules SHALL read these values and never a kind's identity.
+The game SHALL define a small fixed set of mob kinds as data: for each kind a name, a speed, a maximum health, a body size and a contact damage, each given as a multiple of the basic kind's value, the energy cost and group size the boss's summon uses for it, and its behavior (see the mob-behaviors capability). The set SHALL contain a basic kind that behaves exactly as mobs did before kinds existed, a fast kind (quicker, with less health and a slightly smaller body), a tough kind (slower, with much more health, a bigger body and a harder touch), a ranged kind and an exploding kind. Every value SHALL be adjustable without changing rules elsewhere, and rules SHALL read these values and never a kind's identity.
 
 #### Scenario: The basic kind is unchanged
 - **WHEN** a basic mob is spawned
@@ -20,6 +20,10 @@ The game SHALL define a small fixed set of mob kinds as data: for each kind a na
 #### Scenario: Changing the basic value
 - **WHEN** the basic mob health is changed for a test
 - **THEN** every other kind's health changes with it, because each kind is a multiple of the basic value
+
+#### Scenario: Five kinds
+- **WHEN** the set of kinds is listed
+- **THEN** it holds the basic, fast, tough, ranged and exploding kinds, each with its own cost and group size
 
 ### Requirement: Every mob has a kind and an origin that do not depend on each other
 The server SHALL know for each mob both its kind and its origin (automatic or summoned), SHALL keep both for the mob's whole life, and SHALL NOT infer one from the other. Any kind SHALL be possible for a summoned mob. An automatically spawned mob SHALL always be of the basic kind.
@@ -82,8 +86,8 @@ When a mob appears, every client SHALL learn its kind and its origin from the ap
 Every client SHALL draw a mob in the color of its kind and at the size of its kind's body, using only placeholder shapes. Basic mobs SHALL keep the existing difference of color between the automatic and the summoned origin. The kinds SHALL be told apart at a glance.
 
 #### Scenario: Seeing the kinds
-- **WHEN** a basic, a fast and a tough mob are on the field
-- **THEN** every client draws three different colors, and the tough mob is the largest
+- **WHEN** a basic, a fast, a tough, a ranged and an exploding mob are on the field
+- **THEN** every client draws five different colors, and the tough mob is the largest
 
 #### Scenario: Basic origins
 - **WHEN** an automatic basic mob and a summoned basic mob are on the field

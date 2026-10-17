@@ -48,7 +48,7 @@ The system SHALL limit the number of simultaneous mobs to a hard cap shared by a
 - **THEN** neither a summon nor an automatic spawn creates a mob until one is removed
 
 ### Requirement: Mobs chase the nearest survivor
-Each mob SHALL move in a straight line toward the nearest living survivor, at its kind's speed. The boss character SHALL NOT be chosen as a default target.
+Each mob SHALL move in a straight line toward the nearest living survivor, at its kind's speed, unless its kind's behavior says to stop (a ranged mob within its hold distance, an exploding mob with its fuse running). The boss character SHALL NOT be chosen as a default target.
 
 #### Scenario: Single survivor
 - **WHEN** one survivor is in the room
@@ -61,6 +61,10 @@ Each mob SHALL move in a straight line toward the nearest living survivor, at it
 #### Scenario: Kinds move at their own speeds
 - **WHEN** mobs of different kinds chase the same survivor
 - **THEN** each moves at the speed of its own kind
+
+#### Scenario: A mob that stops
+- **WHEN** a ranged mob reaches its hold distance or an exploding mob starts its fuse
+- **THEN** it stops moving until its behavior lets it move again
 
 ### Requirement: Mobs do not stack
 The server SHALL push overlapping mobs apart so that mobs chasing the same target spread out instead of occupying the same position. Two mobs SHALL count as overlapping when their centers are closer than the sum of their body radii, so mobs of different sizes keep different distances.
