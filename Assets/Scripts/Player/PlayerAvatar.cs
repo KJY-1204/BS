@@ -61,6 +61,7 @@ namespace BS
             {
                 role.Value = pendingRole;
                 serverPos.Value = pendingSpawn;
+                PlayerRegistry.Register(this);
             }
 
             role.OnValueChanged += (_, __) => ApplyColor();
@@ -86,6 +87,8 @@ namespace BS
 
         public override void OnNetworkDespawn()
         {
+            if (IsServer) PlayerRegistry.Unregister(this);
+
             if (moveAction != null)
             {
                 moveAction.Disable();

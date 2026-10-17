@@ -20,7 +20,7 @@ namespace BS.Editor
             RegisterNetworkPrefab(playerPrefab);
 
             Scene scene = SceneManager.GetActiveScene();
-            ClearExisting("NetworkManager", "RoleTable", "Bootstrap", "Arena");
+            ClearExisting("NetworkManager", "RoleTable", "Bootstrap", "Arena", "Mobs");
 
             var nmGo = new GameObject("NetworkManager");
             var nm = nmGo.AddComponent<NetworkManager>();
@@ -47,6 +47,11 @@ namespace BS.Editor
             menuSo.ApplyModifiedPropertiesWithoutUndo();
 
             new GameObject("Arena").AddComponent<ArenaVisual>();
+
+            var mobsGo = new GameObject("Mobs");
+            mobsGo.AddComponent<MobServer>();
+            mobsGo.AddComponent<MobClient>();
+            mobsGo.AddComponent<MobView>();
 
             Camera cam = Camera.main;
             if (cam != null)

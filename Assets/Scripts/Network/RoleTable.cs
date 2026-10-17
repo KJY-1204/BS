@@ -44,6 +44,9 @@ namespace BS
         {
             if (!IsServer) return;
 
+            // A previous room may have left slots behind; every room starts empty.
+            Slots.Clear();
+
             NetworkManager.OnClientConnectedCallback += OnClientConnected;
             NetworkManager.OnClientDisconnectCallback += OnClientDisconnected;
 

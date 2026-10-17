@@ -34,6 +34,7 @@ namespace BS
             nm.OnClientDisconnectCallback += OnClientDisconnected;
 
             if (DevArgs.Host) HostDirect(DevArgs.HostAsBoss);
+            else if (DevArgs.HostRelay) _ = HostRelayAsync(DevArgs.HostAsBoss);
             else if (!string.IsNullOrEmpty(DevArgs.Join)) JoinDirect(DevArgs.Join);
             else if (!string.IsNullOrEmpty(DevArgs.JoinCode)) _ = JoinRelayAsync(DevArgs.JoinCode);
             if (DevArgs.QuitAfter > 0f) Invoke(nameof(QuitApp), DevArgs.QuitAfter);
@@ -87,6 +88,7 @@ namespace BS
                 session = host;
                 JoinCode = host.Code;
                 Status = "방이 열렸습니다.";
+                if (DevArgs.HostRelay) Debug.Log($"[BS] relay room code {host.Code}");
             }
             catch (Exception e)
             {
