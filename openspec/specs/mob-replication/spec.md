@@ -29,11 +29,11 @@ Clients SHALL show mob movement as continuous motion by blending between receive
 - **THEN** the displayed motion does not jump and continues from the next received snapshot
 
 ### Requirement: Mob appearance and removal are reliable
-The server SHALL tell clients reliably when a mob appears and when it is removed, so a mob is never left on screen after it is gone and never missing after it appears.
+The server SHALL tell clients reliably when a mob appears and when it is removed, so a mob is never left on screen after it is gone and never missing after it appears. The appearance message SHALL carry the mob's kind and origin, so every client draws the mob as its kind from the first frame.
 
 #### Scenario: Mob spawns
 - **WHEN** the server spawns a mob
-- **THEN** every client shows a new mob at its spawn position
+- **THEN** every client shows a new mob at its spawn position, drawn as the mob's kind
 
 #### Scenario: Mob removed
 - **WHEN** the server removes a mob
@@ -44,11 +44,15 @@ The server SHALL tell clients reliably when a mob appears and when it is removed
 - **THEN** the client removes that mob from the display
 
 ### Requirement: Late joiners see current mobs
-A player who joins a room in progress SHALL see all existing mobs at their current positions without waiting for new spawns.
+A player who joins a room in progress SHALL see all existing mobs at their current positions, each drawn as its own kind, without waiting for new spawns.
 
 #### Scenario: Join mid-game
 - **WHEN** a player joins while mobs are alive
 - **THEN** within 1 second the player's screen shows all current mobs at their current positions
+
+#### Scenario: Kinds for a late joiner
+- **WHEN** a player joins while mobs of several kinds are alive
+- **THEN** each mob appears with the color and size of its own kind
 
 ### Requirement: Traffic stays within budget
 With 100 mobs alive, the mob data sent to each client SHALL average no more than 50 KB per second, and no single network packet SHALL exceed the transport's packet size limit.

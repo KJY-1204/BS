@@ -7,11 +7,11 @@ Defines how the boss player calls mobs onto the field: the summon command, the e
 ## Requirements
 
 ### Requirement: The boss can summon a group of mobs
-While a match is running and the boss is standing, the boss player SHALL be able to summon a group of mobs with one command, and the server SHALL create the group around the boss's position. Summoned mobs SHALL be ordinary mobs in every other respect (same health, speed, size and contact damage as automatically spawned ones). Only the boss player SHALL be able to summon, and a summon request from anyone else SHALL be ignored.
+While a match is running and the boss is standing, the boss player SHALL be able to summon a group of mobs of the chosen kind with one command, and the server SHALL create the group around the boss's position. A summoned mob SHALL have the stats of its kind and the summoned origin. Only the boss player SHALL be able to summon, and a summon request from anyone else SHALL be ignored.
 
 #### Scenario: A summon
 - **WHEN** the boss player gives the summon command with enough energy and room for mobs
-- **THEN** the server creates a group of mobs around the boss and every client sees them appear like any other mob
+- **THEN** the server creates a group of the chosen kind around the boss and every client sees them appear like any other mob
 
 #### Scenario: Not the boss
 - **WHEN** a survivor's client sends a summon request
@@ -22,7 +22,7 @@ While a match is running and the boss is standing, the boss player SHALL be able
 - **THEN** summons repeat no faster than the summon cooldown allows
 
 ### Requirement: Summoning costs energy that refills over time
-The boss SHALL have a summon energy with a maximum. Energy SHALL refill at a steady rate while the match is running and SHALL NOT exceed the maximum. Each mob a summon actually creates SHALL cost a fixed amount, and a summon SHALL create only as many mobs as the energy pays for, up to the group size. The boss SHALL start a match with a part of the maximum energy. All of these values SHALL be adjustable without changing rules elsewhere.
+The boss SHALL have a summon energy with a maximum. Energy SHALL refill at a steady rate while the match is running and SHALL NOT exceed the maximum. Each mob a summon actually creates SHALL cost the energy cost of its kind, and a summon SHALL create only as many mobs as the energy pays for, up to the group size of its kind. The boss SHALL start a match with a part of the maximum energy. All of these values SHALL be adjustable without changing rules elsewhere.
 
 #### Scenario: Paying for a group
 - **WHEN** the boss has energy for a whole group and summons
@@ -33,7 +33,7 @@ The boss SHALL have a summon energy with a maximum. Energy SHALL refill at a ste
 - **THEN** only that many mobs are created and the energy drops by their cost
 
 #### Scenario: No energy
-- **WHEN** the boss has less energy than one mob costs and summons
+- **WHEN** the boss has less energy than one mob of the chosen kind costs and summons
 - **THEN** nothing is created, no energy is taken, and the boss is told the summon failed
 
 #### Scenario: Refilling
@@ -75,11 +75,15 @@ The server SHALL refuse a summon, take no energy and create no mob, when the roo
 - **THEN** it is refused and no energy is taken
 
 ### Requirement: Summoned mobs look different from automatic ones
-A mob created by a summon SHALL be drawn in a color different from an automatically spawned mob on every client, so everyone can tell them apart. This SHALL NOT need a new kind of network message.
+A summoned mob of the basic kind SHALL be drawn in a color different from an automatically spawned mob on every client, so everyone can tell the origins apart, and mobs of the other kinds SHALL be drawn in the colors of their kinds. This SHALL NOT need a new kind of network message.
 
 #### Scenario: Seeing the difference
-- **WHEN** a summoned mob and an automatically spawned mob are on the field
+- **WHEN** a summoned basic mob and an automatically spawned mob are on the field
 - **THEN** every client draws them in different colors
+
+#### Scenario: Other kinds
+- **WHEN** a summoned fast mob is on the field
+- **THEN** every client draws it in the color of the fast kind
 
 ### Requirement: The boss sees its energy, others do not
 The boss player SHALL see the current and maximum summon energy and a hint for the summon command. The server SHALL send the energy only to the boss player, and survivors SHALL NOT receive or show it. The boss SHALL get a short visible sign when a summon is refused.
