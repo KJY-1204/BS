@@ -168,6 +168,8 @@ namespace BS
         public MobSim Mobs;
         public ProjectileSim Projectiles;
         public SurvivorSim Survivors;
+        /// <summary>The boss, who takes damage from the burst and the beam like a mob does (null when there is none).</summary>
+        public IBossTarget Boss;
         /// <summary>Every survivor in the room with position and whether alive (the caster included), for healing.</summary>
         public IReadOnlyList<GrowthBody> Bodies;
         /// <summary>The shape of the caster's basic shots, which a ring of projectiles uses.</summary>
@@ -189,12 +191,19 @@ namespace BS
             switch (activation.Effect)
             {
                 case SkillEffectKind.AreaDamage:
-                    return context.Mobs == null ? 0 : context.Mobs.ApplyAreaDamage(context.Origin, activation.Radius, activation.Damage, context.Deaths);
+                {
+                    int hit = context.Mobs == null ? 0 : context.Mobs.ApplyAreaDamage(context.Origin, activation.Radius, activation.Damage, context.Deaths);
+                    return hit + HurtBossInArea(activation, context);
+                }
 
                 case SkillEffectKind.Beam:
-                    return context.Mobs == null
+                {
+                    Vector2 direction = AimMath.Direction(context.AimAngle);
+                    int hit = context.Mobs == null
                         ? 0
-                        : context.Mobs.ApplyLineDamage(context.Origin, AimMath.Direction(context.AimAngle), activation.Length, activation.HalfWidth, activation.Damage, context.Deaths);
+                        : context.Mobs.ApplyLineDamage(context.Origin, direction, activation.Length, activation.HalfWidth, activation.Damage, context.Deaths);
+                    return hit + HurtBossOnLine(activation, context, direction);
+                }
 
                 case SkillEffectKind.Barrier:
                     return context.Survivors != null && context.Survivors.GrantInvulnerability(context.CasterId, activation.BuffSeconds) ? 1 : 0;
@@ -226,6 +235,33 @@ namespace BS
         {
             if (activation.Effect != SkillEffectKind.AreaDamage || mobs == null) return 0;
             return mobs.ApplyAreaDamage(origin, activation.Radius, activation.Damage, deaths);
+        }
+
+        /// <summary>The boss is hurt when its body overlaps the circle (it is far bigger than a mob, so its centre is not what counts).</summary>
+        static int HurtBossInArea(SkillActivation activation, in SkillContext context)
+        {
+            IBossTarget boss = context.Boss;
+            if (boss == null || !boss.CanBeHit || activation.Radius <= 0f) return 0;
+
+            float reach = activation.Radius + boss.Radius;
+            if ((boss.Position - context.Origin).sqrMagnitude > reach * reach) return 0;
+            return boss.TakeDamage(activation.Damage, out _, out _) ? 1 : 0;
+        }
+
+        /// <summary>The boss is hurt when its body overlaps the beam: along the line within its length and within the width plus the body.</summary>
+        static int HurtBossOnLine(SkillActivation activation, in SkillContext context, Vector2 direction)
+        {
+            IBossTarget boss = context.Boss;
+            if (boss == null || !boss.CanBeHit || activation.Length <= 0f || activation.HalfWidth <= 0f || direction.sqrMagnitude < 1e-8f) return 0;
+
+            Vector2 dir = direction.normalized;
+            Vector2 along = boss.Position - context.Origin;
+            float t = Vector2.Dot(along, dir);
+            if (t < -boss.Radius || t > activation.Length + boss.Radius) return 0;
+
+            float side = Mathf.Abs(along.x * dir.y - along.y * dir.x);
+            if (side > activation.HalfWidth + boss.Radius) return 0;
+            return boss.TakeDamage(activation.Damage, out _, out _) ? 1 : 0;
         }
 
         static int FireRing(SkillActivation activation, in SkillContext context)

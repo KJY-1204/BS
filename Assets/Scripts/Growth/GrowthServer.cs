@@ -146,13 +146,13 @@ namespace BS
 
         public void OnPick(ulong clientId, byte offerId, int index)
         {
-            if (!running) return;
+            if (!running || !RoleTable.MatchRunning) return;
             if (Leveling.Pick(clientId, offerId, index)) manualPicks++;
         }
 
         public void OnSkillRequest(ulong clientId, int slot)
         {
-            if (!running || requests.Count >= MaxRequestsPerStep) return;
+            if (!running || !RoleTable.MatchRunning || requests.Count >= MaxRequestsPerStep) return;
             requests.Add(new SkillRequest { ClientId = clientId, Slot = slot });
         }
 
@@ -160,7 +160,7 @@ namespace BS
 
         void FixedUpdate()
         {
-            if (!running) return;
+            if (!running || !RoleTable.MatchRunning) return; // a match that has ended no longer advances
 
             float dt = Time.fixedDeltaTime;
             RunDevScenario();
@@ -234,6 +234,7 @@ namespace BS
                     Mobs = mobs.Sim,
                     Projectiles = combat.Projectiles,
                     Survivors = combat.Survivors,
+                    Boss = combat.Boss.Exists ? combat.Boss : null,
                     Bodies = skillBodies,
                     Shape = character != null ? character.Attack.Shape : ProjectileShape.Default,
                     Deaths = kills,

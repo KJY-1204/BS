@@ -116,8 +116,13 @@ namespace BS
 
             stepWatch.Restart();
 
-            PlayerRegistry.CollectSurvivors(survivors);
-            Sim.Step(Time.fixedDeltaTime, survivors);
+            // After the match has ended the mobs stop where they are, but the snapshots keep flowing so every client's
+            // display clock and the mobs it shows stay as they were.
+            if (RoleTable.MatchRunning)
+            {
+                PlayerRegistry.CollectSurvivors(survivors);
+                Sim.Step(Time.fixedDeltaTime, survivors);
+            }
             if (DevArgs.MobLog) LogFreezeChange();
 
             if (DevArgs.MobChurn > 0f) ChurnForTesting();

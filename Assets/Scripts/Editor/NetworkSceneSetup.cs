@@ -56,6 +56,7 @@ namespace BS.Editor
             mobsGo.AddComponent<CombatView>();
             mobsGo.AddComponent<CombatHud>();
             mobsGo.AddComponent<GrowthHud>();
+            mobsGo.AddComponent<MatchHud>();
             mobsGo.AddComponent<MobClient>();
             mobsGo.AddComponent<MobView>();
 

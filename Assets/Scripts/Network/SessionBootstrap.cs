@@ -56,7 +56,7 @@ namespace BS
         {
             response.CreatePlayerObject = false;
             int connected = NetworkManager.Singleton.ConnectedClientsIds.Count;
-            bool playing = RoleTable.Instance != null && RoleTable.Instance.Phase == RoomPhase.Playing;
+            bool playing = RoleTable.Instance != null && RoleTable.Instance.Phase != RoomPhase.Waiting; // a running or a finished match accepts nobody
             response.Approved = connected < MaxPlayers && !playing;
             if (!response.Approved) response.Reason = playing ? "이미 게임이 진행 중입니다." : "방이 가득 찼습니다.";
             Debug.Log($"[BS] connection request from client {request.ClientNetworkId}: " +

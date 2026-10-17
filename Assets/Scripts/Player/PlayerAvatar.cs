@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -44,6 +45,12 @@ namespace BS
         byte pendingRole;
         byte pendingCharacter;
         Vector2 pendingSpawn;
+
+        /// <summary>Every spawned avatar on this machine (the boss chase and the screens read it).</summary>
+        public static readonly List<PlayerAvatar> All = new List<PlayerAvatar>();
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void ResetStatics() => All.Clear();
 
         public byte Role => role.Value;
 
@@ -93,7 +100,10 @@ namespace BS
                 serverPos.Value = pendingSpawn;
                 PlayerRegistry.Register(this);
                 if (pendingRole != RoleTable.BossRole) CombatServer.Instance?.RegisterSurvivor(this);
+                else CombatServer.Instance?.RegisterBoss(this);
             }
+
+            if (!All.Contains(this)) All.Add(this);
 
             role.OnValueChanged += (_, __) => ApplyColor();
             ApplyColor();
@@ -122,7 +132,10 @@ namespace BS
             {
                 PlayerRegistry.Unregister(this);
                 CombatServer.Instance?.UnregisterSurvivor(this);
+                CombatServer.Instance?.UnregisterBoss(this);
             }
+
+            All.Remove(this);
 
             if (moveAction != null)
             {
@@ -139,7 +152,9 @@ namespace BS
             if (IsOwner)
             {
                 Vector2 dir = Vector2.ClampMagnitude(DevArgs.Move ?? moveAction.ReadValue<Vector2>(), 1f);
+                if (DevArgs.BossChase && role.Value == RoleTable.BossRole) dir = ChaseDirection();
                 if (!IsAlive) dir = Vector2.zero; // a fallen survivor cannot move
+                if (!RoleTable.MatchRunning) dir = Vector2.zero; // nothing moves outside a running match
                 SendInput(dir);
                 if (!IsServer) PredictOwner(dir);
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -158,10 +173,30 @@ namespace BS
         {
             if (!IsSpawned || !IsServer) return;
 
+            if (!RoleTable.MatchRunning) return; // the match is over (or has not begun): nobody moves
+
             Vector2 input = IsAlive ? serverInput : Vector2.zero;
             Vector2 next = ArenaConfig.ClampCharacter(serverPos.Value + input * (MoveSpeed * Time.fixedDeltaTime));
             if (next != serverPos.Value) serverPos.Value = next;
             transform.position = next;
+        }
+
+        /// <summary>Development only (-bsBossChase): the boss walks toward the nearest living survivor.</summary>
+        Vector2 ChaseDirection()
+        {
+            PlayerAvatar nearest = null;
+            float best = float.MaxValue;
+            for (int i = 0; i < All.Count; i++)
+            {
+                PlayerAvatar other = All[i];
+                if (other == null || other == this || other.role.Value == RoleTable.BossRole || !other.IsAlive) continue;
+                float d = ((Vector2)other.transform.position - (Vector2)transform.position).sqrMagnitude;
+                if (d < best) { best = d; nearest = other; }
+            }
+            if (nearest == null) return Vector2.zero;
+
+            Vector2 toward = (Vector2)nearest.transform.position - (Vector2)transform.position;
+            return toward.sqrMagnitude < 0.01f ? Vector2.zero : toward.normalized;
         }
 
         /// <summary>Server only: places the character somewhere (development scenarios). Owners snap to it.</summary>

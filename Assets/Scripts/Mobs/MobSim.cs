@@ -550,6 +550,7 @@ namespace BS
             {
                 ushort candidate = nextId;
                 nextId = nextId == ushort.MaxValue ? (ushort)1 : (ushort)(nextId + 1);
+                if (candidate == BossSim.MobId) continue; // reserved: a hit with this identifier is a hit on the boss
                 if (!indexOf.ContainsKey(candidate)) return candidate;
             }
         }

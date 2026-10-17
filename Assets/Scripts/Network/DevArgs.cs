@@ -30,6 +30,9 @@ namespace BS
     /// -bsAutoEnd s     (host) end the first match s seconds after it started, returning to the waiting room
     /// -bsTryStart s    (client) send a start request s seconds after joining; the server should ignore it
     /// -bsTryEnd s      (client) send an end-match request s seconds after joining; the server should ignore it
+    /// -bsBossHealth n   (host) the boss's maximum health
+    /// -bsMatchSeconds s (host) the time limit of a match with a boss
+    /// -bsBossChase     (boss player) walk toward the nearest survivor on its own
     /// -bsDevSkills r  (host) every survivor starts the match with their character's Q and E skills at rank r
     /// -bsSurvivorHealth n  survivor maximum health (host), to keep survivors alive in load tests
     /// -bsMobSpeed v    mob speed (host)
@@ -69,6 +72,9 @@ namespace BS
         public static float AutoSkillInterval { get; private set; } = 1f;
         public static int Character { get; private set; }
         public static int DevSkillsRank { get; private set; }
+        public static int BossHealth { get; private set; }
+        public static float MatchSeconds { get; private set; }
+        public static bool BossChase { get; private set; }
         public static float AutoStartSeconds { get; private set; } = -1f;
         public static int AutoStartSurvivors { get; private set; } = 1;
         public static float AutoEndSeconds { get; private set; } = -1f;
@@ -133,6 +139,15 @@ namespace BS
                         break;
                     case "-bsCharacter" when i + 1 < args.Length:
                         if (int.TryParse(args[i + 1], out int ch)) Character = ch;
+                        break;
+                    case "-bsBossHealth" when i + 1 < args.Length:
+                        if (int.TryParse(args[i + 1], out int bh)) BossHealth = bh;
+                        break;
+                    case "-bsMatchSeconds" when i + 1 < args.Length:
+                        if (float.TryParse(args[i + 1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float ms2)) MatchSeconds = ms2;
+                        break;
+                    case "-bsBossChase":
+                        BossChase = true;
                         break;
                     case "-bsDevSkills" when i + 1 < args.Length:
                         if (int.TryParse(args[i + 1], out int dsr)) DevSkillsRank = dsr;

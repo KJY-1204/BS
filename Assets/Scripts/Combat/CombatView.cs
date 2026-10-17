@@ -371,6 +371,9 @@ namespace BS
             flashes[nextFlash] = new Flash { Position = effect.Position, Start = Time.time, Killed = effect.Killed };
             nextFlash = (nextFlash + 1) % MaxFlashes;
 
+            // A hit on the boss shows its flash only: its bar is drawn from its replicated health over its character.
+            if (effect.MobId == BossSim.MobId) return;
+
             if (!effect.Killed)
                 bars[effect.MobId] = new KeyValuePair<float, byte>(Time.time + CombatConfig.MobHealthBarSeconds, effect.HealthPercent);
             else

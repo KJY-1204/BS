@@ -74,6 +74,17 @@ namespace BS
 
         public bool Contains(ulong clientId) => states.ContainsKey(clientId);
 
+        /// <summary>How many registered survivors are alive (a survivor who left is no longer registered).</summary>
+        public int AliveCount
+        {
+            get
+            {
+                int n = 0;
+                foreach (State s in states.Values) if (s.Health > 0) n++;
+                return n;
+            }
+        }
+
         public int Health(ulong clientId) => states.TryGetValue(clientId, out State s) ? s.Health : 0;
 
         public bool IsAlive(ulong clientId) => states.TryGetValue(clientId, out State s) && s.Health > 0;
@@ -138,7 +149,10 @@ namespace BS
         /// Advances protection timers, applies mob contact damage and runs revival.
         /// <paramref name="bodies"/> lists every survivor (dead ones included) and never the boss.
         /// </summary>
-        public void Step(float dt, IReadOnlyList<SurvivorBody> bodies, MobSim mobs)
+        public void Step(float dt, IReadOnlyList<SurvivorBody> bodies, MobSim mobs) => Step(dt, bodies, mobs, null);
+
+        /// <summary>The same step with a boss that hurts survivors it touches (contact damage of its own).</summary>
+        public void Step(float dt, IReadOnlyList<SurvivorBody> bodies, MobSim mobs, BossSim boss)
         {
             scratch.Clear();
             foreach (KeyValuePair<ulong, State> pair in states)
@@ -149,8 +163,25 @@ namespace BS
                 s.Invulnerable = Math.Max(0f, s.Invulnerable - dt);
             }
 
+            // The boss first: it hits harder, and a survivor takes only one hit until the protection ends.
+            ApplyBossContactDamage(bodies, boss);
             ApplyContactDamage(bodies, mobs);
             StepRevival(dt, bodies);
+        }
+
+        /// <summary>A living boss deals its own contact damage to a living survivor it overlaps. It is not stopped by time stop.</summary>
+        void ApplyBossContactDamage(IReadOnlyList<SurvivorBody> bodies, BossSim boss)
+        {
+            if (boss == null || !boss.CanBeHit) return;
+
+            float reach = Radius + boss.Radius;
+            float reachSq = reach * reach;
+            for (int i = 0; i < bodies.Count; i++)
+            {
+                SurvivorBody body = bodies[i];
+                if (!IsAlive(body.ClientId)) continue;
+                if ((body.Position - boss.Position).sqrMagnitude <= reachSq) ApplyDamage(body.ClientId, boss.ContactDamage);
+            }
         }
 
         void ApplyContactDamage(IReadOnlyList<SurvivorBody> bodies, MobSim mobs)

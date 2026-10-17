@@ -6,6 +6,8 @@ namespace BS
     {
         Waiting = 0,
         Playing = 1,
+        /// <summary>A match with a result: everything has stopped and the result is shown until the host returns the room to waiting.</summary>
+        Finished = 2,
     }
 
     public enum LobbyResult
@@ -114,7 +116,7 @@ namespace BS
         {
             role = 0;
             if (Contains(clientId)) { role = RoleOf(clientId); return LobbyResult.NoChange; }
-            if (Phase == RoomPhase.Playing) return LobbyResult.MatchRunning;
+            if (Phase != RoomPhase.Waiting) return LobbyResult.MatchRunning; // a playing or a finished match accepts nobody
             if (slots.Count >= MaxPlayers) return LobbyResult.RoomFull;
 
             bool bossFree = !RoleTaken(BossRole);
@@ -208,13 +210,27 @@ namespace BS
             return LobbyResult.Ok;
         }
 
-        /// <summary>Ends a running match. Everyone stays and every choice stays.</summary>
+        /// <summary>
+        /// Ends a match that is running or showing its result and puts the room back to waiting. Everyone stays and
+        /// every choice stays. Only the host may.
+        /// </summary>
         public LobbyResult TryEndMatch(ulong requester)
         {
             if (requester != HostId) return LobbyResult.NotHost;
-            if (Phase != RoomPhase.Playing) return LobbyResult.WrongPhase;
+            if (Phase == RoomPhase.Waiting) return LobbyResult.WrongPhase;
             Phase = RoomPhase.Waiting;
             return LobbyResult.Ok;
+        }
+
+        /// <summary>
+        /// The match has a result: a running match becomes finished. A room that is not playing cannot finish.
+        /// Returns true when the state changed.
+        /// </summary>
+        public bool Finish()
+        {
+            if (Phase != RoomPhase.Playing) return false;
+            Phase = RoomPhase.Finished;
+            return true;
         }
 
         /// <summary>The room ended: everyone is gone and the next room starts waiting.</summary>

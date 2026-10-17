@@ -21,6 +21,10 @@ namespace BS
 
         const float BarWidth = 1.1f;
         const float BarHeight = 0.12f;
+        // The boss is bigger, so its bar is wider and sits higher.
+        const float BossBarWidth = 2.6f;
+        const float BossBarHeight = 0.2f;
+        const float BossBarY = 1.5f;
 
         PlayerAvatar avatar;
         ushort aimAngle;
@@ -71,11 +75,15 @@ namespace BS
             bool survivor = avatar.Role != RoleTable.BossRole;
             bool dead = IsDead;
 
-            healthBack.enabled = healthFill.enabled = survivor;
+            healthBack.enabled = healthFill.enabled = true;
             reviveBack.enabled = reviveFill.enabled = survivor && dead;
             aimMarker.enabled = survivor && IsOwner && !dead;
 
-            if (survivor)
+            if (!survivor)
+            {
+                DrawBossBar();
+            }
+            else
             {
                 float fraction = MaxHealth > 0 ? Mathf.Clamp01(health.Value / (float)MaxHealth) : 0f;
                 SetBar(healthFill, 0.85f, fraction);
@@ -86,6 +94,20 @@ namespace BS
 
             if (aimMarker.enabled)
                 aimMarker.transform.position = transform.position + (Vector3)(AimMath.Direction(aimAngle) * 3f);
+        }
+
+        /// <summary>The boss's health bar: wide, over its character, going from green through red as the boss weakens.</summary>
+        void DrawBossBar()
+        {
+            float fraction = MaxHealth > 0 ? Mathf.Clamp01(health.Value / (float)MaxHealth) : 0f;
+
+            healthBack.transform.localPosition = new Vector3(0f, BossBarY, 0f);
+            healthBack.transform.localScale = new Vector3(BossBarWidth + 0.08f, BossBarHeight + 0.08f, 1f);
+
+            float width = BossBarWidth * fraction;
+            healthFill.transform.localScale = new Vector3(Mathf.Max(width, 0.0001f), BossBarHeight, 1f);
+            healthFill.transform.localPosition = new Vector3(-BossBarWidth * 0.5f + width * 0.5f, BossBarY, 0f);
+            healthFill.color = Color.Lerp(new Color(0.95f, 0.25f, 0.2f), new Color(0.95f, 0.6f, 0.2f), fraction);
         }
 
         void SetBar(SpriteRenderer fill, float y, float fraction)
@@ -127,6 +149,7 @@ namespace BS
         {
             if (!IsSpawned || !IsOwner) return;
             if (avatar == null || avatar.Role == RoleTable.BossRole) return;
+            if (!RoleTable.MatchRunning) { firing = false; return; } // the match is over: no more shooting
 
             ReadInput();
 

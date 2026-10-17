@@ -143,8 +143,9 @@ namespace BS
         {
             GUILayout.Space(4);
             GUILayout.Label("-- 진행 중 --");
-            if (nm.IsServer && GUILayout.Button("대기방으로 돌아가기"))
+            if (nm.IsServer && table.Phase == RoomPhase.Playing && GUILayout.Button("대기방으로 돌아가기"))
                 table.RequestEndMatch();
+            if (table.Phase == RoomPhase.Finished) GUILayout.Label("판이 끝났습니다 (결과 화면)");
         }
 
         static bool TryFindHolder(RoleTable table, byte character, out ulong holder)

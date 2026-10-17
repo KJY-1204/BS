@@ -191,6 +191,7 @@ namespace BS
         {
             if (!IsSpawned || !IsOwner) return;
             if (avatar == null || avatar.Role == RoleTable.BossRole) return;
+            if (!RoleTable.MatchRunning) return; // the match is over: no skills, no choices
 
             ReadInput();
             RunDevAutomation();

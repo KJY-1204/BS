@@ -163,7 +163,10 @@ namespace BS
         }
 
         /// <summary>Moves every projectile and resolves hits against the mobs.</summary>
-        public void Step(float dt, MobSim mobs)
+        public void Step(float dt, MobSim mobs) => Step(dt, mobs, null);
+
+        /// <summary>Moves every projectile and resolves hits against the mobs and the boss.</summary>
+        public void Step(float dt, MobSim mobs, IBossTarget boss)
         {
             for (int i = count - 1; i >= 0; i--)
             {
@@ -175,7 +178,7 @@ namespace BS
 
                 bool leftArena = ClipToArena(from, ref to);
 
-                if (mobs != null && HitMobsOnTheWay(i, from, to, mobs))
+                if ((mobs != null || boss != null) && HitTargetsOnTheWay(i, from, to, mobs, boss))
                 {
                     RemoveAt(i);
                     continue;
@@ -198,19 +201,30 @@ namespace BS
         /// Damages the mobs the projectile touched on its way, nearest first, each at most once. Returns true when the
         /// projectile used up its last allowed hit and must be removed.
         /// </summary>
-        bool HitMobsOnTheWay(int i, Vector2 from, Vector2 to, MobSim mobs)
+        bool HitTargetsOnTheWay(int i, Vector2 from, Vector2 to, MobSim mobs, IBossTarget boss)
         {
             alreadyHit.Clear();
             int baseIndex = i * MaxPierce;
             for (int k = 0; k < hitCounts[i]; k++) alreadyHit.Add(hitMobs[baseIndex + k]);
 
             segmentHits.Clear();
-            if (mobs.CollectSegmentHits(from, to, radii[i], alreadyHit, segmentHits) == 0) return false;
+            if (mobs != null) mobs.CollectSegmentHits(from, to, radii[i], alreadyHit, segmentHits);
+            AddBossHit(from, to, radii[i], boss, segmentHits);
+            if (segmentHits.Count == 0) return false;
+
+            // The boss is just another target on the way, ordered with the mobs by how far along the sweep it is touched.
+            segmentHits.Sort(HitOrder.Instance);
 
             for (int h = 0; h < segmentHits.Count; h++)
             {
                 MobSim.SegmentHit hit = segmentHits[h];
-                if (!mobs.ApplyDamage(hit.MobId, damages[i], out int percent, out bool killed)) continue;
+                int percent;
+                bool killed;
+                if (hit.MobId == BossSim.MobId)
+                {
+                    if (boss == null || !boss.TakeDamage(damages[i], out percent, out killed)) continue;
+                }
+                else if (mobs == null || !mobs.ApplyDamage(hit.MobId, damages[i], out percent, out killed)) continue;
 
                 hitMobs[baseIndex + hitCounts[i]] = hit.MobId;
                 hitCounts[i]++;
@@ -226,6 +240,39 @@ namespace BS
                 if (last) return true;
             }
             return false;
+        }
+
+        sealed class HitOrder : IComparer<MobSim.SegmentHit>
+        {
+            public static readonly HitOrder Instance = new HitOrder();
+
+            public int Compare(MobSim.SegmentHit x, MobSim.SegmentHit y)
+            {
+                int byT = x.T.CompareTo(y.T);
+                return byT != 0 ? byT : x.MobId.CompareTo(y.MobId);
+            }
+        }
+
+        /// <summary>Adds the boss to the hits when the swept circle touches it and this projectile has not hit it yet.</summary>
+        void AddBossHit(Vector2 a, Vector2 b, float radius, IBossTarget boss, List<MobSim.SegmentHit> into)
+        {
+            if (boss == null || !boss.CanBeHit) return;
+            for (int k = 0; k < alreadyHit.Count; k++)
+                if (alreadyHit[k] == BossSim.MobId) return;
+
+            float reach = radius + boss.Radius;
+            Vector2 ab = b - a;
+            float lengthSq = ab.sqrMagnitude;
+            float length = Mathf.Sqrt(lengthSq);
+            Vector2 center = boss.Position;
+
+            float tProj = lengthSq > 1e-8f ? Mathf.Clamp01(Vector2.Dot(center - a, ab) / lengthSq) : 0f;
+            float d = Vector2.Distance(center, a + ab * tProj);
+            if (d > reach) return;
+
+            float back = length > 1e-5f ? Mathf.Sqrt(Mathf.Max(0f, reach * reach - d * d)) / length : 0f;
+            float entry = Mathf.Clamp01(tProj - back);
+            into.Add(new MobSim.SegmentHit { MobId = BossSim.MobId, T = entry, Point = a + ab * entry });
         }
 
         ushort NextFreeId()

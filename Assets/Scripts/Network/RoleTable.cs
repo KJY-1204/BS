@@ -35,6 +35,12 @@ namespace BS
 
         public static RoleTable Instance { get; private set; }
 
+        /// <summary>
+        /// True while the match advances: the room is playing. Mobs, shots, skills, movement and every timer check this;
+        /// after a result they stand still. With no room object (a test scene) things run as they always did.
+        /// </summary>
+        public static bool MatchRunning => Instance == null || Instance.Phase == RoomPhase.Playing;
+
         /// <summary>Raised on every machine when the room changes between waiting and playing.</summary>
         public static event Action<RoomPhase> PhaseChanged;
 
@@ -48,13 +54,33 @@ namespace BS
         readonly NetworkVariable<byte> phase = new NetworkVariable<byte>(
             (byte)RoomPhase.Waiting, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
+        // The result and the clock, for everyone's screen
+        readonly NetworkVariable<ushort> secondsLeft = new NetworkVariable<ushort>(
+            0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+        readonly NetworkVariable<byte> winner = new NetworkVariable<byte>(
+            (byte)MatchWinner.None, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+        readonly NetworkVariable<byte> reason = new NetworkVariable<byte>(
+            (byte)MatchReason.None, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+        readonly NetworkVariable<bool> hasBoss = new NetworkVariable<bool>(
+            false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
         LobbySim lobby;
+        readonly MatchSim match = new MatchSim();
+        bool bossLeft;
         readonly List<LobbySlot> spawnList = new List<LobbySlot>();
 
         string notice = "";
         float noticeUntil;
 
         public RoomPhase Phase => (RoomPhase)phase.Value;
+
+        /// <summary>Whole seconds left in a match with a boss (0 when there is no clock).</summary>
+        public int SecondsLeft => secondsLeft.Value;
+        public MatchWinner Winner => (MatchWinner)winner.Value;
+        public MatchReason Reason => (MatchReason)reason.Value;
+
+        /// <summary>True when the match has a boss (and so a clock and a result).</summary>
+        public bool MatchHasBoss => hasBoss.Value;
 
         /// <summary>The latest refusal or message for this player (shown in the waiting room).</summary>
         public string Notice => Time.unscaledTime < noticeUntil ? notice : "";
@@ -75,6 +101,7 @@ namespace BS
             Slots.Clear();
             lobby = new LobbySim(NetworkManager.ServerClientId);
             phase.Value = (byte)RoomPhase.Waiting;
+            ClearMatch();
 
             NetworkManager.OnClientConnectedCallback += OnClientConnected;
             NetworkManager.OnClientDisconnectCallback += OnClientDisconnected;
@@ -122,7 +149,12 @@ namespace BS
         void OnClientDisconnected(ulong clientId)
         {
             int index = FindSlot(clientId);
-            if (index >= 0) Slots.RemoveAt(index);
+            if (index >= 0)
+            {
+                // The boss leaving a running match with a boss forfeits it.
+                if (Slots[index].Role == BossRole && lobby.Phase == RoomPhase.Playing && match.Enabled) bossLeft = true;
+                Slots.RemoveAt(index);
+            }
 
             byte held = lobby.CharacterOf(clientId);
             if (lobby.Leave(clientId))
@@ -226,8 +258,70 @@ namespace BS
             foreach (LobbySlot slot in spawnList)
                 SpawnCharacter(slot.ClientId, slot.Role, slot.Character);
 
+            bool withBoss = false;
+            foreach (LobbySlot slot in spawnList) if (slot.Role == BossRole) withBoss = true;
+            BossDef boss = BossCatalog.ForMatch();
+            match.Start(withBoss, boss.MatchSeconds);
+            bossLeft = false;
+            hasBoss.Value = match.Enabled;
+            secondsLeft.Value = (ushort)Mathf.Clamp(match.SecondsLeft, 0, ushort.MaxValue);
+            winner.Value = (byte)MatchWinner.None;
+            reason.Value = (byte)MatchReason.None;
+
             phase.Value = (byte)RoomPhase.Playing;
             Debug.Log($"[BS] lobby: match started with {spawnList.Count} players");
+            Debug.Log(match.Enabled
+                ? $"[BS] match: started with a boss ({boss.MaxHealth} health), {match.TimeLimit:F0} seconds"
+                : "[BS] match: started without a boss (practice, no clock)");
+        }
+
+        void FixedUpdate()
+        {
+            if (!IsServer || !IsSpawned || lobby == null || Phase != RoomPhase.Playing) return;
+            StepMatch(Time.fixedDeltaTime);
+        }
+
+        /// <summary>Advances the clock and finishes the match when it has a result.</summary>
+        void StepMatch(float dt)
+        {
+            if (!match.Enabled) return;
+
+            CombatServer combat = CombatServer.Instance;
+            var input = new MatchInput
+            {
+                BossFell = combat != null && combat.Boss.Exists && combat.Boss.HasFallen,
+                BossLeft = bossLeft,
+                SurvivorsAlive = combat != null ? combat.Survivors.AliveCount : 0,
+            };
+
+            bool decided = match.Step(dt, input);
+            ushort seconds = (ushort)Mathf.Clamp(match.SecondsLeft, 0, ushort.MaxValue);
+            if (secondsLeft.Value != seconds) secondsLeft.Value = seconds;
+
+            if (decided) FinishMatch();
+        }
+
+        /// <summary>The match has a winner: everything stops, the result is shown, and the room waits for the host.</summary>
+        void FinishMatch()
+        {
+            if (!lobby.Finish()) return;
+
+            winner.Value = (byte)match.Winner;
+            reason.Value = (byte)match.Reason;
+            phase.Value = (byte)RoomPhase.Finished;
+            Debug.Log($"[BS] match: finished winner={match.Winner} reason={match.Reason} timeLeft={match.TimeLeft:F1}s " +
+                      $"bossHealth={(CombatServer.Instance != null ? CombatServer.Instance.Boss.Health : 0)} " +
+                      $"survivorsAlive={(CombatServer.Instance != null ? CombatServer.Instance.Survivors.AliveCount : 0)}");
+        }
+
+        void ClearMatch()
+        {
+            match.Clear();
+            bossLeft = false;
+            hasBoss.Value = false;
+            secondsLeft.Value = 0;
+            winner.Value = (byte)MatchWinner.None;
+            reason.Value = (byte)MatchReason.None;
         }
 
         /// <summary>
@@ -243,6 +337,7 @@ namespace BS
             }
 
             ResetMatchState();
+            ClearMatch();
             phase.Value = (byte)RoomPhase.Waiting;
             Debug.Log("[BS] lobby: match ended, back to waiting");
         }

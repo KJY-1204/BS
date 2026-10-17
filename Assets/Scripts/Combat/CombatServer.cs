@@ -18,6 +18,9 @@ namespace BS
         public AttackSim Attacks { get; } = new AttackSim();
         public ProjectileSim Projectiles { get; } = new ProjectileSim();
 
+        /// <summary>The boss of the running match; <see cref="BossSim.Exists"/> is false when there is none.</summary>
+        public BossSim Boss { get; } = new BossSim();
+
         /// <summary>Where mobs died in the latest step (shots only); growth reads it to hand out experience.</summary>
         public IReadOnlyList<Vector2> KillsThisStep => killPositions;
 
@@ -32,6 +35,7 @@ namespace BS
         readonly List<ulong> remoteClients = new List<ulong>();
         readonly Dictionary<ulong, byte> slots = new Dictionary<ulong, byte>();
 
+        PlayerAvatar bossAvatar;
         MobServer mobs;
         NetworkManager nm;
         bool running;
@@ -96,7 +100,25 @@ namespace BS
             Projectiles.Clear();
             events.Clear();
             killPositions.Clear();
+            Boss.Clear();
+            bossAvatar = null;
             GrowthServer.Instance?.ResetAll();
+        }
+
+        /// <summary>Called when the boss's character spawns on the server: the boss starts the match at full health.</summary>
+        public void RegisterBoss(PlayerAvatar avatar)
+        {
+            bossAvatar = avatar;
+            Boss.Reset(BossCatalog.ForMatch(), avatar.transform.position);
+            Debug.Log($"[BS] boss registered: owner={avatar.OwnerClientId} health={Boss.MaxHealth}");
+        }
+
+        /// <summary>Called when the boss's character despawns (the boss player left, or the match ended).</summary>
+        public void UnregisterBoss(PlayerAvatar avatar)
+        {
+            if (bossAvatar != avatar) return;
+            bossAvatar = null;
+            Boss.Clear();
         }
 
         /// <summary>Called when a survivor's character spawns on the server.</summary>
@@ -143,16 +165,18 @@ namespace BS
         /// <summary>Latest aim and fire state from a player. Only living survivors can fire.</summary>
         public void SetAim(ulong clientId, ushort angle, bool firing)
         {
-            if (!running) return;
+            if (!running || !RoleTable.MatchRunning) return;
             Attacks.SetAim(clientId, angle, firing && Survivors.IsAlive(clientId));
         }
 
         void FixedUpdate()
         {
             killPositions.Clear();
-            if (!running) return;
+            if (!running || !RoleTable.MatchRunning) return; // a match that has ended no longer advances
 
             float dt = Time.fixedDeltaTime;
+
+            if (bossAvatar != null && bossAvatar.IsSpawned) Boss.SetPosition(bossAvatar.transform.position);
 
             bodies.Clear();
             for (int i = 0; i < registered.Count; i++)
@@ -162,14 +186,14 @@ namespace BS
                 bodies.Add(new SurvivorBody { ClientId = a.OwnerClientId, Position = a.transform.position, Moving = a.ServerMoving });
             }
 
-            Survivors.Step(dt, bodies, mobs.Sim);
+            Survivors.Step(dt, bodies, mobs.Sim, Boss.Exists ? Boss : null);
 
             shooters.Clear();
             for (int i = 0; i < bodies.Count; i++)
                 shooters.Add(new ShooterBody { ClientId = bodies[i].ClientId, Position = bodies[i].Position, CanFire = Survivors.IsAlive(bodies[i].ClientId) });
 
             Attacks.Step(dt, shooters, Projectiles);
-            Projectiles.Step(dt, mobs.Sim);
+            Projectiles.Step(dt, mobs.Sim, Boss.Exists ? Boss : null);
 
             for (int i = 0; i < registered.Count; i++)
             {
@@ -179,14 +203,23 @@ namespace BS
                 a.Combat.ServerWrite(Survivors.Health(id), Survivors.IsAlive(id) ? 0f : Survivors.ReviveGauge(id), Survivors.MaxHealthOf(id));
             }
 
+            WriteBossHealth();
+
             events.Clear();
             Projectiles.DrainEvents(events);
             for (int i = 0; i < events.Count; i++)
-                if (events[i].Kind == CombatEventKind.Hit && events[i].Killed) killPositions.Add(events[i].Position);
+                if (events[i].Kind == CombatEventKind.Hit && events[i].Killed && events[i].MobId != BossSim.MobId) killPositions.Add(events[i].Position);
             if (events.Count > 0) PublishEvents(events);
 
             // Mob kills made by projectiles this step go out now, with the same time as the hits.
             mobs.FlushEvents();
+        }
+
+        /// <summary>Copies the boss's health to its replicated values so every client shows the bar.</summary>
+        public void WriteBossHealth()
+        {
+            if (bossAvatar == null || !bossAvatar.IsSpawned || bossAvatar.Combat == null || !Boss.Exists) return;
+            bossAvatar.Combat.ServerWrite(Boss.Health, 0f, Boss.MaxHealth);
         }
 
         // Development scenarios (-bsDevKill, -bsDevMeet): run once, some seconds after the room started.
