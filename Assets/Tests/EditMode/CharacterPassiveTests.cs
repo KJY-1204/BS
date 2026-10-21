@@ -42,12 +42,12 @@ namespace BS.Tests
         }
 
         [Test]
-        public void OnlyReimuAndSanaeHaveASecondOwnPassive()
+        public void EveryCharacterHasExactlyTwoOwnPassives()
         {
             foreach (byte c in Characters)
             {
                 int count = SkillCatalog.All.Count(d => !d.IsActive && d.Passive != PassiveEffectKind.None && d.Character == c);
-                Assert.AreEqual(c == CharacterIds.Reimu || c == CharacterIds.Sanae ? 2 : 1, count, $"character {c}");
+                Assert.AreEqual(2, count, $"character {c}");
             }
         }
 
@@ -479,6 +479,75 @@ namespace BS.Tests
             Assert.IsTrue(SkillCatalog.IsAvailable(wind, Ranks((SkillIds.WindVeil, 1)), CharacterIds.Sanae));
             foreach (byte other in new[] { CharacterIds.Reimu, CharacterIds.Marisa, CharacterIds.Sakuya })
                 Assert.IsFalse(SkillCatalog.IsAvailable(wind, Ranks((SkillIds.WindVeil, 3)), other), $"character {other}");
+        }
+
+        // ---- Marisa's and Sakuya's second passives ----
+
+        [Test]
+        public void TheLastTwoPassivesBelongToMarisaAndSakuyaAndNeedTheirQSkill()
+        {
+            SkillDef magic = SkillCatalog.Get(SkillIds.CritMagic);
+            Assert.AreEqual(CharacterIds.Marisa, magic.Character);
+            Assert.AreEqual(PassiveEffectKind.SkillRange, magic.Passive);
+            Assert.AreEqual(SkillIds.MasterSpark, magic.RequiresSkill);
+            Assert.AreEqual(1, magic.RequiresRank);
+            Assert.AreEqual(3, magic.MaxRank);
+            Assert.IsFalse(magic.IsActive);
+            Assert.AreEqual(0.15f, magic.PassivePerRank, 1e-6f);
+
+            SkillDef rule = SkillCatalog.Get(SkillIds.TimeRule);
+            Assert.AreEqual(CharacterIds.Sakuya, rule.Character);
+            Assert.AreEqual(PassiveEffectKind.SkillDuration, rule.Passive);
+            Assert.AreEqual(SkillIds.TimeStop, rule.RequiresSkill);
+            Assert.AreEqual(1, rule.RequiresRank);
+            Assert.AreEqual(3, rule.MaxRank);
+            Assert.IsFalse(rule.IsActive);
+            Assert.AreEqual(0.15f, rule.PassivePerRank, 1e-6f);
+
+            Assert.LessOrEqual(Mathf.Max(magic.Id, rule.Id), SkillCatalog.MaxSkillId);
+            Assert.AreEqual(SkillCatalog.All.Count, SkillCatalog.All.Select(d => d.Id).Distinct().Count());
+        }
+
+        [Test]
+        public void TheNewPassivesAreOfferedOnlyAfterTheirQSkillAndOnlyToTheirOwner()
+        {
+            SkillDef magic = SkillCatalog.Get(SkillIds.CritMagic);
+            SkillDef rule = SkillCatalog.Get(SkillIds.TimeRule);
+
+            Assert.IsFalse(SkillCatalog.IsAvailable(magic, Ranks((SkillIds.RapidFire, 3)), CharacterIds.Marisa), "the E skill is not enough");
+            Assert.IsTrue(SkillCatalog.IsAvailable(magic, Ranks((SkillIds.MasterSpark, 1)), CharacterIds.Marisa));
+            Assert.IsFalse(SkillCatalog.IsAvailable(magic, Ranks((SkillIds.MasterSpark, 1), (SkillIds.CritMagic, 3)), CharacterIds.Marisa), "at its maximum");
+
+            Assert.IsFalse(SkillCatalog.IsAvailable(rule, Ranks((SkillIds.KnifeBarrage, 3)), CharacterIds.Sakuya), "the E skill is not enough");
+            Assert.IsTrue(SkillCatalog.IsAvailable(rule, Ranks((SkillIds.TimeStop, 1)), CharacterIds.Sakuya));
+            Assert.IsFalse(SkillCatalog.IsAvailable(rule, Ranks((SkillIds.TimeStop, 1), (SkillIds.TimeRule, 3)), CharacterIds.Sakuya), "at its maximum");
+
+            foreach (byte other in new[] { CharacterIds.Reimu, CharacterIds.Sakuya, CharacterIds.Sanae })
+                Assert.IsFalse(SkillCatalog.IsAvailable(magic, Ranks((SkillIds.MasterSpark, 3)), other), $"magic offered to {other}");
+            foreach (byte other in new[] { CharacterIds.Reimu, CharacterIds.Marisa, CharacterIds.Sanae })
+                Assert.IsFalse(SkillCatalog.IsAvailable(rule, Ranks((SkillIds.TimeStop, 3)), other), $"rule offered to {other}");
+        }
+
+        [Test]
+        public void MarisasRangeAndSakuyasDurationScalesGrowByRankAndStayWithTheirOwner()
+        {
+            Assert.AreEqual(100, SkillCatalog.RangeScalePercent(NoRanks(), CharacterIds.Marisa));
+            Assert.AreEqual(115, SkillCatalog.RangeScalePercent(Ranks((SkillIds.CritMagic, 1)), CharacterIds.Marisa));
+            Assert.AreEqual(130, SkillCatalog.RangeScalePercent(Ranks((SkillIds.CritMagic, 2)), CharacterIds.Marisa));
+            Assert.AreEqual(145, SkillCatalog.RangeScalePercent(Ranks((SkillIds.CritMagic, 3)), CharacterIds.Marisa));
+            Assert.AreEqual(100, SkillCatalog.DurationScalePercent(Ranks((SkillIds.CritMagic, 3)), CharacterIds.Marisa), "a range passive leaves the duration alone");
+
+            Assert.AreEqual(100, SkillCatalog.DurationScalePercent(NoRanks(), CharacterIds.Sakuya));
+            Assert.AreEqual(115, SkillCatalog.DurationScalePercent(Ranks((SkillIds.TimeRule, 1)), CharacterIds.Sakuya));
+            Assert.AreEqual(130, SkillCatalog.DurationScalePercent(Ranks((SkillIds.TimeRule, 2)), CharacterIds.Sakuya));
+            Assert.AreEqual(145, SkillCatalog.DurationScalePercent(Ranks((SkillIds.TimeRule, 3)), CharacterIds.Sakuya));
+            Assert.AreEqual(100, SkillCatalog.RangeScalePercent(Ranks((SkillIds.TimeRule, 3)), CharacterIds.Sakuya), "a duration passive leaves the range alone");
+
+            int[] all = Ranks((SkillIds.CritMagic, 3), (SkillIds.TimeRule, 3));
+            Assert.AreEqual(100, SkillCatalog.RangeScalePercent(all, CharacterIds.Sakuya));
+            Assert.AreEqual(100, SkillCatalog.DurationScalePercent(all, CharacterIds.Marisa));
+            Assert.AreEqual(100, SkillCatalog.RangeScalePercent(all, CharacterIds.Reimu));
+            Assert.AreEqual(100, SkillCatalog.DurationScalePercent(all, CharacterIds.Sanae));
         }
     }
 }

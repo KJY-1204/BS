@@ -327,5 +327,92 @@ namespace BS.Tests
             Assert.AreEqual(130, due[0].RangeScale);
             Assert.AreEqual(140, due[0].DurationScale);
         }
+
+        // ---- Marisa's beam and Sakuya's time stop ----
+
+        [Test]
+        public void TheBeamIsLongerAndWiderWithCritMagicAndTheOtherMarisaSkillIsNot()
+        {
+            SkillDef spark = SkillCatalog.Get(SkillIds.MasterSpark);
+            SkillActivation plain = Activate(CharacterIds.Marisa, Q, Ranks((SkillIds.MasterSpark, 3)));
+            SkillActivation wide = Activate(CharacterIds.Marisa, Q, Ranks((SkillIds.MasterSpark, 3), (SkillIds.CritMagic, 3)));
+
+            Assert.AreEqual(145, wide.RangeScale);
+            Assert.AreEqual(100, wide.DurationScale);
+            Assert.AreEqual(spark.Length[2], plain.Length, 1e-6f);
+            Assert.AreEqual(spark.Length[2] * 1.45f, wide.Length, 1e-4f);
+            Assert.AreEqual(spark.HalfWidth[2] * 1.45f, wide.HalfWidth, 1e-5f);
+            Assert.AreEqual(plain.Damage, wide.Damage, "range is not damage");
+
+            SkillDef dust = SkillCatalog.Get(SkillIds.RapidFire);
+            SkillActivation boost = Activate(CharacterIds.Marisa, E, Ranks((SkillIds.RapidFire, 3), (SkillIds.CritMagic, 3)));
+            Assert.AreEqual(dust.Duration[2], boost.BuffSeconds, 1e-6f, "the attack speed boost keeps its time");
+        }
+
+        [Test]
+        public void TheBeamReallyHitsMobsBeyondTheDefinedLengthAndWidth()
+        {
+            SkillActivation plain = Activate(CharacterIds.Marisa, Q, Ranks((SkillIds.MasterSpark, 3)));
+            SkillActivation wide = Activate(CharacterIds.Marisa, Q, Ranks((SkillIds.MasterSpark, 3), (SkillIds.CritMagic, 3)));
+            ushort aim = AimMath.QuantizeAngle(0f);
+
+            float far = plain.Length + 1.5f;           // beyond the defined length, inside the widened one
+            float beside = plain.HalfWidth + 0.15f;    // beside the defined width, inside the widened one
+            var points = new[] { new Vector2(far, 0f), new Vector2(3f, beside) };
+
+            foreach ((SkillActivation act, int expected) in new[] { (plain, 0), (wide, 2) })
+            {
+                MobSim mobs = Mobs();
+                foreach (Vector2 p in points) Spawn(mobs, p.x, p.y);
+                int hit = SkillExecutor.Apply(act, new SkillContext { CasterId = A, Origin = Vector2.zero, AimAngle = aim, Mobs = mobs });
+                Assert.AreEqual(expected, hit, $"scale {act.RangeScale}");
+            }
+        }
+
+        [Test]
+        public void TheTimeStopLastsLongerWithTimeRuleAndTheKnivesAreUnchanged()
+        {
+            SkillDef stop = SkillCatalog.Get(SkillIds.TimeStop);
+            SkillActivation plain = Activate(CharacterIds.Sakuya, Q, Ranks((SkillIds.TimeStop, 3)));
+            SkillActivation long3 = Activate(CharacterIds.Sakuya, Q, Ranks((SkillIds.TimeStop, 3), (SkillIds.TimeRule, 3)));
+
+            Assert.AreEqual(145, long3.DurationScale);
+            Assert.AreEqual(100, long3.RangeScale);
+            Assert.AreEqual(stop.Duration[2], plain.BuffSeconds, 1e-6f);
+            Assert.AreEqual(stop.Duration[2] * 1.45f, long3.BuffSeconds, 1e-4f);
+
+            SkillDef knives = SkillCatalog.Get(SkillIds.KnifeBarrage);
+            SkillActivation ring = Activate(CharacterIds.Sakuya, E, Ranks((SkillIds.KnifeBarrage, 3), (SkillIds.TimeRule, 3)));
+            Assert.AreEqual(knives.Count[2], ring.Count, "the knife count is not a duration");
+            Assert.AreEqual(knives.Damage[2], ring.Damage);
+        }
+
+        [Test]
+        public void MobsReallyStandStillForTheScaledTime()
+        {
+            SkillActivation plain = Activate(CharacterIds.Sakuya, Q, Ranks((SkillIds.TimeStop, 1)));
+            SkillActivation longer = Activate(CharacterIds.Sakuya, Q, Ranks((SkillIds.TimeStop, 1), (SkillIds.TimeRule, 3)));
+
+            float StillSeconds(SkillActivation act)
+            {
+                var mobs = new MobSim(targetCount: 0) { MaxHealth = 100 };
+                Assert.IsTrue(mobs.TrySpawn(new Vector2(6f, 0f), 0, out _));
+                SkillExecutor.Apply(act, new SkillContext { CasterId = A, Mobs = mobs });
+                var nobody = new List<SurvivorInfo>();
+                float t = 0f;
+                while (mobs.IsFrozen && t < 20f)
+                {
+                    mobs.Step(0.02f, nobody);
+                    t += 0.02f;
+                }
+                return t;
+            }
+
+            float a = StillSeconds(plain);
+            float b = StillSeconds(longer);
+            Assert.AreEqual(plain.BuffSeconds, a, 0.1f);
+            Assert.AreEqual(longer.BuffSeconds, b, 0.1f);
+            Assert.Greater(b, a + 0.5f);
+        }
     }
 }

@@ -37,6 +37,10 @@ namespace BS
         public const byte BarrierExtension = 17;
         /// <summary>Sanae's second own passive: her skills reach farther.</summary>
         public const byte WideWind = 18;
+        /// <summary>Marisa's second own passive: her beam reaches farther and is wider.</summary>
+        public const byte CritMagic = 19;
+        /// <summary>Sakuya's second own passive: her time stop lasts longer.</summary>
+        public const byte TimeRule = 20;
     }
 
     /// <summary>What a character's own passive does. The common passives are worked out by <see cref="StatCalc"/> and have none of these.</summary>
@@ -154,6 +158,8 @@ namespace BS
         public const float FaithRegenPerRank = 1.5f;
         public const float BarrierExtensionPerRank = 0.20f;
         public const float WideWindPerRank = 0.15f;
+        public const float CritMagicRangePerRank = 0.15f;
+        public const float TimeRuleDurationPerRank = 0.15f;
 
         static readonly SkillDef[] defs =
         {
@@ -245,6 +251,18 @@ namespace BS
                 Id = SkillIds.WideWind, Name = "넓은 바람", Character = CharacterIds.Sanae, MaxRank = 3,
                 RequiresSkill = SkillIds.WindVeil, RequiresRank = 1,
                 Passive = PassiveEffectKind.SkillRange, PassivePerRank = WideWindPerRank, Description = "스킬 범위 +15%",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.CritMagic, Name = "극대 마력", Character = CharacterIds.Marisa, MaxRank = 3,
+                RequiresSkill = SkillIds.MasterSpark, RequiresRank = 1,
+                Passive = PassiveEffectKind.SkillRange, PassivePerRank = CritMagicRangePerRank, Description = "스킬 범위 +15%",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.TimeRule, Name = "시간 지배", Character = CharacterIds.Sakuya, MaxRank = 3,
+                RequiresSkill = SkillIds.TimeStop, RequiresRank = 1,
+                Passive = PassiveEffectKind.SkillDuration, PassivePerRank = TimeRuleDurationPerRank, Description = "스킬 지속 시간 +15%",
             },
         };
 
