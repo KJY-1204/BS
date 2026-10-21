@@ -26,7 +26,7 @@ namespace BS
             Radius = 0.9f,
             ContactDamage = 25,
             Color = new Color(0.85f, 0.15f, 0.15f),
-            MatchSeconds = 300f,
+            MatchSeconds = 900f,
         };
 
         /// <summary>The boss of a match. Boss kinds come later; for now every match has this one.</summary>

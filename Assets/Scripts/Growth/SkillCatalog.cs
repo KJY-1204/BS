@@ -128,7 +128,7 @@ namespace BS
     public static class SkillCatalog
     {
         public const int SkillSlots = 2;
-        /// <summary>Ranks are packed four bits per skill id into one 64 bit value; id 1 takes the lowest bits, so ids 1 to 16 fit.</summary>
+        /// <summary>Ranks are packed three bits per skill id into one 64 bit value; id 1 takes the lowest bits, so ids 1 to 21 fit.</summary>
         public const int MaxSkillId = 21;
         /// <summary>Ranks are packed three bits per skill, so a skill's maximum rank can be at most this.</summary>
         public const int MaxPackedRank = 7;

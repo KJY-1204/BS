@@ -3,7 +3,7 @@ namespace BS
     /// <summary>Tuning constants for growth. Adjusted by playtest; the values are starting assumptions.</summary>
     public static class GrowthConfig
     {
-        public const int MaxLevel = 10;
+        public const int MaxLevel = 20;
         public const int XpPerKill = 10;
         /// <summary>Living survivors within this distance of where a mob died share its experience.</summary>
         public const float XpShareDistance = 10f;
@@ -19,7 +19,18 @@ namespace BS
         public const int ManaPerLevel = 5;
         public const int DamagePerLevel = 1;
 
-        /// <summary>Experience needed to go from <paramref name="level"/> to the next one.</summary>
-        public static int XpNeeded(int level) => 30 + 20 * (level - 1);
+        /// <summary>The last level whose step grows by <see cref="XpStepEarly"/>; later steps grow more slowly.</summary>
+        const int XpEarlyLevels = 9;
+        const int XpBase = 30;
+        const int XpStepEarly = 20;
+        const int XpStepLate = 10;
+
+        /// <summary>
+        /// Experience needed to go from <paramref name="level"/> to the next one: 30 at the first level, 20 more per level up to
+        /// the ninth (190), then 10 more per level. It never gets smaller as the level rises.
+        /// </summary>
+        public static int XpNeeded(int level) => level <= XpEarlyLevels
+            ? XpBase + XpStepEarly * (level - 1)
+            : XpBase + XpStepEarly * (XpEarlyLevels - 1) + XpStepLate * (level - XpEarlyLevels);
     }
 }

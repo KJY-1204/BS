@@ -44,6 +44,13 @@ namespace BS.Tests
         }
 
         [Test]
+        public void TheDefaultMatchLastsFifteenMinutes()
+        {
+            Assert.AreEqual(900f, BossCatalog.Default.MatchSeconds);
+            Assert.AreEqual(900f, BossCatalog.ForMatch().MatchSeconds, "without a development setting the copy has the default too");
+        }
+
+        [Test]
         public void ForMatchGivesACopy_SoChangingItNeverChangesTheSharedData()
         {
             BossDef a = BossCatalog.ForMatch();

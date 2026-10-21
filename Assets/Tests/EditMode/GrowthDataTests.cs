@@ -120,6 +120,41 @@ namespace BS.Tests
                 Assert.Greater(GrowthConfig.XpNeeded(level + 1), GrowthConfig.XpNeeded(level));
         }
 
+        [Test]
+        public void TheCapIsTwentyAndTheCurveKeepsTheEarlyLevelsAndSlowsAfterTheNinth()
+        {
+            Assert.AreEqual(20, GrowthConfig.MaxLevel);
+            Assert.AreEqual(190, GrowthConfig.XpNeeded(9));
+            Assert.AreEqual(200, GrowthConfig.XpNeeded(10));
+            Assert.AreEqual(210, GrowthConfig.XpNeeded(11));
+            Assert.AreEqual(290, GrowthConfig.XpNeeded(19));
+            for (int level = 1; level <= 9; level++)
+                Assert.AreEqual(30 + 20 * (level - 1), GrowthConfig.XpNeeded(level), $"level {level} keeps its earlier value");
+        }
+
+        [Test]
+        public void TotalExperienceToLevelTenIsUnchangedAndToTheCapIsAbout3_5TimesThat()
+        {
+            int toTen = 0, toCap = 0;
+            for (int level = 1; level < 10; level++) toTen += GrowthConfig.XpNeeded(level);
+            for (int level = 1; level < GrowthConfig.MaxLevel; level++) toCap += GrowthConfig.XpNeeded(level);
+
+            Assert.AreEqual(990, toTen);
+            Assert.AreEqual(3440, toCap);
+            Assert.AreEqual(3.5f, toCap / (float)toTen, 0.1f);
+        }
+
+        [Test]
+        public void AtTheCapTheAutomaticGrowthTableGivesTheDocumentedTotals()
+        {
+            SurvivorStats one = StatCalc.Compute(1, NoRanks());
+            SurvivorStats cap = StatCalc.Compute(GrowthConfig.MaxLevel, NoRanks());
+
+            Assert.AreEqual(190, cap.MaxHealth - one.MaxHealth);
+            Assert.AreEqual(95, cap.MaxMana - one.MaxMana);
+            Assert.AreEqual(19, cap.ProjectileDamage - one.ProjectileDamage);
+        }
+
         // ---- StatCalc ----
 
         [Test]

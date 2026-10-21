@@ -163,6 +163,90 @@ namespace BS.Tests
         }
 
         [Test]
+        public void TheRealCapIsTwenty_AndASurplusAtTheCapIsDropped()
+        {
+            LevelingSim sim = New(1, A);
+            Assert.AreEqual(20, sim.MaxLevel);
+            sim.AddXp(A, 99999);
+
+            Assert.AreEqual(20, sim.Level(A));
+            Assert.AreEqual(0, sim.Xp(A));
+            Assert.AreEqual(19, Drain(sim).Count(e => e.Kind == GrowthEventKind.LevelUp));
+            sim.AddXp(A, 500);
+            Assert.AreEqual(20, sim.Level(A));
+            Assert.AreEqual(0, Drain(sim).Count);
+        }
+
+        [Test]
+        public void OneLevelBelowTheCap_TwoLevelsOfExperienceEndsAtTheCapWithTwoChoices()
+        {
+            LevelingSim sim = New(1, A);
+            int toNineteen = 0;
+            for (int l = 1; l < 19; l++) toNineteen += GrowthConfig.XpNeeded(l);
+            sim.AddXp(A, toNineteen);
+            Assert.AreEqual(19, sim.Level(A));
+            Drain(sim);
+
+            sim.AddXp(A, GrowthConfig.XpNeeded(19) + 5000);
+
+            Assert.AreEqual(20, sim.Level(A));
+            Assert.AreEqual(0, sim.Xp(A), "the extra experience is dropped");
+            Assert.AreEqual(1, Drain(sim).Count(e => e.Kind == GrowthEventKind.LevelUp));
+        }
+
+        [Test]
+        public void EveryCharacterKeepsGettingChoicesAllTheWayToTheCap()
+        {
+            foreach (CharacterDef character in CharacterCatalog.All)
+            {
+                var sim = new LevelingSim(new System.Random(9));
+                sim.Register(A, character.Id);
+                int picks = 0;
+                for (int step = 0; step < 100 && sim.Level(A) < sim.MaxLevel; step++)
+                {
+                    sim.AddXp(A, GrowthConfig.XpNeeded(sim.Level(A)));
+                    while (sim.HasOffer(A))
+                    {
+                        Assert.Greater(sim.CurrentChoices(A).Length, 0, character.Name);
+                        sim.Pick(A, sim.CurrentOfferId(A), 0);
+                        picks++;
+                    }
+                }
+                Assert.AreEqual(sim.MaxLevel, sim.Level(A), character.Name);
+                Assert.AreEqual(sim.MaxLevel - 1, picks, $"{character.Name}: one choice for every level gained");
+            }
+        }
+
+        [Test]
+        public void WithNothingLeftToLearn_ALevelUpGoesThroughWithoutHoldingAnythingUp()
+        {
+            LevelingSim sim = New(1, A);
+            foreach (SkillDef def in SkillCatalog.All)
+                if (def.Character == CharacterIds.None || def.Character == CharacterIds.Reimu) sim.GrantRank(A, def.Id, def.MaxRank);
+            Drain(sim);
+
+            sim.AddXp(A, GrowthConfig.XpNeeded(1) + GrowthConfig.XpNeeded(2));
+
+            Assert.AreEqual(3, sim.Level(A));
+            Assert.IsFalse(sim.HasOffer(A));
+            Assert.AreEqual(0, sim.PendingOffers(A));
+            Assert.AreEqual(2, Drain(sim).Count(e => e.Kind == GrowthEventKind.LevelUp));
+        }
+
+        [Test]
+        public void ALearnableSkillPoolOf32RanksPerCharacterNeverRunsOutBeforeTheCap()
+        {
+            foreach (CharacterDef character in CharacterCatalog.All)
+            {
+                int ranks = 0;
+                foreach (SkillDef def in SkillCatalog.All)
+                    if (def.Character == CharacterIds.None || def.Character == character.Id) ranks += def.MaxRank;
+                Assert.AreEqual(32, ranks, character.Name);
+                Assert.Greater(ranks, GrowthConfig.MaxLevel - 1, character.Name);
+            }
+        }
+
+        [Test]
         public void ZeroNegativeAndUnknown_AreIgnored()
         {
             LevelingSim sim = New(1, A);
