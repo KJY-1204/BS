@@ -25,7 +25,7 @@ Only the server SHALL change a survivor's health. A client SHALL NOT be able to 
 - **THEN** the server ignores the attempt and the health value is unchanged
 
 ### Requirement: Damage reduces health and never goes below zero
-Damage dealt to a survivor SHALL reduce health by the damage amount, and health SHALL NOT go below zero.
+Damage dealt to a survivor SHALL reduce health by the damage amount, and health SHALL NOT go below zero. When the survivor has a damage-reduction passive, the damage amount SHALL first be lowered by the passive's fraction, with a hit that would deal damage still dealing at least one.
 
 #### Scenario: Normal hit
 - **WHEN** a survivor with health 100 takes damage 10
@@ -34,6 +34,14 @@ Damage dealt to a survivor SHALL reduce health by the damage amount, and health 
 #### Scenario: Overkill
 - **WHEN** a survivor with health 5 takes damage 10
 - **THEN** the survivor has health 0
+
+#### Scenario: A reduced hit
+- **WHEN** a survivor with a damage-reduction passive that lowers damage by twenty percent takes damage 10 at health 100
+- **THEN** the survivor has health 92
+
+#### Scenario: The least a hit can do
+- **WHEN** a survivor with a damage-reduction passive takes damage 1
+- **THEN** the survivor loses one health
 
 ### Requirement: A hit protects the survivor briefly
 After a survivor takes damage from any source (a mob's touch, the boss's touch, a boss projectile, a boss skill, a mob's shot or a mob's blast), the survivor SHALL take no damage from any source for a short protection time, and the same protection SHALL apply after being revived.
