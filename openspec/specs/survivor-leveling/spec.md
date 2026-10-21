@@ -51,7 +51,7 @@ A survivor SHALL NOT go above the level cap. At the cap, further experience SHAL
 - **THEN** the level and the stats stay unchanged
 
 ### Requirement: Each level raises stats automatically
-Each level gained SHALL raise the survivor's maximum health, maximum mana and projectile damage by fixed amounts from a growth table. A level up SHALL NOT restore current health or current mana.
+Each level gained SHALL raise the survivor's maximum health, maximum mana and projectile damage by fixed amounts from a growth table, and the survivor's mana recovery SHALL also include what the common passives and the character's own passive add. A level up SHALL NOT restore current health or current mana.
 
 #### Scenario: Stats after a level up
 - **WHEN** a survivor gains a level
@@ -64,6 +64,10 @@ Each level gained SHALL raise the survivor's maximum health, maximum mana and pr
 #### Scenario: No mana refill
 - **WHEN** a survivor with 20 mana gains a level
 - **THEN** current mana is still 20 and the maximum is higher
+
+#### Scenario: Mana recovery from a passive
+- **WHEN** a survivor learns the mana-recovery passive of its own character
+- **THEN** its mana recovery per second is higher by the passive's amount for its rank
 
 ### Requirement: Levels are visible to everyone, progress only to the owner
 Every player SHALL see every survivor's level over the character. Only the owner SHALL see their own experience progress toward the next level.

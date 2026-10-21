@@ -33,7 +33,7 @@ A survivor SHALL have two skill slots, triggered by the keys Q and E. A slot SHA
 - **THEN** the request reaches the server
 
 ### Requirement: The server decides whether a skill fires
-The server SHALL fire a skill only when the survivor is alive, the skill is learned, the skill is off cooldown and the survivor has enough mana. A client SHALL NOT be able to fire without meeting these conditions.
+The server SHALL fire a skill only when the survivor is alive, the skill is learned, the skill is off cooldown and the survivor has enough mana for the skill's cost as the survivor's passives change it. A client SHALL NOT be able to fire without meeting these conditions.
 
 #### Scenario: Allowed
 - **WHEN** a living survivor with enough mana presses the key of a ready skill
@@ -54,6 +54,10 @@ The server SHALL fire a skill only when the survivor is alive, the skill is lear
 #### Scenario: Repeated requests
 - **WHEN** a client sends the same request many times in a second
 - **THEN** the skill fires at most once per cooldown
+
+#### Scenario: A passive changes the cost and the cooldown
+- **WHEN** a survivor whose own passive lowers the cost or the cooldown presses the key of a ready skill
+- **THEN** the mana spent and the cooldown that starts are the changed values
 
 ### Requirement: The owner is told the result
 The server SHALL tell the owner whether a skill request succeeded and, if so, how long the cooldown is, so the owner's screen shows the cooldown without guessing.
