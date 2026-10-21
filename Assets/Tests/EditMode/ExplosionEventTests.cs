@@ -87,12 +87,12 @@ namespace BS.Tests
         }
 
         [Test]
-        public void TheOldEventSizesDidNotChange()
+        public void TheFireHitAndEndSizesDidNotChangeAndSkillIsTwelve()
         {
             Assert.AreEqual(10, CombatCodec.FireSize);
             Assert.AreEqual(11, CombatCodec.HitSize);
             Assert.AreEqual(7, CombatCodec.EndSize);
-            Assert.AreEqual(10, CombatCodec.SkillSize);
+            Assert.AreEqual(12, CombatCodec.SkillSize);
         }
 
         [Test]

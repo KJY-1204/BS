@@ -163,7 +163,7 @@ namespace BS.Tests
         }
 
         [Test]
-        public void Skill_TakesTenBytes()
+        public void Skill_TakesTwelveBytes()
         {
             var buffer = new byte[64];
             var events = new List<CombatEvent> { Skill(SkillIds.RapidFire, 1, 0, 0, 1) };
@@ -171,7 +171,7 @@ namespace BS.Tests
             int length = CombatCodec.WriteBatch(buffer, 1u, events, 0, 1, null);
 
             Assert.AreEqual(CombatCodec.HeaderSize + CombatCodec.SkillSize, length);
-            Assert.AreEqual(10, CombatCodec.SkillSize);
+            Assert.AreEqual(12, CombatCodec.SkillSize);
         }
 
         [Test]

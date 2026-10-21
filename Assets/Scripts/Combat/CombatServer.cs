@@ -429,7 +429,7 @@ namespace BS
                 for (int i = 0; i < list.Count; i++)
                 {
                     int id = list[i].Kind == CombatEventKind.Skill ? list[i].SkillId : list[i].Kind == CombatEventKind.Explosion ? list[i].Radius10 : list[i].ProjectileId;
-                    Debug.Log($"[BS] combatdump server t={timeMs} {list[i].Kind} id={id} mob={list[i].MobId} kill={(list[i].Killed ? 1 : 0)} cont={(list[i].Continues ? 1 : 0)} angle={list[i].Angle} owner={list[i].Owner} surv={(list[i].SurvivorTarget ? 1 : 0)}");
+                    Debug.Log($"[BS] combatdump server t={timeMs} {list[i].Kind} id={id} mob={list[i].MobId} kill={(list[i].Killed ? 1 : 0)} cont={(list[i].Continues ? 1 : 0)} angle={list[i].Angle} owner={list[i].Owner} surv={(list[i].SurvivorTarget ? 1 : 0)}{(list[i].Kind == CombatEventKind.Skill ? $" range={list[i].RangeScale} dur={list[i].DurationScale}" : "")}");
                 }
 
             // The host shows its own events at server time; everyone else gets them as a message.

@@ -256,10 +256,12 @@ namespace BS
                     Rank = (byte)activation.Rank,
                     Position = where,
                     Angle = aim,
+                    RangeScale = (byte)activation.RangeScale,
+                    DurationScale = (byte)activation.DurationScale,
                 });
 
                 if (DevArgs.GrowthLog)
-                    Debug.Log($"[BS] skill fired client={request.ClientId} skill={activation.SkillId} rank={activation.Rank} manaCost={SkillCatalog.EffectiveManaCost(SkillCatalog.Get(activation.SkillId), Leveling.Ranks(request.ClientId), entry.Avatar.CharacterId)} cooldown={activation.Cooldown:F2} damage={activation.Damage} amount={activation.Amount} at {where.x:F1},{where.y:F1} aim={aim} touched={touched}");
+                    Debug.Log($"[BS] skill fired client={request.ClientId} skill={activation.SkillId} rank={activation.Rank} manaCost={SkillCatalog.EffectiveManaCost(SkillCatalog.Get(activation.SkillId), Leveling.Ranks(request.ClientId), entry.Avatar.CharacterId)} cooldown={activation.Cooldown:F2} damage={activation.Damage} amount={activation.Amount} rangeScale={activation.RangeScale} durationScale={activation.DurationScale} at {where.x:F1},{where.y:F1} aim={aim} touched={touched}");
             }
 
             requests.Clear();

@@ -12,7 +12,29 @@ namespace BS
         public byte Rank;
         /// <summary>The aim the caster had, for skills with a direction.</summary>
         public ushort Angle;
+        /// <summary>The percent the server multiplied the skill's range and duration by (100 = as defined; 0 = not given).</summary>
+        public byte RangeScale;
+        public byte DurationScale;
         public float ServerTime;
+    }
+
+    /// <summary>
+    /// The sizes a client draws for a skill effect: the defined value for the rank times the scale the server used,
+    /// worked out with the same function the server judges with, so the picture matches what was hit.
+    /// </summary>
+    public static class SkillEffectSize
+    {
+        public static float Radius(SkillDef def, int rank, int rangeScale) =>
+            def.Radius != null ? SkillCatalog.Scaled(def.Radius[rank - 1], rangeScale) : 0f;
+
+        public static float Length(SkillDef def, int rank, int rangeScale) =>
+            def.Length != null ? SkillCatalog.Scaled(def.Length[rank - 1], rangeScale) : 0f;
+
+        public static float Width(SkillDef def, int rank, int rangeScale) =>
+            def.HalfWidth != null ? SkillCatalog.Scaled(def.HalfWidth[rank - 1], rangeScale) * 2f : 0f;
+
+        public static float Seconds(SkillDef def, int rank, int durationScale) =>
+            def.Duration != null ? SkillCatalog.Scaled(def.Duration[rank - 1], durationScale) : 0f;
     }
 
     /// <summary>

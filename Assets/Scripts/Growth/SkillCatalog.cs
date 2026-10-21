@@ -33,6 +33,10 @@ namespace BS
         public const byte TimeSense = 15;
         /// <summary>Sanae's own passive: her mana comes back faster.</summary>
         public const byte Faith = 16;
+        /// <summary>Reimu's second own passive: her timed skills last longer.</summary>
+        public const byte BarrierExtension = 17;
+        /// <summary>Sanae's second own passive: her skills reach farther.</summary>
+        public const byte WideWind = 18;
     }
 
     /// <summary>What a character's own passive does. The common passives are worked out by <see cref="StatCalc"/> and have none of these.</summary>
@@ -47,6 +51,10 @@ namespace BS
         SkillCooldown,
         /// <summary>Mana recovery per second rises.</summary>
         ManaRegen,
+        /// <summary>The radius, length, width and push distance of the character's active skills grow.</summary>
+        SkillRange,
+        /// <summary>How long the character's timed skills last grows.</summary>
+        SkillDuration,
     }
 
     /// <summary>What an active skill does when the server fires it. Passives have <see cref="None"/>.</summary>
@@ -117,8 +125,15 @@ namespace BS
     {
         public const int SkillSlots = 2;
         /// <summary>Ranks are packed four bits per skill id into one 64 bit value; id 1 takes the lowest bits, so ids 1 to 16 fit.</summary>
-        public const int MaxSkillId = 16;
-        public const int MaxPackedRank = 15;
+        public const int MaxSkillId = 21;
+        /// <summary>Ranks are packed three bits per skill, so a skill's maximum rank can be at most this.</summary>
+        public const int MaxPackedRank = 7;
+        const int PackBits = 3;
+
+        /// <summary>A scale of 100 percent leaves a skill's range or duration as defined.</summary>
+        public const int NormalScalePercent = 100;
+        /// <summary>The largest scale the passives can give; it is sent in one byte.</summary>
+        public const int MaxScalePercent = 250;
 
         /// <summary>However much cooldown shortening a survivor has, a skill's cooldown never falls below this share of its normal value.</summary>
         public const float MinSkillCooldownMultiplier = 0.4f;
@@ -137,6 +152,8 @@ namespace BS
         public const float FirePowerPerRank = 0.15f;
         public const float TimeSenseCooldownPerRank = 0.08f;
         public const float FaithRegenPerRank = 1.5f;
+        public const float BarrierExtensionPerRank = 0.20f;
+        public const float WideWindPerRank = 0.15f;
 
         static readonly SkillDef[] defs =
         {
@@ -216,6 +233,18 @@ namespace BS
                 Id = SkillIds.Faith, Name = "신앙", Character = CharacterIds.Sanae, MaxRank = 3,
                 RequiresSkill = SkillIds.Miracle, RequiresRank = 1,
                 Passive = PassiveEffectKind.ManaRegen, PassivePerRank = FaithRegenPerRank, Description = "마나 회복 +1.5/초",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.BarrierExtension, Name = "결계 연장", Character = CharacterIds.Reimu, MaxRank = 3,
+                RequiresSkill = SkillIds.Barrier, RequiresRank = 1,
+                Passive = PassiveEffectKind.SkillDuration, PassivePerRank = BarrierExtensionPerRank, Description = "스킬 지속 시간 +20%",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.WideWind, Name = "넓은 바람", Character = CharacterIds.Sanae, MaxRank = 3,
+                RequiresSkill = SkillIds.WindVeil, RequiresRank = 1,
+                Passive = PassiveEffectKind.SkillRange, PassivePerRank = WideWindPerRank, Description = "스킬 범위 +15%",
             },
         };
 
@@ -299,6 +328,21 @@ namespace BS
             return Math.Max(1, (int)Math.Round(value * (1f + total), MidpointRounding.AwayFromZero));
         }
 
+        /// <summary>The range scale (percent) of a skill use: the radius, length, width and push distance are multiplied by it.</summary>
+        public static int RangeScalePercent(IReadOnlyList<int> ranks, byte character) =>
+            ScalePercent(PassiveTotal(ranks, character, PassiveEffectKind.SkillRange));
+
+        /// <summary>The duration scale (percent) of a skill use: the time of a timed effect is multiplied by it.</summary>
+        public static int DurationScalePercent(IReadOnlyList<int> ranks, byte character) =>
+            ScalePercent(PassiveTotal(ranks, character, PassiveEffectKind.SkillDuration));
+
+        /// <summary>A defined value multiplied by a whole-percent scale (a scale of 0 means none was given and counts as 100). The server and the clients both use this, so they get the same number.</summary>
+        public static float Scaled(float value, int percent) =>
+            percent <= 0 || percent == NormalScalePercent ? value : value * percent / 100f;
+
+        static int ScalePercent(float total) =>
+            Math.Min(MaxScalePercent, Math.Max(NormalScalePercent, (int)Math.Round(NormalScalePercent * (1f + total), MidpointRounding.AwayFromZero)));
+
         public static int RankOf(IReadOnlyList<int> ranks, byte skillId) =>
             skillId < ranks.Count ? ranks[skillId] : 0;
 
@@ -306,14 +350,14 @@ namespace BS
         {
             ulong packed = 0;
             for (int id = 1; id <= MaxSkillId && id < ranks.Count; id++)
-                packed |= (ulong)(ranks[id] & MaxPackedRank) << ((id - 1) * 4);
+                packed |= (ulong)(ranks[id] & MaxPackedRank) << ((id - 1) * PackBits);
             return packed;
         }
 
         public static void Unpack(ulong packed, int[] into)
         {
             for (int id = 0; id < into.Length; id++)
-                into[id] = id >= 1 && id <= MaxSkillId ? (int)((packed >> ((id - 1) * 4)) & MaxPackedRank) : 0;
+                into[id] = id >= 1 && id <= MaxSkillId ? (int)((packed >> ((id - 1) * PackBits)) & MaxPackedRank) : 0;
         }
     }
 }

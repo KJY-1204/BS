@@ -197,7 +197,7 @@ namespace BS
             if (DevArgs.CombatDump && registered)
             {
                 int dumpId = e.Kind == CombatEventKind.Skill ? e.SkillId : e.Kind == CombatEventKind.Explosion ? e.Radius10 : e.ProjectileId;
-                Debug.Log($"[BS] combatdump client t={Mathf.RoundToInt(serverTime * 1000f)} {e.Kind} id={dumpId} mob={e.MobId} kill={(e.Killed ? 1 : 0)} cont={(e.Continues ? 1 : 0)} angle={e.Angle} surv={(e.SurvivorTarget ? 1 : 0)}");
+                Debug.Log($"[BS] combatdump client t={Mathf.RoundToInt(serverTime * 1000f)} {e.Kind} id={dumpId} mob={e.MobId} kill={(e.Killed ? 1 : 0)} cont={(e.Continues ? 1 : 0)} angle={e.Angle} surv={(e.SurvivorTarget ? 1 : 0)}{(e.Kind == CombatEventKind.Skill ? $" range={e.RangeScale} dur={e.DurationScale}" : "")}");
             }
 
             switch (e.Kind)
@@ -215,7 +215,8 @@ namespace BS
                     skills++;
                     SkillEffects.OnSkill(new SkillEffect
                     {
-                        SkillId = e.SkillId, Slot = e.Slot, Position = e.Position, Rank = e.Rank, Angle = e.Angle, ServerTime = serverTime,
+                        SkillId = e.SkillId, Slot = e.Slot, Position = e.Position, Rank = e.Rank, Angle = e.Angle,
+                        RangeScale = e.RangeScale, DurationScale = e.DurationScale, ServerTime = serverTime,
                     });
                     break;
                 case CombatEventKind.Explosion:

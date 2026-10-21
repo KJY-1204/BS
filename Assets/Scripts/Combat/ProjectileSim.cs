@@ -30,6 +30,9 @@ namespace BS
         /// <summary>Skill only: which skill and at what rank. The place is <see cref="Position"/>, the user is <see cref="Slot"/>.</summary>
         public byte SkillId;
         public byte Rank;
+        /// <summary>Skill only: the percent the skill's range and duration were multiplied by (100 = as defined), as the server judged them.</summary>
+        public byte RangeScale;
+        public byte DurationScale;
         /// <summary>Hit only.</summary>
         public ushort MobId;
         public byte MobHealthPercent;

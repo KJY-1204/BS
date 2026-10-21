@@ -26,7 +26,7 @@ namespace BS.Tests
             Assert.AreEqual(2.5f, read.Position.x, 0.001f);
             Assert.AreEqual(-3f, read.Position.y, 0.001f);
             Assert.AreEqual(4321, read.Angle);
-            Assert.AreEqual(CombatCodec.HeaderSize + CombatCodec.SkillSize, length, "no new event size");
+            Assert.AreEqual(CombatCodec.HeaderSize + CombatCodec.SkillSize, length, "a warning is an ordinary skill event");
         }
 
         [Test]

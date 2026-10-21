@@ -206,30 +206,29 @@ namespace BS
             SkillDef def = SkillCatalog.Get(effect.SkillId);
             if (def == null || effect.Rank < 1 || effect.Rank > def.MaxRank) return;
 
-            int r = effect.Rank - 1;
             switch (def.Effect)
             {
                 case SkillEffectKind.AreaDamage:
-                    AddRing(effect.Position, def.Radius[r], new Color(1f, 0.6f, 0.2f), RingSeconds);
+                    AddRing(effect.Position, SkillEffectSize.Radius(def, effect.Rank, effect.RangeScale), new Color(1f, 0.6f, 0.2f), RingSeconds);
                     break;
                 case SkillEffectKind.TimeStop:
                     // The whole arena: a pale blue ring that sweeps out far past the screen edge.
                     AddRing(effect.Position, Mathf.Sqrt(ArenaConfig.Width * ArenaConfig.Width + ArenaConfig.Height * ArenaConfig.Height), new Color(0.6f, 0.8f, 1f), StopRingSeconds, 0.04f);
                     break;
                 case SkillEffectKind.Heal:
-                    AddRing(effect.Position, def.Radius[r], new Color(0.4f, 1f, 0.5f), HealRingSeconds);
+                    AddRing(effect.Position, SkillEffectSize.Radius(def, effect.Rank, effect.RangeScale), new Color(0.4f, 1f, 0.5f), HealRingSeconds);
                     break;
                 case SkillEffectKind.Push:
-                    AddRing(effect.Position, def.Radius[r], new Color(1f, 1f, 1f), PushRingSeconds);
+                    AddRing(effect.Position, SkillEffectSize.Radius(def, effect.Rank, effect.RangeScale), new Color(1f, 1f, 1f), PushRingSeconds);
                     break;
                 case SkillEffectKind.Beam:
-                    AddBeam(effect, def.Length[r], def.HalfWidth[r] * 2f);
+                    AddBeam(effect, SkillEffectSize.Length(def, effect.Rank, effect.RangeScale), SkillEffectSize.Width(def, effect.Rank, effect.RangeScale));
                     break;
                 case SkillEffectKind.AttackSpeed:
-                    SetAura(effect.Slot, Time.time + def.Duration[r], new Color(1f, 0.9f, 0.3f));
+                    SetAura(effect.Slot, Time.time + SkillEffectSize.Seconds(def, effect.Rank, effect.DurationScale), new Color(1f, 0.9f, 0.3f));
                     break;
                 case SkillEffectKind.Barrier:
-                    SetAura(effect.Slot, Time.time + def.Duration[r], new Color(0.7f, 0.9f, 1f));
+                    SetAura(effect.Slot, Time.time + SkillEffectSize.Seconds(def, effect.Rank, effect.DurationScale), new Color(0.7f, 0.9f, 1f));
                     break;
             }
         }

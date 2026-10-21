@@ -36,6 +36,10 @@ namespace BS
         public float Distance;
         /// <summary>Health restored.</summary>
         public int Amount;
+        /// <summary>Percent the radius, length, width and push distance were multiplied by (100 = as defined); sent with the skill event.</summary>
+        public int RangeScale;
+        /// <summary>Percent the duration was multiplied by (100 = as defined); sent with the skill event.</summary>
+        public int DurationScale;
     }
 
     /// <summary>
@@ -135,22 +139,28 @@ namespace BS
             s.Mana -= manaCost;
             s.Cooldown[slot] = cooldown;
 
+            // The scales are whole percents decided here once; the server judges with them and tells the clients the same numbers.
+            int rangeScale = SkillCatalog.RangeScalePercent(ranks, character);
+            int durationScale = SkillCatalog.DurationScalePercent(ranks, character);
+
             activation = new SkillActivation
             {
                 SkillId = def.Id,
                 Effect = def.Effect,
                 Slot = slot,
                 Rank = rank,
-                Radius = def.Radius != null ? def.Radius[rank - 1] : 0f,
+                Radius = def.Radius != null ? SkillCatalog.Scaled(def.Radius[rank - 1], rangeScale) : 0f,
                 Damage = SkillCatalog.EffectivePower(def.Damage != null ? def.Damage[rank - 1] : 0, ranks, character),
-                BuffSeconds = def.Duration != null ? def.Duration[rank - 1] : 0f,
+                BuffSeconds = def.Duration != null ? SkillCatalog.Scaled(def.Duration[rank - 1], durationScale) : 0f,
                 CooldownMultiplier = def.CooldownMultiplier != null ? def.CooldownMultiplier[rank - 1] : 1f,
                 Cooldown = cooldown,
-                Length = def.Length != null ? def.Length[rank - 1] : 0f,
-                HalfWidth = def.HalfWidth != null ? def.HalfWidth[rank - 1] : 0f,
+                Length = def.Length != null ? SkillCatalog.Scaled(def.Length[rank - 1], rangeScale) : 0f,
+                HalfWidth = def.HalfWidth != null ? SkillCatalog.Scaled(def.HalfWidth[rank - 1], rangeScale) : 0f,
                 Count = def.Count != null ? def.Count[rank - 1] : 0,
-                Distance = def.Distance != null ? def.Distance[rank - 1] : 0f,
+                Distance = def.Distance != null ? SkillCatalog.Scaled(def.Distance[rank - 1], rangeScale) : 0f,
                 Amount = SkillCatalog.EffectivePower(def.Amount != null ? def.Amount[rank - 1] : 0, ranks, character),
+                RangeScale = rangeScale,
+                DurationScale = durationScale,
             };
 
             if (def.Effect == SkillEffectKind.AttackSpeed && activation.BuffSeconds > 0f)

@@ -96,13 +96,13 @@ namespace BS.Tests
         }
 
         [Test]
-        public void ASkillIsTenBytes_AndATruncatedOneIsRejected()
+        public void ASkillIsTwelveBytes_AndATruncatedOneIsRejected()
         {
-            Assert.AreEqual(10, CombatCodec.SkillSize);
+            Assert.AreEqual(12, CombatCodec.SkillSize);
             var buffer = new byte[64];
             var events = new List<CombatEvent> { new CombatEvent { Kind = CombatEventKind.Skill, SkillId = 8, Angle = 999, Rank = 1 } };
             int length = CombatCodec.WriteBatch(buffer, 1u, events, 0, 1, null);
-            Assert.AreEqual(CombatCodec.HeaderSize + 10, length);
+            Assert.AreEqual(CombatCodec.HeaderSize + 12, length);
 
             int offset = CombatCodec.HeaderSize;
             Assert.IsFalse(CombatCodec.TryReadEvent(buffer, length - 1, ref offset, out _));

@@ -132,6 +132,7 @@ namespace BS
             {
                 Kind = CombatEventKind.Skill, SkillId = BossSkills.WarningIdOf(slot), Owner = owner, Position = state.BossPosition,
                 Rank = 1, Angle = state.Aim,
+                RangeScale = SkillCatalog.NormalScalePercent, DurationScale = SkillCatalog.NormalScalePercent,
             });
             return BossSkillResult.Used;
         }

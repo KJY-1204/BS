@@ -18,18 +18,37 @@ namespace BS.Tests
             return ranks;
         }
 
-        static SkillDef OwnPassive(byte character) =>
-            SkillCatalog.All.Single(d => !d.IsActive && d.Passive != PassiveEffectKind.None && d.Character == character);
+        /// <summary>The first own passive of each character (mana cost, power, cooldown, recovery).</summary>
+        static SkillDef OwnPassive(byte character)
+        {
+            byte id = character == CharacterIds.Reimu ? SkillIds.SpiritSaving
+                    : character == CharacterIds.Marisa ? SkillIds.FirePower
+                    : character == CharacterIds.Sakuya ? SkillIds.TimeSense
+                    : SkillIds.Faith;
+            return SkillCatalog.Get(id);
+        }
 
         static SkillDef QSkill(byte character) => SkillCatalog.ForSlot(0, character);
 
         // ---- the data ----
 
         [Test]
-        public void EveryCharacterHasExactlyOneOwnPassive()
+        public void EveryCharacterHasAtLeastOneOwnPassiveAndNoneIsShared()
         {
             foreach (byte c in Characters)
-                Assert.AreEqual(1, SkillCatalog.All.Count(d => !d.IsActive && d.Passive != PassiveEffectKind.None && d.Character == c), $"character {c}");
+                Assert.GreaterOrEqual(SkillCatalog.All.Count(d => !d.IsActive && d.Passive != PassiveEffectKind.None && d.Character == c), 1, $"character {c}");
+            foreach (SkillDef d in SkillCatalog.All.Where(d => !d.IsActive && d.Passive != PassiveEffectKind.None))
+                Assert.AreNotEqual(CharacterIds.None, d.Character, d.Name);
+        }
+
+        [Test]
+        public void OnlyReimuAndSanaeHaveASecondOwnPassive()
+        {
+            foreach (byte c in Characters)
+            {
+                int count = SkillCatalog.All.Count(d => !d.IsActive && d.Passive != PassiveEffectKind.None && d.Character == c);
+                Assert.AreEqual(c == CharacterIds.Reimu || c == CharacterIds.Sanae ? 2 : 1, count, $"character {c}");
+            }
         }
 
         [Test]
@@ -94,8 +113,10 @@ namespace BS.Tests
         // ---- packing ----
 
         [Test]
-        public void EveryIdFromOneToSixteenSurvivesPackingWithoutMixingNeighbours()
+        public void EveryIdSurvivesPackingWithoutMixingNeighbours()
         {
+            Assert.AreEqual(21, SkillCatalog.MaxSkillId);
+            Assert.AreEqual(7, SkillCatalog.MaxPackedRank);
             for (int id = 1; id <= SkillCatalog.MaxSkillId; id++)
             for (int rank = 0; rank <= SkillCatalog.MaxPackedRank; rank++)
             {
@@ -111,23 +132,23 @@ namespace BS.Tests
         }
 
         [Test]
-        public void AllSixteenSkillsFitTheSixtyFourBitsAtOnce()
+        public void AllTwentyOneSkillsFitTheSixtyFourBitsAtOnce()
         {
             int[] ranks = NoRanks();
-            for (int id = 1; id <= 16; id++) ranks[id] = (id % 15) + 1;
+            for (int id = 1; id <= 21; id++) ranks[id] = (id % 7) + 1;
 
             var back = NoRanks();
             SkillCatalog.Unpack(SkillCatalog.Pack(ranks), back);
 
-            for (int id = 1; id <= 16; id++) Assert.AreEqual(ranks[id], back[id], $"id {id}");
+            for (int id = 1; id <= 21; id++) Assert.AreEqual(ranks[id], back[id], $"id {id}");
             Assert.AreEqual(0, back[0], "id zero is not a skill");
         }
 
         [Test]
-        public void IdSixteenUsesTheHighestFourBits()
+        public void IdTwentyOneUsesTheHighestThreeBits()
         {
             int[] ranks = NoRanks();
-            ranks[16] = 3;
+            ranks[21] = 3;
             Assert.AreEqual(3UL << 60, SkillCatalog.Pack(ranks));
             ranks = NoRanks();
             ranks[1] = 2;
@@ -375,6 +396,89 @@ namespace BS.Tests
                     Assert.AreEqual(SkillCatalog.EffectiveCooldown(def, ranks, c), activation.Cooldown, 1e-3f);
                 }
             }
+        }
+
+        [Test]
+        public void EverySkillRankFitsThePackedBits()
+        {
+            foreach (SkillDef def in SkillCatalog.All)
+                Assert.LessOrEqual(def.MaxRank, SkillCatalog.MaxPackedRank, def.Name);
+        }
+
+        // ---- range and duration passives ----
+
+        [Test]
+        public void TheTwoNewPassivesBelongToReimuAndSanaeAndNeedTheirESkill()
+        {
+            SkillDef extension = SkillCatalog.Get(SkillIds.BarrierExtension);
+            Assert.AreEqual(CharacterIds.Reimu, extension.Character);
+            Assert.AreEqual(PassiveEffectKind.SkillDuration, extension.Passive);
+            Assert.AreEqual(SkillIds.Barrier, extension.RequiresSkill);
+            Assert.AreEqual(1, extension.RequiresRank);
+            Assert.AreEqual(3, extension.MaxRank);
+            Assert.IsFalse(extension.IsActive);
+
+            SkillDef wind = SkillCatalog.Get(SkillIds.WideWind);
+            Assert.AreEqual(CharacterIds.Sanae, wind.Character);
+            Assert.AreEqual(PassiveEffectKind.SkillRange, wind.Passive);
+            Assert.AreEqual(SkillIds.WindVeil, wind.RequiresSkill);
+            Assert.AreEqual(1, wind.RequiresRank);
+            Assert.AreEqual(3, wind.MaxRank);
+            Assert.IsFalse(wind.IsActive);
+        }
+
+        [Test]
+        public void ScalesAreOneHundredWithoutPassivesAndGrowByRank()
+        {
+            Assert.AreEqual(100, SkillCatalog.RangeScalePercent(NoRanks(), CharacterIds.Sanae));
+            Assert.AreEqual(100, SkillCatalog.DurationScalePercent(NoRanks(), CharacterIds.Reimu));
+
+            Assert.AreEqual(115, SkillCatalog.RangeScalePercent(Ranks((SkillIds.WideWind, 1)), CharacterIds.Sanae));
+            Assert.AreEqual(130, SkillCatalog.RangeScalePercent(Ranks((SkillIds.WideWind, 2)), CharacterIds.Sanae));
+            Assert.AreEqual(145, SkillCatalog.RangeScalePercent(Ranks((SkillIds.WideWind, 3)), CharacterIds.Sanae));
+
+            Assert.AreEqual(120, SkillCatalog.DurationScalePercent(Ranks((SkillIds.BarrierExtension, 1)), CharacterIds.Reimu));
+            Assert.AreEqual(140, SkillCatalog.DurationScalePercent(Ranks((SkillIds.BarrierExtension, 2)), CharacterIds.Reimu));
+            Assert.AreEqual(160, SkillCatalog.DurationScalePercent(Ranks((SkillIds.BarrierExtension, 3)), CharacterIds.Reimu));
+        }
+
+        [Test]
+        public void ScalesIgnoreOtherCharactersAndOtherKindsOfPassive()
+        {
+            int[] ranks = Ranks((SkillIds.WideWind, 3), (SkillIds.BarrierExtension, 3), (SkillIds.FirePower, 3));
+            Assert.AreEqual(100, SkillCatalog.RangeScalePercent(ranks, CharacterIds.Reimu), "range passive is Sanae's");
+            Assert.AreEqual(100, SkillCatalog.DurationScalePercent(ranks, CharacterIds.Sanae), "duration passive is Reimu's");
+            Assert.AreEqual(100, SkillCatalog.RangeScalePercent(ranks, CharacterIds.Marisa));
+            Assert.AreEqual(100, SkillCatalog.RangeScalePercent(ranks, CharacterIds.None));
+            Assert.AreEqual(145, SkillCatalog.RangeScalePercent(ranks, CharacterIds.Sanae));
+            Assert.AreEqual(160, SkillCatalog.DurationScalePercent(ranks, CharacterIds.Reimu));
+        }
+
+        [Test]
+        public void ScalesNeverPassTheUpperLimit()
+        {
+            // A test passive far stronger than the real ones, put through the same clamp via many ranks of the real one.
+            var big = new int[SkillCatalog.MaxSkillId + 1];
+            big[SkillIds.WideWind] = SkillCatalog.MaxPackedRank;
+            Assert.LessOrEqual(SkillCatalog.RangeScalePercent(big, CharacterIds.Sanae), SkillCatalog.MaxScalePercent);
+            Assert.GreaterOrEqual(SkillCatalog.RangeScalePercent(big, CharacterIds.Sanae), SkillCatalog.NormalScalePercent);
+        }
+
+        [Test]
+        public void TheNewPassivesAreOfferedOnlyAfterTheirESkillAndOnlyToTheirOwner()
+        {
+            SkillDef extension = SkillCatalog.Get(SkillIds.BarrierExtension);
+            SkillDef wind = SkillCatalog.Get(SkillIds.WideWind);
+
+            Assert.IsFalse(SkillCatalog.IsAvailable(extension, Ranks((SkillIds.Burst, 3)), CharacterIds.Reimu), "the Q skill is not enough");
+            Assert.IsTrue(SkillCatalog.IsAvailable(extension, Ranks((SkillIds.Barrier, 1)), CharacterIds.Reimu));
+            Assert.IsFalse(SkillCatalog.IsAvailable(extension, Ranks((SkillIds.Barrier, 3)), CharacterIds.Sanae));
+            Assert.IsFalse(SkillCatalog.IsAvailable(extension, Ranks((SkillIds.Barrier, 1), (SkillIds.BarrierExtension, 3)), CharacterIds.Reimu), "at its maximum");
+
+            Assert.IsFalse(SkillCatalog.IsAvailable(wind, Ranks((SkillIds.Miracle, 3)), CharacterIds.Sanae), "the Q skill is not enough");
+            Assert.IsTrue(SkillCatalog.IsAvailable(wind, Ranks((SkillIds.WindVeil, 1)), CharacterIds.Sanae));
+            foreach (byte other in new[] { CharacterIds.Reimu, CharacterIds.Marisa, CharacterIds.Sakuya })
+                Assert.IsFalse(SkillCatalog.IsAvailable(wind, Ranks((SkillIds.WindVeil, 3)), other), $"character {other}");
         }
     }
 }

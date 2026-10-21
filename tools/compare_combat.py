@@ -10,7 +10,7 @@ import re
 import sys
 from collections import Counter
 
-PATTERN = re.compile(r"\[BS\] combatdump (server|client) t=(\d+) (Fire|Hit|End|Skill|Explosion) id=(\d+) mob=(\d+) kill=(\d)(?: cont=(\d) angle=(\d+))?(?:.*? surv=(\d))?")
+PATTERN = re.compile(r"\[BS\] combatdump (server|client) t=(\d+) (Fire|Hit|End|Skill|Explosion) id=(\d+) mob=(\d+) kill=(\d)(?: cont=(\d) angle=(\d+))?(?:.*? surv=(\d))?(?:.*? range=(\d+) dur=(\d+))?")
 
 
 def parse(path, kind):
@@ -21,7 +21,10 @@ def parse(path, kind):
             cont = int(m.group(7)) if m.group(7) else 0
             angle = int(m.group(8)) if m.group(8) else 0
             surv = int(m.group(9)) if m.group(9) else 0
-            events.append((int(m.group(2)), m.group(3), int(m.group(4)), int(m.group(5)), int(m.group(6)), cont, angle, surv))
+            # A skill event also carries the range and duration scales the server used; a mismatch there is a mismatch of the event.
+            rng = int(m.group(10)) if m.group(10) else 0
+            dur = int(m.group(11)) if m.group(11) else 0
+            events.append((int(m.group(2)), m.group(3), int(m.group(4)), int(m.group(5)), int(m.group(6)), cont, angle, surv, rng, dur))
     return events
 
 
