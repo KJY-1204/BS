@@ -78,6 +78,12 @@ namespace BS
             public float Length;
             public float Width;
             public float Start;
+            /// <summary>How long it is shown; zero means the usual <see cref="CombatView.BeamSeconds"/>.</summary>
+            public float Seconds;
+            /// <summary>Its color; an unset (transparent) color means the survivors' pale yellow.</summary>
+            public Color Color;
+            /// <summary>A steady line (a warning) keeps its width and strength until it ends instead of fading.</summary>
+            public bool Steady;
         }
         readonly SpriteRenderer[] beamSprites = new SpriteRenderer[MaxBeams];
         readonly Beam[] beams = new Beam[MaxBeams];
@@ -196,10 +202,7 @@ namespace BS
             // above every survivor skill, so they never reach the survivor skill table.
             if (BossSkills.IsWarningId(effect.SkillId))
             {
-                if (effect.SkillId == BossSkills.WarningIdShockwave)
-                    AddRing(effect.Position, BossSkills.ShockwaveRadius, new Color(1f, 0.25f, 0.2f), BossSkills.WarningSeconds, 0.1f);
-                else
-                    AddRing(effect.Position, BossSkills.BarrageWarningRadius, new Color(1f, 0.6f, 0.2f), BossSkills.WarningSeconds, 0.1f);
+                AddBossWarning(effect);
                 return;
             }
 
@@ -233,6 +236,61 @@ namespace BS
             }
         }
 
+        /// <summary>
+        /// The warning of a boss skill, drawn from the skill event and the kind being played: a ring for the shot ring, the shockwave and
+        /// the roar, and for the beam a thin steady line along the aim with a flash along it when the warning ends.
+        /// </summary>
+        void AddBossWarning(SkillEffect effect)
+        {
+            BossSkillEffect kind = BossSkills.EffectOfWarning(effect.SkillId);
+            BossSkillDef def = BossCatalog.Current.SkillWithEffect(kind) ?? BossCatalog.Default.SkillWithEffect(kind);
+            if (def == null) return;
+
+            Color color = BossSkills.ColorOf(kind);
+            switch (kind)
+            {
+                case BossSkillEffect.Shockwave:
+                    AddRing(effect.Position, def.Radius, color, def.WarningSeconds, 0.1f);
+                    break;
+                case BossSkillEffect.ShotRing:
+                    AddRing(effect.Position, BossSkills.BarrageWarningRadius, color, def.WarningSeconds, 0.1f);
+                    break;
+                case BossSkillEffect.Roar:
+                    AddRing(effect.Position, BossSkillSim.RoarDistance, color, def.WarningSeconds, 0.1f);
+                    break;
+                case BossSkillEffect.Beam:
+                    AddBossBeam(effect, def, color);
+                    break;
+            }
+        }
+
+        void AddBossBeam(SkillEffect effect, BossSkillDef def, Color color)
+        {
+            float radians = AimMath.DequantizeAngle(effect.Angle);
+            Vector2 direction = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
+            float length = ClipToArena(effect.Position, direction, def.Length);
+            float degrees = radians * Mathf.Rad2Deg;
+
+            Color faint = color;
+            faint.a = 0.55f;
+            beams[nextBeam] = new Beam
+            {
+                Origin = effect.Position, Degrees = degrees, Length = length, Width = 0.12f, Start = Time.time,
+                Seconds = def.WarningSeconds, Color = faint, Steady = true,
+            };
+            nextBeam = (nextBeam + 1) % MaxBeams;
+
+            // The flash starts when the warning ends, which is when the server lets the beam take effect.
+            beams[nextBeam] = new Beam
+            {
+                Origin = effect.Position, Degrees = degrees, Length = length, Width = def.HalfWidth * 2f,
+                Start = Time.time + def.WarningSeconds, Seconds = BossBeamFlashSeconds, Color = color,
+            };
+            nextBeam = (nextBeam + 1) % MaxBeams;
+        }
+
+        const float BossBeamFlashSeconds = 0.25f;
+
         void AddRing(Vector2 center, float radius, Color color, float seconds, float startScale = 0.3f)
         {
             rings[nextRing] = new Ring { Center = center, Radius = radius, Start = Time.time, Color = color, Seconds = seconds, StartScale = startScale };
@@ -254,6 +312,7 @@ namespace BS
             {
                 Origin = effect.Position, Degrees = radians * Mathf.Rad2Deg,
                 Length = ClipToArena(effect.Position, direction, length), Width = width, Start = Time.time,
+                Seconds = BeamSeconds, Color = new Color(1f, 1f, 0.8f),
             };
             nextBeam = (nextBeam + 1) % MaxBeams;
         }
@@ -277,21 +336,22 @@ namespace BS
             {
                 SpriteRenderer sr = beamSprites[i];
                 float age = Time.time - beams[i].Start;
-                if (beams[i].Length <= 0f || age > BeamSeconds)
+                float seconds = beams[i].Seconds > 0f ? beams[i].Seconds : BeamSeconds;
+                if (beams[i].Length <= 0f || age < 0f || age > seconds)
                 {
                     if (sr.enabled) sr.enabled = false;
                     continue;
                 }
 
-                float t = age / BeamSeconds;
+                float t = beams[i].Steady ? 0f : age / seconds;
                 float radians = beams[i].Degrees * Mathf.Deg2Rad;
                 Vector2 middle = beams[i].Origin + new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)) * (beams[i].Length * 0.5f);
                 sr.enabled = true;
                 sr.transform.position = new Vector3(middle.x, middle.y, 0f);
                 sr.transform.rotation = Quaternion.Euler(0f, 0f, beams[i].Degrees);
                 sr.transform.localScale = new Vector3(beams[i].Length, beams[i].Width * Mathf.Lerp(1f, 0.4f, t), 1f);
-                Color c = new Color(1f, 1f, 0.8f);
-                c.a = 1f - t;
+                Color c = beams[i].Color.a > 0f ? beams[i].Color : new Color(1f, 1f, 0.8f);
+                c.a = beams[i].Steady ? c.a : c.a * (1f - t);
                 sr.color = c;
             }
         }
@@ -369,7 +429,7 @@ namespace BS
                 byte slot = replay.SlotAt(i);
                 RoleTable table = RoleTable.Instance;
                 CharacterDef character = slot != RoleTable.BossRole && slot != CombatServer.MobShooterSlot && table != null ? CharacterCatalog.Get(table.CharacterOfRole(slot)) : null;
-                if (slot == RoleTable.BossRole) sr.color = BossCatalog.Default.Color;
+                if (slot == RoleTable.BossRole) sr.color = BossCatalog.Current.Color;
                 else if (slot == CombatServer.MobShooterSlot) sr.color = MobKinds.Get(MobKinds.Ranged).Color;
                 else sr.color = character != null ? character.Color : SlotColors[Mathf.Min(slot, SlotColors.Length - 1)];
                 float size = Mathf.Max(0.15f, replay.ShapeAt(i).Radius * 2f);

@@ -162,7 +162,7 @@ namespace BS
             localCooldown = Mathf.Max(0f, localCooldown - Time.deltaTime);
             if (wantFire && localCooldown <= 0f)
             {
-                localCooldown = boss ? BossAttack.CooldownSeconds : CombatConfig.FireCooldownSeconds;
+                localCooldown = boss ? BossCatalog.Current.Attack.CooldownSeconds : CombatConfig.FireCooldownSeconds;
                 MuzzleFlashUntil = Time.time + 0.06f;
             }
             if (sender.ShouldSend(Time.unscaledTime, aimAngle, wantFire))

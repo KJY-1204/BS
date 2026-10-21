@@ -32,6 +32,7 @@ namespace BS
     /// -bsAutoEnd s     (host) end the first match s seconds after it started, returning to the waiting room
     /// -bsTryStart s    (client) send a start request s seconds after joining; the server should ignore it
     /// -bsTryEnd s      (client) send an end-match request s seconds after joining; the server should ignore it
+    /// -bsBossKind n     the boss player asks for boss kind n (1 standard, 2 giant, 3 sniper) in the waiting room
     /// -bsBossHealth n   (host) the boss's maximum health
     /// -bsMatchSeconds s (host) the time limit of a match with a boss
     /// -bsBossChase     (boss player) walk toward the nearest survivor on its own
@@ -88,6 +89,7 @@ namespace BS
         public static int DevSkillsRank { get; private set; }
         public static int DevPassiveRank { get; private set; }
         public static int BossHealth { get; private set; }
+        public static int BossKind { get; private set; }
         public static float MatchSeconds { get; private set; }
         public static bool BossChase { get; private set; }
         public static float AutoSummonSeconds { get; private set; } = -1f;
@@ -174,6 +176,9 @@ namespace BS
                         break;
                     case "-bsCharacter" when i + 1 < args.Length:
                         if (int.TryParse(args[i + 1], out int ch)) Character = ch;
+                        break;
+                    case "-bsBossKind" when i + 1 < args.Length:
+                        if (int.TryParse(args[i + 1], out int bk)) BossKind = bk;
                         break;
                     case "-bsBossHealth" when i + 1 < args.Length:
                         if (int.TryParse(args[i + 1], out int bh)) BossHealth = bh;

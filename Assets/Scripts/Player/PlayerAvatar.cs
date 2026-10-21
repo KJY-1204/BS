@@ -28,6 +28,8 @@ namespace BS
         [SerializeField] float idleCorrectionRate = 10f;
         [SerializeField] float remoteSmoothing = 15f;
         [SerializeField] SpriteRenderer body;
+        /// <summary>The body's scale as the prefab has it, remembered before a boss kind rescales it.</summary>
+        Vector3? bodyBaseScale;
 
         readonly NetworkVariable<Vector2> serverPos = new NetworkVariable<Vector2>(
             Vector2.zero, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
@@ -290,8 +292,17 @@ namespace BS
         {
             if (body == null) return;
 
-            CharacterDef def = role.Value == RoleTable.BossRole ? null : CharacterCatalog.Get(character.Value);
+            bool isBoss = role.Value == RoleTable.BossRole;
+            CharacterDef def = isBoss ? null : CharacterCatalog.Get(character.Value);
             Color color = def != null ? def.Color : RoleColors[Mathf.Min(role.Value, (byte)(RoleColors.Length - 1))];
+            if (isBoss)
+            {
+                // The boss is drawn in its kind's color and as large, compared with the standard boss, as its kind's body radius is.
+                BossDef kind = BossCatalog.Current;
+                color = kind.Color;
+                if (bodyBaseScale == null) bodyBaseScale = body.transform.localScale;
+                body.transform.localScale = bodyBaseScale.Value * (kind.Radius / BossCatalog.Default.Radius);
+            }
             if (!IsAlive) color = Color.Lerp(color, new Color(0.25f, 0.25f, 0.28f), 0.75f); // fallen survivors are shown greyed out
             body.color = color;
         }

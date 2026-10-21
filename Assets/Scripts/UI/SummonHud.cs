@@ -90,9 +90,10 @@ namespace BS
                 Rect rect = new Rect(x + slot * cell, y, cell - 4f, height);
 
                 Fill(rect, ready ? new Color(1f, 1f, 1f, 0.28f) : new Color(0f, 0f, 0f, 0.5f));
-                Fill(new Rect(rect.x, rect.y, 5f, rect.height), slot == BossSkills.Barrage ? new Color(1f, 0.6f, 0.2f) : new Color(1f, 0.25f, 0.2f));
+                BossSkillDef skill = BossCatalog.Current.Skills[slot];
+                Fill(new Rect(rect.x, rect.y, 5f, rect.height), BossSkills.ColorOf(skill.Effect));
                 string state = ready ? "준비" : $"{left:F1}초";
-                GUI.Label(new Rect(rect.x + 6f, rect.y, rect.width - 6f, rect.height), $"{BossSkills.Keys[slot]} {BossSkills.Names[slot]} ({state})", small);
+                GUI.Label(new Rect(rect.x + 6f, rect.y, rect.width - 6f, rect.height), $"{skill.Key} {skill.Name} ({state})", small);
             }
         }
 

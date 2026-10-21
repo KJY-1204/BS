@@ -24,6 +24,9 @@ namespace BS
         NotReady,
         RoomFull,
         MatchRunning,
+        /// <summary>A boss kind was asked for by someone who does not hold the boss role.</summary>
+        NotBoss,
+        UnknownKind,
     }
 
     /// <summary>One connected player as the room sees them.</summary>
@@ -34,6 +37,8 @@ namespace BS
         public byte Role;
         /// <summary>0 = none yet.</summary>
         public byte Character;
+        /// <summary>For the boss: the kind of boss chosen, 0 = none chosen (the standard kind is played). Survivors never hold one.</summary>
+        public byte BossKind;
     }
 
     /// <summary>
@@ -180,6 +185,35 @@ namespace BS
             slot.Character = character;
             slots[i] = slot;
             return LobbyResult.Ok;
+        }
+
+        // ---- Choosing a boss kind ----
+
+        /// <summary>
+        /// Chooses the kind of boss for the player who holds the boss role (0 releases the choice). Anyone else, a kind that does not
+        /// exist, and any request outside the waiting room are refused and change nothing.
+        /// </summary>
+        public LobbyResult SelectBossKind(ulong clientId, byte kind)
+        {
+            int i = IndexOf(clientId);
+            if (i < 0) return LobbyResult.UnknownPlayer;
+            if (Phase != RoomPhase.Waiting) return LobbyResult.WrongPhase;
+            if (slots[i].Role != BossRole) return LobbyResult.NotBoss;
+            if (kind != 0 && !BossCatalog.IsValid(kind)) return LobbyResult.UnknownKind;
+            if (slots[i].BossKind == kind) return LobbyResult.NoChange;
+
+            LobbySlot slot = slots[i];
+            slot.BossKind = kind;
+            slots[i] = slot;
+            return LobbyResult.Ok;
+        }
+
+        /// <summary>The kind of boss the match will have: what the boss player chose, or the standard kind when nothing is chosen (or there is no boss).</summary>
+        public byte BossKindOf()
+        {
+            for (int i = 0; i < slots.Count; i++)
+                if (slots[i].Role == BossRole && BossCatalog.IsValid(slots[i].BossKind)) return slots[i].BossKind;
+            return BossCatalog.Standard;
         }
 
         // ---- Starting and ending a match ----

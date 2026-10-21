@@ -12,15 +12,18 @@ namespace BS
         public byte Role;
         /// <summary>The character a survivor holds, 0 = none yet (the boss never holds one).</summary>
         public byte Character;
+        /// <summary>For the boss: the kind of boss chosen, 0 = none chosen yet (the standard kind).</summary>
+        public byte BossKind;
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {
             serializer.SerializeValue(ref ClientId);
             serializer.SerializeValue(ref Role);
             serializer.SerializeValue(ref Character);
+            serializer.SerializeValue(ref BossKind);
         }
 
-        public bool Equals(PlayerSlot other) => ClientId == other.ClientId && Role == other.Role && Character == other.Character;
+        public bool Equals(PlayerSlot other) => ClientId == other.ClientId && Role == other.Role && Character == other.Character && BossKind == other.BossKind;
     }
 
     /// <summary>
@@ -61,6 +64,9 @@ namespace BS
             (byte)MatchWinner.None, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
         readonly NetworkVariable<byte> reason = new NetworkVariable<byte>(
             (byte)MatchReason.None, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+        /// <summary>The kind of boss of the match being played; every machine feeds it to <see cref="BossCatalog"/>.</summary>
+        readonly NetworkVariable<byte> bossKind = new NetworkVariable<byte>(
+            BossCatalog.Standard, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
         readonly NetworkVariable<bool> hasBoss = new NetworkVariable<bool>(
             false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
@@ -94,6 +100,8 @@ namespace BS
         {
             Instance = this;
             phase.OnValueChanged += OnPhaseChanged;
+            bossKind.OnValueChanged += OnBossKindChanged;
+            BossCatalog.SetCurrentKind(bossKind.Value);
 
             if (!IsServer) return;
 
@@ -114,11 +122,26 @@ namespace BS
         public override void OnNetworkDespawn()
         {
             phase.OnValueChanged -= OnPhaseChanged;
+            bossKind.OnValueChanged -= OnBossKindChanged;
+            BossCatalog.SetCurrentKind(BossCatalog.Standard);
             if (Instance == this) Instance = null;
 
             if (!IsServer || NetworkManager == null) return;
             NetworkManager.OnClientConnectedCallback -= OnClientConnected;
             NetworkManager.OnClientDisconnectCallback -= OnClientDisconnected;
+        }
+
+        void OnBossKindChanged(byte previous, byte current) => BossCatalog.SetCurrentKind(current);
+
+        /// <summary>The kind of boss the boss player has chosen in the waiting room (the standard kind when nothing is chosen).</summary>
+        public byte ChosenBossKind
+        {
+            get
+            {
+                for (int i = 0; i < Slots.Count; i++)
+                    if (Slots[i].Role == BossRole && BossCatalog.IsValid(Slots[i].BossKind)) return Slots[i].BossKind;
+                return BossCatalog.Standard;
+            }
         }
 
         void OnPhaseChanged(byte previous, byte current)
@@ -173,6 +196,9 @@ namespace BS
         /// <summary>Asks for a character (0 releases the choice).</summary>
         public void RequestCharacter(byte character) => SelectCharacterRpc(character);
 
+        /// <summary>Asks for a kind of boss (0 releases the choice); only the boss player's request counts.</summary>
+        public void RequestBossKind(byte kind) => SelectBossKindRpc(kind);
+
         public void RequestStart() => StartMatchRpc();
 
         public void RequestEndMatch() => EndMatchRpc();
@@ -199,6 +225,27 @@ namespace BS
             else if (result == LobbyResult.CharacterTaken || result == LobbyResult.WrongPhase)
             {
                 NoticeRpc((byte)result, RpcTarget.Single(sender, RpcTargetUse.Temp));
+            }
+        }
+
+        [Rpc(SendTo.Server)]
+        void SelectBossKindRpc(byte kind, RpcParams rpcParams = default)
+        {
+            ulong sender = rpcParams.Receive.SenderClientId;
+            if (lobby == null) return;
+
+            LobbyResult result = lobby.SelectBossKind(sender, kind);
+            Debug.Log($"[BS] lobby: client {sender} asked for boss kind {kind}: {result}");
+
+            if (result == LobbyResult.Ok)
+            {
+                int index = FindSlot(sender);
+                if (index >= 0)
+                {
+                    PlayerSlot slot = Slots[index];
+                    slot.BossKind = kind;
+                    Slots[index] = slot;
+                }
             }
         }
 
@@ -254,6 +301,11 @@ namespace BS
         {
             spawnList.Clear();
             spawnList.AddRange(lobby.Slots);
+
+            // The boss's kind is fixed before anything spawns, so the boss starts with the right stats and every machine learns it with the spawns.
+            byte kind = lobby.BossKindOf();
+            BossCatalog.SetCurrentKind(kind);
+            bossKind.Value = kind;
 
             foreach (LobbySlot slot in spawnList)
                 SpawnCharacter(slot.ClientId, slot.Role, slot.Character);
@@ -365,6 +417,7 @@ namespace BS
         float devJoinedAt = -1f;
         float devReadySince = -1f;
         float devPlayingSince = -1f;
+        bool devBossKindDone;
         bool devCharacterDone, devEndDone, devTryStartDone, devTryEndDone;
 
         void Update()
@@ -397,6 +450,12 @@ namespace BS
             {
                 devCharacterDone = true;
                 RequestCharacter((byte)DevArgs.Character);
+            }
+
+            if (DevArgs.BossKind > 0 && !devBossKindDone && since >= 0.5f && Phase == RoomPhase.Waiting && mine.Role == BossRole)
+            {
+                devBossKindDone = true;
+                RequestBossKind((byte)DevArgs.BossKind);
             }
 
             if (!IsServer)

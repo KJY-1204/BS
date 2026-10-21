@@ -42,7 +42,7 @@ namespace BS
         /// <summary>The shape of the projectiles of whoever stands in a shooter slot, from the room's character table.</summary>
         static ProjectileShape ShapeOfShooterSlot(byte slot)
         {
-            if (slot == RoleTable.BossRole) return BossAttack.Shape; // a shot from the boss's slot is a boss shot
+            if (slot == RoleTable.BossRole) return BossCatalog.Current.Attack.Shape; // a shot from the boss's slot is a boss shot of the kind being played
             if (slot == CombatServer.MobShooterSlot) return MobShot.Shape; // and one from the mob slot is a ranged mob's shot
             RoleTable table = RoleTable.Instance;
             CharacterDef character = table != null ? CharacterCatalog.Get(table.CharacterOfRole(slot)) : null;

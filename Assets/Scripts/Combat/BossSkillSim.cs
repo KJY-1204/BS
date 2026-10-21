@@ -38,10 +38,31 @@ namespace BS
         /// </summary>
         public const byte WarningIdBarrage = 200;
         public const byte WarningIdShockwave = 201;
+        public const byte WarningIdBeam = 202;
+        public const byte WarningIdRoar = 203;
 
-        public static bool IsWarningId(byte skillId) => skillId == WarningIdBarrage || skillId == WarningIdShockwave;
+        public static bool IsWarningId(byte skillId) => skillId >= WarningIdBarrage && skillId <= WarningIdRoar;
 
+        /// <summary>The warning number of a standard-kind slot (the shot ring on the first, the shockwave on the second).</summary>
         public static byte WarningIdOf(int slot) => slot == Barrage ? WarningIdBarrage : WarningIdShockwave;
+
+        /// <summary>The warning number of an effect: one number for each, in the order of <see cref="BossSkillEffect"/>.</summary>
+        public static byte WarningIdOf(BossSkillEffect effect) => (byte)(WarningIdBarrage + (int)effect);
+
+        /// <summary>The color a skill of this effect is shown in (its warning and its slot on the boss player's screen).</summary>
+        public static Color ColorOf(BossSkillEffect effect)
+        {
+            switch (effect)
+            {
+                case BossSkillEffect.ShotRing: return new Color(1f, 0.6f, 0.2f);
+                case BossSkillEffect.Shockwave: return new Color(1f, 0.25f, 0.2f);
+                case BossSkillEffect.Beam: return new Color(0.85f, 0.4f, 1f);
+                default: return new Color(0.5f, 1f, 0.5f);
+            }
+        }
+
+        /// <summary>The effect a warning number stands for.</summary>
+        public static BossSkillEffect EffectOfWarning(byte skillId) => (BossSkillEffect)(skillId - WarningIdBarrage);
 
         public static float CooldownOf(int slot) => slot == Barrage ? BarrageCooldownSeconds : ShockwaveCooldownSeconds;
 
@@ -82,6 +103,7 @@ namespace BS
         struct Pending
         {
             public int Slot;
+            public BossSkillDef Def;
             public float Remaining;
             public Vector2 Position;
             public ushort Aim;
@@ -90,6 +112,13 @@ namespace BS
 
         readonly float[] cooldown = new float[BossSkills.Count];
         readonly List<Pending> pending = new List<Pending>();
+
+        /// <summary>Survivors hurt by beams and mobs made by roars since the last reset (for the development log).</summary>
+        public int BeamHits { get; private set; }
+        public int RoarMobs { get; private set; }
+
+        /// <summary>The kind whose skills these are; the standard kind until a match says otherwise.</summary>
+        public BossDef Kind { get; private set; } = BossCatalog.Default;
 
         /// <summary>When above zero it replaces the base damage of both skills (a development override); the strengthening still applies.</summary>
         public int BaseDamageOverride;
@@ -105,6 +134,15 @@ namespace BS
         {
             for (int i = 0; i < cooldown.Length; i++) cooldown[i] = 0f;
             pending.Clear();
+            BeamHits = 0;
+            RoarMobs = 0;
+        }
+
+        /// <summary>A new match with a boss of this kind.</summary>
+        public void Reset(BossDef kind)
+        {
+            Kind = kind ?? BossCatalog.Default;
+            Reset();
         }
 
         /// <summary>
@@ -115,22 +153,23 @@ namespace BS
         {
             if (!fromBoss) return BossSkillResult.Ignored;
             if (!state.MatchRunning || !state.BossStanding) return BossSkillResult.Unavailable;
-            if (slot < 0 || slot >= BossSkills.Count) return BossSkillResult.UnknownSlot;
+            if (slot < 0 || slot >= BossSkills.Count || slot >= Kind.Skills.Length) return BossSkillResult.UnknownSlot;
             if (cooldown[slot] > 0f) return BossSkillResult.Cooldown;
 
             // The strengthening of the boss's shots applies: a weaker boss hits harder and its cooldown is shorter. Both are
             // decided now, from the health of this moment.
-            int baseDamage = BaseDamageOverride > 0 ? BaseDamageOverride : BossSkills.BaseDamageOf(slot);
-            cooldown[slot] = BossSkills.CooldownOf(slot) * BossAttack.CooldownMultiplier(state.HealthFraction);
+            BossSkillDef def = Kind.Skills[slot];
+            int baseDamage = BaseDamageOverride > 0 ? BaseDamageOverride : def.Damage;
+            cooldown[slot] = def.CooldownSeconds * BossAttack.CooldownMultiplier(state.HealthFraction);
             pending.Add(new Pending
             {
-                Slot = slot, Remaining = BossSkills.WarningSeconds, Position = state.BossPosition, Aim = state.Aim,
+                Slot = slot, Def = def, Remaining = def.WarningSeconds, Position = state.BossPosition, Aim = state.Aim,
                 Damage = BossAttack.Damage(baseDamage, state.HealthFraction),
             });
 
             events.Add(new CombatEvent
             {
-                Kind = CombatEventKind.Skill, SkillId = BossSkills.WarningIdOf(slot), Owner = owner, Position = state.BossPosition,
+                Kind = CombatEventKind.Skill, SkillId = BossSkills.WarningIdOf(def.Effect), Owner = owner, Position = state.BossPosition,
                 Rank = 1, Angle = state.Aim,
                 RangeScale = SkillCatalog.NormalScalePercent, DurationScale = SkillCatalog.NormalScalePercent,
             });
@@ -143,7 +182,7 @@ namespace BS
         /// was announced is dropped. Returns how many skills took effect.
         /// </summary>
         public int Step(float dt, bool matchRunning, bool bossStanding, ProjectileSim projectiles, SurvivorSim survivors,
-                        IReadOnlyList<SurvivorBody> bodies, ulong owner, List<CombatEvent> events)
+                        IReadOnlyList<SurvivorBody> bodies, ulong owner, List<CombatEvent> events, MobSim mobs = null)
         {
             if (!matchRunning)
             {
@@ -167,34 +206,87 @@ namespace BS
                 pending.RemoveAt(i);
                 if (!bossStanding) continue;
 
-                Release(p, projectiles, survivors, bodies, owner, events);
+                Release(p, projectiles, survivors, bodies, owner, events, mobs);
                 released++;
             }
             return released;
         }
 
-        static void Release(Pending p, ProjectileSim projectiles, SurvivorSim survivors, IReadOnlyList<SurvivorBody> bodies, ulong owner,
-                            List<CombatEvent> events)
+        void Release(Pending p, ProjectileSim projectiles, SurvivorSim survivors, IReadOnlyList<SurvivorBody> bodies, ulong owner,
+                     List<CombatEvent> events, MobSim mobs)
         {
-            if (p.Slot == BossSkills.Barrage)
+            BossSkillDef def = p.Def;
+            switch (def.Effect)
             {
-                for (int i = 0; i < BossSkills.BarrageShots; i++)
-                {
-                    var spec = new ProjectileSpec
+                case BossSkillEffect.ShotRing:
+                    for (int i = 0; i < def.Count; i++)
                     {
-                        Owner = owner, Origin = p.Position, Hostile = true, Damage = p.Damage, Shape = BossAttack.Shape,
-                        Angle = (ushort)((p.Aim + i * 65536 / BossSkills.BarrageShots) & 0xFFFF),
-                    };
-                    if (!projectiles.TryFire(spec, out _)) break; // the cap leaves room for no more
-                }
-                return;
-            }
+                        var spec = new ProjectileSpec
+                        {
+                            Owner = owner, Origin = p.Position, Hostile = true, Damage = p.Damage, Shape = Kind.Attack.Shape,
+                            Angle = (ushort)((p.Aim + i * 65536 / def.Count) & 0xFFFF),
+                        };
+                        if (!projectiles.TryFire(spec, out _)) break; // the cap leaves room for no more
+                    }
+                    break;
 
-            survivors.ApplyBlast(p.Position, BossSkills.ShockwaveRadius, p.Damage, bodies);
-            events.Add(new CombatEvent
-            {
-                Kind = CombatEventKind.Explosion, Position = p.Position, Radius10 = CombatCodec.QuantizeRadius(BossSkills.ShockwaveRadius),
-            });
+                case BossSkillEffect.Shockwave:
+                    survivors.ApplyBlast(p.Position, def.Radius, p.Damage, bodies);
+                    events.Add(new CombatEvent
+                    {
+                        Kind = CombatEventKind.Explosion, Position = p.Position, Radius10 = CombatCodec.QuantizeRadius(def.Radius),
+                    });
+                    break;
+
+                case BossSkillEffect.Beam:
+                    BeamHits += ReleaseBeam(p, def, survivors, bodies);
+                    break;
+
+                case BossSkillEffect.Roar:
+                    RoarMobs += ReleaseRoar(p, def, mobs);
+                    break;
+            }
         }
+
+        /// <summary>
+        /// The beam hurts every living survivor whose body touches the line from where it was used along the aim of that moment, for
+        /// the beam's length. Behind the start or beyond the length nothing is hit; mobs are not hurt.
+        /// </summary>
+        static int ReleaseBeam(Pending p, BossSkillDef def, SurvivorSim survivors, IReadOnlyList<SurvivorBody> bodies)
+        {
+            int hurt = 0;
+            Vector2 direction = AimMath.Direction(p.Aim);
+            float reach = def.HalfWidth + survivors.Radius;
+            for (int i = 0; i < bodies.Count; i++)
+            {
+                Vector2 offset = bodies[i].Position - p.Position;
+                float along = Vector2.Dot(offset, direction);
+                if (along < 0f || along > def.Length) continue;
+                Vector2 closest = direction * along;
+                if ((offset - closest).sqrMagnitude > reach * reach) continue;
+
+                if (survivors.ApplyDamage(bodies[i].ClientId, p.Damage)) hurt++;
+            }
+            return hurt;
+        }
+
+        /// <summary>The roar creates its mobs of the summoned kind around the place it was used, as many as the mob cap allows.</summary>
+        static int ReleaseRoar(Pending p, BossSkillDef def, MobSim mobs)
+        {
+            if (mobs == null) return 0;
+            int made = 0;
+            byte type = MobKinds.Encode(MobKinds.OriginSummoned, MobKinds.Basic);
+            for (int i = 0; i < def.Count; i++)
+            {
+                float angle = i * 2f * Mathf.PI / Mathf.Max(1, def.Count);
+                Vector2 spot = p.Position + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * RoarDistance;
+                if (!mobs.TrySpawn(spot, type, out _)) break;
+                made++;
+            }
+            return made;
+        }
+
+        /// <summary>How far from the boss the mobs of a roar appear.</summary>
+        public const float RoarDistance = 2.5f;
     }
 }

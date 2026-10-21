@@ -132,13 +132,14 @@ namespace BS
         public void RegisterBoss(PlayerAvatar avatar)
         {
             bossAvatar = avatar;
-            Boss.Reset(BossCatalog.ForMatch(), avatar.transform.position);
+            BossDef def = BossCatalog.ForMatch();
+            Boss.Reset(def, avatar.transform.position);
 
             // The boss shoots like a survivor does, but its shots are hostile: they hurt survivors and pass through mobs.
             slots[avatar.OwnerClientId] = RoleTable.BossRole;
-            Attacks.Register(avatar.OwnerClientId, BossAttack.Def, true);
-            bossSkills.Reset();
-            Debug.Log($"[BS] boss registered: owner={avatar.OwnerClientId} health={Boss.MaxHealth} shotDamage={BossShotDamage}");
+            Attacks.Register(avatar.OwnerClientId, def.Attack.ToAttackDef(), true);
+            bossSkills.Reset(def);
+            Debug.Log($"[BS] boss registered: owner={avatar.OwnerClientId} kind={def.Id} {def.Name} health={Boss.MaxHealth} shotDamage={BossShotDamage}");
         }
 
         /// <summary>Called when the boss's character despawns (the boss player left, or the match ended).</summary>
@@ -152,7 +153,7 @@ namespace BS
         }
 
         /// <summary>The damage of a boss shot at full boss health (the development override replaces the shared value).</summary>
-        public static int BossShotDamage => DevArgs.BossShotDamage > 0 ? DevArgs.BossShotDamage : BossAttack.BaseDamage;
+        public static int BossShotDamage => DevArgs.BossShotDamage > 0 ? DevArgs.BossShotDamage : BossCatalog.Current.Attack.BaseDamage;
 
         bool IsBossOwner(ulong clientId) => bossAvatar != null && bossAvatar.OwnerClientId == clientId;
 
@@ -268,7 +269,7 @@ namespace BS
         void StepBossSkills(float dt)
         {
             bool standing = bossAvatar != null && Boss.Exists && Boss.CanBeHit;
-            bossSkillsReleased += bossSkills.Step(dt, true, standing, Projectiles, Survivors, bodies, BossOwnerId, blastEvents);
+            bossSkillsReleased += bossSkills.Step(dt, true, standing, Projectiles, Survivors, bodies, BossOwnerId, blastEvents, mobs != null ? mobs.Sim : null);
 
             if (bossAvatar == null || !bossAvatar.IsSpawned) return;
             PlayerSummon view = bossAvatar.GetComponent<PlayerSummon>();
@@ -279,7 +280,7 @@ namespace BS
         /// A boss skill request (Q or E) from a player. Only the boss player's request counts, and only while the match runs and the
         /// boss stands. The skill is announced to everyone now and takes effect when its warning time has passed.
         /// </summary>
-        public void OnBossSkillRequest(ulong clientId, int slot)
+        public void OnBossSkillRequest(ulong clientId, int slot, ushort aim)
         {
             if (!running) return;
 
@@ -290,7 +291,7 @@ namespace BS
                 MatchRunning = RoleTable.MatchRunning,
                 BossStanding = bossAvatar != null && Boss.Exists && Boss.CanBeHit,
                 BossPosition = Boss.Position,
-                Aim = Attacks.AimOf(clientId),
+                Aim = aim,
                 HealthFraction = fraction,
             };
 
@@ -379,7 +380,7 @@ namespace BS
             int clients = remoteClients.Count;
             double perClient = clients > 0 ? bytesSent / (double)clients / statsTimer / 1024.0 : 0.0;
             Debug.Log($"[BS] combat server: fires={firesSent} hits={hitsSent} kills={killsSent} ends={endsSent} skills={skillsSent} " +
-                      $"bossFires={bossFiresSent} survivorHits={survivorHitsSent} mobShots={mobShotsSent} blasts={blastsSent} blastHits={blastHitsSent} bossSkills={bossSkillsUsed}/{bossSkillsReleased} {BossStatsText()} projectiles={Projectiles.Count} survivors={Survivors.Count} clients={clients} payloadPerClient={perClient:F3}KB/s");
+                      $"bossFires={bossFiresSent} survivorHits={survivorHitsSent} mobShots={mobShotsSent} blasts={blastsSent} blastHits={blastHitsSent} bossSkills={bossSkillsUsed}/{bossSkillsReleased} beamHits={bossSkills.BeamHits} roarMobs={bossSkills.RoarMobs} {BossStatsText()} projectiles={Projectiles.Count} survivors={Survivors.Count} clients={clients} payloadPerClient={perClient:F3}KB/s");
             statsTimer = 0f;
             bytesSent = 0;
             firesSent = hitsSent = killsSent = endsSent = skillsSent = 0;

@@ -117,15 +117,21 @@ namespace BS
         }
 
         [Rpc(SendTo.Server)]
-        void SkillRpc(byte slot)
+        void SkillRpc(byte slot, ushort aim)
         {
-            CombatServer.Instance?.OnBossSkillRequest(OwnerClientId, slot);
+            CombatServer.Instance?.OnBossSkillRequest(OwnerClientId, slot, aim);
         }
 
+        /// <summary>
+        /// Asks for a boss skill. The request carries the boss's aim of this moment: the server is told the aim only while the boss fires,
+        /// so a skill used without firing (the beam, the first shot of the ring) would otherwise point wherever the boss last fired.
+        /// </summary>
         void SendSkill(int slot)
         {
-            if (IsServer) CombatServer.Instance?.OnBossSkillRequest(OwnerClientId, slot);
-            else SkillRpc((byte)slot);
+            PlayerCombat combat = GetComponent<PlayerCombat>();
+            ushort aim = combat != null ? combat.AimAngle : (ushort)0;
+            if (IsServer) CombatServer.Instance?.OnBossSkillRequest(OwnerClientId, slot, aim);
+            else SkillRpc((byte)slot, aim);
         }
 
         /// <summary>Server only: tells the boss player a summon did not happen (or only partly).</summary>

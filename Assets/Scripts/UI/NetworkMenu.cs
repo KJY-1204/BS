@@ -87,7 +87,8 @@ namespace BS
                 CharacterDef def = CharacterCatalog.Get(slot.Character);
                 string who = slot.ClientId == me ? "나" : $"플레이어 {slot.ClientId}";
                 string role = slot.Role == RoleTable.BossRole ? "보스" : $"생존자 {slot.Role}";
-                string pick = slot.Role == RoleTable.BossRole ? "" : def != null ? def.Name : "선택 안 함";
+                string pick = slot.Role == RoleTable.BossRole ? BossCatalog.Get(slot.BossKind).Name + (slot.BossKind == 0 ? " (기본)" : "")
+                            : def != null ? def.Name : "선택 안 함";
 
                 Color previous = GUI.contentColor;
                 if (def != null) GUI.contentColor = def.Color;
@@ -98,7 +99,18 @@ namespace BS
             GUILayout.Space(4);
             if (mine.Role == RoleTable.BossRole)
             {
-                GUILayout.Label("보스는 캐릭터를 고르지 않습니다.");
+                GUILayout.Label("보스 종류 선택");
+                byte chosen = table.ChosenBossKind;
+                foreach (BossDef kind in BossCatalog.All)
+                {
+                    bool isChosen = kind.Id == chosen && mine.BossKind != 0;
+                    Color previous = GUI.contentColor;
+                    GUI.contentColor = kind.Color;
+                    string label = $"{kind.Name}  ({kind.Skills[0].Name} / {kind.Skills[1].Name})" + (isChosen ? "  (선택함)" : "");
+                    if (GUILayout.Button(label)) table.RequestBossKind(kind.Id);
+                    GUI.contentColor = previous;
+                }
+                if (mine.BossKind == 0) GUILayout.Label("고르지 않으면 보스(기본)로 시작합니다.");
             }
             else
             {

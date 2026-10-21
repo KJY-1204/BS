@@ -75,7 +75,7 @@ namespace BS
     {
         public const int Count = 4;
         /// <summary>The boss has no character yet; its speed lives in <see cref="BossCatalog"/>.</summary>
-        public static float BossMoveSpeed => BossCatalog.Default.MoveSpeed;
+        public static float BossMoveSpeed => BossCatalog.Current.MoveSpeed;
 
         static readonly CharacterDef[] defs =
         {

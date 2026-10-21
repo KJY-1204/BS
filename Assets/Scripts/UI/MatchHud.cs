@@ -78,7 +78,7 @@ namespace BS
             float fraction = boss.Combat.MaxHealth > 0 ? Mathf.Clamp01(boss.Combat.Health / (float)boss.Combat.MaxHealth) : 0f;
             Fill(new Rect(x, y + 38f, width, 16f), new Color(0f, 0f, 0f, 0.65f));
             Fill(new Rect(x + 2f, y + 40f, (width - 4f) * fraction, 12f), Color.Lerp(new Color(0.95f, 0.25f, 0.2f), new Color(0.95f, 0.6f, 0.2f), fraction));
-            GUI.Label(new Rect(x, y + 55f, width, 20f), $"{BossCatalog.Default.Name}  {boss.Combat.Health} / {boss.Combat.MaxHealth}", center);
+            GUI.Label(new Rect(x, y + 55f, width, 20f), $"{BossCatalog.Current.Name}  {boss.Combat.Health} / {boss.Combat.MaxHealth}", center);
         }
 
         // ---- The boss player sees every survivor ----
