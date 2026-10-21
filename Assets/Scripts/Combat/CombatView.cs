@@ -192,6 +192,17 @@ namespace BS
 
         void OnSkill(SkillEffect effect)
         {
+            // The boss announces a skill before it takes effect: a ring shows where and how big it will be. These skill numbers are
+            // above every survivor skill, so they never reach the survivor skill table.
+            if (BossSkills.IsWarningId(effect.SkillId))
+            {
+                if (effect.SkillId == BossSkills.WarningIdShockwave)
+                    AddRing(effect.Position, BossSkills.ShockwaveRadius, new Color(1f, 0.25f, 0.2f), BossSkills.WarningSeconds, 0.1f);
+                else
+                    AddRing(effect.Position, BossSkills.BarrageWarningRadius, new Color(1f, 0.6f, 0.2f), BossSkills.WarningSeconds, 0.1f);
+                return;
+            }
+
             SkillDef def = SkillCatalog.Get(effect.SkillId);
             if (def == null || effect.Rank < 1 || effect.Rank > def.MaxRank) return;
 

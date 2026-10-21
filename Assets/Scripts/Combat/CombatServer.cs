@@ -37,6 +37,8 @@ namespace BS
         readonly List<ShooterBody> shooters = new List<ShooterBody>();
         readonly List<CombatEvent> events = new List<CombatEvent>();
         readonly MobActionRunner mobActions = new MobActionRunner();
+        readonly BossSkillSim bossSkills = new BossSkillSim();
+        readonly List<CombatEvent> skillRequestEvents = new List<CombatEvent>();
         readonly List<CombatEvent> blastEvents = new List<CombatEvent>();
         readonly List<Vector2> killPositions = new List<Vector2>();
         readonly List<ulong> remoteClients = new List<ulong>();
@@ -56,6 +58,7 @@ namespace BS
         int firesSent, hitsSent, killsSent, endsSent, skillsSent;
         int bossFiresSent, survivorHitsSent;
         int mobShotsSent, blastsSent, blastHitsSent;
+        int bossSkillsUsed, bossSkillsReleased;
 
         void Awake()
         {
@@ -67,6 +70,7 @@ namespace BS
             buffer = new byte[CombatCodec.MaxBatchBytes + 64];
             slotOf = SlotOf;
             survivorTargets = new SurvivorTargets(Survivors, slotOf);
+            bossSkills.BaseDamageOverride = DevArgs.BossSkillDamage;
         }
 
         ulong BossOwnerId => bossAvatar != null ? bossAvatar.OwnerClientId : ulong.MaxValue;
@@ -120,6 +124,7 @@ namespace BS
             killPositions.Clear();
             Boss.Clear();
             bossAvatar = null;
+            bossSkills.Reset();
             GrowthServer.Instance?.ResetAll();
         }
 
@@ -132,6 +137,7 @@ namespace BS
             // The boss shoots like a survivor does, but its shots are hostile: they hurt survivors and pass through mobs.
             slots[avatar.OwnerClientId] = RoleTable.BossRole;
             Attacks.Register(avatar.OwnerClientId, BossAttack.Def, true);
+            bossSkills.Reset();
             Debug.Log($"[BS] boss registered: owner={avatar.OwnerClientId} health={Boss.MaxHealth} shotDamage={BossShotDamage}");
         }
 
@@ -218,6 +224,7 @@ namespace BS
 
             Survivors.Step(dt, bodies, mobs.Sim, Boss.Exists ? Boss : null);
             ProcessMobActions();
+            StepBossSkills(dt);
 
             shooters.Clear();
             for (int i = 0; i < bodies.Count; i++)
@@ -255,6 +262,46 @@ namespace BS
 
             // Mob kills made by projectiles this step go out now, with the same time as the hits.
             mobs.FlushEvents();
+        }
+
+        /// <summary>The boss's skills advance with the match: cooldowns run, announced skills take effect, and the boss's screen gets the cooldowns.</summary>
+        void StepBossSkills(float dt)
+        {
+            bool standing = bossAvatar != null && Boss.Exists && Boss.CanBeHit;
+            bossSkillsReleased += bossSkills.Step(dt, true, standing, Projectiles, Survivors, bodies, BossOwnerId, blastEvents);
+
+            if (bossAvatar == null || !bossAvatar.IsSpawned) return;
+            PlayerSummon view = bossAvatar.GetComponent<PlayerSummon>();
+            if (view != null && view.IsSpawned) view.ServerWriteSkills(bossSkills.CooldownLeft(0), bossSkills.CooldownLeft(1));
+        }
+
+        /// <summary>
+        /// A boss skill request (Q or E) from a player. Only the boss player's request counts, and only while the match runs and the
+        /// boss stands. The skill is announced to everyone now and takes effect when its warning time has passed.
+        /// </summary>
+        public void OnBossSkillRequest(ulong clientId, int slot)
+        {
+            if (!running) return;
+
+            bool fromBoss = IsBossOwner(clientId);
+            float fraction = Boss.Exists && Boss.MaxHealth > 0 ? Boss.Health / (float)Boss.MaxHealth : 0f;
+            var state = new BossSkillState
+            {
+                MatchRunning = RoleTable.MatchRunning,
+                BossStanding = bossAvatar != null && Boss.Exists && Boss.CanBeHit,
+                BossPosition = Boss.Position,
+                Aim = Attacks.AimOf(clientId),
+                HealthFraction = fraction,
+            };
+
+            skillRequestEvents.Clear();
+            BossSkillResult result = bossSkills.TryUse(slot, fromBoss, state, clientId, skillRequestEvents);
+            if (result == BossSkillResult.Used) bossSkillsUsed++;
+
+            if (DevArgs.CombatLog)
+                Debug.Log($"[BS] boss skill: slot={slot} result={result} fromBoss={fromBoss} cooldown={bossSkills.CooldownLeft(slot):F1} health={fraction:F2}");
+
+            if (skillRequestEvents.Count > 0) Publish(skillRequestEvents);
         }
 
         /// <summary>
@@ -332,12 +379,13 @@ namespace BS
             int clients = remoteClients.Count;
             double perClient = clients > 0 ? bytesSent / (double)clients / statsTimer / 1024.0 : 0.0;
             Debug.Log($"[BS] combat server: fires={firesSent} hits={hitsSent} kills={killsSent} ends={endsSent} skills={skillsSent} " +
-                      $"bossFires={bossFiresSent} survivorHits={survivorHitsSent} mobShots={mobShotsSent} blasts={blastsSent} blastHits={blastHitsSent} {BossStatsText()} projectiles={Projectiles.Count} survivors={Survivors.Count} clients={clients} payloadPerClient={perClient:F3}KB/s");
+                      $"bossFires={bossFiresSent} survivorHits={survivorHitsSent} mobShots={mobShotsSent} blasts={blastsSent} blastHits={blastHitsSent} bossSkills={bossSkillsUsed}/{bossSkillsReleased} {BossStatsText()} projectiles={Projectiles.Count} survivors={Survivors.Count} clients={clients} payloadPerClient={perClient:F3}KB/s");
             statsTimer = 0f;
             bytesSent = 0;
             firesSent = hitsSent = killsSent = endsSent = skillsSent = 0;
             bossFiresSent = survivorHitsSent = 0;
             mobShotsSent = blastsSent = blastHitsSent = 0;
+            bossSkillsUsed = bossSkillsReleased = 0;
         }
 
         /// <summary>The boss's health and what it fires with at that health (dev logging).</summary>

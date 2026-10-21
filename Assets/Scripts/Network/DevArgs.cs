@@ -35,6 +35,8 @@ namespace BS
     /// -bsBossHealth n   (host) the boss's maximum health
     /// -bsMatchSeconds s (host) the time limit of a match with a boss
     /// -bsBossChase     (boss player) walk toward the nearest survivor on its own
+    /// -bsAutoBossSkill q|e|qe s  (the boss player) press that boss skill key (or both) every s seconds
+    /// -bsBossSkillDamage n  (host) the base damage of both boss skills (before the strengthening)
     /// -bsAutoSummonKind k[,k...]  (the boss player) the mob kinds the automatic summons ask for, in turn (0 basic, 1 fast, 2 tough)
     /// -bsAutoSummon s  (boss player) summon every s seconds
     /// -bsAutoOrderPlayer r s (boss player) s seconds after the match starts, order the survivor with role r
@@ -87,6 +89,10 @@ namespace BS
         public static float MatchSeconds { get; private set; }
         public static bool BossChase { get; private set; }
         public static float AutoSummonSeconds { get; private set; } = -1f;
+        /// <summary>The boss skill keys the automation presses ("q", "e" or "qe"), empty for none.</summary>
+        public static string AutoBossSkillKeys { get; private set; } = "";
+        public static float AutoBossSkillSeconds { get; private set; } = -1f;
+        public static int BossSkillDamage { get; private set; }
         /// <summary>The kinds the automatic summons ask for, one after another. Empty means the kind the player chose.</summary>
         public static int[] AutoSummonKinds { get; private set; } = new int[0];
         public static int AutoOrderPlayerRole { get; private set; } = -1;
@@ -172,6 +178,13 @@ namespace BS
                         break;
                     case "-bsMatchSeconds" when i + 1 < args.Length:
                         if (float.TryParse(args[i + 1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float ms2)) MatchSeconds = ms2;
+                        break;
+                    case "-bsAutoBossSkill" when i + 2 < args.Length:
+                        AutoBossSkillKeys = args[i + 1].ToLowerInvariant();
+                        if (float.TryParse(args[i + 2], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float abs)) AutoBossSkillSeconds = abs;
+                        break;
+                    case "-bsBossSkillDamage" when i + 1 < args.Length:
+                        if (int.TryParse(args[i + 1], out int bsk)) BossSkillDamage = bsk;
                         break;
                     case "-bsAutoSummonKind" when i + 1 < args.Length:
                     {

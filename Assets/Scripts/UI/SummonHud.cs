@@ -37,6 +37,7 @@ namespace BS
 
             EnsureStyles();
             DrawEnergy(summon);
+            DrawSkills(summon);
             DrawKinds(summon);
             DrawOrderText(summon);
             DrawMarker(summon);
@@ -61,7 +62,7 @@ namespace BS
             Fill(new Rect(x, y, width, 18f), new Color(0f, 0f, 0f, 0.65f));
             Fill(new Rect(x + 2f, y + 2f, (width - 4f) * fraction, 14f), EnergyColor);
             GUI.Label(new Rect(x, y - 1f, width, 20f), $"소환 기운  {Mathf.FloorToInt(summon.Energy)} / {Mathf.FloorToInt(summon.MaxEnergy)}", center);
-            GUI.Label(new Rect(x - 40f, y + 20f, width + 80f, 20f), "왼쪽 클릭 발사   Space 소환   1~5 종류   오른쪽 클릭 목표 지정   C 지정 해제", small);
+            GUI.Label(new Rect(x - 40f, y + 20f, width + 80f, 20f), "왼쪽 클릭 발사   Space 소환   1~5 종류   Q/E 스킬   오른쪽 클릭 목표 지정   C 지정 해제", small);
 
             string notice = summon.Notice;
             if (!string.IsNullOrEmpty(notice))
@@ -70,6 +71,28 @@ namespace BS
                 GUI.contentColor = new Color(1f, 0.55f, 0.45f);
                 GUI.Label(new Rect(x, y - 26f, width, 22f), notice, center);
                 GUI.contentColor = previous;
+            }
+        }
+
+        // ---- The boss's skills and their cooldowns ----
+
+        void DrawSkills(PlayerSummon summon)
+        {
+            const float cell = 150f;
+            const float height = 22f;
+            float x = Screen.width * 0.5f - cell * BossSkills.Count * 0.5f;
+            float y = Screen.height - 150f;
+
+            for (int slot = 0; slot < BossSkills.Count; slot++)
+            {
+                float left = summon.SkillCooldown(slot);
+                bool ready = left <= 0f;
+                Rect rect = new Rect(x + slot * cell, y, cell - 4f, height);
+
+                Fill(rect, ready ? new Color(1f, 1f, 1f, 0.28f) : new Color(0f, 0f, 0f, 0.5f));
+                Fill(new Rect(rect.x, rect.y, 5f, rect.height), slot == BossSkills.Barrage ? new Color(1f, 0.6f, 0.2f) : new Color(1f, 0.25f, 0.2f));
+                string state = ready ? "준비" : $"{left:F1}초";
+                GUI.Label(new Rect(rect.x + 6f, rect.y, rect.width - 6f, rect.height), $"{BossSkills.Keys[slot]} {BossSkills.Names[slot]} ({state})", small);
             }
         }
 

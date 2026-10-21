@@ -35,6 +35,16 @@ namespace BS
         bool autoOrderPointDone;
         bool autoClearDone;
 
+        // The boss skills' cooldowns in tenths of a second, readable only by the boss player.
+        readonly NetworkVariable<byte> skillCooldown0 = new NetworkVariable<byte>(0, NetworkVariableReadPermission.Owner, NetworkVariableWritePermission.Server);
+        readonly NetworkVariable<byte> skillCooldown1 = new NetworkVariable<byte>(0, NetworkVariableReadPermission.Owner, NetworkVariableWritePermission.Server);
+        readonly bool[] heldSkillKeys = new bool[BossSkills.Count];
+        float nextAutoSkill;
+        int autoSkillTurn;
+
+        /// <summary>Seconds until a boss skill is ready (0 when ready); only meaningful for the boss player's own copy.</summary>
+        public float SkillCooldown(int slot) => slot == 0 ? skillCooldown0.Value / 10f : slot == 1 ? skillCooldown1.Value / 10f : 0f;
+
         string notice = "";
         float noticeUntil;
         int autoSummonCount;
@@ -74,6 +84,7 @@ namespace BS
         {
             spawnedAt = Time.unscaledTime;
             nextAutoSummon = DevArgs.AutoSummonSeconds;
+            nextAutoSkill = DevArgs.AutoBossSkillSeconds;
             if (IsOwner) Local = this;
         }
 
@@ -94,6 +105,27 @@ namespace BS
             if (orderKind.Value != (byte)kind) orderKind.Value = (byte)kind;
             if (orderClient.Value != client) orderClient.Value = client;
             if (orderPoint.Value != point) orderPoint.Value = point;
+        }
+
+        /// <summary>Server only: copies the boss skills' cooldowns (in seconds) to the boss player's replicated values.</summary>
+        public void ServerWriteSkills(float cooldown0, float cooldown1)
+        {
+            byte a = (byte)Mathf.Clamp(Mathf.CeilToInt(cooldown0 * 10f), 0, 255);
+            byte b = (byte)Mathf.Clamp(Mathf.CeilToInt(cooldown1 * 10f), 0, 255);
+            if (skillCooldown0.Value != a) skillCooldown0.Value = a;
+            if (skillCooldown1.Value != b) skillCooldown1.Value = b;
+        }
+
+        [Rpc(SendTo.Server)]
+        void SkillRpc(byte slot)
+        {
+            CombatServer.Instance?.OnBossSkillRequest(OwnerClientId, slot);
+        }
+
+        void SendSkill(int slot)
+        {
+            if (IsServer) CombatServer.Instance?.OnBossSkillRequest(OwnerClientId, slot);
+            else SkillRpc((byte)slot);
         }
 
         /// <summary>Server only: tells the boss player a summon did not happen (or only partly).</summary>
@@ -152,7 +184,7 @@ namespace BS
                 if (seenTimer >= 5f)
                 {
                     seenTimer = 0f;
-                    Debug.Log($"[BS] summon seen: isOwner={IsOwner} energy={energy.Value}/{maxEnergy.Value} order={(OrderKind)orderKind.Value}");
+                    Debug.Log($"[BS] summon seen: isOwner={IsOwner} energy={energy.Value}/{maxEnergy.Value} order={(OrderKind)orderKind.Value} skillCooldowns={skillCooldown0.Value}/{skillCooldown1.Value}");
                 }
             }
 
@@ -174,11 +206,13 @@ namespace BS
                 // The match is over: a player cannot summon or order. The dev automation keeps sending summon requests anyway,
                 // so a test can see the server refuse them.
                 RunAutoSummon();
+                RunAutoSkill();
                 return;
             }
 
             ReadInput();
             RunDevAutomation();
+            RunAutoSkill();
         }
 
         void ReadInput()
@@ -206,6 +240,27 @@ namespace BS
             }
 
             if (keyboard != null && keyboard.cKey.wasPressedThisFrame) SendClear();
+
+            // Q and E are the boss's skills. A held key counts once, by comparing with the last frame's state.
+            for (int slot = 0; slot < BossSkills.Count && keyboard != null; slot++)
+            {
+                bool down = (slot == 0 ? keyboard.qKey : keyboard.eKey).isPressed;
+                if (down && !heldSkillKeys[slot]) SendSkill(slot);
+                heldSkillKeys[slot] = down;
+            }
+        }
+
+        /// <summary>Development automation: press the boss skill keys on a timer (it keeps going after the match so the refusal can be seen).</summary>
+        void RunAutoSkill()
+        {
+            if (DevArgs.AutoBossSkillSeconds <= 0f || DevArgs.AutoBossSkillKeys.Length == 0) return;
+            float since = Time.unscaledTime - spawnedAt;
+            if (since < nextAutoSkill) return;
+
+            nextAutoSkill += DevArgs.AutoBossSkillSeconds;
+            string keys = DevArgs.AutoBossSkillKeys;
+            if (keys.Contains("q")) SendSkill(BossSkills.Barrage);
+            if (keys.Contains("e")) SendSkill(BossSkills.Shockwave);
         }
 
         void RunAutoSummon()
