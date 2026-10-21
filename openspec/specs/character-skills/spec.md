@@ -40,7 +40,7 @@ The Reimu Q skill SHALL damage every mob within its radius of her, with damage a
 - **THEN** the three take damage and the one outside does not
 
 ### Requirement: The barrier makes the caster invulnerable for a time
-The Reimu E skill SHALL make her take no damage for its duration, which grows with rank, and every client SHALL see that she is protected. The protection SHALL end by itself, and SHALL end if she is already dead.
+The Reimu E skill SHALL make her take no damage for its duration, which grows with rank and with her duration passive, and every client SHALL see that she is protected for that time. The protection SHALL end by itself, and SHALL end if she is already dead.
 
 #### Scenario: Touched by mobs
 - **WHEN** a survivor under the barrier is touched by mobs for the whole duration
@@ -49,6 +49,10 @@ The Reimu E skill SHALL make her take no damage for its duration, which grows wi
 #### Scenario: Barrier ends
 - **WHEN** the duration has passed
 - **THEN** mobs can hurt her again and the protection mark is gone on every client
+
+#### Scenario: Lengthened by the passive
+- **WHEN** she uses the barrier with her duration passive learned
+- **THEN** the protection and the mark last the defined duration multiplied by the duration scale
 
 ### Requirement: The beam hits every mob on a line
 The Marisa Q skill SHALL damage every mob on a straight line from her along the aim she had when the server fired it, up to a length and within a width that grow with rank, and SHALL NOT stop at the first mob. The line SHALL stop at the arena edge. Mobs it kills SHALL give experience.
@@ -99,7 +103,7 @@ The Sakuya E skill SHALL fire knives evenly around her in all directions, with t
 - **THEN** the knives that fit fire and the skill still costs mana and starts its cooldown
 
 ### Requirement: Miracle heals the caster and nearby survivors
-The Sanae Q skill SHALL restore health to her and to every living survivor within its radius, by an amount that grows with rank, never above a survivor's maximum health. It SHALL NOT bring a dead survivor back.
+The Sanae Q skill SHALL restore health to her and to every living survivor within its radius, which grows with her range passive, by an amount that grows with rank, never above a survivor's maximum health. It SHALL NOT bring a dead survivor back.
 
 #### Scenario: Heal in range
 - **WHEN** the skill fires with a wounded ally inside the radius and another outside
@@ -113,8 +117,12 @@ The Sanae Q skill SHALL restore health to her and to every living survivor withi
 - **WHEN** a dead survivor stands inside the radius
 - **THEN** the dead survivor stays dead
 
+#### Scenario: Widened by the passive
+- **WHEN** an ally stands beyond the defined radius but inside the radius multiplied by the range scale
+- **THEN** the ally is healed
+
 ### Requirement: Wind Veil pushes mobs away
-The Sanae E skill SHALL push every mob within its radius directly away from her by a distance that grows with rank, without leaving the arena and without damaging the mobs.
+The Sanae E skill SHALL push every mob within its radius directly away from her by a distance that grows with rank, without leaving the arena and without damaging the mobs. The radius and the distance SHALL grow with her range passive.
 
 #### Scenario: Pushed out
 - **WHEN** the skill fires with a mob inside the radius
@@ -123,6 +131,10 @@ The Sanae E skill SHALL push every mob within its radius directly away from her 
 #### Scenario: Outside the radius
 - **WHEN** a mob stands outside the radius
 - **THEN** it does not move
+
+#### Scenario: Widened by the passive
+- **WHEN** she uses the skill with her range passive learned
+- **THEN** the radius and the push distance are the defined values multiplied by the range scale
 
 ### Requirement: Skills follow the existing rules
 All eight skills SHALL be fired only when the survivor is alive, the skill is learned, it is off cooldown and the survivor has enough mana, with the owner told the result, as for every skill. Every client SHALL show each skill's effect at the place, direction and moment the server fired it, on the display clock used for mobs and shots.
