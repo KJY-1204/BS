@@ -86,12 +86,15 @@ namespace BS
                 float cooldown = growth.CooldownLeft(slot);
 
                 bool learned = rank > 0;
-                bool shortOfMana = learned && def != null && growth.Mana < def.ManaCost;
+                // The owner's passives change what a skill costs and how long it cools down; the same functions the server uses.
+                int manaCost = def != null ? SkillCatalog.EffectiveManaCost(def, growth.Ranks, character) : 0;
+                float fullCooldown = def != null ? SkillCatalog.EffectiveCooldown(def, growth.Ranks, character) : 0f;
+                bool shortOfMana = learned && def != null && growth.Mana < manaCost;
 
                 Fill(box, learned ? new Color(0.12f, 0.14f, 0.2f, 0.9f) : new Color(0.08f, 0.08f, 0.08f, 0.8f));
-                if (cooldown > 0f && def != null && def.Cooldown > 0f)
+                if (cooldown > 0f && def != null && fullCooldown > 0f)
                 {
-                    float fraction = Mathf.Clamp01(cooldown / def.Cooldown);
+                    float fraction = Mathf.Clamp01(cooldown / fullCooldown);
                     Fill(new Rect(box.x, box.y + box.height * (1f - fraction), box.width, box.height * fraction), new Color(0f, 0f, 0f, 0.65f));
                 }
                 if (shortOfMana) Fill(new Rect(box.x, box.y, box.width, 4f), new Color(0.9f, 0.2f, 0.2f));

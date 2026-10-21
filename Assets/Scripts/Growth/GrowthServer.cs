@@ -131,7 +131,13 @@ namespace BS
                 SkillDef def = SkillCatalog.ForSlot(slot, character);
                 if (def != null) Leveling.GrantRank(id, def.Id, Math.Min(DevArgs.DevSkillsRank, def.MaxRank));
             }
-            Debug.Log($"[BS] dev: gave client {id} the skills of character {character} at rank {DevArgs.DevSkillsRank}");
+            if (DevArgs.DevPassiveRank > 0)
+            {
+                foreach (SkillDef def in SkillCatalog.All)
+                    if (!def.IsActive && def.Passive != PassiveEffectKind.None && def.Character == character)
+                        Leveling.GrantRank(id, def.Id, Math.Min(DevArgs.DevPassiveRank, def.MaxRank));
+            }
+            Debug.Log($"[BS] dev: gave client {id} the skills of character {character} at rank {DevArgs.DevSkillsRank}, own passive rank {DevArgs.DevPassiveRank}");
         }
 
         public void Unregister(PlayerAvatar avatar)
@@ -253,7 +259,7 @@ namespace BS
                 });
 
                 if (DevArgs.GrowthLog)
-                    Debug.Log($"[BS] skill fired client={request.ClientId} skill={activation.SkillId} rank={activation.Rank} at {where.x:F1},{where.y:F1} aim={aim} touched={touched}");
+                    Debug.Log($"[BS] skill fired client={request.ClientId} skill={activation.SkillId} rank={activation.Rank} manaCost={SkillCatalog.EffectiveManaCost(SkillCatalog.Get(activation.SkillId), Leveling.Ranks(request.ClientId), entry.Avatar.CharacterId)} cooldown={activation.Cooldown:F2} damage={activation.Damage} amount={activation.Amount} at {where.x:F1},{where.y:F1} aim={aim} touched={touched}");
             }
 
             requests.Clear();
@@ -382,7 +388,7 @@ namespace BS
 
             var sb = new System.Text.StringBuilder();
             foreach (KeyValuePair<ulong, Entry> pair in entries)
-                sb.Append($"[{pair.Key}: lv{Leveling.Level(pair.Key)} xp{Leveling.Xp(pair.Key)} mana{Mathf.FloorToInt(Skills.Mana(pair.Key))}/{Mathf.RoundToInt(Skills.MaxMana(pair.Key))}] ");
+                sb.Append($"[{pair.Key}: lv{Leveling.Level(pair.Key)} xp{Leveling.Xp(pair.Key)} mana{Mathf.FloorToInt(Skills.Mana(pair.Key))}/{Mathf.RoundToInt(Skills.MaxMana(pair.Key))} regen{pair.Value.Stats.ManaRegenPerSecond:F1}] ");
 
             Debug.Log($"[BS] growth server: survivors={entries.Count} kills={killsHandled} levelUps={levelUps} skillsFired={skillsFired} refused={skillsRefused} " +
                       $"picks manual={manualPicks} auto={autoPicks} {sb}");

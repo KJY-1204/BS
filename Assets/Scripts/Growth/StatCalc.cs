@@ -43,7 +43,8 @@ namespace BS
             {
                 MaxHealth = baseHealth + GrowthConfig.HealthPerLevel * gained + SkillCatalog.VitalityHealthPerRank * vitality,
                 MaxMana = baseMana + GrowthConfig.ManaPerLevel * gained + SkillCatalog.FocusManaPerRank * focus,
-                ManaRegenPerSecond = baseRegen + SkillCatalog.FocusRegenPerRank * focus,
+                ManaRegenPerSecond = baseRegen + SkillCatalog.FocusRegenPerRank * focus +
+                                     SkillCatalog.PassiveTotal(ranks, character != null ? character.Id : CharacterIds.None, PassiveEffectKind.ManaRegen),
                 ProjectileDamage = CombatConfig.ProjectileDamage + GrowthConfig.DamagePerLevel * gained + SkillCatalog.PowerDamagePerRank * power,
                 CooldownMultiplier = multiplier,
             };

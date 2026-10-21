@@ -126,10 +126,14 @@ namespace BS
             int rank = SkillCatalog.RankOf(ranks, def.Id);
             if (rank <= 0) return SkillResult.NotLearned;
             if (s.Cooldown[slot] > 0f) return SkillResult.Cooldown;
-            if (s.Mana < def.ManaCost) return SkillResult.NoMana;
 
-            s.Mana -= def.ManaCost;
-            s.Cooldown[slot] = def.Cooldown;
+            // The character's own passives change what a skill costs, how long it cools down and how hard it hits.
+            int manaCost = SkillCatalog.EffectiveManaCost(def, ranks, character);
+            float cooldown = SkillCatalog.EffectiveCooldown(def, ranks, character);
+            if (s.Mana < manaCost) return SkillResult.NoMana;
+
+            s.Mana -= manaCost;
+            s.Cooldown[slot] = cooldown;
 
             activation = new SkillActivation
             {
@@ -138,15 +142,15 @@ namespace BS
                 Slot = slot,
                 Rank = rank,
                 Radius = def.Radius != null ? def.Radius[rank - 1] : 0f,
-                Damage = def.Damage != null ? def.Damage[rank - 1] : 0,
+                Damage = SkillCatalog.EffectivePower(def.Damage != null ? def.Damage[rank - 1] : 0, ranks, character),
                 BuffSeconds = def.Duration != null ? def.Duration[rank - 1] : 0f,
                 CooldownMultiplier = def.CooldownMultiplier != null ? def.CooldownMultiplier[rank - 1] : 1f,
-                Cooldown = def.Cooldown,
+                Cooldown = cooldown,
                 Length = def.Length != null ? def.Length[rank - 1] : 0f,
                 HalfWidth = def.HalfWidth != null ? def.HalfWidth[rank - 1] : 0f,
                 Count = def.Count != null ? def.Count[rank - 1] : 0,
                 Distance = def.Distance != null ? def.Distance[rank - 1] : 0f,
-                Amount = def.Amount != null ? def.Amount[rank - 1] : 0,
+                Amount = SkillCatalog.EffectivePower(def.Amount != null ? def.Amount[rank - 1] : 0, ranks, character),
             };
 
             if (def.Effect == SkillEffectKind.AttackSpeed && activation.BuffSeconds > 0f)

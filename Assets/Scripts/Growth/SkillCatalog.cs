@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace BS
@@ -24,6 +25,28 @@ namespace BS
         public const byte Miracle = 11;
         /// <summary>Sanae, E: Wind Veil, pushes nearby mobs away.</summary>
         public const byte WindVeil = 12;
+        /// <summary>Reimu's own passive: her skills cost less mana.</summary>
+        public const byte SpiritSaving = 13;
+        /// <summary>Marisa's own passive: her skills hit and heal harder.</summary>
+        public const byte FirePower = 14;
+        /// <summary>Sakuya's own passive: her skills cool down sooner.</summary>
+        public const byte TimeSense = 15;
+        /// <summary>Sanae's own passive: her mana comes back faster.</summary>
+        public const byte Faith = 16;
+    }
+
+    /// <summary>What a character's own passive does. The common passives are worked out by <see cref="StatCalc"/> and have none of these.</summary>
+    public enum PassiveEffectKind : byte
+    {
+        None = 0,
+        /// <summary>The mana cost of the character's active skills falls.</summary>
+        SkillManaCost,
+        /// <summary>The damage and healing of the character's active skills rise.</summary>
+        SkillPower,
+        /// <summary>The cooldown of the character's active skills falls.</summary>
+        SkillCooldown,
+        /// <summary>Mana recovery per second rises.</summary>
+        ManaRegen,
     }
 
     /// <summary>What an active skill does when the server fires it. Passives have <see cref="None"/>.</summary>
@@ -83,15 +106,24 @@ namespace BS
 
         public int ManaCost;
         public float Cooldown;
+
+        /// <summary>For a character's own passive: what it changes and by how much per rank (a fraction, or mana per second for mana recovery).</summary>
+        public PassiveEffectKind Passive;
+        public float PassivePerRank;
     }
 
     /// <summary>The temporary skill tree shared by every character in this version.</summary>
     public static class SkillCatalog
     {
         public const int SkillSlots = 2;
-        /// <summary>Ranks are packed four bits per skill id into one 64 bit value.</summary>
-        public const int MaxSkillId = 15;
+        /// <summary>Ranks are packed four bits per skill id into one 64 bit value; id 1 takes the lowest bits, so ids 1 to 16 fit.</summary>
+        public const int MaxSkillId = 16;
         public const int MaxPackedRank = 15;
+
+        /// <summary>However much cooldown shortening a survivor has, a skill's cooldown never falls below this share of its normal value.</summary>
+        public const float MinSkillCooldownMultiplier = 0.4f;
+        /// <summary>However much cost reduction a survivor has, a skill never costs less than this share removed (and never less than 1 mana).</summary>
+        public const float MaxManaCostReduction = 0.9f;
 
         // Passive effects per rank
         public const int PowerDamagePerRank = 2;
@@ -99,6 +131,12 @@ namespace BS
         public const int VitalityHealthPerRank = 15;
         public const int FocusManaPerRank = 15;
         public const float FocusRegenPerRank = 1f;
+
+        // The characters' own passives, per rank
+        public const float SpiritSavingCostPerRank = 0.10f;
+        public const float FirePowerPerRank = 0.15f;
+        public const float TimeSenseCooldownPerRank = 0.08f;
+        public const float FaithRegenPerRank = 1.5f;
 
         static readonly SkillDef[] defs =
         {
@@ -155,6 +193,30 @@ namespace BS
                 Radius = new[] { 4f, 4f, 4f }, Distance = new[] { 3f, 4f, 5f },
                 ManaCost = 25, Cooldown = 10f, Description = "주변 몹을 밀어냄 (E)",
             },
+            new SkillDef
+            {
+                Id = SkillIds.SpiritSaving, Name = "영력 절약", Character = CharacterIds.Reimu, MaxRank = 3,
+                RequiresSkill = SkillIds.Burst, RequiresRank = 1,
+                Passive = PassiveEffectKind.SkillManaCost, PassivePerRank = SpiritSavingCostPerRank, Description = "스킬 마나 소모 -10%",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.FirePower, Name = "화력 제일", Character = CharacterIds.Marisa, MaxRank = 3,
+                RequiresSkill = SkillIds.MasterSpark, RequiresRank = 1,
+                Passive = PassiveEffectKind.SkillPower, PassivePerRank = FirePowerPerRank, Description = "스킬 피해와 회복량 +15%",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.TimeSense, Name = "시간 감각", Character = CharacterIds.Sakuya, MaxRank = 3,
+                RequiresSkill = SkillIds.TimeStop, RequiresRank = 1,
+                Passive = PassiveEffectKind.SkillCooldown, PassivePerRank = TimeSenseCooldownPerRank, Description = "스킬 쿨타임 -8%",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.Faith, Name = "신앙", Character = CharacterIds.Sanae, MaxRank = 3,
+                RequiresSkill = SkillIds.Miracle, RequiresRank = 1,
+                Passive = PassiveEffectKind.ManaRegen, PassivePerRank = FaithRegenPerRank, Description = "마나 회복 +1.5/초",
+            },
         };
 
         static readonly Dictionary<byte, SkillDef> byId = BuildIndex();
@@ -196,6 +258,47 @@ namespace BS
             return true;
         }
 
+        /// <summary>
+        /// What the character's own passives add up to for one kind of effect: rank times the value per rank, for each passive of
+        /// that kind the character owns (a passive of another character is never counted, whatever the ranks say).
+        /// </summary>
+        public static float PassiveTotal(IReadOnlyList<int> ranks, byte character, PassiveEffectKind kind)
+        {
+            if (kind == PassiveEffectKind.None || character == CharacterIds.None) return 0f;
+            float total = 0f;
+            for (int i = 0; i < defs.Length; i++)
+            {
+                SkillDef def = defs[i];
+                if (def.Passive != kind || def.Character != character) continue;
+                total += RankOf(ranks, def.Id) * def.PassivePerRank;
+            }
+            return total;
+        }
+
+        /// <summary>The mana a skill really costs this survivor: lowered by the cost passive, never below one.</summary>
+        public static int EffectiveManaCost(SkillDef def, IReadOnlyList<int> ranks, byte character)
+        {
+            if (def == null) return 0;
+            float reduction = Math.Min(MaxManaCostReduction, PassiveTotal(ranks, character, PassiveEffectKind.SkillManaCost));
+            return Math.Max(1, (int)Math.Round(def.ManaCost * (1f - reduction), MidpointRounding.AwayFromZero));
+        }
+
+        /// <summary>The cooldown a skill really has for this survivor: shortened by the cooldown passive, never below the lower bound.</summary>
+        public static float EffectiveCooldown(SkillDef def, IReadOnlyList<int> ranks, byte character)
+        {
+            if (def == null) return 0f;
+            float multiplier = Math.Max(MinSkillCooldownMultiplier, 1f - PassiveTotal(ranks, character, PassiveEffectKind.SkillCooldown));
+            return def.Cooldown * multiplier;
+        }
+
+        /// <summary>A skill's damage or healing with the power passive applied (a value of zero stays zero).</summary>
+        public static int EffectivePower(int value, IReadOnlyList<int> ranks, byte character)
+        {
+            if (value <= 0) return value;
+            float total = PassiveTotal(ranks, character, PassiveEffectKind.SkillPower);
+            return Math.Max(1, (int)Math.Round(value * (1f + total), MidpointRounding.AwayFromZero));
+        }
+
         public static int RankOf(IReadOnlyList<int> ranks, byte skillId) =>
             skillId < ranks.Count ? ranks[skillId] : 0;
 
@@ -203,14 +306,14 @@ namespace BS
         {
             ulong packed = 0;
             for (int id = 1; id <= MaxSkillId && id < ranks.Count; id++)
-                packed |= (ulong)(ranks[id] & MaxPackedRank) << (id * 4);
+                packed |= (ulong)(ranks[id] & MaxPackedRank) << ((id - 1) * 4);
             return packed;
         }
 
         public static void Unpack(ulong packed, int[] into)
         {
             for (int id = 0; id < into.Length; id++)
-                into[id] = id >= 1 && id <= MaxSkillId ? (int)((packed >> (id * 4)) & MaxPackedRank) : 0;
+                into[id] = id >= 1 && id <= MaxSkillId ? (int)((packed >> ((id - 1) * 4)) & MaxPackedRank) : 0;
         }
     }
 }

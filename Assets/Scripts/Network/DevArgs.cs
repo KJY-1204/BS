@@ -45,6 +45,7 @@ namespace BS
     /// -bsTrySummon s   (survivor) s seconds after the match starts, send a summon and an order request; the server should ignore them
     /// -bsSummonEnergy n (host) the boss's maximum and starting summon energy
     /// -bsDevSkills r  (host) every survivor starts the match with their character's Q and E skills at rank r
+    /// -bsDevPassive r (host) every survivor also starts with their character's own passive at rank r (needs -bsDevSkills)
     /// -bsSurvivorHealth n  survivor maximum health (host), to keep survivors alive in load tests
     /// -bsMobSpeed v    mob speed (host)
     /// -bsMobHealth n   mob maximum health (host); a high value keeps mobs alive under fire for load tests
@@ -85,6 +86,7 @@ namespace BS
         public static float AutoSkillInterval { get; private set; } = 1f;
         public static int Character { get; private set; }
         public static int DevSkillsRank { get; private set; }
+        public static int DevPassiveRank { get; private set; }
         public static int BossHealth { get; private set; }
         public static float MatchSeconds { get; private set; }
         public static bool BossChase { get; private set; }
@@ -228,6 +230,9 @@ namespace BS
                         break;
                     case "-bsDevSkills" when i + 1 < args.Length:
                         if (int.TryParse(args[i + 1], out int dsr)) DevSkillsRank = dsr;
+                        break;
+                    case "-bsDevPassive" when i + 1 < args.Length:
+                        if (int.TryParse(args[i + 1], out int dpr)) DevPassiveRank = dpr;
                         break;
                     case "-bsAutoStart" when i + 2 < args.Length:
                         float.TryParse(args[i + 1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float ast);

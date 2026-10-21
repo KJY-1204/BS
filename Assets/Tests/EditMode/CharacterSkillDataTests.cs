@@ -118,9 +118,10 @@ namespace BS.Tests
         }
 
         [Test]
-        public void ThePassivesAreCommonToEveryCharacter()
+        public void TheBasicPassivesAreCommonToEveryCharacter()
         {
-            foreach (SkillDef def in SkillCatalog.All.Where(d => !d.IsActive))
+            // The four basic passives are common; each character's own passive belongs to that character (see CharacterPassiveTests).
+            foreach (SkillDef def in SkillCatalog.All.Where(d => !d.IsActive && d.Passive == PassiveEffectKind.None))
             {
                 Assert.AreEqual(CharacterIds.None, def.Character, def.Name);
                 foreach (byte c in AllCharacters)

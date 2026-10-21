@@ -54,6 +54,9 @@ namespace BS
         public int MaxMana => maxMana.Value;
         public int RankOf(byte skillId) => SkillCatalog.RankOf(ranks, skillId);
 
+        /// <summary>The owner's skill ranks (empty of meaning for other players' avatars).</summary>
+        public IReadOnlyList<int> Ranks => ranks;
+
         public bool OfferOpen => offerOpen;
         public int OfferCount => offerCount;
         public byte OfferChoice(int index) => index >= 0 && index < offerCount ? offerChoices[index] : (byte)0;
