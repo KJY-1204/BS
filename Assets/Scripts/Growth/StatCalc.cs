@@ -10,6 +10,8 @@ namespace BS
         public int ProjectileDamage;
         /// <summary>Basic attack cooldown multiplier from passive skills (below 1 is faster).</summary>
         public float CooldownMultiplier;
+        /// <summary>The share of each hit the survivor takes (below 1 is less), from the damage-reduction passives.</summary>
+        public float DamageTakenMultiplier;
     }
 
     /// <summary>Works out a survivor's stats from level and learned skill ranks.</summary>
@@ -36,6 +38,7 @@ namespace BS
             int vitality = SkillCatalog.RankOf(ranks, SkillIds.Vitality);
             int focus = SkillCatalog.RankOf(ranks, SkillIds.Focus);
 
+            byte characterId = character != null ? character.Id : CharacterIds.None;
             float multiplier = 1f - SkillCatalog.HasteCooldownPerRank * haste;
             if (multiplier < MinCooldownMultiplier) multiplier = MinCooldownMultiplier;
 
@@ -45,8 +48,11 @@ namespace BS
                 MaxMana = baseMana + GrowthConfig.ManaPerLevel * gained + SkillCatalog.FocusManaPerRank * focus,
                 ManaRegenPerSecond = baseRegen + SkillCatalog.FocusRegenPerRank * focus +
                                      SkillCatalog.PassiveTotal(ranks, character != null ? character.Id : CharacterIds.None, PassiveEffectKind.ManaRegen),
-                ProjectileDamage = CombatConfig.ProjectileDamage + GrowthConfig.DamagePerLevel * gained + SkillCatalog.PowerDamagePerRank * power,
+                ProjectileDamage = (int)System.Math.Round(
+                    (CombatConfig.ProjectileDamage + GrowthConfig.DamagePerLevel * gained + SkillCatalog.PowerDamagePerRank * power) *
+                    (1f + SkillCatalog.PassiveTotal(ranks, characterId, PassiveEffectKind.BasicDamage)), System.MidpointRounding.AwayFromZero),
                 CooldownMultiplier = multiplier,
+                DamageTakenMultiplier = SkillCatalog.DamageTakenMultiplier(ranks, characterId),
             };
         }
     }

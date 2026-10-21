@@ -42,12 +42,12 @@ namespace BS.Tests
         }
 
         [Test]
-        public void EveryCharacterHasExactlyTwoOwnPassives()
+        public void EveryCharacterHasExactlyFourOwnPassives()
         {
             foreach (byte c in Characters)
             {
                 int count = SkillCatalog.All.Count(d => !d.IsActive && d.Passive != PassiveEffectKind.None && d.Character == c);
-                Assert.AreEqual(2, count, $"character {c}");
+                Assert.AreEqual(4, count, $"character {c}");
             }
         }
 
@@ -115,7 +115,7 @@ namespace BS.Tests
         [Test]
         public void EveryIdSurvivesPackingWithoutMixingNeighbours()
         {
-            Assert.AreEqual(21, SkillCatalog.MaxSkillId);
+            Assert.AreEqual(42, SkillCatalog.MaxSkillId);
             Assert.AreEqual(7, SkillCatalog.MaxPackedRank);
             for (int id = 1; id <= SkillCatalog.MaxSkillId; id++)
             for (int rank = 0; rank <= SkillCatalog.MaxPackedRank; rank++)
@@ -124,7 +124,7 @@ namespace BS.Tests
                 ranks[id] = rank;
 
                 var back = NoRanks();
-                SkillCatalog.Unpack(SkillCatalog.Pack(ranks), back);
+                SkillCatalog.Unpack(SkillCatalog.PackLow(ranks), SkillCatalog.PackHigh(ranks), back);
 
                 for (int other = 0; other < back.Length; other++)
                     Assert.AreEqual(other == id ? rank : 0, back[other], $"id {id} rank {rank} other {other}");
@@ -132,16 +132,46 @@ namespace BS.Tests
         }
 
         [Test]
-        public void AllTwentyOneSkillsFitTheSixtyFourBitsAtOnce()
+        public void AllFortyTwoSkillsFitTheTwoPackedValuesAtOnce()
         {
             int[] ranks = NoRanks();
-            for (int id = 1; id <= 21; id++) ranks[id] = (id % 7) + 1;
+            for (int id = 1; id <= 42; id++) ranks[id] = (id % 7) + 1;
 
             var back = NoRanks();
-            SkillCatalog.Unpack(SkillCatalog.Pack(ranks), back);
+            SkillCatalog.Unpack(SkillCatalog.PackLow(ranks), SkillCatalog.PackHigh(ranks), back);
 
-            for (int id = 1; id <= 21; id++) Assert.AreEqual(ranks[id], back[id], $"id {id}");
+            for (int id = 1; id <= 42; id++) Assert.AreEqual(ranks[id], back[id], $"id {id}");
             Assert.AreEqual(0, back[0], "id zero is not a skill");
+        }
+
+        [Test]
+        public void TheEdgeBetweenTheTwoPackedValuesKeepsIdsTwentyOneAndTwentyTwoApart()
+        {
+            int[] ranks = NoRanks();
+            ranks[21] = 5;
+            ranks[22] = 2;
+            Assert.AreEqual(5UL << 60, SkillCatalog.PackLow(ranks));
+            Assert.AreEqual(2UL, SkillCatalog.PackHigh(ranks));
+
+            var back = NoRanks();
+            SkillCatalog.Unpack(SkillCatalog.PackLow(ranks), SkillCatalog.PackHigh(ranks), back);
+            Assert.AreEqual(5, back[21]);
+            Assert.AreEqual(2, back[22]);
+
+            ranks[21] = 0;
+            SkillCatalog.Unpack(SkillCatalog.PackLow(ranks), SkillCatalog.PackHigh(ranks), back);
+            Assert.AreEqual(0, back[21]);
+            Assert.AreEqual(2, back[22], "clearing 21 does not touch 22");
+        }
+
+        [Test]
+        public void TheHighValueIsZeroUntilAnIdAboveTwentyOneIsLearned()
+        {
+            int[] ranks = NoRanks();
+            ranks[SkillIds.TimeRule] = 3;
+            Assert.AreEqual(0UL, SkillCatalog.PackHigh(ranks));
+            ranks[SkillIds.Merit] = 1;
+            Assert.AreNotEqual(0UL, SkillCatalog.PackHigh(ranks));
         }
 
         [Test]
@@ -149,10 +179,10 @@ namespace BS.Tests
         {
             int[] ranks = NoRanks();
             ranks[21] = 3;
-            Assert.AreEqual(3UL << 60, SkillCatalog.Pack(ranks));
+            Assert.AreEqual(3UL << 60, SkillCatalog.PackLow(ranks));
             ranks = NoRanks();
             ranks[1] = 2;
-            Assert.AreEqual(2UL, SkillCatalog.Pack(ranks));
+            Assert.AreEqual(2UL, SkillCatalog.PackLow(ranks));
         }
 
         // ---- who is offered what ----

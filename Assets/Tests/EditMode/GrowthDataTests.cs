@@ -103,10 +103,11 @@ namespace BS.Tests
             ranks[SkillIds.RapidFire] = 1;
 
             int[] back = new int[SkillCatalog.MaxSkillId + 1];
-            SkillCatalog.Unpack(SkillCatalog.Pack(ranks), back);
+            SkillCatalog.Unpack(SkillCatalog.PackLow(ranks), SkillCatalog.PackHigh(ranks), back);
 
             CollectionAssert.AreEqual(ranks, back);
-            Assert.AreEqual(0UL, SkillCatalog.Pack(NoRanks()));
+            Assert.AreEqual(0UL, SkillCatalog.PackLow(NoRanks()));
+            Assert.AreEqual(0UL, SkillCatalog.PackHigh(NoRanks()));
         }
 
         // ---- Config ----

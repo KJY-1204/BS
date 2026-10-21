@@ -28,6 +28,9 @@ namespace BS
             (ushort)GrowthConfig.BaseMaxMana, NetworkVariableReadPermission.Owner, NetworkVariableWritePermission.Server);
         readonly NetworkVariable<ulong> ranksPacked = new NetworkVariable<ulong>(
             0, NetworkVariableReadPermission.Owner, NetworkVariableWritePermission.Server);
+        /// <summary>The ranks of skill ids 22 and above (see <see cref="SkillCatalog.PackHigh"/>).</summary>
+        readonly NetworkVariable<ulong> ranksPackedHigh = new NetworkVariable<ulong>(
+            0, NetworkVariableReadPermission.Owner, NetworkVariableWritePermission.Server);
 
         PlayerAvatar avatar;
         readonly int[] ranks = new int[SkillCatalog.MaxSkillId + 1];
@@ -78,8 +81,9 @@ namespace BS
 
             if (IsOwner)
             {
-                ranksPacked.OnValueChanged += (_, __) => SkillCatalog.Unpack(ranksPacked.Value, ranks);
-                SkillCatalog.Unpack(ranksPacked.Value, ranks);
+                ranksPacked.OnValueChanged += (_, __) => { SkillCatalog.Unpack(ranksPacked.Value, ranksPackedHigh.Value, ranks); LogRanks(); };
+                ranksPackedHigh.OnValueChanged += (_, __) => { SkillCatalog.Unpack(ranksPacked.Value, ranksPackedHigh.Value, ranks); LogRanks(); };
+                SkillCatalog.Unpack(ranksPacked.Value, ranksPackedHigh.Value, ranks);
             }
 
             if (DevArgs.GrowthLog)
@@ -94,10 +98,20 @@ namespace BS
             All.Remove(this);
         }
 
+        /// <summary>Development log (-bsGrowthLog): the ranks this owner's client has received, as id:rank pairs.</summary>
+        void LogRanks()
+        {
+            if (!DevArgs.GrowthLog || !IsOwner || IsServer) return;
+            var sb = new System.Text.StringBuilder();
+            for (int id = 1; id < ranks.Length; id++)
+                if (ranks[id] > 0) sb.Append(id).Append(':').Append(ranks[id]).Append(' ');
+            Debug.Log($"[BS] client ranks owner={OwnerClientId} {sb}");
+        }
+
         // ---- Server side ----
 
         /// <summary>Server only: copies the simulation's values to the replicated variables when they change.</summary>
-        public void ServerWrite(int levelValue, int xpValue, int manaValue, int maxManaValue, ulong packedRanks)
+        public void ServerWrite(int levelValue, int xpValue, int manaValue, int maxManaValue, ulong packedRanks, ulong packedRanksHigh)
         {
             byte l = (byte)Mathf.Clamp(levelValue, 1, 255);
             ushort x = (ushort)Mathf.Clamp(xpValue, 0, ushort.MaxValue);
@@ -109,8 +123,9 @@ namespace BS
             if (maxMana.Value != mm) maxMana.Value = mm;
             if (mana.Value != m) mana.Value = m;
             if (ranksPacked.Value != packedRanks) ranksPacked.Value = packedRanks;
+            if (ranksPackedHigh.Value != packedRanksHigh) ranksPackedHigh.Value = packedRanksHigh;
 
-            if (IsServer && IsOwner) SkillCatalog.Unpack(packedRanks, ranks);
+            if (IsServer && IsOwner) SkillCatalog.Unpack(packedRanks, packedRanksHigh, ranks);
         }
 
         /// <summary>Server only: tells the owner a skill choice has opened.</summary>

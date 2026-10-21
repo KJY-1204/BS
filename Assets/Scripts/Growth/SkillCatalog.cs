@@ -41,6 +41,22 @@ namespace BS
         public const byte CritMagic = 19;
         /// <summary>Sakuya's second own passive: her time stop lasts longer.</summary>
         public const byte TimeRule = 20;
+        /// <summary>Reimu's third own passive (needs Kekkai): she takes less damage.</summary>
+        public const byte Guard = 21;
+        /// <summary>Reimu's fourth own passive (needs Burst at rank three): her skills hit and heal harder.</summary>
+        public const byte SealingArray = 22;
+        /// <summary>Marisa's third own passive (needs Stardust): her basic attack hits harder.</summary>
+        public const byte StarBullet = 23;
+        /// <summary>Marisa's fourth own passive (needs Master Spark at rank three): her mana comes back faster.</summary>
+        public const byte ManaCycle = 24;
+        /// <summary>Sakuya's third own passive (needs Knife Barrage): her skills hit harder.</summary>
+        public const byte PreciseThrow = 25;
+        /// <summary>Sakuya's fourth own passive (needs Time Stop at rank three): her skills cost less mana.</summary>
+        public const byte ElegantSaving = 26;
+        /// <summary>Sanae's third own passive (needs Wind Veil): she receives more experience.</summary>
+        public const byte Merit = 27;
+        /// <summary>Sanae's fourth own passive (needs Miracle at rank three): her skills hit and heal harder.</summary>
+        public const byte DivineBlessing = 28;
     }
 
     /// <summary>What a character's own passive does. The common passives are worked out by <see cref="StatCalc"/> and have none of these.</summary>
@@ -59,6 +75,12 @@ namespace BS
         SkillRange,
         /// <summary>How long the character's timed skills last grows.</summary>
         SkillDuration,
+        /// <summary>The damage the survivor takes falls.</summary>
+        DamageTaken,
+        /// <summary>The damage of the survivor's basic attack rises.</summary>
+        BasicDamage,
+        /// <summary>The experience the survivor receives from each kill rises.</summary>
+        ExperienceGain,
     }
 
     /// <summary>What an active skill does when the server fires it. Passives have <see cref="None"/>.</summary>
@@ -128,8 +150,10 @@ namespace BS
     public static class SkillCatalog
     {
         public const int SkillSlots = 2;
-        /// <summary>Ranks are packed three bits per skill id into one 64 bit value; id 1 takes the lowest bits, so ids 1 to 21 fit.</summary>
-        public const int MaxSkillId = 21;
+        /// <summary>Ranks are packed three bits per skill id into 64 bit values, 21 ids to a value (ids 1 to 21 in the low one, 22 to 42 in the high one).</summary>
+        public const int MaxSkillId = 42;
+        /// <summary>How many skill ids one packed 64 bit value holds.</summary>
+        public const int IdsPerPackedValue = 21;
         /// <summary>Ranks are packed three bits per skill, so a skill's maximum rank can be at most this.</summary>
         public const int MaxPackedRank = 7;
         const int PackBits = 3;
@@ -160,6 +184,17 @@ namespace BS
         public const float WideWindPerRank = 0.15f;
         public const float CritMagicRangePerRank = 0.15f;
         public const float TimeRuleDurationPerRank = 0.15f;
+        public const float GuardDamageTakenPerRank = 0.08f;
+        public const float SealingArrayPowerPerRank = 0.15f;
+        public const float StarBulletDamagePerRank = 0.10f;
+        public const float ManaCycleRegenPerRank = 1.5f;
+        public const float PreciseThrowPowerPerRank = 0.15f;
+        public const float ElegantSavingCostPerRank = 0.10f;
+        public const float MeritExperiencePerRank = 0.10f;
+        public const float DivineBlessingPowerPerRank = 0.15f;
+
+        /// <summary>However much damage reduction a survivor has, a hit never loses more than this share of its damage.</summary>
+        public const float MaxDamageTakenReduction = 0.6f;
 
         static readonly SkillDef[] defs =
         {
@@ -264,6 +299,54 @@ namespace BS
                 RequiresSkill = SkillIds.TimeStop, RequiresRank = 1,
                 Passive = PassiveEffectKind.SkillDuration, PassivePerRank = TimeRuleDurationPerRank, Description = "스킬 지속 시간 +15%",
             },
+            new SkillDef
+            {
+                Id = SkillIds.Guard, Name = "수호의 부적", Character = CharacterIds.Reimu, MaxRank = 3,
+                RequiresSkill = SkillIds.Barrier, RequiresRank = 1,
+                Passive = PassiveEffectKind.DamageTaken, PassivePerRank = GuardDamageTakenPerRank, Description = "받는 피해 -8%",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.SealingArray, Name = "봉마진", Character = CharacterIds.Reimu, MaxRank = 3,
+                RequiresSkill = SkillIds.Burst, RequiresRank = 3,
+                Passive = PassiveEffectKind.SkillPower, PassivePerRank = SealingArrayPowerPerRank, Description = "스킬 피해와 회복량 +15%",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.StarBullet, Name = "별빛 탄환", Character = CharacterIds.Marisa, MaxRank = 3,
+                RequiresSkill = SkillIds.RapidFire, RequiresRank = 1,
+                Passive = PassiveEffectKind.BasicDamage, PassivePerRank = StarBulletDamagePerRank, Description = "기본 공격 피해 +10%",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.ManaCycle, Name = "마력 순환", Character = CharacterIds.Marisa, MaxRank = 3,
+                RequiresSkill = SkillIds.MasterSpark, RequiresRank = 3,
+                Passive = PassiveEffectKind.ManaRegen, PassivePerRank = ManaCycleRegenPerRank, Description = "마나 회복 +1.5/초",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.PreciseThrow, Name = "정밀 투척", Character = CharacterIds.Sakuya, MaxRank = 3,
+                RequiresSkill = SkillIds.KnifeBarrage, RequiresRank = 1,
+                Passive = PassiveEffectKind.SkillPower, PassivePerRank = PreciseThrowPowerPerRank, Description = "스킬 피해와 회복량 +15%",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.ElegantSaving, Name = "우아한 절약", Character = CharacterIds.Sakuya, MaxRank = 3,
+                RequiresSkill = SkillIds.TimeStop, RequiresRank = 3,
+                Passive = PassiveEffectKind.SkillManaCost, PassivePerRank = ElegantSavingCostPerRank, Description = "스킬 마나 소모 -10%",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.Merit, Name = "공덕", Character = CharacterIds.Sanae, MaxRank = 3,
+                RequiresSkill = SkillIds.WindVeil, RequiresRank = 1,
+                Passive = PassiveEffectKind.ExperienceGain, PassivePerRank = MeritExperiencePerRank, Description = "경험치 획득 +10%",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.DivineBlessing, Name = "신령의 가호", Character = CharacterIds.Sanae, MaxRank = 3,
+                RequiresSkill = SkillIds.Miracle, RequiresRank = 3,
+                Passive = PassiveEffectKind.SkillPower, PassivePerRank = DivineBlessingPowerPerRank, Description = "스킬 피해와 회복량 +15%",
+            },
         };
 
         static readonly Dictionary<byte, SkillDef> byId = BuildIndex();
@@ -346,6 +429,18 @@ namespace BS
             return Math.Max(1, (int)Math.Round(value * (1f + total), MidpointRounding.AwayFromZero));
         }
 
+        /// <summary>The share of each hit this survivor takes: one less the damage-reduction passives, the reduction capped.</summary>
+        public static float DamageTakenMultiplier(IReadOnlyList<int> ranks, byte character) =>
+            1f - Math.Min(MaxDamageTakenReduction, PassiveTotal(ranks, character, PassiveEffectKind.DamageTaken));
+
+        /// <summary>The experience this survivor receives for a kill worth <paramref name="baseAmount"/>: raised by the experience passives, never below the base amount.</summary>
+        public static int EffectiveExperience(int baseAmount, IReadOnlyList<int> ranks, byte character)
+        {
+            if (baseAmount <= 0) return baseAmount;
+            float total = PassiveTotal(ranks, character, PassiveEffectKind.ExperienceGain);
+            return Math.Max(baseAmount, (int)Math.Round(baseAmount * (1f + total), MidpointRounding.AwayFromZero));
+        }
+
         /// <summary>The range scale (percent) of a skill use: the radius, length, width and push distance are multiplied by it.</summary>
         public static int RangeScalePercent(IReadOnlyList<int> ranks, byte character) =>
             ScalePercent(PassiveTotal(ranks, character, PassiveEffectKind.SkillRange));
@@ -364,18 +459,34 @@ namespace BS
         public static int RankOf(IReadOnlyList<int> ranks, byte skillId) =>
             skillId < ranks.Count ? ranks[skillId] : 0;
 
-        public static ulong Pack(IReadOnlyList<int> ranks)
+        /// <summary>The ranks of skill ids 1 to 21, three bits each, id 1 in the lowest bits.</summary>
+        public static ulong PackLow(IReadOnlyList<int> ranks) => PackRange(ranks, 1);
+
+        /// <summary>The ranks of skill ids 22 to 42, three bits each, id 22 in the lowest bits.</summary>
+        public static ulong PackHigh(IReadOnlyList<int> ranks) => PackRange(ranks, IdsPerPackedValue + 1);
+
+        static ulong PackRange(IReadOnlyList<int> ranks, int firstId)
         {
             ulong packed = 0;
-            for (int id = 1; id <= MaxSkillId && id < ranks.Count; id++)
-                packed |= (ulong)(ranks[id] & MaxPackedRank) << ((id - 1) * PackBits);
+            for (int id = firstId; id < firstId + IdsPerPackedValue && id <= MaxSkillId && id < ranks.Count; id++)
+                packed |= (ulong)(ranks[id] & MaxPackedRank) << ((id - firstId) * PackBits);
             return packed;
         }
 
-        public static void Unpack(ulong packed, int[] into)
+        public static void Unpack(ulong low, ulong high, int[] into)
         {
             for (int id = 0; id < into.Length; id++)
-                into[id] = id >= 1 && id <= MaxSkillId ? (int)((packed >> ((id - 1) * PackBits)) & MaxPackedRank) : 0;
+            {
+                if (id < 1 || id > MaxSkillId)
+                {
+                    into[id] = 0;
+                    continue;
+                }
+                bool inLow = id <= IdsPerPackedValue;
+                ulong packed = inLow ? low : high;
+                int slot = inLow ? id - 1 : id - IdsPerPackedValue - 1;
+                into[id] = (int)((packed >> (slot * PackBits)) & MaxPackedRank);
+            }
         }
     }
 }

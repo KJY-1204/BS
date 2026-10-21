@@ -25,6 +25,8 @@ namespace BS
             public int MaxHealth;
             public float Invulnerable;
             public float ReviveGauge;
+            /// <summary>The share of each hit this survivor takes (a damage-reduction passive lowers it).</summary>
+            public float DamageTaken = 1f;
         }
 
         /// <summary>Maximum health a survivor starts with; each survivor's own maximum can then change.</summary>
@@ -94,9 +96,15 @@ namespace BS
         /// <summary>Revive progress from 0 to 1; only meaningful for a dead survivor.</summary>
         public float ReviveGauge(ulong clientId) => states.TryGetValue(clientId, out State s) ? s.ReviveGauge : 0f;
 
+        /// <summary>Sets the share of each hit this survivor takes: 1 is all of it, less is a damage-reduction passive. Unknown survivors are ignored.</summary>
+        public void SetDamageTakenMultiplier(ulong clientId, float multiplier)
+        {
+            if (states.TryGetValue(clientId, out State s)) s.DamageTaken = Mathf.Clamp(multiplier, 0f, 1f);
+        }
+
         /// <summary>
         /// Deals damage unless the survivor is dead, protected, or unknown. A hit starts the protection time.
-        /// Returns true when damage was dealt.
+        /// A survivor with a damage-reduction passive takes less, but never less than one. Returns true when damage was dealt.
         /// </summary>
         public bool ApplyDamage(ulong clientId, int damage)
         {
@@ -104,6 +112,7 @@ namespace BS
             if (!states.TryGetValue(clientId, out State s)) return false;
             if (s.Health <= 0 || s.Invulnerable > 0f) return false;
 
+            if (s.DamageTaken < 1f) damage = Math.Max(1, (int)Math.Round(damage * s.DamageTaken, MidpointRounding.AwayFromZero));
             s.Health = Math.Max(0, s.Health - damage);
             s.Invulnerable = InvulnerabilitySeconds;
             if (s.Health == 0) s.ReviveGauge = 0f;

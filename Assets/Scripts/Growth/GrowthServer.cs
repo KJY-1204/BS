@@ -306,7 +306,7 @@ namespace BS
                         levelUps++;
                         ApplyStats(e.ClientId, entry);
                         if (DevArgs.GrowthLog)
-                            Debug.Log($"[BS] growth: level up client={e.ClientId} level={e.Level} maxHealth={entry.Stats.MaxHealth} maxMana={entry.Stats.MaxMana} damage={entry.Stats.ProjectileDamage} health={combat.Survivors.Health(e.ClientId)}");
+                            Debug.Log($"[BS] growth: level up client={e.ClientId} level={e.Level} maxHealth={entry.Stats.MaxHealth} maxMana={entry.Stats.MaxMana} damage={entry.Stats.ProjectileDamage} health={combat.Survivors.Health(e.ClientId)} taken={entry.Stats.DamageTakenMultiplier:F2}");
                         break;
 
                     case GrowthEventKind.OfferOpened:
@@ -336,6 +336,7 @@ namespace BS
             int maxHealth = entry.Stats.MaxHealth;
             if (DevArgs.SurvivorHealth > 0) maxHealth += DevArgs.SurvivorHealth - CombatConfig.SurvivorMaxHealth;
             combat.Survivors.SetMaxHealth(id, maxHealth);
+            combat.Survivors.SetDamageTakenMultiplier(id, entry.Stats.DamageTakenMultiplier);
             Skills.SetStats(id, entry.Stats.MaxMana, entry.Stats.ManaRegenPerSecond);
             combat.Attacks.SetModifiers(id, entry.Stats.ProjectileDamage, entry.Stats.CooldownMultiplier * Skills.AttackMultiplier(id));
         }
@@ -362,7 +363,7 @@ namespace BS
         {
             if (entry.Growth == null || !entry.Growth.IsSpawned) return;
             entry.Growth.ServerWrite(Leveling.Level(id), Leveling.Xp(id), Mathf.FloorToInt(Skills.Mana(id)),
-                                     Mathf.RoundToInt(Skills.MaxMana(id)), SkillCatalog.Pack(Leveling.Ranks(id)));
+                                     Mathf.RoundToInt(Skills.MaxMana(id)), SkillCatalog.PackLow(Leveling.Ranks(id)), SkillCatalog.PackHigh(Leveling.Ranks(id)));
         }
 
         // ---- Development helpers ----

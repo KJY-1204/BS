@@ -153,7 +153,8 @@ namespace BS
                 if (!body.Alive || !states.ContainsKey(body.ClientId)) continue;
                 if ((body.Position - deathPosition).sqrMagnitude > limit) continue;
 
-                AddXp(body.ClientId, XpPerKill);
+                State recipient = states[body.ClientId];
+                AddXp(body.ClientId, SkillCatalog.EffectiveExperience(XpPerKill, recipient.Ranks, recipient.Character));
                 recipients++;
             }
             return recipients;

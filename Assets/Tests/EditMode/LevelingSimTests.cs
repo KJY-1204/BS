@@ -234,14 +234,14 @@ namespace BS.Tests
         }
 
         [Test]
-        public void ALearnableSkillPoolOf32RanksPerCharacterNeverRunsOutBeforeTheCap()
+        public void ALearnableSkillPoolOf38RanksPerCharacterNeverRunsOutBeforeTheCap()
         {
             foreach (CharacterDef character in CharacterCatalog.All)
             {
                 int ranks = 0;
                 foreach (SkillDef def in SkillCatalog.All)
                     if (def.Character == CharacterIds.None || def.Character == character.Id) ranks += def.MaxRank;
-                Assert.AreEqual(32, ranks, character.Name);
+                Assert.AreEqual(38, ranks, character.Name);
                 Assert.Greater(ranks, GrowthConfig.MaxLevel - 1, character.Name);
             }
         }
