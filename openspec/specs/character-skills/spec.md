@@ -55,7 +55,7 @@ The Reimu E skill SHALL make her take no damage for its duration, which grows wi
 - **THEN** the protection and the mark last the defined duration multiplied by the duration scale
 
 ### Requirement: The beam hits every mob on a line
-The Marisa Q skill SHALL damage every mob on a straight line from her along the aim she had when the server fired it, up to a length and within a width that grow with rank, and SHALL NOT stop at the first mob. The line SHALL stop at the arena edge. Mobs it kills SHALL give experience.
+The Marisa Q skill SHALL damage every mob on a straight line from her along the aim she had when the server fired it, up to a length and within a width that grow with rank and with her range passive, and SHALL NOT stop at the first mob. The line SHALL stop at the arena edge. Mobs it kills SHALL give experience.
 
 #### Scenario: Mobs in a row
 - **WHEN** the beam fires toward four mobs in a row inside its length and one mob to the side outside its width
@@ -65,6 +65,10 @@ The Marisa Q skill SHALL damage every mob on a straight line from her along the 
 - **WHEN** a mob stands on the line farther than the beam's length
 - **THEN** it takes no damage
 
+#### Scenario: Widened by the passive
+- **WHEN** a mob stands beyond the defined length or beside the defined width but inside the length or width multiplied by the range scale
+- **THEN** it takes damage
+
 ### Requirement: Stardust speeds up the attack for a time
 The Marisa E skill SHALL shorten her attack interval for a time, with the speed-up and duration growing with rank, and the effect SHALL end by itself or when she dies.
 
@@ -73,7 +77,7 @@ The Marisa E skill SHALL shorten her attack interval for a time, with the speed-
 - **THEN** she attacks faster during it and at the normal rate afterwards
 
 ### Requirement: Time stop freezes every mob
-The Sakuya Q skill SHALL stop every mob for a time that grows with rank: frozen mobs do not move, new mobs do not appear, and frozen mobs do not hurt survivors on contact. Frozen mobs SHALL still take damage from shots and skills, and SHALL move again when the time ends. Using the skill again while it is active SHALL NOT shorten it.
+The Sakuya Q skill SHALL stop every mob for a time that grows with rank and with her duration passive: frozen mobs do not move, new mobs do not appear, and frozen mobs do not hurt survivors on contact. Frozen mobs SHALL still take damage from shots and skills, and SHALL move again when the time ends. Using the skill again while it is active SHALL NOT shorten it.
 
 #### Scenario: Mobs stand still
 - **WHEN** the skill fires with mobs chasing survivors
@@ -90,6 +94,10 @@ The Sakuya Q skill SHALL stop every mob for a time that grows with rank: frozen 
 #### Scenario: Time resumes
 - **WHEN** the duration has passed
 - **THEN** mobs chase again and new mobs appear again
+
+#### Scenario: Lengthened by the passive
+- **WHEN** she uses the skill with her duration passive learned
+- **THEN** mobs stay stopped for the defined duration multiplied by the duration scale
 
 ### Requirement: Knife barrage fires a ring of knives
 The Sakuya E skill SHALL fire knives evenly around her in all directions, with the number and the damage per knife growing with rank. The knives SHALL be ordinary projectiles with the shape of her basic shots, so they fly straight and are shown to every client as shots.

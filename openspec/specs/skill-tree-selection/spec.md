@@ -110,7 +110,7 @@ A survivor's learned skills and ranks SHALL be sent only to that survivor. The e
 - **THEN** their screen shows the new skill list and ranks
 
 ### Requirement: Skills may belong to one character
-A skill SHALL be definable as belonging to one character or as common to all. The four basic passives SHALL be common, each character SHALL have at least one passive of its own, and each active skill SHALL belong to the character that owns it. The skill numbers of every skill SHALL fit in the packed ranks sent to the owner, which hold at least twenty-one skills.
+A skill SHALL be definable as belonging to one character or as common to all. The four basic passives SHALL be common, each character SHALL have two passives of its own, and each active skill SHALL belong to the character that owns it. The skill numbers of every skill SHALL fit in the packed ranks sent to the owner, which hold at least twenty-one skills.
 
 #### Scenario: Offers differ by character
 - **WHEN** two survivors of different characters level up with no skills learned
