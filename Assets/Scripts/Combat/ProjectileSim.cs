@@ -142,6 +142,15 @@ namespace BS
         public ulong OwnerAt(int index) => owners[index];
         public Vector2 PositionAt(int index) => positions[index];
 
+        // What a player can see of a projectile in flight (the harness's bots read it to step out of the way).
+        /// <summary>The projectile hurts survivors (a boss's or a ranged mob's) and not mobs.</summary>
+        public bool HostileAt(int index) => hostile[index];
+        public Vector2 DirectionAt(int index) => directions[index];
+        public float SpeedAt(int index) => speeds[index];
+        public float RadiusAt(int index) => radii[index];
+        /// <summary>How much longer the projectile flies.</summary>
+        public float RemainingSecondsAt(int index) => remaining[index];
+
         /// <summary>Starts a projectile with the default damage unless the cap is reached.</summary>
         public bool TryFire(ulong owner, Vector2 origin, ushort angle, out ushort id) =>
             TryFire(owner, origin, angle, Damage, out id);

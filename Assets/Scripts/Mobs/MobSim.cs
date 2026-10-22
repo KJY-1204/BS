@@ -119,6 +119,11 @@ namespace BS
         int summonedCount;
         int deviceCount;
 
+        /// <summary>How many devices were placed, destroyed by damage and expired since the last <see cref="Clear"/> (for the harness's report).</summary>
+        public int DevicesPlaced { get; private set; }
+        public int DevicesDestroyed { get; private set; }
+        public int DevicesExpired { get; private set; }
+
         /// <summary>What the devices do: how long they stand, how often and how much they make. See <see cref="DeviceConfig"/>.</summary>
         public DeviceConfig DeviceSettings = DeviceConfig.Default;
 
@@ -207,6 +212,7 @@ namespace BS
                 timer[i] = DeviceSettings.ProductionIntervalSeconds;
                 lifetime[i] = DeviceSettings.LifetimeSeconds;
                 deviceCount++;
+                DevicesPlaced++;
             }
             indexOf[id] = i;
             if (MobKinds.IsSummoned(type) && !MobKinds.IsDeviceType(type)) summonedCount++;
@@ -274,6 +280,7 @@ namespace BS
                 killed = true;
                 if (MobKinds.IsDeviceType(types[i]))
                 {
+                    DevicesDestroyed++;
                     deviceKillIds.Add(id);
                     deviceKillPositions.Add(positions[i]);
                 }
@@ -640,6 +647,7 @@ namespace BS
             count = 0;
             summonedCount = 0;
             deviceCount = 0;
+            DevicesPlaced = DevicesDestroyed = DevicesExpired = 0;
             standingOrder = OverrideNone;
             indexOf.Clear();
             events.Clear();
@@ -936,7 +944,7 @@ namespace BS
                 if (!indexOf.TryGetValue(deviceIds[d], out int i)) continue;
 
                 lifetime[i] -= dt;
-                if (lifetime[i] <= 0f) { Remove(deviceIds[d]); continue; }
+                if (lifetime[i] <= 0f) { DevicesExpired++; Remove(deviceIds[d]); continue; }
 
                 timer[i] -= dt;
                 if (timer[i] > 0f) continue;

@@ -13,7 +13,7 @@ namespace BS
     /// Runs the mob simulation on the server (the host), sends snapshots and events to the other
     /// players, and clears everything when the room ends. The host draws mobs straight from the simulation.
     /// </summary>
-    [DefaultExecutionOrder(-100)]
+    [DefaultExecutionOrder(MatchPhases.MobsOrder)]
     public class MobServer : MonoBehaviour
     {
         const int EventsPerMessage = 100;
@@ -48,8 +48,8 @@ namespace BS
         void Awake()
         {
             Instance = this;
-            int target = DevArgs.MobTarget.HasValue ? Math.Clamp(DevArgs.MobTarget.Value, 0, MobConfig.HardCap) : MobConfig.DefaultTarget;
-            Sim = new MobSim(MobConfig.HardCap, target);
+            // The first server component to wake up makes the world every other one shares.
+            Sim = MatchWorld.SetCurrent(MatchWorld.ForServer()).Mobs;
             buffer = new byte[Math.Max(MobCodec.MaxChunkBytes, MobCodec.EventBytes(Math.Max(MobConfig.HardCap, EventsPerMessage))) + 16];
         }
 
@@ -131,10 +131,12 @@ namespace BS
 
             // After the match has ended the mobs stop where they are, but the snapshots keep flowing so every client's
             // display clock and the mobs it shows stay as they were.
-            if (RoleTable.MatchRunning)
+            MatchWorld world = MatchWorld.Current;
+            world.MatchRunning = RoleTable.MatchRunning;
+            if (world.MatchRunning)
             {
-                PlayerRegistry.CollectSurvivors(survivors);
-                Sim.Step(Time.fixedDeltaTime, survivors);
+                PlayerRegistry.CollectBodies(world.Bodies);
+                world.Run(MatchPhase.Mobs, Time.fixedDeltaTime);
             }
             if (DevArgs.MobLog) LogFreezeChange();
 

@@ -31,6 +31,7 @@ namespace BS
     /// and whether the room is waiting or playing. A thin link between <see cref="LobbySim"/> (the rules) and the
     /// network; characters only exist while a match is playing.
     /// </summary>
+    [DefaultExecutionOrder(MatchPhases.ClockOrder)]
     public class RoleTable : NetworkBehaviour
     {
         public const byte BossRole = 0;
@@ -71,7 +72,7 @@ namespace BS
             false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
         LobbySim lobby;
-        readonly MatchSim match = new MatchSim();
+        MatchSim match => MatchWorld.Current.Clock;
         bool bossLeft;
         readonly List<LobbySlot> spawnList = new List<LobbySlot>();
 
@@ -340,15 +341,10 @@ namespace BS
         {
             if (!match.Enabled) return;
 
-            CombatServer combat = CombatServer.Instance;
-            var input = new MatchInput
-            {
-                BossFell = combat != null && combat.Boss.Exists && combat.Boss.HasFallen,
-                BossLeft = bossLeft,
-                SurvivorsAlive = combat != null ? combat.Survivors.AliveCount : 0,
-            };
-
-            bool decided = match.Step(dt, input);
+            MatchWorld world = MatchWorld.Current;
+            world.BossLeft = bossLeft;
+            world.Run(MatchPhase.Clock, dt);
+            bool decided = world.ClockDecided;
             ushort seconds = (ushort)Mathf.Clamp(match.SecondsLeft, 0, ushort.MaxValue);
             if (secondsLeft.Value != seconds) secondsLeft.Value = seconds;
 

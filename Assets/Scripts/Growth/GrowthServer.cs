@@ -7,42 +7,27 @@ namespace BS
 {
     /// <summary>
     /// Runs growth on the server right after combat: experience for kills, level ups and the skill choices
-    /// they open, mana, key skills and their effects, and the stats that follow from all of it. Results go to
-    /// the simulations that need them and to the replicated values and owner-only messages.
+    /// they open, mana, key skills and their effects, and the stats that follow from all of it. The simulation is the world's growth
+    /// phase (<see cref="MatchWorld.StepGrowth"/>); this component hands it where the survivors stand and the requests that came in, and
+    /// sends the results to the replicated values and owner-only messages.
     /// </summary>
-    [DefaultExecutionOrder(-40)]
+    [DefaultExecutionOrder(MatchPhases.GrowthOrder)]
     [RequireComponent(typeof(CombatServer))]
     public class GrowthServer : MonoBehaviour
     {
-        const int MaxRequestsPerStep = 64;
-
         public static GrowthServer Instance { get; private set; }
 
         public LevelingSim Leveling { get; private set; }
-        public SkillSim Skills { get; } = new SkillSim();
+        public SkillSim Skills => MatchWorld.Current.Skills;
 
         sealed class Entry
         {
             public PlayerAvatar Avatar;
             public PlayerGrowth Growth;
-            public SurvivorStats Stats;
-        }
-
-        struct SkillRequest
-        {
-            public ulong ClientId;
-            public int Slot;
         }
 
         readonly Dictionary<ulong, Entry> entries = new Dictionary<ulong, Entry>();
         readonly List<ulong> order = new List<ulong>();
-        readonly List<GrowthBody> bodies = new List<GrowthBody>();
-        readonly List<Vector2> kills = new List<Vector2>();
-        readonly List<Vector2> deviceKills = new List<Vector2>();
-        readonly List<GrowthBody> skillBodies = new List<GrowthBody>();
-        readonly List<GrowthEvent> growthEvents = new List<GrowthEvent>();
-        readonly List<CombatEvent> skillEvents = new List<CombatEvent>();
-        readonly List<SkillRequest> requests = new List<SkillRequest>();
 
         CombatServer combat;
         MobServer mobs;
@@ -63,9 +48,9 @@ namespace BS
             combat = GetComponent<CombatServer>();
             mobs = GetComponent<MobServer>();
 
-            Leveling = new LevelingSim();
-            if (DevArgs.XpPerKill > 0) Leveling.XpPerKill = DevArgs.XpPerKill;
-            if (DevArgs.OfferSeconds > 0f) Leveling.OfferSeconds = DevArgs.OfferSeconds;
+            Leveling = MatchWorld.Current.Leveling; // the development arguments were applied when the world was made
+            // -bsSurvivorHealth replaces the starting health in load tests; growth still adds on top of it.
+            MatchWorld.Current.SurvivorHealthBonus = DevArgs.SurvivorHealth > 0 ? DevArgs.SurvivorHealth - CombatConfig.SurvivorMaxHealth : 0;
         }
 
         void Start()
@@ -99,10 +84,7 @@ namespace BS
         public void ResetAll()
         {
             entries.Clear();
-            Leveling.Clear();
-            Skills.Clear();
-            requests.Clear();
-            kills.Clear();
+            MatchWorld.Current.ClearGrowth();
             roomStartedAt = -1f;
             devXpDone = false;
         }
@@ -115,11 +97,7 @@ namespace BS
             var entry = new Entry { Avatar = avatar, Growth = avatar.GetComponent<PlayerGrowth>() };
             entries[id] = entry;
 
-            Leveling.Register(id, avatar.CharacterId);
-            GrantDevSkills(id, avatar.CharacterId);
-            entry.Stats = StatCalc.Compute(1, Leveling.Ranks(id), CharacterCatalog.Get(avatar.CharacterId));
-            Skills.Register(id, entry.Stats.MaxMana, entry.Stats.ManaRegenPerSecond);
-            ApplyStats(id, entry);
+            MatchWorld.Current.StartGrowth(id, avatar.CharacterId, granted => GrantDevSkills(granted, avatar.CharacterId));
             WriteReplicated(id, entry);
         }
 
@@ -145,8 +123,7 @@ namespace BS
         {
             ulong id = avatar.OwnerClientId;
             entries.Remove(id);
-            Leveling.Unregister(id);
-            Skills.Unregister(id);
+            MatchWorld.Current.StopGrowth(id);
         }
 
         // ---- Requests from players (the server decides what they mean) ----
@@ -154,13 +131,13 @@ namespace BS
         public void OnPick(ulong clientId, byte offerId, int index)
         {
             if (!running || !RoleTable.MatchRunning) return;
-            if (Leveling.Pick(clientId, offerId, index)) manualPicks++;
+            if (MatchWorld.Current.Pick(clientId, offerId, index)) manualPicks++;
         }
 
         public void OnSkillRequest(ulong clientId, int slot)
         {
-            if (!running || !RoleTable.MatchRunning || requests.Count >= MaxRequestsPerStep) return;
-            requests.Add(new SkillRequest { ClientId = clientId, Slot = slot });
+            if (!running || !RoleTable.MatchRunning) return;
+            MatchWorld.Current.RequestSkill(clientId, slot);
         }
 
         // ---- The step ----
@@ -172,145 +149,71 @@ namespace BS
             float dt = Time.fixedDeltaTime;
             RunDevScenario();
 
-            kills.Clear();
-            IReadOnlyList<Vector2> shotKills = combat.KillsThisStep;
-            for (int i = 0; i < shotKills.Count; i++) kills.Add(shotKills[i]);
+            // Where the survivors with growth stand now.
+            MatchWorld world = MatchWorld.Current;
+            world.MatchRunning = true;
+            world.Bodies.Clear();
+            foreach (KeyValuePair<ulong, Entry> pair in entries)
+            {
+                Entry e = pair.Value;
+                if (e.Avatar == null || !e.Avatar.IsSpawned) continue;
+                world.Bodies.Add(new MatchBody
+                {
+                    ClientId = pair.Key, Role = e.Avatar.Role, Character = e.Avatar.CharacterId,
+                    Position = e.Avatar.transform.position, Moving = e.Avatar.ServerMoving, Alive = e.Avatar.IsAlive,
+                });
+            }
 
-            skillEvents.Clear();
-            bool areaDamage = ProcessSkillRequests();
-            if (areaDamage) mobs.FlushEvents();
+            world.Run(MatchPhase.Growth, dt);
 
-            GiveExperience();
+            SendResults(world);
+            if (world.LastGrowth.AreaDamage) mobs.FlushEvents();
+            killsHandled += world.LastGrowth.KillsHandled;
 
-            Leveling.Step(dt);
-            Skills.Step(dt);
-            EndEffectsOfTheDead();
-
-            ProcessGrowthEvents();
-            KeepAttackModifiersCurrent();
             WriteAllReplicated();
 
-            if (skillEvents.Count > 0) combat.Publish(skillEvents);
+            if (world.SkillEvents.Count > 0) combat.Publish(world.SkillEvents);
 
             if (DevArgs.GrowthLog) LogStats(dt);
         }
 
-        bool ProcessSkillRequests()
+        /// <summary>Tells the owners what their skill requests and level ups came to, and writes what the development log shows.</summary>
+        void SendResults(MatchWorld world)
         {
-            bool areaDamage = false;
-
-            // Where every survivor stands and whether alive, for the skills that heal.
-            skillBodies.Clear();
-            if (requests.Count > 0)
+            for (int i = 0; i < world.SkillOutcomes.Count; i++)
             {
-                foreach (KeyValuePair<ulong, Entry> pair in entries)
-                {
-                    Entry e = pair.Value;
-                    if (e.Avatar == null || !e.Avatar.IsSpawned) continue;
-                    skillBodies.Add(new GrowthBody { ClientId = pair.Key, Position = e.Avatar.transform.position, Alive = combat.Survivors.IsAlive(pair.Key) });
-                }
-            }
+                SkillOutcome o = world.SkillOutcomes[i];
+                if (!entries.TryGetValue(o.ClientId, out Entry entry)) continue;
 
-            for (int i = 0; i < requests.Count; i++)
-            {
-                SkillRequest request = requests[i];
-                if (!entries.TryGetValue(request.ClientId, out Entry entry)) continue;
-
-                bool alive = combat.Survivors.IsAlive(request.ClientId);
-                SkillResult result = Skills.TryActivate(request.ClientId, entry.Avatar.CharacterId, request.Slot, alive, Leveling.Ranks(request.ClientId), out SkillActivation activation);
-
+                bool fired = o.Result == SkillResult.Fired;
                 if (entry.Growth != null)
-                    entry.Growth.ServerSendSkillResult(request.Slot, result, result == SkillResult.Fired ? activation.Cooldown : 0f);
+                    entry.Growth.ServerSendSkillResult(o.Slot, o.Result, fired ? o.Activation.Cooldown : 0f);
 
-                if (result != SkillResult.Fired)
+                if (!fired)
                 {
                     skillsRefused++;
                     continue;
                 }
 
                 skillsFired++;
-                Vector2 where = entry.Avatar.transform.position;
-                ushort aim = combat.Attacks.AimOf(request.ClientId);
-                CharacterDef character = CharacterCatalog.Get(entry.Avatar.CharacterId);
-
-                var context = new SkillContext
-                {
-                    CasterId = request.ClientId,
-                    Origin = where,
-                    AimAngle = aim,
-                    Mobs = mobs.Sim,
-                    Projectiles = combat.Projectiles,
-                    Survivors = combat.Survivors,
-                    Boss = combat.Boss.Exists ? combat.Boss : null,
-                    Bodies = skillBodies,
-                    Shape = character != null ? character.Attack.Shape : ProjectileShape.Default,
-                    Deaths = kills,
-                };
-                int touched = SkillExecutor.Apply(activation, context);
-                if (touched > 0) areaDamage = true;
-
-                skillEvents.Add(new CombatEvent
-                {
-                    Kind = CombatEventKind.Skill,
-                    Owner = request.ClientId,
-                    SkillId = activation.SkillId,
-                    Rank = (byte)activation.Rank,
-                    Position = where,
-                    Angle = aim,
-                    RangeScale = (byte)activation.RangeScale,
-                    DurationScale = (byte)activation.DurationScale,
-                });
-
                 if (DevArgs.GrowthLog)
-                    Debug.Log($"[BS] skill fired client={request.ClientId} skill={activation.SkillId} rank={activation.Rank} manaCost={SkillCatalog.EffectiveManaCost(SkillCatalog.Get(activation.SkillId), Leveling.Ranks(request.ClientId), entry.Avatar.CharacterId)} cooldown={activation.Cooldown:F2} damage={activation.Damage} amount={activation.Amount} rangeScale={activation.RangeScale} durationScale={activation.DurationScale} at {where.x:F1},{where.y:F1} aim={aim} touched={touched}");
+                    Debug.Log($"[BS] skill fired client={o.ClientId} skill={o.Activation.SkillId} rank={o.Activation.Rank} manaCost={SkillCatalog.EffectiveManaCost(SkillCatalog.Get(o.Activation.SkillId), Leveling.Ranks(o.ClientId), entry.Avatar.CharacterId)} cooldown={o.Activation.Cooldown:F2} damage={o.Activation.Damage} amount={o.Activation.Amount} rangeScale={o.Activation.RangeScale} durationScale={o.Activation.DurationScale} at {o.Where.x:F1},{o.Where.y:F1} aim={o.Aim} touched={o.Touched}");
             }
 
-            requests.Clear();
-            return areaDamage;
-        }
-
-        void GiveExperience()
-        {
-            deviceKills.Clear();
-            mobs.Sim.DrainDeviceKills(deviceKills);
-            if (kills.Count == 0 && deviceKills.Count == 0) return;
-
-            bodies.Clear();
-            foreach (KeyValuePair<ulong, Entry> pair in entries)
+            for (int i = 0; i < world.GrowthEvents.Count; i++)
             {
-                Entry e = pair.Value;
-                if (e.Avatar == null || !e.Avatar.IsSpawned) continue;
-                bodies.Add(new GrowthBody { ClientId = pair.Key, Position = e.Avatar.transform.position, Alive = combat.Survivors.IsAlive(pair.Key) });
-            }
-
-            for (int i = 0; i < kills.Count; i++) Leveling.AwardKill(kills[i], bodies);
-            for (int i = 0; i < deviceKills.Count; i++) Leveling.AwardDeviceKill(deviceKills[i], bodies);
-            killsHandled += kills.Count + deviceKills.Count;
-        }
-
-        void EndEffectsOfTheDead()
-        {
-            foreach (ulong id in entries.Keys)
-                if (!combat.Survivors.IsAlive(id)) Skills.EndBuff(id);
-        }
-
-        void ProcessGrowthEvents()
-        {
-            growthEvents.Clear();
-            Leveling.DrainEvents(growthEvents);
-
-            for (int i = 0; i < growthEvents.Count; i++)
-            {
-                GrowthEvent e = growthEvents[i];
+                GrowthEvent e = world.GrowthEvents[i];
                 if (!entries.TryGetValue(e.ClientId, out Entry entry)) continue;
 
                 switch (e.Kind)
                 {
                     case GrowthEventKind.LevelUp:
                         levelUps++;
-                        ApplyStats(e.ClientId, entry);
                         if (DevArgs.GrowthLog)
-                            Debug.Log($"[BS] growth: level up client={e.ClientId} level={e.Level} maxHealth={entry.Stats.MaxHealth} maxMana={entry.Stats.MaxMana} damage={entry.Stats.ProjectileDamage} health={combat.Survivors.Health(e.ClientId)} taken={entry.Stats.DamageTakenMultiplier:F2}");
+                        {
+                            SurvivorStats stats = world.StatsOf(e.ClientId);
+                            Debug.Log($"[BS] growth: level up client={e.ClientId} level={e.Level} maxHealth={stats.MaxHealth} maxMana={stats.MaxMana} damage={stats.ProjectileDamage} health={combat.Survivors.Health(e.ClientId)} taken={stats.DamageTakenMultiplier:F2}");
+                        }
                         break;
 
                     case GrowthEventKind.OfferOpened:
@@ -321,40 +224,11 @@ namespace BS
 
                     case GrowthEventKind.OfferClosed:
                         if (e.Auto) autoPicks++;
-                        ApplyStats(e.ClientId, entry);
                         entry.Growth?.ServerSendOfferClosed(e.OfferId, e.Skill, e.Auto);
                         if (DevArgs.GrowthLog)
                             Debug.Log($"[BS] growth: offer closed client={e.ClientId} id={e.OfferId} skill={e.Skill} auto={e.Auto} rank={Leveling.RankOf(e.ClientId, e.Skill)}");
                         break;
                 }
-            }
-        }
-
-        // ---- Stats ----
-
-        /// <summary>Works out a survivor's stats and hands them to the simulations that use them.</summary>
-        void ApplyStats(ulong id, Entry entry)
-        {
-            entry.Stats = StatCalc.Compute(Leveling.Level(id), Leveling.Ranks(id), CharacterCatalog.Get(entry.Avatar.CharacterId));
-            // -bsSurvivorHealth replaces the starting health in load tests; growth still adds on top of it.
-            int maxHealth = entry.Stats.MaxHealth;
-            if (DevArgs.SurvivorHealth > 0) maxHealth += DevArgs.SurvivorHealth - CombatConfig.SurvivorMaxHealth;
-            combat.Survivors.SetMaxHealth(id, maxHealth);
-            combat.Survivors.SetDamageTakenMultiplier(id, entry.Stats.DamageTakenMultiplier);
-            Skills.SetStats(id, entry.Stats.MaxMana, entry.Stats.ManaRegenPerSecond);
-            combat.Attacks.SetModifiers(id, entry.Stats.ProjectileDamage, entry.Stats.CooldownMultiplier * Skills.AttackMultiplier(id));
-        }
-
-        /// <summary>A running Rapid Fire changes the attack cooldown, so the modifiers are refreshed every step.</summary>
-        void KeepAttackModifiersCurrent()
-        {
-            order.Clear();
-            order.AddRange(entries.Keys);
-            for (int i = 0; i < order.Count; i++)
-            {
-                ulong id = order[i];
-                SurvivorStats s = entries[id].Stats;
-                combat.Attacks.SetModifiers(id, s.ProjectileDamage, s.CooldownMultiplier * Skills.AttackMultiplier(id));
             }
         }
 
@@ -393,9 +267,10 @@ namespace BS
             if (statsTimer < 5f) return;
             statsTimer = 0f;
 
+            MatchWorld world = MatchWorld.Current;
             var sb = new System.Text.StringBuilder();
             foreach (KeyValuePair<ulong, Entry> pair in entries)
-                sb.Append($"[{pair.Key}: lv{Leveling.Level(pair.Key)} xp{Leveling.Xp(pair.Key)} mana{Mathf.FloorToInt(Skills.Mana(pair.Key))}/{Mathf.RoundToInt(Skills.MaxMana(pair.Key))} regen{pair.Value.Stats.ManaRegenPerSecond:F1}] ");
+                sb.Append($"[{pair.Key}: lv{Leveling.Level(pair.Key)} xp{Leveling.Xp(pair.Key)} mana{Mathf.FloorToInt(Skills.Mana(pair.Key))}/{Mathf.RoundToInt(Skills.MaxMana(pair.Key))} regen{world.StatsOf(pair.Key).ManaRegenPerSecond:F1}] ");
 
             Debug.Log($"[BS] growth server: survivors={entries.Count} kills={killsHandled} levelUps={levelUps} skillsFired={skillsFired} refused={skillsRefused} " +
                       $"picks manual={manualPicks} auto={autoPicks} {sb}");

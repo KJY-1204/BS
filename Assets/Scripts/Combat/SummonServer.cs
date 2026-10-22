@@ -9,7 +9,7 @@ namespace BS
     /// player's summon and order requests, sends the new mobs' spawn events right away, and keeps the boss's own copy of the
     /// energy and the standing order up to date. Everything is cleared when a match ends.
     /// </summary>
-    [DefaultExecutionOrder(-90)]
+    [DefaultExecutionOrder(MatchPhases.SummonOrder)]
     public class SummonServer : MonoBehaviour
     {
         public static SummonServer Instance { get; private set; }
@@ -24,18 +24,7 @@ namespace BS
         void Awake()
         {
             Instance = this;
-            Sim = new SummonSim(MakeConfig());
-        }
-
-        static SummonConfig MakeConfig()
-        {
-            SummonConfig config = SummonConfig.Default;
-            if (DevArgs.SummonEnergy > 0)
-            {
-                config.MaxEnergy = DevArgs.SummonEnergy;
-                config.StartEnergy = DevArgs.SummonEnergy;
-            }
-            return config;
+            Sim = MatchWorld.Current.Summon;
         }
 
         void Start()
@@ -86,7 +75,9 @@ namespace BS
 
             CombatServer combat = CombatServer.Instance;
             bool bossThere = combat != null && combat.Boss.Exists;
-            Sim.Step(Time.fixedDeltaTime, RoleTable.MatchRunning && bossThere);
+            MatchWorld world = MatchWorld.Current;
+            world.MatchRunning = RoleTable.MatchRunning;
+            world.Run(MatchPhase.Summon, Time.fixedDeltaTime);
 
             PlayerAvatar boss = FindBoss();
             PlayerSummon view = boss != null ? boss.GetComponent<PlayerSummon>() : null;
