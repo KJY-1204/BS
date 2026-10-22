@@ -38,6 +38,7 @@ namespace BS
         readonly List<ulong> order = new List<ulong>();
         readonly List<GrowthBody> bodies = new List<GrowthBody>();
         readonly List<Vector2> kills = new List<Vector2>();
+        readonly List<Vector2> deviceKills = new List<Vector2>();
         readonly List<GrowthBody> skillBodies = new List<GrowthBody>();
         readonly List<GrowthEvent> growthEvents = new List<GrowthEvent>();
         readonly List<CombatEvent> skillEvents = new List<CombatEvent>();
@@ -270,7 +271,9 @@ namespace BS
 
         void GiveExperience()
         {
-            if (kills.Count == 0) return;
+            deviceKills.Clear();
+            mobs.Sim.DrainDeviceKills(deviceKills);
+            if (kills.Count == 0 && deviceKills.Count == 0) return;
 
             bodies.Clear();
             foreach (KeyValuePair<ulong, Entry> pair in entries)
@@ -281,7 +284,8 @@ namespace BS
             }
 
             for (int i = 0; i < kills.Count; i++) Leveling.AwardKill(kills[i], bodies);
-            killsHandled += kills.Count;
+            for (int i = 0; i < deviceKills.Count; i++) Leveling.AwardDeviceKill(deviceKills[i], bodies);
+            killsHandled += kills.Count + deviceKills.Count;
         }
 
         void EndEffectsOfTheDead()

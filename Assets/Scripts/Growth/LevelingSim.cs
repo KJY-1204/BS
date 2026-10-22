@@ -62,6 +62,7 @@ namespace BS
 
         public int MaxLevel = GrowthConfig.MaxLevel;
         public int XpPerKill = GrowthConfig.XpPerKill;
+        public int XpPerDevice = GrowthConfig.XpPerDevice;
         public float ShareDistance = GrowthConfig.XpShareDistance;
         public float OfferSeconds = GrowthConfig.OfferSeconds;
 
@@ -143,7 +144,12 @@ namespace BS
         /// A mob died at <paramref name="deathPosition"/>: every living survivor within the share distance
         /// gets the full experience, whoever dealt the damage. Returns how many received it.
         /// </summary>
-        public int AwardKill(Vector2 deathPosition, IReadOnlyList<GrowthBody> bodies)
+        public int AwardKill(Vector2 deathPosition, IReadOnlyList<GrowthBody> bodies) => AwardShared(deathPosition, bodies, XpPerKill);
+
+        /// <summary>A boss device was destroyed at <paramref name="deathPosition"/>: shared like a kill, with the device's own base amount.</summary>
+        public int AwardDeviceKill(Vector2 deathPosition, IReadOnlyList<GrowthBody> bodies) => AwardShared(deathPosition, bodies, XpPerDevice);
+
+        int AwardShared(Vector2 deathPosition, IReadOnlyList<GrowthBody> bodies, int baseAmount)
         {
             float limit = ShareDistance * ShareDistance;
             int recipients = 0;
@@ -154,7 +160,7 @@ namespace BS
                 if ((body.Position - deathPosition).sqrMagnitude > limit) continue;
 
                 State recipient = states[body.ClientId];
-                AddXp(body.ClientId, SkillCatalog.EffectiveExperience(XpPerKill, recipient.Ranks, recipient.Character));
+                AddXp(body.ClientId, SkillCatalog.EffectiveExperience(baseAmount, recipient.Ranks, recipient.Character));
                 recipients++;
             }
             return recipients;

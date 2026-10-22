@@ -45,6 +45,19 @@ namespace BS
         /// <summary>Seconds until a boss skill is ready (0 when ready); only meaningful for the boss player's own copy.</summary>
         public float SkillCooldown(int slot) => slot == 0 ? skillCooldown0.Value / 10f : slot == 1 ? skillCooldown1.Value / 10f : 0f;
 
+        // The devices the boss has standing, the most it may have and the placing cooldown in tenths of a second (boss player only).
+        readonly NetworkVariable<byte> deviceCount = new NetworkVariable<byte>(0, NetworkVariableReadPermission.Owner, NetworkVariableWritePermission.Server);
+        readonly NetworkVariable<byte> deviceMax = new NetworkVariable<byte>(0, NetworkVariableReadPermission.Owner, NetworkVariableWritePermission.Server);
+        readonly NetworkVariable<ushort> deviceCooldown = new NetworkVariable<ushort>(0, NetworkVariableReadPermission.Owner, NetworkVariableWritePermission.Server);
+        float nextAutoDevice;
+
+        /// <summary>How many devices the boss has standing (only meaningful for the boss player's own copy).</summary>
+        public int DeviceCount => deviceCount.Value;
+        /// <summary>The most devices the boss may have standing.</summary>
+        public int DeviceMax => deviceMax.Value;
+        /// <summary>Seconds until the boss may place another device (0 when ready).</summary>
+        public float DeviceCooldown => deviceCooldown.Value / 10f;
+
         string notice = "";
         float noticeUntil;
         int autoSummonCount;
@@ -85,6 +98,7 @@ namespace BS
             spawnedAt = Time.unscaledTime;
             nextAutoSummon = DevArgs.AutoSummonSeconds;
             nextAutoSkill = DevArgs.AutoBossSkillSeconds;
+            nextAutoDevice = DevArgs.AutoDeviceSeconds;
             if (IsOwner) Local = this;
         }
 
@@ -114,6 +128,29 @@ namespace BS
             byte b = (byte)Mathf.Clamp(Mathf.CeilToInt(cooldown1 * 10f), 0, 255);
             if (skillCooldown0.Value != a) skillCooldown0.Value = a;
             if (skillCooldown1.Value != b) skillCooldown1.Value = b;
+        }
+
+        /// <summary>Server only: copies the standing devices, their limit and the placing cooldown (in seconds) to the boss player.</summary>
+        public void ServerWriteDevices(int count, int max, float cooldownSeconds)
+        {
+            byte c = (byte)Mathf.Clamp(count, 0, 255);
+            byte m = (byte)Mathf.Clamp(max, 0, 255);
+            ushort cd = (ushort)Mathf.Clamp(Mathf.CeilToInt(cooldownSeconds * 10f), 0, ushort.MaxValue);
+            if (deviceCount.Value != c) deviceCount.Value = c;
+            if (deviceMax.Value != m) deviceMax.Value = m;
+            if (deviceCooldown.Value != cd) deviceCooldown.Value = cd;
+        }
+
+        [Rpc(SendTo.Server)]
+        void PlaceDeviceRpc()
+        {
+            SummonServer.Instance?.OnPlaceDeviceRequest(OwnerClientId);
+        }
+
+        void SendPlaceDevice()
+        {
+            if (IsServer) SummonServer.Instance?.OnPlaceDeviceRequest(OwnerClientId);
+            else PlaceDeviceRpc();
         }
 
         [Rpc(SendTo.Server)]
@@ -168,6 +205,9 @@ namespace BS
                 case SummonResult.NoRoom: Say("소환할 자리가 없습니다"); break;
                 case SummonResult.Partial: Say("일부만 소환했습니다"); break;
                 case SummonResult.UnknownKind: Say("알 수 없는 종류입니다"); break;
+                case SummonResult.DeviceCooldown: Say("아직 장치를 놓을 수 없습니다"); break;
+                case SummonResult.DeviceLimit: Say("장치를 더 놓을 수 없습니다"); break;
+                case SummonResult.TooClose: Say("생존자가 너무 가까워 장치를 놓을 수 없습니다"); break;
             }
             if (DevArgs.MobLog) Debug.Log($"[BS] summon result (boss): {(SummonResult)result}");
         }
@@ -190,7 +230,7 @@ namespace BS
                 if (seenTimer >= 5f)
                 {
                     seenTimer = 0f;
-                    Debug.Log($"[BS] summon seen: isOwner={IsOwner} energy={energy.Value}/{maxEnergy.Value} order={(OrderKind)orderKind.Value} skillCooldowns={skillCooldown0.Value}/{skillCooldown1.Value}");
+                    Debug.Log($"[BS] summon seen: isOwner={IsOwner} energy={energy.Value}/{maxEnergy.Value} order={(OrderKind)orderKind.Value} skillCooldowns={skillCooldown0.Value}/{skillCooldown1.Value} devices={deviceCount.Value}/{deviceMax.Value} deviceCooldown={deviceCooldown.Value}");
                 }
             }
 
@@ -213,12 +253,14 @@ namespace BS
                 // so a test can see the server refuse them.
                 RunAutoSummon();
                 RunAutoSkill();
+                RunAutoDevice();
                 return;
             }
 
             ReadInput();
             RunDevAutomation();
             RunAutoSkill();
+            RunAutoDevice();
         }
 
         void ReadInput()
@@ -247,6 +289,9 @@ namespace BS
 
             if (keyboard != null && keyboard.cKey.wasPressedThisFrame) SendClear();
 
+            // R places a device at the boss's position.
+            if (keyboard != null && keyboard.rKey.wasPressedThisFrame) SendPlaceDevice();
+
             // Q and E are the boss's skills. A held key counts once, by comparing with the last frame's state.
             for (int slot = 0; slot < BossSkills.Count && keyboard != null; slot++)
             {
@@ -267,6 +312,17 @@ namespace BS
             string keys = DevArgs.AutoBossSkillKeys;
             if (keys.Contains("q")) SendSkill(BossSkills.Barrage);
             if (keys.Contains("e")) SendSkill(BossSkills.Shockwave);
+        }
+
+        /// <summary>Development automation: place a device on a timer (it keeps going after the match so the refusal can be seen).</summary>
+        void RunAutoDevice()
+        {
+            if (DevArgs.AutoDeviceSeconds <= 0f) return;
+            float since = Time.unscaledTime - spawnedAt;
+            if (since < nextAutoDevice) return;
+
+            nextAutoDevice += DevArgs.AutoDeviceSeconds;
+            SendPlaceDevice();
         }
 
         void RunAutoSummon()

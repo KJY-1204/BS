@@ -41,6 +41,12 @@ namespace BS
         Ignored = 7,
         /// <summary>The request named a mob kind that does not exist.</summary>
         UnknownKind = 8,
+        /// <summary>A device was refused: the boss already has the most devices it may have.</summary>
+        DeviceLimit = 9,
+        /// <summary>A device was refused: a living survivor is too close to the boss.</summary>
+        TooClose = 10,
+        /// <summary>A device was refused: the placing cooldown has not passed.</summary>
+        DeviceCooldown = 11,
     }
 
     public enum OrderKind : byte
@@ -69,12 +75,12 @@ namespace BS
     /// </summary>
     public sealed class SummonSim
     {
-        const int PlacementAttempts = 8;
-
         public SummonConfig Config { get; }
 
         public float Energy { get; private set; }
         public float CooldownLeft { get; private set; }
+        /// <summary>The time until the boss may place another device (separate from the summon cooldown).</summary>
+        public float PlaceCooldownLeft { get; private set; }
 
         public OrderKind Order { get; private set; }
         /// <summary>The ordered survivor when <see cref="Order"/> is <see cref="OrderKind.Player"/>.</summary>
@@ -96,6 +102,7 @@ namespace BS
         {
             Energy = Mathf.Min(Config.StartEnergy, Config.MaxEnergy);
             CooldownLeft = 0f;
+            PlaceCooldownLeft = 0f;
             Order = OrderKind.None;
             OrderClient = 0;
             OrderPoint = default;
@@ -108,6 +115,38 @@ namespace BS
 
             Energy = Mathf.Min(Config.MaxEnergy, Energy + Config.RegenPerSecond * dt);
             CooldownLeft = Mathf.Max(0f, CooldownLeft - dt);
+            PlaceCooldownLeft = Mathf.Max(0f, PlaceCooldownLeft - dt);
+        }
+
+        // ---- Devices ----
+
+        /// <summary>
+        /// Places a device at the boss's position. The energy cost, the cooldown, the limit and the safe distance are the mob
+        /// simulation's device settings. A refusal takes no energy and starts no cooldown. The energy is the summon energy; the
+        /// cooldown is the placing cooldown, apart from the summon cooldown.
+        /// </summary>
+        public SummonResult PlaceDevice(in SummonContext ctx, bool fromBoss)
+        {
+            if (!fromBoss) return SummonResult.Ignored;
+            if (!ctx.MatchRunning || !ctx.BossStanding) return SummonResult.Unavailable;
+
+            MobSim mobs = ctx.Mobs;
+            DeviceConfig cfg = mobs.DeviceSettings;
+            if (PlaceCooldownLeft > 0f) return SummonResult.DeviceCooldown;
+            if (mobs.DeviceCount >= cfg.MaxDevices) return SummonResult.DeviceLimit;
+            if (mobs.Count >= mobs.HardCap) return SummonResult.FieldFull;
+            if (Energy + 1e-4f < cfg.EnergyCost) return SummonResult.NoEnergy;
+
+            float safeSq = cfg.PlaceSafeDistance * cfg.PlaceSafeDistance;
+            for (int s = 0; s < ctx.Survivors.Count; s++)
+                if (ctx.Survivors[s].Alive && (ctx.Survivors[s].Position - ctx.BossPosition).sqrMagnitude < safeSq) return SummonResult.TooClose;
+
+            byte type = MobKinds.Encode(MobKinds.OriginSummoned, MobKinds.Device);
+            if (!mobs.TrySpawn(ctx.BossPosition, type, out _)) return SummonResult.FieldFull;
+
+            Energy = Mathf.Max(0f, Energy - cfg.EnergyCost);
+            PlaceCooldownLeft = cfg.PlaceCooldownSeconds;
+            return SummonResult.Created;
         }
 
         // ---- Summoning ----
@@ -134,7 +173,7 @@ namespace BS
             created = 0;
             if (!fromBoss) return SummonResult.Ignored;
             if (!ctx.MatchRunning || !ctx.BossStanding) return SummonResult.Unavailable;
-            if (!MobKinds.IsValid(kind)) return SummonResult.UnknownKind;
+            if (!MobKinds.IsSummonable(kind)) return SummonResult.UnknownKind;
             if (CooldownLeft > 0f) return SummonResult.Cooldown;
 
             MobSim mobs = ctx.Mobs;
@@ -165,27 +204,8 @@ namespace BS
             return created == group ? SummonResult.Created : SummonResult.Partial;
         }
 
-        bool TryPickPosition(in SummonContext ctx, float radius, out Vector2 position)
-        {
-            position = default;
-            float safeSq = Config.SafeDistance * Config.SafeDistance;
-
-            for (int attempt = 0; attempt < PlacementAttempts; attempt++)
-            {
-                float angle = (float)rng.NextDouble() * Mathf.PI * 2f;
-                float distance = Config.RingMin + (float)rng.NextDouble() * (Config.RingMax - Config.RingMin);
-                Vector2 p = ClampToArena(ctx.BossPosition + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * distance, radius);
-
-                bool safe = true;
-                for (int s = 0; s < ctx.Survivors.Count && safe; s++)
-                    if (ctx.Survivors[s].Alive && (ctx.Survivors[s].Position - p).sqrMagnitude < safeSq) safe = false;
-
-                if (!safe) continue;
-                position = p;
-                return true;
-            }
-            return false;
-        }
+        bool TryPickPosition(in SummonContext ctx, float radius, out Vector2 position) =>
+            SpawnRing.TryPick(ctx.BossPosition, Config.RingMin, Config.RingMax, Config.SafeDistance, radius, ctx.Survivors, rng, out position);
 
         // ---- Orders ----
 
@@ -244,11 +264,6 @@ namespace BS
             else if (Order == OrderKind.Point) mobs.SetTargetPosition(id, OrderPoint);
         }
 
-        static Vector2 ClampToArena(Vector2 p, float margin)
-        {
-            float hx = ArenaConfig.Width * 0.5f - margin;
-            float hy = ArenaConfig.Height * 0.5f - margin;
-            return new Vector2(Mathf.Clamp(p.x, -hx, hx), Mathf.Clamp(p.y, -hy, hy));
-        }
+        static Vector2 ClampToArena(Vector2 p, float margin) => SpawnRing.ClampToArena(p, margin);
     }
 }

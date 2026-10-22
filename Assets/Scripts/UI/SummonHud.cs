@@ -38,6 +38,7 @@ namespace BS
             EnsureStyles();
             DrawEnergy(summon);
             DrawSkills(summon);
+            DrawDevice(summon);
             DrawKinds(summon);
             DrawOrderText(summon);
             DrawMarker(summon);
@@ -62,7 +63,7 @@ namespace BS
             Fill(new Rect(x, y, width, 18f), new Color(0f, 0f, 0f, 0.65f));
             Fill(new Rect(x + 2f, y + 2f, (width - 4f) * fraction, 14f), EnergyColor);
             GUI.Label(new Rect(x, y - 1f, width, 20f), $"소환 기운  {Mathf.FloorToInt(summon.Energy)} / {Mathf.FloorToInt(summon.MaxEnergy)}", center);
-            GUI.Label(new Rect(x - 40f, y + 20f, width + 80f, 20f), "왼쪽 클릭 발사   Space 소환   1~5 종류   Q/E 스킬   오른쪽 클릭 목표 지정   C 지정 해제", small);
+            GUI.Label(new Rect(x - 40f, y + 20f, width + 80f, 20f), "왼쪽 클릭 발사   Space 소환   1~5 종류   Q/E 스킬   R 장치   오른쪽 클릭 목표 지정   C 지정 해제", small);
 
             string notice = summon.Notice;
             if (!string.IsNullOrEmpty(notice))
@@ -95,6 +96,21 @@ namespace BS
                 string state = ready ? "준비" : $"{left:F1}초";
                 GUI.Label(new Rect(rect.x + 6f, rect.y, rect.width - 6f, rect.height), $"{skill.Key} {skill.Name} ({state})", small);
             }
+        }
+
+        // ---- The device ----
+
+        void DrawDevice(PlayerSummon summon)
+        {
+            const float width = 300f;
+            const float height = 22f;
+            Rect rect = new Rect(Screen.width * 0.5f - width * 0.5f, Screen.height - 176f, width, height);
+
+            bool ready = summon.DeviceCooldown <= 0f && summon.DeviceCount < summon.DeviceMax;
+            Fill(rect, ready ? new Color(1f, 1f, 1f, 0.28f) : new Color(0f, 0f, 0f, 0.5f));
+            Fill(new Rect(rect.x, rect.y, 5f, rect.height), MobKinds.Get(MobKinds.Device).Color);
+            string text = DeviceBar.HudText(summon.DeviceCount, summon.DeviceMax, summon.DeviceCooldown, DeviceConfig.Default.EnergyCost);
+            GUI.Label(new Rect(rect.x + 6f, rect.y, rect.width - 6f, rect.height), text, small);
         }
 
         // ---- The kinds the boss can summon ----

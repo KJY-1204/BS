@@ -93,6 +93,8 @@ namespace BS
         public static float MatchSeconds { get; private set; }
         public static bool BossChase { get; private set; }
         public static float AutoSummonSeconds { get; private set; } = -1f;
+        /// <summary>The boss places a device this often (seconds); negative for never.</summary>
+        public static float AutoDeviceSeconds { get; private set; } = -1f;
         /// <summary>The boss skill keys the automation presses ("q", "e" or "qe"), empty for none.</summary>
         public static string AutoBossSkillKeys { get; private set; } = "";
         public static float AutoBossSkillSeconds { get; private set; } = -1f;
@@ -201,6 +203,9 @@ namespace BS
                         AutoSummonKinds = list.ToArray();
                         break;
                     }
+                    case "-bsAutoDevice" when i + 1 < args.Length:
+                        if (float.TryParse(args[i + 1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float adv)) AutoDeviceSeconds = adv;
+                        break;
                     case "-bsAutoSummon" when i + 1 < args.Length:
                         if (float.TryParse(args[i + 1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float asum)) AutoSummonSeconds = asum;
                         break;

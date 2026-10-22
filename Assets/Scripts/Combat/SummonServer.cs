@@ -90,7 +90,12 @@ namespace BS
 
             PlayerAvatar boss = FindBoss();
             PlayerSummon view = boss != null ? boss.GetComponent<PlayerSummon>() : null;
-            if (view != null && view.IsSpawned) view.ServerWrite(Sim.Energy, Sim.Config.MaxEnergy, Sim.Order, Sim.OrderClient, Sim.OrderPoint);
+            if (view != null && view.IsSpawned)
+            {
+                view.ServerWrite(Sim.Energy, Sim.Config.MaxEnergy, Sim.Order, Sim.OrderClient, Sim.OrderPoint);
+                MobSim mobSim = MobServer.Instance != null ? MobServer.Instance.Sim : null;
+                if (mobSim != null) view.ServerWriteDevices(mobSim.DeviceCount, mobSim.DeviceSettings.MaxDevices, Sim.PlaceCooldownLeft);
+            }
 
             if (DevArgs.MobLog && RoleTable.MatchRunning && bossThere)
             {
@@ -141,6 +146,25 @@ namespace BS
             if (DevArgs.MobLog)
                 Debug.Log($"[BS] summon: result={result} kind={kind} created={created} energy={Sim.Energy:F1}/{Sim.Config.MaxEnergy:F0} " +
                           $"mobs={ctx.Mobs.Count} auto={ctx.Mobs.AutoCount} summoned={ctx.Mobs.SummonedCount} fromBoss={fromBoss}");
+
+            if (result != SummonResult.Created) Tell(boss, result, fromBoss);
+        }
+
+        /// <summary>The boss player asks to place a device at the boss's position.</summary>
+        public void OnPlaceDeviceRequest(ulong clientId)
+        {
+            if (!running) return;
+
+            PlayerAvatar boss = FindBoss();
+            bool fromBoss = boss != null && boss.OwnerClientId == clientId;
+            if (!TryMakeContext(boss, out SummonContext ctx)) { Tell(boss, SummonResult.Unavailable, fromBoss); return; }
+
+            SummonResult result = Sim.PlaceDevice(ctx, fromBoss);
+            if (result == SummonResult.Created) MobServer.Instance?.FlushEvents(); // the spawn event goes out in the same tick
+
+            if (DevArgs.MobLog)
+                Debug.Log($"[BS] device: result={result} energy={Sim.Energy:F1}/{Sim.Config.MaxEnergy:F0} devices={ctx.Mobs.DeviceCount}/{ctx.Mobs.DeviceSettings.MaxDevices} " +
+                          $"mobs={ctx.Mobs.Count} fromBoss={fromBoss}");
 
             if (result != SummonResult.Created) Tell(boss, result, fromBoss);
         }

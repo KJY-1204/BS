@@ -55,6 +55,8 @@ namespace BS
                 sr.color = MobKinds.ColorOf(type);
                 float size = MobConfig.Radius * 2f * MobKinds.Get(MobKinds.KindOf(type)).RadiusMultiple;
                 sr.transform.localScale = new Vector3(size, size, 1f);
+                // A device is drawn as a diamond so it is told apart from every mob at a glance.
+                sr.transform.localRotation = MobKinds.IsDeviceType(type) ? Quaternion.Euler(0f, 0f, 45f) : Quaternion.identity;
             }
 
             for (int i = count; i < active; i++)

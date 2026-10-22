@@ -5,6 +5,8 @@ namespace BS
     {
         public const int MaxLevel = 20;
         public const int XpPerKill = 10;
+        /// <summary>The base experience for destroying a boss device, more than a mob gives.</summary>
+        public const int XpPerDevice = 30;
         /// <summary>Living survivors within this distance of where a mob died share its experience.</summary>
         public const float XpShareDistance = 10f;
 

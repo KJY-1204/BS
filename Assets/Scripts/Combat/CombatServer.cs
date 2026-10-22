@@ -258,7 +258,7 @@ namespace BS
             events.AddRange(blastEvents);
             blastEvents.Clear();
             for (int i = 0; i < events.Count; i++)
-                if (events[i].Kind == CombatEventKind.Hit && events[i].Killed && !events[i].SurvivorTarget && events[i].MobId != BossSim.MobId) killPositions.Add(events[i].Position);
+                if (events[i].Kind == CombatEventKind.Hit && events[i].Killed && !events[i].SurvivorTarget && events[i].MobId != BossSim.MobId && !mobs.Sim.WasDeviceKill(events[i].MobId)) killPositions.Add(events[i].Position);
             if (events.Count > 0) PublishEvents(events);
 
             // Mob kills made by projectiles this step go out now, with the same time as the hits.

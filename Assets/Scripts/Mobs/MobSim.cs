@@ -97,6 +97,8 @@ namespace BS
         // Behavior state: the time until a ranged mob's next shot, or until a lit exploder blasts.
         readonly float[] timer;
         readonly bool[] fuseLit;
+        // A device's remaining lifetime (the production countdown is its timer).
+        readonly float[] lifetime;
         readonly System.Random behaviorRng;
         readonly List<MobShotRequest> shotRequests = new List<MobShotRequest>();
         readonly List<MobBlast> blasts = new List<MobBlast>();
@@ -115,6 +117,20 @@ namespace BS
 
         int count;
         int summonedCount;
+        int deviceCount;
+
+        /// <summary>What the devices do: how long they stand, how often and how much they make. See <see cref="DeviceConfig"/>.</summary>
+        public DeviceConfig DeviceSettings = DeviceConfig.Default;
+
+        // The standing order for summoned mobs, kept so the mobs a device makes can obey it too.
+        byte standingOrder;
+        ulong standingClient;
+        Vector2 standingPoint;
+        readonly List<ushort> deviceIds = new List<ushort>();
+
+        // Devices destroyed by damage (not by expiry) since the growth server last took them: they give experience of their own.
+        readonly List<ushort> deviceKillIds = new List<ushort>();
+        readonly List<Vector2> deviceKillPositions = new List<Vector2>();
         ushort nextId = 1;
         float spawnAccumulator;
 
@@ -128,6 +144,7 @@ namespace BS
             ids = new ushort[hardCap];
             timer = new float[hardCap];
             fuseLit = new bool[hardCap];
+            lifetime = new float[hardCap];
             health = new int[hardCap];
             types = new byte[hardCap];
             positions = new Vector2[hardCap];
@@ -146,8 +163,11 @@ namespace BS
 
         public int Count => count;
         public int SummonedCount => summonedCount;
-        public int AutoCount => count - summonedCount;
-        public bool IsSummoned(int index) => MobKinds.IsSummoned(types[index]);
+        /// <summary>How many devices stand. A device is no mob kind: it is neither an automatic nor a summoned mob in these counts.</summary>
+        public int DeviceCount => deviceCount;
+        public int AutoCount => count - summonedCount - deviceCount;
+        public bool IsSummoned(int index) => MobKinds.IsSummoned(types[index]) && !MobKinds.IsDeviceType(types[index]);
+        public bool IsDevice(int index) => MobKinds.IsDeviceType(types[index]);
         public byte KindAt(int index) => MobKinds.KindOf(types[index]);
 
         // The basic values are the fields above; a kind's value is the field times the kind's multiple.
@@ -181,8 +201,15 @@ namespace BS
             MobKindDef def = MobKinds.Get(MobKinds.KindOf(type));
             // A ranged mob waits a varying part of its cooldown before the first shot, so mobs made together do not fire together.
             timer[i] = def.Behavior == MobBehavior.Ranged ? def.ShotCooldownSeconds * (0.4f + 0.6f * (float)behaviorRng.NextDouble()) : 0f;
+            lifetime[i] = 0f;
+            if (def.Behavior == MobBehavior.Device)
+            {
+                timer[i] = DeviceSettings.ProductionIntervalSeconds;
+                lifetime[i] = DeviceSettings.LifetimeSeconds;
+                deviceCount++;
+            }
             indexOf[id] = i;
-            if (MobKinds.IsSummoned(type)) summonedCount++;
+            if (MobKinds.IsSummoned(type) && !MobKinds.IsDeviceType(type)) summonedCount++;
             gridDirty = true;
 
             events.Add(new MobEvent { IsSpawn = true, Id = id, Type = type, Position = positions[i] });
@@ -193,7 +220,8 @@ namespace BS
         {
             if (!indexOf.TryGetValue(id, out int i)) return false;
 
-            if (MobKinds.IsSummoned(types[i])) summonedCount--;
+            if (MobKinds.IsDeviceType(types[i])) deviceCount--;
+            else if (MobKinds.IsSummoned(types[i])) summonedCount--;
 
             int last = count - 1;
             if (i != last)
@@ -206,6 +234,7 @@ namespace BS
                 overrideClient[i] = overrideClient[last];
                 overridePosition[i] = overridePosition[last];
                 timer[i] = timer[last];
+                lifetime[i] = lifetime[last];
                 fuseLit[i] = fuseLit[last];
                 indexOf[ids[i]] = i;
             }
@@ -243,6 +272,11 @@ namespace BS
             if (health[i] <= 0)
             {
                 killed = true;
+                if (MobKinds.IsDeviceType(types[i]))
+                {
+                    deviceKillIds.Add(id);
+                    deviceKillPositions.Add(positions[i]);
+                }
                 Remove(id);
             }
             return true;
@@ -432,8 +466,9 @@ namespace BS
                 Vector2 where = default;
                 if (indexOf.TryGetValue(id, out int index)) where = positions[index];
 
-                if (ApplyDamage(id, damage, out _, out bool killed) && killed && deaths != null)
-                    deaths.Add(where);
+                int deviceKillsBefore = deviceKillIds.Count;
+                if (ApplyDamage(id, damage, out _, out bool killed) && killed && deaths != null && deviceKillIds.Count == deviceKillsBefore)
+                    deaths.Add(where); // a destroyed device is reported by DrainDeviceKills, not here
             }
             return areaTargets.Count;
         }
@@ -462,6 +497,7 @@ namespace BS
                     for (int k = cellStart[c]; k < cellStart[c + 1]; k++)
                     {
                         int m = cellItems[k];
+                        if (MobKinds.IsDeviceType(types[m])) continue; // a device is not moved
                         if ((positions[m] - center).sqrMagnitude <= radiusSq) areaTargets.Add(ids[m]);
                     }
                 }
@@ -516,8 +552,9 @@ namespace BS
                 Vector2 where = default;
                 if (indexOf.TryGetValue(id, out int index)) where = positions[index];
 
-                if (ApplyDamage(id, damage, out _, out bool killed) && killed && deaths != null)
-                    deaths.Add(where);
+                int deviceKillsBefore = deviceKillIds.Count;
+                if (ApplyDamage(id, damage, out _, out bool killed) && killed && deaths != null && deviceKillIds.Count == deviceKillsBefore)
+                    deaths.Add(where); // a destroyed device is reported by DrainDeviceKills, not here
             }
             return areaTargets.Count;
         }
@@ -568,6 +605,7 @@ namespace BS
                     {
                         int m = cellItems[k];
                         byte kind = MobKinds.KindOf(types[m]);
+                        if (MobKinds.IsDevice(kind)) continue; // a device hurts nobody by touch
                         float reach = survivorRadius + RadiusOf(kind);
                         if ((positions[m] - center).sqrMagnitude > reach * reach) continue;
 
@@ -580,11 +618,29 @@ namespace BS
             return touched;
         }
 
+        /// <summary>The device with this identifier was destroyed by damage since the last <see cref="DrainDeviceKills"/>.</summary>
+        public bool WasDeviceKill(ushort id) => deviceKillIds.Contains(id);
+
+        /// <summary>
+        /// Hands over where the devices destroyed by damage stood and forgets them. A device's destruction is reported here and not in
+        /// the death lists of the area and line damage, because it gives a different experience from a killed mob.
+        /// </summary>
+        public void DrainDeviceKills(List<Vector2> into)
+        {
+            into.AddRange(deviceKillPositions);
+            deviceKillPositions.Clear();
+            deviceKillIds.Clear();
+        }
+
         /// <summary>Drops every mob without emitting events (the room ended).</summary>
         public void Clear()
         {
+            deviceKillIds.Clear();
+            deviceKillPositions.Clear();
             count = 0;
             summonedCount = 0;
+            deviceCount = 0;
+            standingOrder = OverrideNone;
             indexOf.Clear();
             events.Clear();
             shotRequests.Clear();
@@ -626,6 +682,9 @@ namespace BS
             shotRequests.Clear();
             blasts.Clear();
 
+            // The devices keep working while time is stopped: they only count down and make mobs.
+            UpdateDevices(dt, survivors);
+
             if (FrozenSeconds > 0f)
             {
                 // Time is stopped: nothing moves and nothing new appears. Mobs can still be damaged and killed.
@@ -645,7 +704,7 @@ namespace BS
 
         public bool SetTarget(ushort id, ulong clientId)
         {
-            if (!indexOf.TryGetValue(id, out int i)) return false;
+            if (!indexOf.TryGetValue(id, out int i) || MobKinds.IsDeviceType(types[i])) return false;
             overrideKind[i] = OverridePlayer;
             overrideClient[i] = clientId;
             return true;
@@ -653,7 +712,7 @@ namespace BS
 
         public bool SetTargetPosition(ushort id, Vector2 position)
         {
-            if (!indexOf.TryGetValue(id, out int i)) return false;
+            if (!indexOf.TryGetValue(id, out int i) || MobKinds.IsDeviceType(types[i])) return false;
             overrideKind[i] = OverridePosition;
             overridePosition[i] = ClampToArena(position);
             return true;
@@ -669,10 +728,14 @@ namespace BS
         /// <summary>Gives every summoned mob the same target (automatic mobs are left alone). Returns how many mobs it touched.</summary>
         public int ApplyOrderToSummoned(bool hasPlayer, ulong clientId, bool hasPosition, Vector2 position)
         {
+            standingOrder = hasPlayer ? OverridePlayer : hasPosition ? OverridePosition : OverrideNone;
+            standingClient = clientId;
+            standingPoint = hasPosition ? ClampToArena(position) : default;
+
             int touched = 0;
             for (int i = 0; i < count; i++)
             {
-                if (!MobKinds.IsSummoned(types[i])) continue;
+                if (!MobKinds.IsSummoned(types[i]) || MobKinds.IsDeviceType(types[i])) continue;
                 touched++;
                 if (hasPlayer) { overrideKind[i] = OverridePlayer; overrideClient[i] = clientId; }
                 else if (hasPosition) { overrideKind[i] = OverridePosition; overridePosition[i] = ClampToArena(position); }
@@ -694,6 +757,7 @@ namespace BS
 
         public void OnPlayerLeft(ulong clientId)
         {
+            if (standingOrder == OverridePlayer && standingClient == clientId) standingOrder = OverrideNone;
             for (int i = 0; i < count; i++)
                 if (overrideKind[i] == OverridePlayer && overrideClient[i] == clientId)
                     overrideKind[i] = OverrideNone;
@@ -779,6 +843,7 @@ namespace BS
         {
             for (int i = 0; i < count; i++)
             {
+                if (MobKinds.IsDeviceType(types[i])) continue; // a device stands still
                 float step = SpeedOf(MobKinds.KindOf(types[i])) * dt;
                 if (!TryGetTargetPosition(i, survivors, out Vector2 target)) continue;
 
@@ -816,7 +881,7 @@ namespace BS
             for (int i = count - 1; i >= 0; i--)
             {
                 MobKindDef def = MobKinds.Get(MobKinds.KindOf(types[i]));
-                if (def.Behavior == MobBehavior.Chase) continue;
+                if (def.Behavior == MobBehavior.Chase || def.Behavior == MobBehavior.Device) continue;
 
                 if (def.Behavior == MobBehavior.Ranged)
                 {
@@ -848,6 +913,50 @@ namespace BS
 
                 blasts.Add(new MobBlast { MobId = ids[i], Position = positions[i], Radius = def.BlastRadius, Damage = def.BlastDamage });
                 Remove(ids[i]);
+            }
+        }
+
+        /// <summary>
+        /// Runs the devices: each counts down its lifetime and disappears when it has passed (no death record, so no experience), and
+        /// at every production interval makes its mobs on a ring around itself under the hard cap and the safe distance. The mobs are
+        /// basic summoned mobs that take the standing order, and they cost no energy.
+        /// </summary>
+        void UpdateDevices(float dt, IReadOnlyList<SurvivorInfo> survivors)
+        {
+            if (deviceCount == 0) return;
+
+            // Ids first: making mobs and removing a device change the arrays under the loop.
+            deviceIds.Clear();
+            for (int i = 0; i < count; i++)
+                if (MobKinds.IsDeviceType(types[i])) deviceIds.Add(ids[i]);
+
+            DeviceConfig cfg = DeviceSettings;
+            for (int d = 0; d < deviceIds.Count; d++)
+            {
+                if (!indexOf.TryGetValue(deviceIds[d], out int i)) continue;
+
+                lifetime[i] -= dt;
+                if (lifetime[i] <= 0f) { Remove(deviceIds[d]); continue; }
+
+                timer[i] -= dt;
+                if (timer[i] > 0f) continue;
+                timer[i] += cfg.ProductionIntervalSeconds;
+                if (timer[i] <= 0f) timer[i] = cfg.ProductionIntervalSeconds;
+
+                MakeMobs(positions[i], survivors, cfg);
+            }
+        }
+
+        void MakeMobs(Vector2 center, IReadOnlyList<SurvivorInfo> survivors, DeviceConfig cfg)
+        {
+            for (int n = 0; n < cfg.MobsPerBatch; n++)
+            {
+                if (count >= HardCap) return;
+                if (!SpawnRing.TryPick(center, cfg.RingMin, cfg.RingMax, cfg.MobSafeDistance, Radius, survivors, behaviorRng, out Vector2 position)) continue;
+                if (!TrySpawn(position, TypeSummoned, out ushort id)) return;
+
+                if (standingOrder == OverridePlayer) SetTarget(id, standingClient);
+                else if (standingOrder == OverridePosition) SetTargetPosition(id, standingPoint);
             }
         }
 
@@ -907,6 +1016,7 @@ namespace BS
 
             for (int i = 0; i < count; i++)
             {
+                if (MobKinds.IsDeviceType(types[i])) continue; // a device is neither pushed nor pushes
                 float radiusI = RadiusOf(MobKinds.KindOf(types[i]));
                 int cell = cellOfMob[i];
                 int cx = cell % gridW;
@@ -920,7 +1030,7 @@ namespace BS
                         for (int k = cellStart[c]; k < cellStart[c + 1]; k++)
                         {
                             int j = cellItems[k];
-                            if (j <= i) continue;
+                            if (j <= i || MobKinds.IsDeviceType(types[j])) continue;
                             PushApart(i, j, radiusI + RadiusOf(MobKinds.KindOf(types[j])));
                         }
                     }

@@ -11,6 +11,8 @@ namespace BS
         Ranged = 1,
         /// <summary>Runs in, stops for a short fuse when a survivor is close and blasts the survivors around it.</summary>
         Exploder = 2,
+        /// <summary>Stands still, makes mobs at an interval and disappears after a lifetime. Only the boss's device has it.</summary>
+        Device = 3,
     }
 
     /// <summary>
@@ -66,7 +68,13 @@ namespace BS
         public const byte Tough = 2;
         public const byte Ranged = 3;
         public const byte Exploder = 4;
+        /// <summary>The five kinds of mob, which the boss can pick from. The device is not one of them (see <see cref="Device"/>).</summary>
         public const int Count = 5;
+        /// <summary>
+        /// The boss's device: a still body that makes mobs. It uses the mob entry, the type byte and the mob messages but is no mob
+        /// kind in the rules (the boss cannot summon it by hand and it is no kind that orders, rewards or the number keys know).
+        /// </summary>
+        public const byte Device = 5;
 
         public const byte OriginAuto = 0;
         public const byte OriginSummoned = 1;
@@ -90,6 +98,9 @@ namespace BS
             new MobKindDef { Name = "폭발 몹", SpeedMultiple = 1.4f, HealthMultiple = 0.6f, RadiusMultiple = 1f, ContactDamageMultiple = 0.5f,
                              CostMultiple = 1.6f, GroupMultiple = 0.75f, Color = new Color(0.95f, 0.85f, 0.2f),
                              Behavior = MobBehavior.Exploder, TriggerDistance = 1.6f, FuseSeconds = 0.7f, BlastRadius = 2.2f, BlastDamage = 25 },
+            // The boss's device: a still, sturdy body that hurts nobody by touch. Speed and contact damage are zero.
+            new MobKindDef { Name = "장치", SpeedMultiple = 0f, HealthMultiple = 4f, RadiusMultiple = 1.15f, ContactDamageMultiple = 0f,
+                             CostMultiple = 0f, GroupMultiple = 0f, Color = new Color(0.25f, 0.9f, 0.45f), Behavior = MobBehavior.Device },
         };
 
         /// <summary>The color of a basic mob that a boss summoned; the other kinds keep their own color whatever the origin.</summary>
@@ -106,7 +117,16 @@ namespace BS
             }
         }
 
+        /// <summary>The kind exists, the device included.</summary>
         public static bool IsValid(byte kind) => kind < kinds.Length;
+
+        /// <summary>The boss can summon this kind by hand (every kind but the device).</summary>
+        public static bool IsSummonable(byte kind) => kind < Count;
+
+        public static bool IsDevice(byte kind) => kind == Device;
+
+        /// <summary>The encoded type byte is a device's.</summary>
+        public static bool IsDeviceType(byte type) => KindOf(type) == Device;
 
         /// <summary>The kind's data. A kind that does not exist is treated as the basic kind.</summary>
         public static MobKindDef Get(byte kind) => kinds[IsValid(kind) ? kind : Basic];

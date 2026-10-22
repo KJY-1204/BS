@@ -27,7 +27,8 @@ namespace BS.Tests
                 Assert.IsTrue(MobKinds.IsValid(k));
                 Assert.IsFalse(string.IsNullOrEmpty(MobKinds.Get(k).Name));
             }
-            Assert.IsFalse(MobKinds.IsValid(MobKinds.Count));
+            Assert.IsTrue(MobKinds.IsValid(MobKinds.Device)); // the device is a kind of the table but no mob kind
+            Assert.IsFalse(MobKinds.IsValid(MobKinds.Device + 1));
             Assert.IsFalse(MobKinds.IsValid(200));
         }
 

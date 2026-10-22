@@ -42,6 +42,8 @@ namespace BS
         int nextFlash;
 
         readonly Dictionary<ushort, KeyValuePair<float, byte>> bars = new Dictionary<ushort, KeyValuePair<float, byte>>();
+        // The latest health percentage a hit told for each mob (read for devices, whose bar stays up).
+        readonly Dictionary<ushort, byte> deviceHealth = new Dictionary<ushort, byte>();
         readonly List<ushort> expiredBars = new List<ushort>();
         readonly List<SpriteRenderer> barBack = new List<SpriteRenderer>();
         readonly List<SpriteRenderer> barFill = new List<SpriteRenderer>();
@@ -453,10 +455,13 @@ namespace BS
             // A hit on the boss shows its flash only: its bar is drawn from its replicated health over its character.
             if (effect.MobId == BossSim.MobId) return;
 
-            if (!effect.Killed)
-                bars[effect.MobId] = new KeyValuePair<float, byte>(Time.time + CombatConfig.MobHealthBarSeconds, effect.HealthPercent);
+            // A device keeps its bar for as long as it stands, so its health is kept apart from the short-lived mob bars.
+            if (effect.Killed) { bars.Remove(effect.MobId); deviceHealth.Remove(effect.MobId); }
             else
-                bars.Remove(effect.MobId);
+            {
+                bars[effect.MobId] = new KeyValuePair<float, byte>(Time.time + CombatConfig.MobHealthBarSeconds, effect.HealthPercent);
+                deviceHealth[effect.MobId] = effect.HealthPercent;
+            }
         }
 
         void DrawFlashes()
@@ -488,6 +493,24 @@ namespace BS
             IMobSource mobs = mobView != null ? mobView.Source : null;
             int shown = 0;
 
+            // A standing device always shows its bar (full until the first hit on it tells the client its health).
+            for (int i = 0; mobs != null && i < mobs.Count; i++)
+            {
+                if (!MobKinds.IsDeviceType(mobs.TypeAt(i))) continue;
+
+                EnsureBar(shown);
+                Vector2 p = mobs.PositionAt(i);
+                float width = BarWidth * Mathf.Clamp01(DeviceBar.Percent(deviceHealth, mobs.IdAt(i)) / 100f);
+                float y = p.y + DeviceBar.Offset;
+
+                barBack[shown].enabled = true;
+                barBack[shown].transform.position = new Vector3(p.x, y, 0f);
+                barFill[shown].enabled = true;
+                barFill[shown].transform.position = new Vector3(p.x - BarWidth * 0.5f + width * 0.5f, y, 0f);
+                barFill[shown].transform.localScale = new Vector3(Mathf.Max(width, 0.0001f), BarHeight, 1f);
+                shown++;
+            }
+
             if (mobs != null && bars.Count > 0)
             {
                 expiredBars.Clear();
@@ -497,6 +520,7 @@ namespace BS
 
                 for (int i = 0; i < mobs.Count && bars.Count > 0; i++)
                 {
+                    if (MobKinds.IsDeviceType(mobs.TypeAt(i))) continue; // drawn above
                     if (!bars.TryGetValue(mobs.IdAt(i), out KeyValuePair<float, byte> bar)) continue;
 
                     EnsureBar(shown);
@@ -515,6 +539,7 @@ namespace BS
             else if (mobs == null)
             {
                 bars.Clear();
+                deviceHealth.Clear();
             }
 
             for (int i = shown; i < barsShown; i++)
