@@ -67,11 +67,10 @@ namespace BS.Tests
         }
 
         [Test]
-        public void TheStandardKindIsExactlyTheBossThatExistedBeforeKinds()
+        public void TheStandardKindKeepsItsSizeDamageAttackAndSkills()
         {
+            // Health and speed were retuned for long matches (see TheKindsHaveTheTunedHealthAndSpeed); the rest is as it always was.
             BossDef k = BossCatalog.Get(BossCatalog.Standard);
-            Assert.AreEqual(6000, k.MaxHealth);
-            Assert.AreEqual(6f, k.MoveSpeed);
             Assert.AreEqual(0.9f, k.Radius);
             Assert.AreEqual(25, k.ContactDamage);
             Assert.AreEqual(new Color(0.85f, 0.15f, 0.15f), k.Color);
@@ -165,16 +164,16 @@ namespace BS.Tests
         [Test]
         public void TheCurrentKindDecidesTheBossSpeedAndTheShotDamage()
         {
-            Assert.AreEqual(6f, CharacterCatalog.BossMoveSpeed);
+            Assert.AreEqual(BossCatalog.Get(BossCatalog.Standard).MoveSpeed, CharacterCatalog.BossMoveSpeed);
             Assert.AreEqual(15, CombatServer.BossShotDamage);
 
             BossCatalog.SetCurrentKind(BossCatalog.Giant);
-            Assert.AreEqual(4.5f, CharacterCatalog.BossMoveSpeed);
+            Assert.AreEqual(BossCatalog.Get(BossCatalog.Giant).MoveSpeed, CharacterCatalog.BossMoveSpeed);
             Assert.AreEqual(20, CombatServer.BossShotDamage);
 
             BossCatalog.SetCurrentKind(BossCatalog.Sniper);
-            Assert.AreEqual(8f, CharacterCatalog.BossMoveSpeed);
-            Assert.AreEqual(12, CombatServer.BossShotDamage);
+            Assert.AreEqual(BossCatalog.Get(BossCatalog.Sniper).MoveSpeed, CharacterCatalog.BossMoveSpeed);
+            Assert.AreEqual(BossCatalog.Get(BossCatalog.Sniper).Attack.BaseDamage, CombatServer.BossShotDamage);
         }
 
         [Test]

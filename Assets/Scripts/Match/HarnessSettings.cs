@@ -81,6 +81,9 @@ namespace BS
             ["bossShotDamage"] = new Entry { OnBoss = (b, v) => b.Attack.BaseDamage = (int)v },
             ["bossShotCooldown"] = new Entry { OnBoss = (b, v) => b.Attack.CooldownSeconds = v },
             ["matchSeconds"] = new Entry { OnBoss = (b, v) => b.MatchSeconds = v },
+            // The damage of one skill of the boss's data copy (Q is the first, E the second), apart from the other.
+            ["bossSkillQDamage"] = new Entry { OnBoss = (b, v) => b.Skills[0].Damage = (int)v },
+            ["bossSkillEDamage"] = new Entry { OnBoss = (b, v) => { if (b.Skills.Length > 1) b.Skills[1].Damage = (int)v; } },
             ["bossSkillDamage"] = new Entry { OnWorld = (w, v) => w.BossSkills.BaseDamageOverride = (int)v },
             ["mobHealth"] = new Entry { OnWorld = (w, v) => w.Mobs.MaxHealth = (int)v },
             ["mobSpeed"] = new Entry { OnWorld = (w, v) => w.Mobs.Speed = v },

@@ -10,10 +10,11 @@ namespace BS
     /// </summary>
     public class PlayerCombat : NetworkBehaviour
     {
-        readonly NetworkVariable<ushort> health = new NetworkVariable<ushort>(
-            (ushort)CombatConfig.SurvivorMaxHealth, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
-        readonly NetworkVariable<ushort> maxHealth = new NetworkVariable<ushort>(
-            (ushort)CombatConfig.SurvivorMaxHealth, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+        // 32-bit: a boss has hundreds of thousands of health, far above what a 16-bit value holds.
+        readonly NetworkVariable<int> health = new NetworkVariable<int>(
+            CombatConfig.SurvivorMaxHealth, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+        readonly NetworkVariable<int> maxHealth = new NetworkVariable<int>(
+            CombatConfig.SurvivorMaxHealth, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
         readonly NetworkVariable<byte> reviveGauge = new NetworkVariable<byte>(
             0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
@@ -134,11 +135,11 @@ namespace BS
         /// <summary>Server only: copies the simulation's values to the replicated variables when they change.</summary>
         public void ServerWrite(int healthValue, float gauge01, int maxHealthValue = -1)
         {
-            ushort h = (ushort)Mathf.Clamp(healthValue, 0, ushort.MaxValue);
+            int h = Mathf.Max(healthValue, 0);
             byte g = (byte)Mathf.Clamp(Mathf.RoundToInt(gauge01 * 100f), 0, 100);
             if (maxHealthValue > 0)
             {
-                ushort m = (ushort)Mathf.Clamp(maxHealthValue, 1, ushort.MaxValue);
+                int m = Mathf.Max(maxHealthValue, 1);
                 if (maxHealth.Value != m) maxHealth.Value = m;
             }
             if (health.Value != h) health.Value = h;

@@ -30,9 +30,8 @@ namespace BS.Tests
         }
 
         [Test]
-        public void TheBossSpeedIsWhatItWasBeforeTheBossHadData()
+        public void TheBossSpeedComesFromTheCatalog()
         {
-            Assert.AreEqual(6f, BossCatalog.Default.MoveSpeed);
             Assert.AreEqual(BossCatalog.Default.MoveSpeed, CharacterCatalog.BossMoveSpeed);
         }
 

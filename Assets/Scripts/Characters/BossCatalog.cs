@@ -78,7 +78,11 @@ namespace BS
         }
     }
 
-    /// <summary>The boss kinds. The standard kind has the values the boss had before kinds existed.</summary>
+    /// <summary>
+    /// The boss kinds. Their health and speed were set with the match harness so that a match with a boss lasts for minutes and is
+    /// decided late: every boss is slower than every survivor (a boss that is as fast catches one and the survivors fall within a minute),
+    /// and has far more health than a survivor. The order by speed is giant, standard, sniper.
+    /// </summary>
     public static class BossCatalog
     {
         public const byte Standard = 1;
@@ -92,7 +96,7 @@ namespace BS
         {
             new BossDef
             {
-                Id = Standard, Name = "보스", MaxHealth = 6000, MoveSpeed = 6f, Radius = 0.9f, ContactDamage = 25,
+                Id = Standard, Name = "보스", MaxHealth = 190000, MoveSpeed = 4.5f, Radius = 0.9f, ContactDamage = 25,
                 Color = new Color(0.85f, 0.15f, 0.15f), MatchSeconds = DefaultMatchSeconds,
                 Attack = new BossAttackDef { BaseDamage = BossAttack.BaseDamage, CooldownSeconds = BossAttack.CooldownSeconds, Shape = BossAttack.Shape },
                 Skills = new[]
@@ -111,7 +115,7 @@ namespace BS
             },
             new BossDef
             {
-                Id = Giant, Name = "거인", MaxHealth = 9000, MoveSpeed = 4.5f, Radius = 1.3f, ContactDamage = 35,
+                Id = Giant, Name = "거인", MaxHealth = 230000, MoveSpeed = 4.0f, Radius = 1.3f, ContactDamage = 35,
                 Color = new Color(0.55f, 0.30f, 0.10f), MatchSeconds = DefaultMatchSeconds,
                 Attack = new BossAttackDef
                 {
@@ -126,11 +130,11 @@ namespace BS
             },
             new BossDef
             {
-                Id = Sniper, Name = "저격수", MaxHealth = 4500, MoveSpeed = 8f, Radius = 0.7f, ContactDamage = 20,
+                Id = Sniper, Name = "저격수", MaxHealth = 170000, MoveSpeed = 5.0f, Radius = 0.7f, ContactDamage = 20,
                 Color = new Color(0.55f, 0.25f, 0.85f), MatchSeconds = DefaultMatchSeconds,
                 Attack = new BossAttackDef
                 {
-                    BaseDamage = 12, CooldownSeconds = 0.5f,
+                    BaseDamage = 5, CooldownSeconds = 0.5f,
                     Shape = new ProjectileShape { Speed = 14f, Lifetime = 1.4f, Radius = 0.25f, Pierce = 1 },
                 },
                 Skills = new[]
@@ -138,7 +142,7 @@ namespace BS
                     new BossSkillDef { Name = "탄막", Key = "Q", Effect = BossSkillEffect.ShotRing, CooldownSeconds = 9f, Damage = 10, Count = 16 },
                     new BossSkillDef
                     {
-                        Name = "저격", Key = "E", Effect = BossSkillEffect.Beam, CooldownSeconds = 12f, Damage = 45, WarningSeconds = 1.2f,
+                        Name = "저격", Key = "E", Effect = BossSkillEffect.Beam, CooldownSeconds = 12f, Damage = 30, WarningSeconds = 1.2f,
                         Length = 24f, HalfWidth = 0.5f,
                     },
                 },

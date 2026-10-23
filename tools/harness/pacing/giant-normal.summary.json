@@ -1,0 +1,92 @@
+{
+    "bossKind": 2,
+    "profile": "normal",
+    "characters": [
+        1,
+        2,
+        3,
+        4
+    ],
+    "firstSeed": 1,
+    "step": 0.019999999552965165,
+    "overrides": [],
+    "note": "",
+    "matches": 40,
+    "survivorWins": 24,
+    "bossWins": 16,
+    "undecided": 0,
+    "survivorShare": 0.6000000238418579,
+    "reasons": [
+        {
+            "reason": "BossDefeated",
+            "count": 24
+        },
+        {
+            "reason": "AllSurvivorsFallen",
+            "count": 11
+        },
+        {
+            "reason": "TimeUp",
+            "count": 5
+        }
+    ],
+    "length": {
+        "count": 40,
+        "mean": 652.7451782226563,
+        "median": 789.1775512695313,
+        "p10": 84.8277816772461,
+        "p90": 900.0156860351563,
+        "min": 35.74062728881836,
+        "max": 900.0156860351563
+    },
+    "bossT50": {
+        "count": 31,
+        "mean": 463.12725830078127,
+        "median": 460.6253967285156,
+        "p10": 423.26593017578127,
+        "p90": 521.3262329101563,
+        "min": 388.5050354003906,
+        "max": 540.6050415039063
+    },
+    "bossT25": {
+        "count": 31,
+        "mean": 647.625732421875,
+        "median": 640.2222290039063,
+        "p10": 581.4048461914063,
+        "p90": 710.6109008789063,
+        "min": 519.1641235351563,
+        "max": 757.5166625976563
+    },
+    "bossT0": {
+        "count": 24,
+        "mean": 807.966796875,
+        "median": 814.5823364257813,
+        "p10": 739.7453002929688,
+        "p90": 874.9111938476563,
+        "min": 666.7280883789063,
+        "max": 899.2549438476563
+    },
+    "bossT50Share": 0.7749999761581421,
+    "bossT25Share": 0.7749999761581421,
+    "bossT0Share": 0.6000000238418579,
+    "bossHealthEndMean": 0.232196643948555,
+    "firstFall": {
+        "count": 40,
+        "mean": 32.55780792236328,
+        "median": 23.780353546142579,
+        "p10": 15.1001558303833,
+        "p90": 53.69301223754883,
+        "min": 11.68007755279541,
+        "max": 107.19402313232422
+    },
+    "firstFallShare": 1.0,
+    "fallsMean": 18.725000381469728,
+    "revivesMean": 17.375,
+    "survivorsAliveEndMean": 2.6500000953674318,
+    "maxLevelMean": 17.850000381469728,
+    "levelCapShare": 0.7749999761581421,
+    "meanLevelMean": 17.587499618530275,
+    "devicesPlacedMean": 1.0,
+    "devicesDestroyedMean": 0.5,
+    "devicesExpiredMean": 0.5
+}
