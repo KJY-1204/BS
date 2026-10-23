@@ -222,6 +222,7 @@ namespace BS
 
             if (kb.qKey.wasPressedThisFrame) RequestSkill(0);
             if (kb.eKey.wasPressedThisFrame) RequestSkill(1);
+            if (kb.rKey.wasPressedThisFrame) RequestSkill(SkillCatalog.UltimateSlot);
 
             // The number keys only mean something while a choice is open.
             if (!offerOpen) return;
@@ -251,11 +252,11 @@ namespace BS
                 RequestPick(DevArgs.AutoPickIndex - 1);
             }
 
-            if (DevArgs.AutoSkillSlot >= 0 && Time.unscaledTime >= nextAutoSkillAt)
+            if (DevArgs.AutoSkillKeys != 0 && Time.unscaledTime >= nextAutoSkillAt)
             {
                 nextAutoSkillAt = Time.unscaledTime + DevArgs.AutoSkillInterval;
-                if (DevArgs.AutoSkillSlot == 2) { RequestSkill(0); RequestSkill(1); } // -bsAutoSkill qe presses both keys
-                else RequestSkill(DevArgs.AutoSkillSlot);
+                for (int slot = 0; slot < SkillCatalog.SkillSlots; slot++)
+                    if ((DevArgs.AutoSkillKeys & (1 << slot)) != 0) RequestSkill(slot); // -bsAutoSkill qe presses Q and E, qer all three
             }
         }
     }

@@ -338,6 +338,21 @@ namespace BS.Tests
         }
 
         [Test]
+        public void ASurvivorAlsoUsesItsRSkillOnceLearned()
+        {
+            MatchSession s = Quiet();
+            Teleport(s, 1, new Vector2(0f, -2f));
+            SkillDef r = SkillCatalog.ForSlot(SkillCatalog.UltimateSlot, CharacterIds.Reimu);
+            s.World.Leveling.GrantRank(1, r.Id, 1);
+            SurvivorBot bot = Bot(s, 1, Exact);
+
+            bot.Decide(s, s.Step);
+            s.Advance();
+
+            Assert.IsTrue(s.World.SkillOutcomes.Exists(o => o.ClientId == 1 && o.Slot == SkillCatalog.UltimateSlot && o.Result == SkillResult.Fired));
+        }
+
+        [Test]
         public void ASurvivorAnswersASkillChoice()
         {
             MatchSession s = Quiet();

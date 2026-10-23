@@ -12,18 +12,21 @@ namespace BS.Tests
         static int[] NoRanks() => new int[SkillCatalog.MaxSkillId + 1];
 
         [Test]
-        public void EveryCharacterHasExactlyOneQAndOneESkill()
+        public void EveryCharacterHasExactlyOneQOneEAndOneRSkill()
         {
             foreach (byte c in AllCharacters)
             {
                 SkillDef q = SkillCatalog.ForSlot(0, c);
                 SkillDef e = SkillCatalog.ForSlot(1, c);
+                SkillDef r = SkillCatalog.ForSlot(2, c);
                 Assert.IsNotNull(q, $"character {c} Q");
                 Assert.IsNotNull(e, $"character {c} E");
+                Assert.IsNotNull(r, $"character {c} R");
                 Assert.AreNotSame(q, e);
                 Assert.AreEqual(c, q.Character);
                 Assert.AreEqual(c, e.Character);
-                Assert.AreEqual(2, SkillCatalog.All.Count(d => d.IsActive && d.Character == c), "no extra active skills");
+                Assert.AreEqual(c, r.Character);
+                Assert.AreEqual(3, SkillCatalog.All.Count(d => d.IsActive && d.Character == c), "no extra active skills");
             }
         }
 

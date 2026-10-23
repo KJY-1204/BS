@@ -71,17 +71,26 @@ namespace BS
 
         // ---- Skill slots ----
 
+        const float SlotSize = 84f;
+        const float SlotGap = 12f;
+        static readonly string[] SlotKeys = { "Q", "E", "R" };
+
+        /// <summary>The key shown on a skill slot.</summary>
+        public static string KeyLabel(int slot) => slot >= 0 && slot < SlotKeys.Length ? SlotKeys[slot] : "?";
+
+        /// <summary>The left edge of a skill slot when all the slots are centred on a screen of this width.</summary>
+        public static float SlotLeft(float screenWidth, int slot) =>
+            screenWidth * 0.5f - (SlotSize * SkillCatalog.SkillSlots + SlotGap * (SkillCatalog.SkillSlots - 1)) * 0.5f + slot * (SlotSize + SlotGap);
+
         void DrawSkillSlots(PlayerGrowth growth, byte character)
         {
-            const float size = 84f;
-            const float gap = 12f;
-            float startX = Screen.width * 0.5f - (size * SkillCatalog.SkillSlots + gap * (SkillCatalog.SkillSlots - 1)) * 0.5f;
+            const float size = SlotSize;
             float y = Screen.height - size - 14f;
 
             for (int slot = 0; slot < SkillCatalog.SkillSlots; slot++)
             {
                 SkillDef def = SkillCatalog.ForSlot(slot, character);
-                Rect box = new Rect(startX + slot * (size + gap), y, size, size);
+                Rect box = new Rect(SlotLeft(Screen.width, slot), y, size, size);
                 int rank = def != null ? growth.RankOf(def.Id) : 0;
                 float cooldown = growth.CooldownLeft(slot);
 
@@ -99,8 +108,7 @@ namespace BS
                 }
                 if (shortOfMana) Fill(new Rect(box.x, box.y, box.width, 4f), new Color(0.9f, 0.2f, 0.2f));
 
-                string key = slot == 0 ? "Q" : "E";
-                GUI.Label(new Rect(box.x + 4f, box.y + 2f, 24f, 20f), key);
+                GUI.Label(new Rect(box.x + 4f, box.y + 2f, 24f, 20f), KeyLabel(slot));
                 string name = def != null ? def.Name : "-";
                 GUI.Label(new Rect(box.x, box.y + 20f, box.width, 22f), learned ? name : "미습득", small);
                 if (learned) GUI.Label(new Rect(box.x, box.y + 40f, box.width, 20f), cooldown > 0f ? $"{cooldown:F1}s" : $"랭크 {rank}", small);

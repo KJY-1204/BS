@@ -57,6 +57,14 @@ namespace BS
         public const byte Merit = 27;
         /// <summary>Sanae's fourth own passive (needs Miracle at rank three): her skills hit and heal harder.</summary>
         public const byte DivineBlessing = 28;
+        /// <summary>Reimu, R: a large area burst (needs Burst at rank two).</summary>
+        public const byte FantasyHeaven = 29;
+        /// <summary>Marisa, R: a long, wide beam (needs Master Spark at rank two).</summary>
+        public const byte FinalSpark = 30;
+        /// <summary>Sakuya, R: a large ring of knives (needs Time Stop at rank two).</summary>
+        public const byte KillingDoll = 31;
+        /// <summary>Sanae, R: a wide, strong heal (needs Miracle at rank two).</summary>
+        public const byte GreatMiracle = 32;
     }
 
     /// <summary>What a character's own passive does. The common passives are worked out by <see cref="StatCalc"/> and have none of these.</summary>
@@ -111,7 +119,7 @@ namespace BS
         public byte Id;
         public string Name;
         public bool IsActive;
-        /// <summary>Key slot for an active skill (0 = Q, 1 = E), -1 for passives.</summary>
+        /// <summary>Key slot for an active skill (0 = Q, 1 = E, 2 = R), -1 for passives.</summary>
         public int Slot = -1;
         /// <summary>The character that owns an active skill; 0 means common to every character (the passives).</summary>
         public byte Character;
@@ -149,7 +157,10 @@ namespace BS
     /// <summary>The temporary skill tree shared by every character in this version.</summary>
     public static class SkillCatalog
     {
-        public const int SkillSlots = 2;
+        public const int SkillSlots = 3;
+        /// <summary>The slot of the R skills, which need the character's Q skill at <see cref="UltimateRequiresQRank"/> first.</summary>
+        public const int UltimateSlot = 2;
+        public const int UltimateRequiresQRank = 2;
         /// <summary>Ranks are packed three bits per skill id into 64 bit values, 21 ids to a value (ids 1 to 21 in the low one, 22 to 42 in the high one).</summary>
         public const int MaxSkillId = 42;
         /// <summary>How many skill ids one packed 64 bit value holds.</summary>
@@ -250,6 +261,34 @@ namespace BS
                 Id = SkillIds.WindVeil, Name = "바람의 장막", IsActive = true, Slot = 1, Character = CharacterIds.Sanae, Effect = SkillEffectKind.Push, MaxRank = 3,
                 Radius = new[] { 4f, 4f, 4f }, Distance = new[] { 3f, 4f, 5f },
                 ManaCost = 25, Cooldown = 10f, Description = "주변 몹을 밀어냄 (E)",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.FantasyHeaven, Name = "몽상천생", IsActive = true, Slot = UltimateSlot, Character = CharacterIds.Reimu, Effect = SkillEffectKind.AreaDamage, MaxRank = 3,
+                RequiresSkill = SkillIds.Burst, RequiresRank = UltimateRequiresQRank,
+                Radius = new[] { 5f, 6f, 7f }, Damage = new[] { 80, 110, 140 },
+                ManaCost = 70, Cooldown = 40f, Description = "넓은 범위의 몹에게 큰 피해 (R)",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.FinalSpark, Name = "파이널 스파크", IsActive = true, Slot = UltimateSlot, Character = CharacterIds.Marisa, Effect = SkillEffectKind.Beam, MaxRank = 3,
+                RequiresSkill = SkillIds.MasterSpark, RequiresRank = UltimateRequiresQRank,
+                Length = new[] { 16f, 16f, 16f }, HalfWidth = new[] { 1.2f, 1.4f, 1.6f }, Damage = new[] { 120, 160, 200 },
+                ManaCost = 80, Cooldown = 45f, Description = "길고 넓은 직선의 모든 몹에게 큰 피해 (R)",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.KillingDoll, Name = "킬링 도올", IsActive = true, Slot = UltimateSlot, Character = CharacterIds.Sakuya, Effect = SkillEffectKind.Volley, MaxRank = 3,
+                RequiresSkill = SkillIds.TimeStop, RequiresRank = UltimateRequiresQRank,
+                Count = new[] { 36, 48, 60 }, Damage = new[] { 12, 14, 16 },
+                ManaCost = 70, Cooldown = 40f, Description = "사방으로 나이프를 빽빽하게 발사 (R)",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.GreatMiracle, Name = "대기적", IsActive = true, Slot = UltimateSlot, Character = CharacterIds.Sanae, Effect = SkillEffectKind.Heal, MaxRank = 3,
+                RequiresSkill = SkillIds.Miracle, RequiresRank = UltimateRequiresQRank,
+                Radius = new[] { 8f, 8f, 8f }, Amount = new[] { 80, 110, 140 },
+                ManaCost = 70, Cooldown = 45f, Description = "넓은 범위의 생존자를 크게 회복 (R)",
             },
             new SkillDef
             {

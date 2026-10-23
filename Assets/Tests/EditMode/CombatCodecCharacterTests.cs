@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -155,6 +156,62 @@ namespace BS.Tests
             }
             // Every survivor's events go to every other client, so one client receives all four characters' events.
             Assert.Less(bytesPerSecond, 4000f, "well under the 10 KB per second budget even if every shot pierces to the limit");
+        }
+
+        [Test]
+        public void TheRSkillsOfAllFourCharactersAddAlmostNothingToTheWorstCaseTraffic()
+        {
+            // Each R skill once per cooldown: its skill event, and for a ring every knife's fire event and, if every knife hit and pierced to the limit, its hits.
+            float bytesPerSecond = 0f;
+            foreach (CharacterDef c in CharacterCatalog.All)
+            {
+                SkillDef r = SkillCatalog.ForSlot(SkillCatalog.UltimateSlot, c.Id);
+                float bytes = CombatCodec.SkillSize;
+                if (r.Effect == SkillEffectKind.Volley)
+                {
+                    int knives = r.Count[r.MaxRank - 1];
+                    bytes += knives * (CombatCodec.FireSize + c.Attack.Shape.Pierce * CombatCodec.HitSize);
+                }
+                bytesPerSecond += bytes / r.Cooldown;
+            }
+            Assert.Less(bytesPerSecond, 200f, "four ultimates together stay a small part of the 10 KB per second budget");
+        }
+
+        [Test]
+        public void FourUltimatesAtTheSameMomentFitInTheMessagesWithoutLoss()
+        {
+            SkillDef doll = SkillCatalog.Get(SkillIds.KillingDoll);
+            int knives = doll.Count[doll.MaxRank - 1];
+            var events = new List<CombatEvent>();
+            for (ushort i = 1; i <= knives; i++)
+                events.Add(new CombatEvent { Kind = CombatEventKind.Fire, ProjectileId = i, Slot = 3, Position = new Vector2(1, 1), Angle = (ushort)(i * 1000) });
+            foreach (byte id in new[] { SkillIds.FantasyHeaven, SkillIds.FinalSpark, SkillIds.KillingDoll, SkillIds.GreatMiracle })
+                events.Add(new CombatEvent { Kind = CombatEventKind.Skill, SkillId = id, Slot = 1, Rank = 3, Angle = 5 });
+            for (ushort i = 1; i <= knives; i++) events.Add(Hit(false, i % 2 == 0));
+
+            int start = 0;
+            var all = new List<CombatEvent>();
+            var buffer = new byte[CombatCodec.MaxBatchBytes + 16];
+            while (start < events.Count)
+            {
+                int fit = CombatCodec.CountThatFit(events, start);
+                Assert.Greater(fit, 0);
+                int length = CombatCodec.WriteBatch(buffer, 5u, events, start, fit, null);
+                Assert.LessOrEqual(length, CombatCodec.MaxBatchBytes);
+
+                CombatCodec.TryReadHeader(buffer, length, out _, out int count);
+                int offset = CombatCodec.HeaderSize;
+                for (int i = 0; i < count; i++)
+                {
+                    Assert.IsTrue(CombatCodec.TryReadEvent(buffer, length, ref offset, out CombatEvent e));
+                    all.Add(e);
+                }
+                start += fit;
+            }
+
+            Assert.AreEqual(events.Count, all.Count);
+            for (int i = 0; i < events.Count; i++) Assert.AreEqual(events[i].Kind, all[i].Kind, $"order at {i}");
+            Assert.AreEqual(4, all.Count(e => e.Kind == CombatEventKind.Skill), "no skill event is lost");
         }
     }
 }

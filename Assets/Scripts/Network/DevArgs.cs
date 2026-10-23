@@ -26,7 +26,7 @@ namespace BS
     /// -bsOfferSeconds s  time allowed to pick a skill (host)
     /// -bsDevXp t n     (host) give every survivor n experience t seconds after the room starts
     /// -bsAutoPick i d  (owner) pick choice i (1 to 3) d seconds after a choice opens; 0 never picks
-    /// -bsAutoSkill q|e|qe s  (owner) press that skill key (or both) every s seconds
+    /// -bsAutoSkill q|e|r|qe|qer s  (owner) press those skill keys (any of q, e and r together) every s seconds
     /// -bsCharacter n   (any player) choose character n (1 to 4) shortly after joining the waiting room
     /// -bsAutoStart s n (host) start the match s seconds after n survivors are in and every survivor has chosen
     /// -bsAutoEnd s     (host) end the first match s seconds after it started, returning to the waiting room
@@ -83,7 +83,21 @@ namespace BS
         /// <summary>1 to 3: owner picks that choice automatically; 0 means never pick (let the time run out).</summary>
         public static int AutoPickIndex { get; private set; }
         public static float AutoPickDelay { get; private set; }
-        public static int AutoSkillSlot { get; private set; } = -1;
+        /// <summary>The skill keys -bsAutoSkill presses, as bits (bit 0 Q, bit 1 E, bit 2 R); zero when it is not given.</summary>
+        public static int AutoSkillKeys { get; private set; }
+
+        /// <summary>The keys named in the text as bits (Q 1, E 2, R 4). Anything that names none of them means Q, as it always did.</summary>
+        public static int SkillKeyMask(string keys)
+        {
+            int mask = 0;
+            foreach (char c in (keys ?? "").ToLowerInvariant())
+            {
+                if (c == 'q') mask |= 1;
+                else if (c == 'e') mask |= 2;
+                else if (c == 'r') mask |= 4;
+            }
+            return mask == 0 ? 1 : mask;
+        }
         public static float AutoSkillInterval { get; private set; } = 1f;
         public static int Character { get; private set; }
         public static int DevSkillsRank { get; private set; }
@@ -310,7 +324,7 @@ namespace BS
                         AutoPickDelay = apd;
                         break;
                     case "-bsAutoSkill" when i + 2 < args.Length:
-                        AutoSkillSlot = args[i + 1].ToLowerInvariant() == "qe" ? 2 : args[i + 1].ToLowerInvariant() == "e" ? 1 : 0;
+                        AutoSkillKeys = SkillKeyMask(args[i + 1]);
                         float.TryParse(args[i + 2], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float asi);
                         AutoSkillInterval = Mathf.Max(0.05f, asi);
                         break;
