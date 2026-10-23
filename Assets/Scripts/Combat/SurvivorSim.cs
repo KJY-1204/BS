@@ -27,6 +27,9 @@ namespace BS
             public float ReviveGauge;
             /// <summary>The share of each hit this survivor takes (a damage-reduction passive lowers it).</summary>
             public float DamageTaken = 1f;
+            /// <summary>How many times this survivor has fallen and been revived since it was registered (for the match summary).</summary>
+            public int Falls;
+            public int Revives;
         }
 
         /// <summary>Maximum health a survivor starts with; each survivor's own maximum can then change.</summary>
@@ -55,6 +58,12 @@ namespace BS
             int max = Math.Max(1, maxHealth);
             states[clientId] = new State { Health = max, MaxHealth = max };
         }
+
+        /// <summary>How many times the survivor has fallen (health taken to zero) since it was registered; zero for an unknown survivor.</summary>
+        public int FallsOf(ulong clientId) => states.TryGetValue(clientId, out State s) ? s.Falls : 0;
+
+        /// <summary>How many times the survivor has been revived since it was registered; zero for an unknown survivor.</summary>
+        public int RevivesOf(ulong clientId) => states.TryGetValue(clientId, out State s) ? s.Revives : 0;
 
         /// <summary>This survivor's own maximum health (the default for unknown survivors).</summary>
         public int MaxHealthOf(ulong clientId) => states.TryGetValue(clientId, out State s) ? s.MaxHealth : MaxHealth;
@@ -115,7 +124,11 @@ namespace BS
             if (s.DamageTaken < 1f) damage = Math.Max(1, (int)Math.Round(damage * s.DamageTaken, MidpointRounding.AwayFromZero));
             s.Health = Math.Max(0, s.Health - damage);
             s.Invulnerable = InvulnerabilitySeconds;
-            if (s.Health == 0) s.ReviveGauge = 0f;
+            if (s.Health == 0)
+            {
+                s.ReviveGauge = 0f;
+                s.Falls++;
+            }
             return true;
         }
 
@@ -166,6 +179,7 @@ namespace BS
         public void Kill(ulong clientId)
         {
             if (!states.TryGetValue(clientId, out State s)) return;
+            if (s.Health > 0) s.Falls++;
             s.Health = 0;
             s.Invulnerable = 0f;
             s.ReviveGauge = 0f;
@@ -244,6 +258,7 @@ namespace BS
                     s.Health = Math.Max(1, Mathf.CeilToInt(s.MaxHealth * ReviveHealthFraction));
                     s.Invulnerable = ReviveInvulnerabilitySeconds;
                     s.ReviveGauge = 0f;
+                    s.Revives++;
                 }
             }
         }

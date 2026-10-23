@@ -145,9 +145,13 @@ namespace BS
             }
         }
 
+        /// <summary>What the finished match came to, on every machine, while the room is finished. Null otherwise, and for a match without a boss.</summary>
+        public MatchSummary Summary { get; private set; }
+
         void OnPhaseChanged(byte previous, byte current)
         {
             Debug.Log($"[BS] lobby: room is now {(RoomPhase)current} (server={IsServer})");
+            if ((RoomPhase)current != RoomPhase.Finished) Summary = null;
             PhaseChanged?.Invoke((RoomPhase)current);
         }
 
@@ -355,17 +359,35 @@ namespace BS
         void FinishMatch()
         {
             if (!lobby.Finish()) return;
+            MatchWorld world = MatchWorld.Current;
 
             winner.Value = (byte)match.Winner;
             reason.Value = (byte)match.Reason;
             phase.Value = (byte)RoomPhase.Finished;
+            MatchSummary summary = world.BuildSummary();
+            if (summary != null) SummaryRpc(MatchSummaryCodec.Write(summary));
             Debug.Log($"[BS] match: finished winner={match.Winner} reason={match.Reason} timeLeft={match.TimeLeft:F1}s " +
                       $"bossHealth={(CombatServer.Instance != null ? CombatServer.Instance.Boss.Health : 0)} " +
                       $"survivorsAlive={(CombatServer.Instance != null ? CombatServer.Instance.Survivors.AliveCount : 0)}");
         }
 
+        /// <summary>The server tells every machine, the host's included, how the match went (once, when it is decided).</summary>
+        [Rpc(SendTo.ClientsAndHost)]
+        void SummaryRpc(byte[] bytes)
+        {
+            Summary = MatchSummaryCodec.Read(bytes);
+            if (Summary == null) return;
+            var sb = new System.Text.StringBuilder();
+            sb.Append($"[BS] summary received: length={Summary.LengthSeconds}s boss={Summary.BossHealth}/{Summary.BossMaxHealth} ")
+              .Append($"devices placed={Summary.DevicesPlaced} destroyed={Summary.DevicesDestroyed} expired={Summary.DevicesExpired}");
+            foreach (SurvivorSummary v in Summary.Survivors)
+                sb.Append($" | role={v.Role} char={v.Character} lv={v.Level} falls={v.Falls} revives={v.Revives} alive={v.Alive}");
+            Debug.Log(sb.ToString());
+        }
+
         void ClearMatch()
         {
+            Summary = null;
             match.Clear();
             bossLeft = false;
             hasBoss.Value = false;

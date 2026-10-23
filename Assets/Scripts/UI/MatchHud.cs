@@ -15,6 +15,7 @@ namespace BS
         GUIStyle big;
         GUIStyle center;
         GUIStyle small;
+        GUIStyle tableLine;
 
         void Start()
         {
@@ -47,6 +48,7 @@ namespace BS
             big = new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontSize = 28, fontStyle = FontStyle.Bold };
             center = new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontSize = 15 };
             small = new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleLeft, fontSize = 12 };
+            tableLine = new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontSize = 13 };
         }
 
         bool IsLocalBoss() =>
@@ -120,8 +122,11 @@ namespace BS
 
         void DrawResult(RoleTable table, NetworkManager net)
         {
-            const float width = 460f;
-            const float height = 190f;
+            MatchSummary summary = table.MatchHasBoss ? table.Summary : null;
+            int lines = summary != null ? summary.Survivors.Count + 1 : 0;
+            float tableHeight = lines > 0 ? 12f + lines * 24f : 0f;
+            const float width = 520f;
+            float height = 190f + tableHeight;
             var box = new Rect(Screen.width * 0.5f - width * 0.5f, Screen.height * 0.5f - height * 0.5f - 40f, width, height);
 
             Fill(box, new Color(0.04f, 0.04f, 0.07f, 0.88f));
@@ -137,16 +142,44 @@ namespace BS
                 GUI.Label(new Rect(box.x, box.y + 90f, width, 26f), $"남은 시간 {seconds / 60}:{seconds % 60:00}", center);
             }
 
+            if (summary != null)
+            {
+                float lineTop = box.y + 124f;
+                for (int i = 0; i < summary.Survivors.Count; i++)
+                    GUI.Label(new Rect(box.x + 16f, lineTop + i * 24f, width - 32f, 24f), SurvivorLine(summary.Survivors[i]), tableLine);
+                GUI.Label(new Rect(box.x + 16f, lineTop + summary.Survivors.Count * 24f, width - 32f, 24f), MatchLine(summary), tableLine);
+            }
+
+            float below = 130f + tableHeight;
             if (net.IsServer)
             {
-                if (GUI.Button(new Rect(box.x + width * 0.5f - 110f, box.y + 130f, 220f, 36f), "대기방으로 돌아가기"))
+                if (GUI.Button(new Rect(box.x + width * 0.5f - 110f, box.y + below, 220f, 36f), "대기방으로 돌아가기"))
                     table.RequestEndMatch();
             }
             else
             {
-                GUI.Label(new Rect(box.x, box.y + 134f, width, 28f), "호스트가 대기방으로 돌아가기를 기다리는 중...", center);
+                GUI.Label(new Rect(box.x, box.y + below + 4f, width, 28f), "호스트가 대기방으로 돌아가기를 기다리는 중...", center);
             }
         }
+
+        /// <summary>m:ss for a length in seconds.</summary>
+        public static string FormatLength(int seconds) => $"{seconds / 60}:{seconds % 60:00}";
+
+        /// <summary>The boss's health left as a percent: zero only when it has none, otherwise at least one.</summary>
+        public static int BossPercent(int health, int maxHealth)
+        {
+            if (health <= 0 || maxHealth <= 0) return 0;
+            return Mathf.Clamp((int)((long)health * 100 / maxHealth), 1, 100);
+        }
+
+        public static string SurvivorLine(SurvivorSummary v)
+        {
+            CharacterDef def = CharacterCatalog.Get(v.Character);
+            return $"{def.Name} (생존자 {v.Role})  Lv {v.Level}  쓰러짐 {v.Falls}  부활 {v.Revives}  {(v.Alive ? "서 있음" : "쓰러짐")}";
+        }
+
+        public static string MatchLine(MatchSummary s) =>
+            $"판 길이 {FormatLength(s.LengthSeconds)}   보스 남은 체력 {BossPercent(s.BossHealth, s.BossMaxHealth)}%   장치 설치 {s.DevicesPlaced} / 파괴 {s.DevicesDestroyed}";
 
         public static string ReasonText(MatchReason reason)
         {

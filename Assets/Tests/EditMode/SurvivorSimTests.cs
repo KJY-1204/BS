@@ -382,5 +382,79 @@ namespace BS.Tests
             Assert.DoesNotThrow(() => Run(sim, Pair(), NoMobs(), 3f));
             Assert.AreEqual(0f, sim.ReviveGauge(A));
         }
+
+        // ---- match summary counters ----
+
+        [Test]
+        public void Counters_TwoFallsAndOneRevival()
+        {
+            SurvivorSim sim = NewSim(A, B);
+            sim.ApplyDamage(A, 1000);
+            Run(sim, Pair(), NoMobs(), CombatConfig.ReviveSeconds + 0.1f);
+            Run(sim, new List<SurvivorBody>(), NoMobs(), sim.ReviveInvulnerabilitySeconds + 0.1f);
+            sim.ApplyDamage(A, 1000);
+
+            Assert.AreEqual(2, sim.FallsOf(A));
+            Assert.AreEqual(1, sim.RevivesOf(A));
+            Assert.IsFalse(sim.IsAlive(A));
+        }
+
+        [Test]
+        public void Counters_AFallenSurvivorHitAgainIsNotAnotherFall()
+        {
+            SurvivorSim sim = NewSim(A);
+            sim.ApplyDamage(A, 1000);
+            RunProtection(sim);
+            sim.ApplyDamage(A, 10);
+            sim.Kill(A);
+
+            Assert.AreEqual(1, sim.FallsOf(A));
+        }
+
+        [Test]
+        public void Counters_NoRevivalBeforeTheGaugeIsFull()
+        {
+            SurvivorSim sim = NewSim(A, B);
+            sim.Kill(A);
+
+            Run(sim, Pair(), NoMobs(), CombatConfig.ReviveSeconds * 0.5f);
+
+            Assert.AreEqual(1, sim.FallsOf(A));
+            Assert.AreEqual(0, sim.RevivesOf(A));
+        }
+
+        [Test]
+        public void Counters_KillOfAStandingSurvivorCountsOnce()
+        {
+            SurvivorSim sim = NewSim(A);
+            sim.Kill(A);
+            sim.Kill(A);
+
+            Assert.AreEqual(1, sim.FallsOf(A));
+        }
+
+        [Test]
+        public void Counters_ResetOnReRegisterAndClear()
+        {
+            SurvivorSim sim = NewSim(A, B);
+            sim.Kill(A);
+            sim.Unregister(A);
+            Assert.AreEqual(0, sim.FallsOf(A));
+            sim.Register(A);
+            Assert.AreEqual(0, sim.FallsOf(A));
+            sim.Kill(B);
+            sim.Clear();
+            sim.Register(B);
+            Assert.AreEqual(0, sim.FallsOf(B));
+            Assert.AreEqual(0, sim.RevivesOf(B));
+        }
+
+        [Test]
+        public void Counters_UnknownSurvivorIsZero()
+        {
+            var sim = new SurvivorSim();
+            Assert.AreEqual(0, sim.FallsOf(9));
+            Assert.AreEqual(0, sim.RevivesOf(9));
+        }
     }
 }
