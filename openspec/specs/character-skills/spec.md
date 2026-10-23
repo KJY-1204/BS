@@ -7,7 +7,7 @@ Defines which two active skills each character owns on the Q and E keys, and wha
 ## Requirements
 
 ### Requirement: Each character owns a Q skill and an E skill
-Every character SHALL have exactly one active skill for the Q slot and one for the E slot, and the two keys SHALL fire the skills of the survivor's own character. A skill SHALL only be learnable and usable by the character that owns it. The passive skills SHALL stay common to every character.
+Every character SHALL have exactly one base active skill for the Q slot and one for the E slot, and the two keys SHALL fire the skills of the survivor's own character; a learned evolution of the Q skill is fired in place of the base Q skill. A skill SHALL only be learnable and usable by the character that owns it. The passive skills SHALL stay common to every character.
 
 #### Scenario: Slots follow the character
 - **WHEN** a survivor of one character and a survivor of another press Q
