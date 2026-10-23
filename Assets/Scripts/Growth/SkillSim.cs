@@ -123,7 +123,8 @@ namespace BS
             activation = default;
             if (!states.TryGetValue(clientId, out State s)) return SkillResult.UnknownSlot;
 
-            SkillDef def = SkillCatalog.ForSlot(slot, character);
+            // A learned evolution is fired in place of the base skill of the slot.
+            SkillDef def = SkillCatalog.ActiveForSlot(slot, character, ranks);
             if (def == null) return SkillResult.UnknownSlot;
             if (!alive) return SkillResult.Dead;
 

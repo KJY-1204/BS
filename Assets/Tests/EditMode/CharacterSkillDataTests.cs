@@ -26,7 +26,7 @@ namespace BS.Tests
                 Assert.AreEqual(c, q.Character);
                 Assert.AreEqual(c, e.Character);
                 Assert.AreEqual(c, r.Character);
-                Assert.AreEqual(3, SkillCatalog.All.Count(d => d.IsActive && d.Character == c), "no extra active skills");
+                Assert.AreEqual(3, SkillCatalog.All.Count(d => d.IsActive && d.EvolvesFrom == 0 && d.Character == c), "no extra base active skills");
             }
         }
 

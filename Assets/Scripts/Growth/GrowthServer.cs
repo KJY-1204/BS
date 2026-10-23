@@ -105,21 +105,24 @@ namespace BS
         void GrantDevSkills(ulong id, byte character)
         {
             if (DevArgs.DevSkillsRank <= 0) return;
-            GrantSkills(Leveling, id, character, DevArgs.DevSkillsRank, DevArgs.DevPassiveRank);
-            Debug.Log($"[BS] dev: gave client {id} the skills of character {character} at rank {DevArgs.DevSkillsRank}, own passive rank {DevArgs.DevPassiveRank}");
+            GrantSkills(Leveling, id, character, DevArgs.DevSkillsRank, DevArgs.DevPassiveRank, DevArgs.DevEvolve);
+            Debug.Log($"[BS] dev: gave client {id} the skills of character {character} at rank {DevArgs.DevSkillsRank}, own passive rank {DevArgs.DevPassiveRank}, evolution {DevArgs.DevEvolve}");
         }
 
         /// <summary>
         /// Gives a survivor each of the character's active skills (every slot, the R skill too, whatever its prerequisite) at the rank, and with a
-        /// positive <paramref name="passiveRank"/> the character's own passives as well. A rank above a skill's maximum is cut to it.
+        /// positive <paramref name="passiveRank"/> the character's own passives as well, and with <paramref name="evolution"/> 1 or 2 the matching evolution of the Q skill. A rank above a skill's maximum is cut to it.
         /// </summary>
-        public static void GrantSkills(LevelingSim leveling, ulong id, byte character, int rank, int passiveRank)
+        public static void GrantSkills(LevelingSim leveling, ulong id, byte character, int rank, int passiveRank, int evolution = 0)
         {
             for (int slot = 0; slot < SkillCatalog.SkillSlots; slot++)
             {
                 SkillDef def = SkillCatalog.ForSlot(slot, character);
                 if (def != null) leveling.GrantRank(id, def.Id, Math.Min(rank, def.MaxRank));
             }
+            // The first (1) or second (2) evolution of the Q skill, whatever the Q skill's rank.
+            SkillDef evolved = SkillCatalog.EvolutionOf(SkillCatalog.ForSlot(0, character), evolution);
+            if (evolved != null) leveling.GrantRank(id, evolved.Id, 1);
             if (passiveRank <= 0) return;
             foreach (SkillDef def in SkillCatalog.All)
                 if (!def.IsActive && def.Passive != PassiveEffectKind.None && def.Character == character)

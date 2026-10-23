@@ -134,7 +134,7 @@ namespace BS
                 w.Survivors.Register(id, (cd != null ? cd.MaxHealth : CombatConfig.SurvivorMaxHealth) + w.SurvivorHealthBonus);
                 w.Attacks.Register(id, cd?.Attack ?? AttackDef.Default);
                 w.Slots[id] = role;
-                w.StartGrowth(id, character);
+                w.StartGrowth(id, character, granted => w.GrantStartSkills(granted, character));
 
                 Vector2 spawn = ArenaConfig.SpawnPoint(role);
                 w.Bodies.Add(new MatchBody { ClientId = id, Role = role, Character = character, Position = spawn, Alive = true });

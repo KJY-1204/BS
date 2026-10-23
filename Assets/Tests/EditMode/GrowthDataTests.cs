@@ -47,6 +47,11 @@ namespace BS.Tests
                 Assert.GreaterOrEqual(def.Slot, 0);
                 Assert.Less(def.Slot, SkillCatalog.SkillSlots);
                 Assert.AreNotEqual(CharacterIds.None, def.Character, "an active skill belongs to a character");
+                if (def.EvolvesFrom != 0)
+                {
+                    Assert.AreEqual(SkillCatalog.Get(def.EvolvesFrom).Slot, def.Slot, "an evolution has the slot of the skill it replaces");
+                    continue;
+                }
                 Assert.IsTrue(slots.Add((def.Character, def.Slot)), "two skills of one character share a slot");
                 Assert.Greater(def.ManaCost, 0);
                 Assert.Greater(def.Cooldown, 0f);

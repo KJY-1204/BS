@@ -80,12 +80,12 @@ namespace BS.Tests
         }
 
         [Test]
-        public void EveryCharacterCanLearn41RanksAndAFullMatchDoesNotRunDry()
+        public void EveryCharacterCanLearn43RanksAndAFullMatchDoesNotRunDry()
         {
             foreach (byte c in Characters)
             {
                 int total = SkillCatalog.All.Where(d => SkillCatalog.IsOwnedBy(d, c)).Sum(d => d.MaxRank);
-                Assert.AreEqual(41, total, $"character {c}");
+                Assert.AreEqual(43, total, $"character {c}");
                 Assert.Greater(total, GrowthConfig.MaxLevel - 1);
             }
         }

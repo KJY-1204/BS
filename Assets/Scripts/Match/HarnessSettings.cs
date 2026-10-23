@@ -58,6 +58,9 @@ namespace BS
                     if (o == null || string.IsNullOrEmpty(o.name)) return "an override has no name";
                     if (!HarnessOverrides.IsKnown(o.name)) return $"unknown override '{o.name}' (known: {string.Join(", ", HarnessOverrides.Names)})";
                     if (float.IsNaN(o.value) || float.IsInfinity(o.value)) return $"override '{o.name}' is not a number";
+                    if (o.name == "startQRank" && (o.value < 0f || o.value > 3f || o.value != Math.Floor(o.value))) return "override 'startQRank' must be 0, 1, 2 or 3";
+                    if (o.name == "startEvolutionRole" && (o.value < 0f || o.value > 4f || o.value != Math.Floor(o.value))) return "override 'startEvolutionRole' must be 0 to 4";
+                    if (o.name == "startEvolution" && (o.value < 0f || o.value > 2f || o.value != Math.Floor(o.value))) return "override 'startEvolution' must be 0, 1 or 2";
                 }
             }
             return null;
@@ -98,6 +101,11 @@ namespace BS
             ["deviceLifetime"] = new Entry { OnWorld = (w, v) => w.Mobs.DeviceSettings.LifetimeSeconds = v },
             ["deviceMobs"] = new Entry { OnWorld = (w, v) => w.Mobs.DeviceSettings.MobsPerBatch = (int)v },
             ["survivorHealthBonus"] = new Entry { OnWorld = (w, v) => w.SurvivorHealthBonus = (int)v },
+            // Every survivor starts with their Q skill at this rank (0 to 3) and with this evolution of it (0 none, 1 or 2).
+            ["startQRank"] = new Entry { OnWorld = (w, v) => w.StartQRank = (int)v },
+            ["startEvolution"] = new Entry { OnWorld = (w, v) => w.StartEvolution = (int)v },
+            // With startEvolution: only the survivor of this role (1 to 4) gets it; 0 gives it to everyone.
+            ["startEvolutionRole"] = new Entry { OnWorld = (w, v) => w.StartEvolutionRole = (int)v },
             ["xpPerKill"] = new Entry { OnWorld = (w, v) => w.Leveling.XpPerKill = (int)v },
             ["xpPerDevice"] = new Entry { OnWorld = (w, v) => w.Leveling.XpPerDevice = (int)v },
         };

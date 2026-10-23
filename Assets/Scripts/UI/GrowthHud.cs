@@ -82,6 +82,20 @@ namespace BS
         public static float SlotLeft(float screenWidth, int slot) =>
             screenWidth * 0.5f - (SlotSize * SkillCatalog.SkillSlots + SlotGap * (SkillCatalog.SkillSlots - 1)) * 0.5f + slot * (SlotSize + SlotGap);
 
+        /// <summary>The line under a skill name on a slot: the cooldown counting down, otherwise the rank, or for an evolution the word for it.</summary>
+        public static string SlotDetail(SkillDef def, int rank, float cooldown)
+        {
+            if (cooldown > 0f) return $"{cooldown:F1}s";
+            return def != null && def.EvolvesFrom != 0 ? "진화" : $"랭크 {rank}";
+        }
+
+        /// <summary>The line at the bottom of a skill choice: the rank it would go to, or for an evolution that the choice is final.</summary>
+        public static string OfferRankText(SkillDef def, int rank)
+        {
+            if (def.EvolvesFrom != 0) return "진화 (한 번 고르면 바꿀 수 없음)";
+            return rank > 0 ? $"랭크 {rank} -> {rank + 1} / {def.MaxRank}" : $"새로 배움 (최대 {def.MaxRank})";
+        }
+
         void DrawSkillSlots(PlayerGrowth growth, byte character)
         {
             const float size = SlotSize;
@@ -89,7 +103,8 @@ namespace BS
 
             for (int slot = 0; slot < SkillCatalog.SkillSlots; slot++)
             {
-                SkillDef def = SkillCatalog.ForSlot(slot, character);
+                // The skill the key fires: a learned evolution takes the place of the base skill.
+                SkillDef def = SkillCatalog.ActiveForSlot(slot, character, growth.Ranks);
                 Rect box = new Rect(SlotLeft(Screen.width, slot), y, size, size);
                 int rank = def != null ? growth.RankOf(def.Id) : 0;
                 float cooldown = growth.CooldownLeft(slot);
@@ -110,8 +125,8 @@ namespace BS
 
                 GUI.Label(new Rect(box.x + 4f, box.y + 2f, 24f, 20f), KeyLabel(slot));
                 string name = def != null ? def.Name : "-";
-                GUI.Label(new Rect(box.x, box.y + 20f, box.width, 22f), learned ? name : "미습득", small);
-                if (learned) GUI.Label(new Rect(box.x, box.y + 40f, box.width, 20f), cooldown > 0f ? $"{cooldown:F1}s" : $"랭크 {rank}", small);
+                GUI.Label(new Rect(box.x, box.y + 18f, box.width, 32f), learned ? name : "미습득", small); // a long evolution name takes two lines
+                if (learned) GUI.Label(new Rect(box.x, box.y + 54f, box.width, 20f), SlotDetail(def, rank, cooldown), small);
             }
 
             string notice = growth.Notice;
@@ -145,8 +160,7 @@ namespace BS
                 int rank = growth.RankOf(def.Id);
                 GUI.Label(new Rect(box.x + 6f, box.y + 6f, box.width, 20f), $"[{i + 1}]  {def.Name}");
                 GUI.Label(new Rect(box.x + 6f, box.y + 28f, box.width - 12f, 36f), def.Description, small);
-                GUI.Label(new Rect(box.x + 6f, box.y + 70f, box.width - 12f, 36f),
-                          rank > 0 ? $"랭크 {rank} -> {rank + 1} / {def.MaxRank}" : $"새로 배움 (최대 {def.MaxRank})", small);
+                GUI.Label(new Rect(box.x + 6f, box.y + 70f, box.width - 12f, 36f), OfferRankText(def, rank), small);
             }
         }
 

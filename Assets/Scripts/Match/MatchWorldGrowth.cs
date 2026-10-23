@@ -47,6 +47,26 @@ namespace BS
         readonly List<GrowthBody> skillBodies = new List<GrowthBody>();
         readonly List<GrowthEvent> drained = new List<GrowthEvent>();
 
+        /// <summary>The rank of the Q skill every survivor starts with (the harness override startQRank), 0 for none.</summary>
+        public int StartQRank { get; set; }
+
+        /// <summary>The evolution of the Q skill every survivor starts with, 1 or 2 (the harness override startEvolution), 0 for none.</summary>
+        public int StartEvolution { get; set; }
+
+        /// <summary>When above zero, only the survivor with this role (1 to 4) starts with the evolution (the harness override startEvolutionRole); zero gives it to every survivor.</summary>
+        public int StartEvolutionRole { get; set; }
+
+        /// <summary>Gives a survivor the Q skill rank and the evolution this world starts them with.</summary>
+        public void GrantStartSkills(ulong clientId, byte character)
+        {
+            SkillDef q = SkillCatalog.ForSlot(0, character);
+            if (q == null) return;
+            if (StartQRank > 0) Leveling.GrantRank(clientId, q.Id, System.Math.Min(StartQRank, q.MaxRank));
+            if (StartEvolutionRole > 0 && SlotOf(clientId) != StartEvolutionRole) return;
+            SkillDef evolution = SkillCatalog.EvolutionOf(q, StartEvolution);
+            if (evolution != null) Leveling.GrantRank(clientId, evolution.Id, 1);
+        }
+
         /// <summary>Added to every survivor's maximum health (the development argument that replaces the starting health). Zero in a real match.</summary>
         public int SurvivorHealthBonus { get; set; }
 

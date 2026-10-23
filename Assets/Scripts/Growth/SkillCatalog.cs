@@ -65,6 +65,18 @@ namespace BS
         public const byte KillingDoll = 31;
         /// <summary>Sanae, R: a wide, strong heal (needs Miracle at rank two).</summary>
         public const byte GreatMiracle = 32;
+        /// <summary>Reimu Q evolutions: a wide, weak burst and a small, hard-hitting one.</summary>
+        public const byte BurstSpread = 33;
+        public const byte BurstFocus = 34;
+        /// <summary>Marisa Q evolutions: a wide short beam and a thin long one.</summary>
+        public const byte SparkWide = 35;
+        public const byte SparkLaser = 36;
+        /// <summary>Sakuya Q evolutions: a long, costly stop and a short, frequent one.</summary>
+        public const byte StopLong = 37;
+        public const byte StopFrequent = 38;
+        /// <summary>Sanae Q evolutions: a wide heal and a quick, small one.</summary>
+        public const byte MiracleBig = 39;
+        public const byte MiracleQuick = 40;
     }
 
     /// <summary>What a character's own passive does. The common passives are worked out by <see cref="StatCalc"/> and have none of these.</summary>
@@ -128,6 +140,10 @@ namespace BS
         /// <summary>Skill that must reach <see cref="RequiresRank"/> first, or 0 for none.</summary>
         public byte RequiresSkill;
         public int RequiresRank;
+        /// <summary>For an evolution: the base skill it replaces on the key slot once learned (0 for every other skill).</summary>
+        public byte EvolvesFrom;
+        /// <summary>A skill that cannot be offered once this one is learned (the other evolution of the same skill), or 0.</summary>
+        public byte ExclusiveWith;
         public string Description;
 
         // Per-rank values (index = rank - 1). Unused ones stay null.
@@ -290,6 +306,63 @@ namespace BS
                 Radius = new[] { 8f, 8f, 8f }, Amount = new[] { 80, 110, 140 },
                 ManaCost = 70, Cooldown = 45f, Description = "넓은 범위의 생존자를 크게 회복 (R)",
             },
+            // ---- Evolutions of the Q skills: one rank each, a trade against the base skill at its maximum rank ----
+            new SkillDef
+            {
+                Id = SkillIds.BurstSpread, Name = "몽상봉인 · 확산", IsActive = true, Slot = 0, Character = CharacterIds.Reimu, Effect = SkillEffectKind.AreaDamage, MaxRank = 1,
+                EvolvesFrom = SkillIds.Burst, ExclusiveWith = SkillIds.BurstFocus, RequiresSkill = SkillIds.Burst, RequiresRank = 3,
+                Radius = new[] { 5f }, Damage = new[] { 25 },
+                ManaCost = 40, Cooldown = 10f, Description = "더 넓지만 약하고 비싸다 (Q 진화)",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.BurstFocus, Name = "몽상봉인 · 집중", IsActive = true, Slot = 0, Character = CharacterIds.Reimu, Effect = SkillEffectKind.AreaDamage, MaxRank = 1,
+                EvolvesFrom = SkillIds.Burst, ExclusiveWith = SkillIds.BurstSpread, RequiresSkill = SkillIds.Burst, RequiresRank = 3,
+                Radius = new[] { 2f }, Damage = new[] { 90 },
+                ManaCost = 30, Cooldown = 6f, Description = "좁지만 강하고 빠르다 (Q 진화)",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.SparkWide, Name = "마스터 스파크 · 확산", IsActive = true, Slot = 0, Character = CharacterIds.Marisa, Effect = SkillEffectKind.Beam, MaxRank = 1,
+                EvolvesFrom = SkillIds.MasterSpark, ExclusiveWith = SkillIds.SparkLaser, RequiresSkill = SkillIds.MasterSpark, RequiresRank = 3,
+                Length = new[] { 10f }, HalfWidth = new[] { 1.1f }, Damage = new[] { 70 },
+                ManaCost = 45, Cooldown = 12f, Description = "더 넓지만 짧고 약하고 비싸다 (Q 진화)",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.SparkLaser, Name = "마스터 스파크 · 장거리", IsActive = true, Slot = 0, Character = CharacterIds.Marisa, Effect = SkillEffectKind.Beam, MaxRank = 1,
+                EvolvesFrom = SkillIds.MasterSpark, ExclusiveWith = SkillIds.SparkWide, RequiresSkill = SkillIds.MasterSpark, RequiresRank = 3,
+                Length = new[] { 15f }, HalfWidth = new[] { 0.5f }, Damage = new[] { 110 },
+                ManaCost = 40, Cooldown = 10f, Description = "더 길고 강하지만 가늘다 (Q 진화)",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.StopLong, Name = "시간 정지 · 장기", IsActive = true, Slot = 0, Character = CharacterIds.Sakuya, Effect = SkillEffectKind.TimeStop, MaxRank = 1,
+                EvolvesFrom = SkillIds.TimeStop, ExclusiveWith = SkillIds.StopFrequent, RequiresSkill = SkillIds.TimeStop, RequiresRank = 3,
+                Duration = new[] { 5f },
+                ManaCost = 60, Cooldown = 28f, Description = "오래 멈추지만 비싸고 느리다 (Q 진화)",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.StopFrequent, Name = "시간 정지 · 단기", IsActive = true, Slot = 0, Character = CharacterIds.Sakuya, Effect = SkillEffectKind.TimeStop, MaxRank = 1,
+                EvolvesFrom = SkillIds.TimeStop, ExclusiveWith = SkillIds.StopLong, RequiresSkill = SkillIds.TimeStop, RequiresRank = 3,
+                Duration = new[] { 1.8f },
+                ManaCost = 25, Cooldown = 9f, Description = "짧게 멈추지만 싸고 자주 쓴다 (Q 진화)",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.MiracleBig, Name = "기적 · 광역", IsActive = true, Slot = 0, Character = CharacterIds.Sanae, Effect = SkillEffectKind.Heal, MaxRank = 1,
+                EvolvesFrom = SkillIds.Miracle, ExclusiveWith = SkillIds.MiracleQuick, RequiresSkill = SkillIds.Miracle, RequiresRank = 3,
+                Radius = new[] { 7f }, Amount = new[] { 60 },
+                ManaCost = 50, Cooldown = 16f, Description = "더 넓지만 비싸고 느리다 (Q 진화)",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.MiracleQuick, Name = "기적 · 신속", IsActive = true, Slot = 0, Character = CharacterIds.Sanae, Effect = SkillEffectKind.Heal, MaxRank = 1,
+                EvolvesFrom = SkillIds.Miracle, ExclusiveWith = SkillIds.MiracleBig, RequiresSkill = SkillIds.Miracle, RequiresRank = 3,
+                Radius = new[] { 4f }, Amount = new[] { 40 },
+                ManaCost = 20, Cooldown = 6f, Description = "회복은 적지만 싸고 자주 쓴다 (Q 진화)",
+            },
             new SkillDef
             {
                 Id = SkillIds.SpiritSaving, Name = "영력 절약", Character = CharacterIds.Reimu, MaxRank = 3,
@@ -401,13 +474,36 @@ namespace BS
 
         public static SkillDef Get(byte id) => byId.TryGetValue(id, out SkillDef def) ? def : null;
 
-        /// <summary>The active skill a character has on a key slot, or null (also for no character).</summary>
+        /// <summary>The base active skill a character has on a key slot, or null (also for no character). An evolution is never returned: it replaces this skill, see <see cref="ActiveForSlot"/>.</summary>
         public static SkillDef ForSlot(int slot, byte character)
         {
             if (character == CharacterIds.None) return null;
             for (int i = 0; i < defs.Length; i++)
-                if (defs[i].IsActive && defs[i].Slot == slot && defs[i].Character == character) return defs[i];
+                if (defs[i].IsActive && defs[i].EvolvesFrom == 0 && defs[i].Slot == slot && defs[i].Character == character) return defs[i];
             return null;
+        }
+
+        /// <summary>The first (1) or second (2) evolution of a base skill in the order of the data, or null.</summary>
+        public static SkillDef EvolutionOf(SkillDef baseSkill, int which)
+        {
+            if (baseSkill == null || which < 1) return null;
+            int seen = 0;
+            for (int i = 0; i < defs.Length; i++)
+                if (defs[i].EvolvesFrom == baseSkill.Id && ++seen == which) return defs[i];
+            return null;
+        }
+
+        /// <summary>
+        /// The skill a key slot fires for a survivor with these ranks: the evolution of the slot base skill that the survivor has learned
+        /// (whatever the base skill own rank), otherwise the base skill. Null for no skill.
+        /// </summary>
+        public static SkillDef ActiveForSlot(int slot, byte character, IReadOnlyList<int> ranks)
+        {
+            SkillDef baseSkill = ForSlot(slot, character);
+            if (baseSkill == null) return null;
+            for (int i = 0; i < defs.Length; i++)
+                if (defs[i].EvolvesFrom == baseSkill.Id && RankOf(ranks, defs[i].Id) > 0) return defs[i];
+            return baseSkill;
         }
 
         /// <summary>Common skills belong to everyone; any other skill belongs to one character.</summary>
@@ -423,6 +519,7 @@ namespace BS
             if (def == null) return false;
             if (!IsOwnedBy(def, character)) return false;
             if (RankOf(ranks, def.Id) >= def.MaxRank) return false;
+            if (def.ExclusiveWith != 0 && RankOf(ranks, def.ExclusiveWith) > 0) return false;
             if (def.RequiresSkill != 0 && RankOf(ranks, def.RequiresSkill) < def.RequiresRank) return false;
             return true;
         }

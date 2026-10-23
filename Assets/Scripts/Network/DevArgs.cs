@@ -47,6 +47,7 @@ namespace BS
     /// -bsSummonEnergy n (host) the boss's maximum and starting summon energy
     /// -bsDevSkills r  (host) every survivor starts the match with their character's Q and E skills at rank r
     /// -bsDevPassive r (host) every survivor also starts with their character's own passive at rank r (needs -bsDevSkills)
+    /// -bsDevEvolve n (host) every survivor also starts with evolution n (1 or 2) of their Q skill (needs -bsDevSkills)
     /// -bsSurvivorHealth n  survivor maximum health (host), to keep survivors alive in load tests
     /// -bsMobSpeed v    mob speed (host)
     /// -bsMobHealth n   mob maximum health (host); a high value keeps mobs alive under fire for load tests
@@ -102,6 +103,8 @@ namespace BS
         public static int Character { get; private set; }
         public static int DevSkillsRank { get; private set; }
         public static int DevPassiveRank { get; private set; }
+        /// <summary>-bsDevEvolve: 1 or 2, every survivor starts with that evolution of their Q skill (0 for none).</summary>
+        public static int DevEvolve { get; private set; }
         public static int BossHealth { get; private set; }
         public static int BossKind { get; private set; }
         public static float MatchSeconds { get; private set; }
@@ -257,6 +260,9 @@ namespace BS
                         break;
                     case "-bsDevPassive" when i + 1 < args.Length:
                         if (int.TryParse(args[i + 1], out int dpr)) DevPassiveRank = dpr;
+                        break;
+                    case "-bsDevEvolve" when i + 1 < args.Length:
+                        if (int.TryParse(args[i + 1], out int dev) && dev >= 0 && dev <= 2) DevEvolve = dev;
                         break;
                     case "-bsAutoStart" when i + 2 < args.Length:
                         float.TryParse(args[i + 1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float ast);
