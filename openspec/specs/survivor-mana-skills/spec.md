@@ -21,8 +21,8 @@ Every survivor SHALL have mana with a maximum. Mana SHALL refill at a steady rat
 - **WHEN** a survivor spends mana
 - **THEN** only that survivor's player sees the mana bar change
 
-### Requirement: Two skill slots are triggered by keys
-A survivor SHALL have two skill slots, triggered by the keys Q and E. A slot SHALL be usable only after a skill has been learned for it, and the owner SHALL send only the slot to the server.
+### Requirement: Skill slots are triggered by keys
+A survivor SHALL have three skill slots, triggered by the keys Q, E and R. A slot SHALL be usable only after a skill has been learned for it, and the owner SHALL send only the slot to the server.
 
 #### Scenario: Unlearned slot
 - **WHEN** a player presses a key for a slot with no learned skill
