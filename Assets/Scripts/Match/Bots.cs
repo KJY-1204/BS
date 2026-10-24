@@ -42,6 +42,9 @@ namespace BS
         /// <summary>False turns the dodging off (experiments that measure what it is worth).</summary>
         public static bool DodgeShots = true;
 
+        /// <summary>True lets survivor bots step out of announced boss shockwaves and beams; false makes them ignore announcements.</summary>
+        public static bool EvadeSkills = true;
+
         public static Vector2 Rotate(Vector2 v, float radians)
         {
             float c = Mathf.Cos(radians), s = Mathf.Sin(radians);
@@ -280,6 +283,14 @@ namespace BS
                 away += BotMath.AwayFrom(me, w.Mobs.PositionAt(mob)) * (MobDanger / Mathf.Max(0.3f, mobDistance));
             if (bossUp && bossDistance < BossDanger)
                 away += BotMath.AwayFrom(me, bossPos) * (BossDanger / Mathf.Max(0.5f, bossDistance)) * 1.5f;
+
+            // An announced boss skill that covers this bot comes before everything: step out of it.
+            Vector2 evade = BotMath.EvadeSkills ? w.BossSkills.Evade(me, CombatConfig.SurvivorRadius) : Vector2.zero;
+            if (evade.sqrMagnitude > 1e-4f)
+            {
+                move = (evade.normalized + BotMath.PullToCenter(me) * 0.3f).normalized;
+                return;
+            }
 
             // A shot that is about to hit comes first: step sideways out of its way.
             Vector2 dodge = BotMath.DodgeShots ? BotMath.Dodge(w.Projectiles, me, CombatConfig.SurvivorRadius) : Vector2.zero;

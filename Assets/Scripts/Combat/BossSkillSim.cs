@@ -137,6 +137,43 @@ namespace BS
         /// <summary>When above zero it replaces the base damage of both skills (a development override); the strengthening still applies.</summary>
         public int BaseDamageOverride;
 
+        /// <summary>
+        /// A walking direction (not normalized, zero when none) that takes a body out of the announced shockwaves and beams that cover its
+        /// position: away from a shockwave's centre, across a beam's line to the side the body is on. This is what a player sees in the
+        /// announcements; the survivor bots of the harness use it. Roars and shot rings are not part of it.
+        /// </summary>
+        public Vector2 Evade(Vector2 position, float bodyRadius)
+        {
+            const float margin = 0.3f;
+            Vector2 push = Vector2.zero;
+            for (int i = 0; i < pending.Count; i++)
+            {
+                Pending p = pending[i];
+                BossSkillDef def = p.Def;
+                if (def == null) continue;
+
+                if (def.Effect == BossSkillEffect.Shockwave)
+                {
+                    Vector2 offset = position - p.Position;
+                    float reach = def.Radius + bodyRadius + margin;
+                    if (offset.sqrMagnitude >= reach * reach) continue;
+                    push += offset.sqrMagnitude < 1e-6f ? Vector2.right : offset.normalized;
+                }
+                else if (def.Effect == BossSkillEffect.Beam)
+                {
+                    Vector2 direction = AimMath.Direction(p.Aim);
+                    Vector2 offset = position - p.Position;
+                    float along = Vector2.Dot(offset, direction);
+                    if (along < -bodyRadius || along > def.Length + bodyRadius) continue;
+                    Vector2 lateral = offset - direction * along;
+                    if (lateral.magnitude >= def.HalfWidth + bodyRadius + margin) continue;
+                    Vector2 side = lateral.sqrMagnitude < 1e-6f ? new Vector2(-direction.y, direction.x) : lateral.normalized;
+                    push += side;
+                }
+            }
+            return push;
+        }
+
         /// <summary>Skills that are announced and have not taken effect yet.</summary>
         public int PendingCount => pending.Count;
 
