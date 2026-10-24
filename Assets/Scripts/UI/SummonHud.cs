@@ -92,8 +92,15 @@ namespace BS
             return $"{skill.Key} {skill.Name} ({(left <= 0f ? "준비" : $"{left:F1}초")})";
         }
 
+        /// <summary>The line about the kind's trait; empty for a kind with no trait.</summary>
+        public static string TraitLineText(BossDef kind) =>
+            kind == null || string.IsNullOrEmpty(kind.TraitName) ? "" : $"특성 {kind.TraitName}: {kind.TraitText}";
+
         void DrawSkills(PlayerSummon summon)
         {
+            string trait = TraitLineText(BossCatalog.Current);
+            if (trait.Length > 0) GUI.Label(new Rect(Screen.width * 0.5f - 200f, Screen.height - 224f, 400f, 22f), trait, small);
+
             const float cell = 150f;
             const float height = 22f;
             float x = Screen.width * 0.5f - cell * BossSkills.SlotCount * 0.5f;

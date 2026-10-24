@@ -79,6 +79,7 @@ namespace BS
                 PhaseBurst = source.PhaseBurst?.Clone(),
                 SteadySeconds = source.SteadySeconds, SteadyShotMultiple = source.SteadyShotMultiple,
                 MovingContactMultiple = source.MovingContactMultiple, StillContactMultiple = source.StillContactMultiple,
+                TraitName = source.TraitName, TraitText = source.TraitText,
             };
         }
 

@@ -6,6 +6,10 @@ namespace BS
     /// <summary>Minimal IMGUI test menu: host, join by code, direct local test, and room status.</summary>
     public class NetworkMenu : MonoBehaviour
     {
+        /// <summary>The text of a boss kind's button: its name, skills and trait name, and whether it is the chosen one.</summary>
+        public static string KindLabel(BossDef kind, bool chosen) =>
+            $"{kind.Name}  ({kind.Skills[0].Name} / {kind.Skills[1].Name})" + (string.IsNullOrEmpty(kind.TraitName) ? "" : $"  특성: {kind.TraitName}") + (chosen ? "  (선택함)" : "");
+
         [SerializeField] SessionBootstrap bootstrap;
 
         bool hostAsBoss;
@@ -106,7 +110,7 @@ namespace BS
                     bool isChosen = kind.Id == chosen && mine.BossKind != 0;
                     Color previous = GUI.contentColor;
                     GUI.contentColor = kind.Color;
-                    string label = $"{kind.Name}  ({kind.Skills[0].Name} / {kind.Skills[1].Name})" + (isChosen ? "  (선택함)" : "");
+                    string label = KindLabel(kind, isChosen);
                     if (GUILayout.Button(label)) table.RequestBossKind(kind.Id);
                     GUI.contentColor = previous;
                 }
