@@ -178,6 +178,9 @@ namespace BS
         // The basic values are the fields above; a kind's value is the field times the kind's multiple.
         public float SpeedOf(byte kind) => Speed * MobKinds.Get(kind).SpeedMultiple;
 
+        /// <summary>Multiplies the speed of summoned mobs (the standard boss's trait); devices stand still and automatic mobs are unaffected.</summary>
+        public float SummonedSpeedFactor { get; set; } = 1f;
+
         /// <summary>A circle in which mobs move slower (the open rescue point); inactive by default.</summary>
         public bool SlowZoneActive { get; private set; }
         Vector2 slowZoneCenter;
@@ -868,6 +871,7 @@ namespace BS
             {
                 if (MobKinds.IsDeviceType(types[i])) continue; // a device stands still
                 float step = SpeedOf(MobKinds.KindOf(types[i])) * dt;
+                if (MobKinds.IsSummoned(types[i])) step *= SummonedSpeedFactor;
                 if (SlowZoneActive && (positions[i] - slowZoneCenter).sqrMagnitude <= slowZoneRadius * slowZoneRadius) step *= slowZoneFactor;
                 if (!TryGetTargetPosition(i, survivors, out Vector2 target)) continue;
 

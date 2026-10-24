@@ -5,7 +5,7 @@ namespace BS.Tests
     public class BossTraitTextTests
     {
         [Test]
-        public void TheGiantAndTheSniperNameTheirTraitAndTheStandardKindHasNone()
+        public void EveryKindNamesAndDescribesItsTrait()
         {
             BossDef giant = BossCatalog.Get(BossCatalog.Giant);
             BossDef sniper = BossCatalog.Get(BossCatalog.Sniper);
@@ -15,8 +15,8 @@ namespace BS.Tests
             Assert.IsNotEmpty(giant.TraitText);
             Assert.IsNotEmpty(sniper.TraitName);
             Assert.IsNotEmpty(sniper.TraitText);
-            Assert.IsEmpty(standard.TraitName);
-            Assert.IsEmpty(standard.TraitText);
+            Assert.IsNotEmpty(standard.TraitName);
+            Assert.IsNotEmpty(standard.TraitText);
         }
 
         [Test]
@@ -34,17 +34,18 @@ namespace BS.Tests
         [Test]
         public void TheTraitLineIsEmptyWithoutATraitAndNamesItOtherwise()
         {
-            Assert.AreEqual("", SummonHud.TraitLineText(BossCatalog.Get(BossCatalog.Standard)));
             Assert.AreEqual("", SummonHud.TraitLineText(null));
+            StringAssert.Contains("지휘", SummonHud.TraitLineText(BossCatalog.Get(BossCatalog.Standard)));
             StringAssert.Contains("정조준", SummonHud.TraitLineText(BossCatalog.Get(BossCatalog.Sniper)));
             StringAssert.Contains("기세", SummonHud.TraitLineText(BossCatalog.Get(BossCatalog.Giant)));
         }
 
         [Test]
-        public void TheKindButtonShowsTheTraitNameOnlyForKindsWithATrait()
+        public void TheKindButtonShowsTheTraitNameWhenTheKindHasOne()
         {
             StringAssert.Contains("특성: 기세", NetworkMenu.KindLabel(BossCatalog.Get(BossCatalog.Giant), false));
-            StringAssert.DoesNotContain("특성", NetworkMenu.KindLabel(BossCatalog.Get(BossCatalog.Standard), false));
+            StringAssert.Contains("특성: 지휘", NetworkMenu.KindLabel(BossCatalog.Get(BossCatalog.Standard), false));
+            StringAssert.DoesNotContain("특성", NetworkMenu.KindLabel(new BossDef { Name = "x", Skills = BossCatalog.Get(BossCatalog.Standard).Skills }, false));
             StringAssert.Contains("(선택함)", NetworkMenu.KindLabel(BossCatalog.Get(BossCatalog.Sniper), true));
             StringAssert.DoesNotContain("(선택함)", NetworkMenu.KindLabel(BossCatalog.Get(BossCatalog.Sniper), false));
         }

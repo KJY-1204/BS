@@ -182,6 +182,7 @@ namespace BS
                 if (body.Role == RoleTable.BossRole) continue; // the boss is never a default mob target
                 survivorInfos.Add(new SurvivorInfo { ClientId = body.ClientId, Position = body.Position, Alive = body.Alive });
             }
+            Mobs.SummonedSpeedFactor = Boss.SummonedSpeedMultiple;
             Mobs.Step(dt, survivorInfos);
         }
 

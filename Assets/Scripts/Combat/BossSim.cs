@@ -53,6 +53,9 @@ namespace BS
         /// <summary>The contact damage now: the kind's trait scales it by whether the boss is moving.</summary>
         public int CurrentContactDamage => TraitsEnabled ? BossTraits.ContactDamage(traits, ContactDamage, Moving) : ContactDamage;
 
+        /// <summary>The multiple of the speed of summoned mobs: the standard kind's Command; 1 when the traits are off or there is no boss.</summary>
+        public float SummonedSpeedMultiple => TraitsEnabled && traits != null ? traits.SummonedSpeedMultiple : 1f;
+
         /// <summary>The multiple the boss's basic shot deals now: the sniper's Steady after it has stood still long enough.</summary>
         public float ShotMultiple => TraitsEnabled ? BossTraits.ShotMultiple(traits, StillSeconds) : 1f;
 

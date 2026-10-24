@@ -110,7 +110,7 @@ namespace BS.Tests
         // ---- data ----
 
         [Test]
-        public void TheStandardKindHasNoTrait()
+        public void TheStandardKindHasNoShotOrContactTraitButCommand()
         {
             BossDef standard = BossCatalog.Get(BossCatalog.Standard);
 
@@ -118,6 +118,9 @@ namespace BS.Tests
             Assert.AreEqual(1f, standard.SteadyShotMultiple);
             Assert.AreEqual(1f, standard.MovingContactMultiple);
             Assert.AreEqual(1f, standard.StillContactMultiple);
+            Assert.AreEqual(1.25f, standard.SummonedSpeedMultiple, 0.0001f);
+            Assert.AreEqual(1f, BossCatalog.Get(BossCatalog.Giant).SummonedSpeedMultiple);
+            Assert.AreEqual(1f, BossCatalog.Get(BossCatalog.Sniper).SummonedSpeedMultiple);
         }
 
         [Test]
@@ -274,6 +277,38 @@ namespace BS.Tests
             }
 
             Assert.AreEqual(Run(), Run());
+        }
+
+        // ---- Command (the standard boss) ----
+
+        static float TravelOf(byte kind, byte origin, params (string name, float value)[] overrides)
+        {
+            MatchSession s = MatchSession.Start(SettingsFor(kind, overrides), 2);
+            s.World.Mobs.Clear();
+            s.World.Mobs.TrySpawn(new Vector2(10f, 0f), MobKinds.Encode(origin, MobKinds.Basic), out _);
+            s.World.StepMobs(0f);
+            Vector2 before = s.World.Mobs.PositionAt(0);
+            for (int i = 0; i < 20; i++) s.World.StepMobs(Dt);
+            return Vector2.Distance(before, s.World.Mobs.PositionAt(0));
+        }
+
+        [Test]
+        public void TheStandardBossMobsMoveTwentyFivePercentFasterWhenSummonedOnly()
+        {
+            float automatic = TravelOf(BossCatalog.Standard, MobKinds.OriginAuto);
+            float summoned = TravelOf(BossCatalog.Standard, MobKinds.OriginSummoned);
+
+            Assert.Greater(automatic, 0f);
+            Assert.AreEqual(automatic * 1.25f, summoned, automatic * 0.02f);
+        }
+
+        [Test]
+        public void TheOtherKindsAndTheTraitsOffLeaveSummonedMobsAtTheirNormalSpeed()
+        {
+            float normal = TravelOf(BossCatalog.Standard, MobKinds.OriginAuto);
+            Assert.AreEqual(normal, TravelOf(BossCatalog.Giant, MobKinds.OriginSummoned), normal * 0.02f);
+            Assert.AreEqual(normal, TravelOf(BossCatalog.Sniper, MobKinds.OriginSummoned), normal * 0.02f);
+            Assert.AreEqual(normal, TravelOf(BossCatalog.Standard, MobKinds.OriginSummoned, ("bossTraits", 0f)), normal * 0.02f);
         }
     }
 }
