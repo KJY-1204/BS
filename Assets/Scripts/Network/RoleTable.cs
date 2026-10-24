@@ -68,6 +68,8 @@ namespace BS
         // The centre is declared before the open flag so it arrives first and a listener of the flag reads the right place.
         readonly NetworkVariable<Vector2> rescueCenter = new NetworkVariable<Vector2>(
             Vector2.zero, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+        readonly NetworkVariable<byte> rescueContested = new NetworkVariable<byte>(
+            0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
         readonly NetworkVariable<byte> rescueOpen = new NetworkVariable<byte>(
             0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
         readonly NetworkVariable<byte> rescueProgress = new NetworkVariable<byte>(
@@ -99,6 +101,7 @@ namespace BS
         /// <summary>The phase of the match with a boss (1 when there is none).</summary>
         public int BossPhase => bossPhase.Value;
         public bool RescueOpen => rescueOpen.Value != 0;
+        public bool RescueContested => rescueContested.Value != 0;
         public Vector2 RescueCenter => rescueCenter.Value;
         /// <summary>0 to 1.</summary>
         public float RescueProgress => rescueProgress.Value / 100f;
@@ -393,6 +396,8 @@ namespace BS
             byte open = (byte)(point.IsOpen ? 1 : 0);
             if (point.IsOpen && rescueCenter.Value != point.Center) rescueCenter.Value = point.Center;
             byte progress = (byte)Mathf.Clamp(Mathf.RoundToInt(point.Progress * 100f), 0, 100);
+            byte contested = (byte)(point.Contested ? 1 : 0);
+            if (rescueContested.Value != contested) rescueContested.Value = contested;
             if (rescueProgress.Value != progress) rescueProgress.Value = progress;
             byte left = (byte)Mathf.Clamp(Mathf.CeilToInt(point.SecondsLeft), 0, 255);
             if (rescueLeft.Value != left) rescueLeft.Value = left;

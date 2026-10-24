@@ -330,5 +330,103 @@ namespace BS.Tests
             Vector2 toPoint = (centre - s.PositionOf(1)).normalized;
             Assert.Greater(Vector2.Dot(s.DirectionOf(1), toPoint), 0.9f);
         }
+
+        // ---- the contest ----
+
+        [Test]
+        public void TheBossInTheCircleStopsTheProgressAndKeepsWhatWasMadeAndLeavingResumesIt()
+        {
+            SurvivorSim s = Survivors(1);
+            RescuePointSim p = OpenPoint(s);
+            var inside = At(p.Center, 1);
+            for (int i = 0; i < 100; i++) p.Step(Dt, true, inside, s);
+            float made = p.Progress;
+            Assert.Greater(made, 0f);
+
+            for (int i = 0; i < 100; i++) p.Step(Dt, true, inside, s, bossInside: true);
+            Assert.IsTrue(p.Contested);
+            Assert.AreEqual(made, p.Progress, 0.0001f, "kept, not raised");
+
+            for (int i = 0; i < 100; i++) p.Step(Dt, true, inside, s, bossInside: false);
+            Assert.IsFalse(p.Contested);
+            Assert.Greater(p.Progress, made);
+        }
+
+        [Test]
+        public void AContestedPointStillClosesAfterItsLifeWithoutACapture()
+        {
+            SurvivorSim s = Survivors(1);
+            RescuePointSim p = OpenPoint(s);
+            var inside = At(p.Center, 1);
+            bool captured = false;
+            for (int i = 0; i < Mathf.RoundToInt((RescueConfig.LifeSeconds + 1f) / Dt); i++) captured |= p.Step(Dt, true, inside, s, bossInside: true);
+
+            Assert.IsFalse(captured);
+            Assert.IsFalse(p.IsOpen);
+            Assert.AreEqual(0, p.Captured);
+        }
+
+        [Test]
+        public void TurningTheContestOffLetsTheSurvivorsCaptureWithTheBossInside()
+        {
+            SurvivorSim s = Survivors(1);
+            RescuePointSim p = OpenPoint(s);
+            p.ContestEnabled = false;
+
+            float seconds = -1f;
+            for (int i = 1; i <= 2000 && seconds < 0f; i++)
+                if (p.Step(Dt, true, At(p.Center, 1), s, bossInside: true)) seconds = i * Dt;
+
+            Assert.AreEqual(RescueConfig.CaptureSeconds, seconds, 0.1f);
+        }
+
+        [Test]
+        public void TheBossOverlappingTheCircleContestsButNextToItDoesNotAndAFallenBossNever()
+        {
+            BossCatalog.SetCurrentKind(BossCatalog.Standard);
+            MatchSession s = MatchSession.Start(Settings(("bossPhases", 0f)), 4);
+            for (int i = 0; i < Mathf.RoundToInt(91f / Dt); i++) s.Advance();
+            RescuePointSim p = s.World.RescuePoint;
+            Assert.IsTrue(p.IsOpen);
+            float reach = RescueConfig.Radius + s.World.Boss.Radius;
+
+            void PlaceBoss(Vector2 at)
+            {
+                for (int i = 0; i < s.World.Bodies.Count; i++)
+                {
+                    MatchBody b = s.World.Bodies[i];
+                    if (b.ClientId == MatchSession.BossId) { b.Position = at; s.World.Bodies[i] = b; }
+                }
+            }
+
+            PlaceBoss(p.Center + new Vector2(reach - 0.2f, 0f));
+            s.Advance();
+            Assert.IsTrue(p.Contested, "overlapping");
+
+            PlaceBoss(p.Center + new Vector2(reach + 0.5f, 0f));
+            s.Advance();
+            Assert.IsFalse(p.Contested, "next to the circle");
+
+            PlaceBoss(p.Center);
+            s.World.Boss.TakeDamage(s.World.Boss.MaxHealth, out _, out _);
+            s.Advance();
+            Assert.IsFalse(p.Contested, "a fallen boss does not contest");
+        }
+
+        [Test]
+        public void TheContestOverrideAndTheBarText()
+        {
+            Assert.IsTrue(HarnessOverrides.IsKnown("rescueContest"));
+            Assert.IsNull(Settings(("rescueContest", 0f)).Validate());
+            Assert.IsNull(Settings(("rescueContest", 1f)).Validate());
+            StringAssert.Contains("rescueContest", Settings(("rescueContest", 2f)).Validate());
+
+            BossCatalog.SetCurrentKind(BossCatalog.Standard);
+            MatchSession off = MatchSession.Start(Settings(("rescueContest", 0f)), 3);
+            Assert.IsFalse(off.World.RescuePoint.ContestEnabled);
+
+            StringAssert.DoesNotContain("방해", MatchHud.RescueBarText(0.5f, 20));
+            StringAssert.Contains("방해", MatchHud.RescueBarText(0.5f, 20, contested: true));
+        }
     }
 }

@@ -96,7 +96,8 @@ namespace BS
         // ---- The rescue point, for everyone ----
 
         /// <summary>The rescue point bar's text: the progress in percent and the seconds left before it closes.</summary>
-        public static string RescueBarText(float progress, int secondsLeft) => $"구호 지점  {Mathf.RoundToInt(Mathf.Clamp01(progress) * 100f)}%  ({secondsLeft}초)";
+        public static string RescueBarText(float progress, int secondsLeft, bool contested = false) =>
+            $"구호 지점  {Mathf.RoundToInt(Mathf.Clamp01(progress) * 100f)}%  ({secondsLeft}초)" + (contested ? "  방해 중" : "");
 
         void DrawRescuePoint(RoleTable table)
         {
@@ -107,8 +108,8 @@ namespace BS
             float y = 92f;
             float fraction = Mathf.Clamp01(table.RescueProgress);
             Fill(new Rect(x, y, width, 16f), new Color(0f, 0f, 0f, 0.65f));
-            Fill(new Rect(x + 2f, y + 2f, (width - 4f) * fraction, 12f), new Color(0.3f, 0.85f, 0.9f));
-            GUI.Label(new Rect(x, y + 14f, width, 20f), RescueBarText(fraction, table.RescueSecondsLeft), center);
+            Fill(new Rect(x + 2f, y + 2f, (width - 4f) * fraction, 12f), table.RescueContested ? new Color(0.95f, 0.55f, 0.2f) : new Color(0.3f, 0.85f, 0.9f));
+            GUI.Label(new Rect(x, y + 14f, width, 20f), RescueBarText(fraction, table.RescueSecondsLeft, table.RescueContested), center);
 
             // The circle in the world: dots along its outline, placed from the camera's view of the centre and the radius.
             Camera cam = Camera.main;

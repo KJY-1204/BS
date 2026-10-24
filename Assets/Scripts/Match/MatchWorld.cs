@@ -217,7 +217,9 @@ namespace BS
 
             bool standing = BossOwnerId != NoBoss && Boss.Exists && Boss.CanBeHit;
             // The rescue point opens, fills and closes; while it is open the mobs inside it are slowed (the mobs phase of the next step reads this).
-            RescuePoint.Step(dt, MatchRunning && standing, survivorBodies, Survivors);
+            bool bossInPoint = standing && RescuePoint.IsOpen &&
+                (Boss.Position - RescuePoint.Center).magnitude <= RescueConfig.Radius + Boss.Radius;
+            RescuePoint.Step(dt, MatchRunning && standing, survivorBodies, Survivors, bossInPoint);
             Mobs.SetSlowZone(RescuePoint.IsOpen, RescuePoint.Center, RescueConfig.Radius, RescueConfig.SlowFactor);
             // The boss's health moves the match through its phases; a change announces its burst (the announcement joins this step's events).
             if (Boss.Exists && Boss.MaxHealth > 0)

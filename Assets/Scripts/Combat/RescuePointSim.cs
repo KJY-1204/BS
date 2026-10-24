@@ -35,6 +35,12 @@ namespace BS
         /// <summary>False opens no point (the harness override rescuePoints 0).</summary>
         public bool Enabled { get; set; } = true;
 
+        /// <summary>False lets the boss stand in the point without stopping a capture (the harness override rescueContest 0).</summary>
+        public bool ContestEnabled { get; set; } = true;
+
+        /// <summary>True when the last step found the boss's body in the open point, which stops the progress.</summary>
+        public bool Contested { get; private set; }
+
         public bool IsOpen { get; private set; }
         public Vector2 Center { get; private set; }
         /// <summary>0 to 1.</summary>
@@ -76,6 +82,7 @@ namespace BS
         void Close()
         {
             IsOpen = false;
+            Contested = false;
             Progress = 0f;
             OpenSeconds = 0f;
         }
@@ -108,9 +115,10 @@ namespace BS
         /// <summary>
         /// Advances the schedule and the progress. <paramref name="active"/> is false when the match is not running or the boss does not
         /// stand: nothing opens then and an open point closes. Returns true on the step that captures the point; the living survivors inside
-        /// have been healed by then.
+        /// have been healed by then. <paramref name="bossInside"/> says the boss's body overlaps the circle: the point is then contested and
+        /// its progress does not rise (its life keeps running).
         /// </summary>
-        public bool Step(float dt, bool active, IReadOnlyList<SurvivorBody> bodies, SurvivorSim survivors)
+        public bool Step(float dt, bool active, IReadOnlyList<SurvivorBody> bodies, SurvivorSim survivors, bool bossInside = false)
         {
             if (!Enabled || !active)
             {
@@ -133,7 +141,8 @@ namespace BS
             int inside = 0;
             for (int i = 0; i < bodies.Count; i++)
                 if (survivors.IsAlive(bodies[i].ClientId) && Contains(bodies[i].Position)) inside++;
-            Progress = Mathf.Min(1f, Progress + inside * dt / RescueConfig.CaptureSeconds);
+            Contested = ContestEnabled && bossInside;
+            if (!Contested) Progress = Mathf.Min(1f, Progress + inside * dt / RescueConfig.CaptureSeconds);
 
             if (Progress >= 1f)
             {
