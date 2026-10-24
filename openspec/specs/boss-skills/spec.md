@@ -7,7 +7,7 @@ Defines the boss's two skills on the Q and E keys: a ring of shots and a shockwa
 ## Requirements
 
 ### Requirement: The boss has two skills on Q and E
-The boss player SHALL be able to use two skills, Q and E, whose effects are those the playing boss kind gives them (the shot ring, the shockwave, the beam or the roar). A skill SHALL be usable only while a match is running and the boss has not fallen, and only when its cooldown has passed. A request from anyone other than the boss player SHALL be ignored. A skill SHALL NOT cost summon energy; each skill SHALL have a cooldown of its own and nothing else. All skill values SHALL be adjustable without changing rules elsewhere.
+The boss player SHALL be able to use two base skills, Q and E, whose effects are those the playing boss kind gives them (the shot ring, the shockwave, the beam or the roar); a third skill that a phase unlocks on the F key is defined by the boss phases. A skill SHALL be usable only while a match is running and the boss has not fallen, and only when its cooldown has passed. A request from anyone other than the boss player SHALL be ignored. A skill SHALL NOT cost summon energy; each skill SHALL have a cooldown of its own and nothing else. All skill values SHALL be adjustable without changing rules elsewhere.
 
 #### Scenario: Using a skill
 - **WHEN** the boss player presses Q while the match is running, the boss stands and the Q cooldown has passed
