@@ -1,0 +1,20 @@
+{
+  "bossKind": 1,
+  "profile": "normal",
+  "characters": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "matches": 120,
+  "firstSeed": 1,
+  "step": 0.02,
+  "overrides": [
+    {
+      "name": "evolutionOfferGuarantee",
+      "value": 1
+    }
+  ],
+  "baselinePath": ""
+}

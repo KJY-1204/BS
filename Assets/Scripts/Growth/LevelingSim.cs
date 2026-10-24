@@ -66,9 +66,13 @@ namespace BS
         public float ShareDistance = GrowthConfig.XpShareDistance;
         public float OfferSeconds = GrowthConfig.OfferSeconds;
 
+        /// <summary>True makes an offer hold an evolution whenever one is available (the harness override evolutionOfferGuarantee).</summary>
+        public bool GuaranteeEvolutionOffer { get; set; } = true;
+
         readonly Dictionary<ulong, State> states = new Dictionary<ulong, State>();
         readonly List<GrowthEvent> events = new List<GrowthEvent>();
         readonly List<SkillDef> available = new List<SkillDef>();
+        readonly List<SkillDef> evolutions = new List<SkillDef>();
         readonly List<ulong> order = new List<ulong>();
         readonly System.Random rng;
 
@@ -234,6 +238,23 @@ namespace BS
             OpenNextOffer(clientId, s);
         }
 
+        /// <summary>
+        /// When an evolution is available and none of the offered choices is one, an evolution picked at random from the others takes the
+        /// place of the last choice. The random source is used only then, so every other offer is built exactly as before.
+        /// </summary>
+        void GuaranteeAnEvolution(State s, int count)
+        {
+            for (int k = 0; k < count; k++)
+                if (SkillCatalog.Get(s.Choices[k]).EvolvesFrom != 0) return;
+
+            evolutions.Clear();
+            for (int i = count; i < available.Count; i++)
+                if (available[i].EvolvesFrom != 0) evolutions.Add(available[i]);
+            if (evolutions.Count == 0) return;
+
+            s.Choices[count - 1] = evolutions[rng.Next(evolutions.Count)].Id;
+        }
+
         void OpenNextOffer(ulong clientId, State s)
         {
             while (s.Pending > 0 && !s.HasOffer)
@@ -256,6 +277,8 @@ namespace BS
                     available[k] = chosen;
                     s.Choices[k] = chosen.Id;
                 }
+
+                if (GuaranteeEvolutionOffer) GuaranteeAnEvolution(s, count);
 
                 s.ChoiceCount = count;
                 s.LastOfferId = s.LastOfferId == byte.MaxValue ? (byte)1 : (byte)(s.LastOfferId + 1);
