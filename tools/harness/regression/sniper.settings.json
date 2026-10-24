@@ -1,0 +1,15 @@
+{
+  "bossKind": 3,
+  "profile": "normal",
+  "characters": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "matches": 360,
+  "firstSeed": 1001,
+  "step": 0.02,
+  "overrides": [],
+  "baselinePath": ""
+}
