@@ -21,7 +21,7 @@ The server SHALL keep, for the boss of a match, whether it moved during the last
 - **THEN** its still time starts again from zero
 
 ### Requirement: A kind may have a trait as data
-A boss kind SHALL be able to carry a trait in its data: a still time after which the boss's basic shots deal more damage and the multiple they deal, and the multiples of the boss's contact damage while it moves and while it stands still. A kind with no trait SHALL scale nothing. The standard kind SHALL have no trait.
+A boss kind SHALL be able to carry a trait in its data: a still time after which the boss's basic shots deal more damage and the multiple they deal, the multiples of the boss's contact damage while it moves and while it stands still, and a multiple of the speed of the mobs it summons. A kind with no trait value SHALL scale nothing for it (multiples of 1 and a still time of 0).
 
 #### Scenario: Standard boss
 - **WHEN** the standard boss shoots and touches survivors
@@ -77,14 +77,14 @@ The harness SHALL accept an override `bossTraits`: 1 (the default) applies the t
 - **THEN** the settings are refused and the reason names the override
 
 ### Requirement: A trait is named and described as data
-A boss kind that has a trait SHALL carry a short name and a one-line description of it in its data, and a kind with no trait SHALL carry neither. The description SHALL state the numbers the rule uses.
+Every boss kind SHALL carry a short name and a one-line description of its trait in its data. The description SHALL state the numbers the rule uses.
 
 #### Scenario: Kinds with a trait
 - **WHEN** every boss kind is examined
-- **THEN** the giant and the sniper each have a name and a description that mentions their multiples, and the standard kind has neither
+- **THEN** each has a trait name and a description that mentions its numbers
 
 ### Requirement: The boss player sees the trait of the kind being played
-During a match with a boss, the boss player's screen SHALL show the name and description of the playing kind's trait next to its skills, and SHALL show nothing for a kind with no trait. Survivors' screens SHALL not show it.
+During a match with a boss, the boss player's screen SHALL show the name and description of the playing kind's trait next to its skills. Survivors' screens SHALL not show it.
 
 #### Scenario: Playing the sniper
 - **WHEN** the boss player plays the sniper
@@ -92,4 +92,19 @@ During a match with a boss, the boss player's screen SHALL show the name and des
 
 #### Scenario: Standard boss
 - **WHEN** the boss player plays the standard kind
-- **THEN** no trait line is shown
+- **THEN** the screen shows the name and description of Command near the skill cells
+
+### Requirement: The standard boss has Command
+The mobs the standard boss summons SHALL move 25% faster than a mob of their kind normally does. Automatic mobs, devices (which stand still) and the mobs of the giant and the sniper SHALL be unaffected, and the summon energy and its cost SHALL be unchanged.
+
+#### Scenario: Summoned mobs
+- **WHEN** the standard boss summoned mob and an automatic mob of the same kind chase a survivor
+- **THEN** the summoned mob moves 25% faster
+
+#### Scenario: Other kinds
+- **WHEN** the giant or the sniper summons a mob
+- **THEN** it moves at its normal speed
+
+#### Scenario: Switched off
+- **WHEN** a match runs with `bossTraits` 0
+- **THEN** the summoned mobs of the standard boss move at their normal speed
