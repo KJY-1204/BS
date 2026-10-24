@@ -76,6 +76,13 @@ namespace BS
         /// <summary>The burst of mobs that announces phase 2 and phase 3: a roar with the warning time and the mobs of phase 2.</summary>
         public BossSkillDef PhaseBurst;
 
+        /// <summary>Trait: seconds standing still after which the basic shots deal <see cref="SteadyShotMultiple"/> times the damage; 0 is no trait.</summary>
+        public float SteadySeconds;
+        public float SteadyShotMultiple = 1f;
+        /// <summary>Trait: multiples of the contact damage while the boss moves and while it stands still; 1 is no trait.</summary>
+        public float MovingContactMultiple = 1f;
+        public float StillContactMultiple = 1f;
+
         /// <summary>
         /// The first skill with this effect, looking at the kind's skills, then the phase skill, then the burst, or null. A client finds the size and
         /// the warning time of an announcement here, so the effects of these must not repeat.
@@ -141,6 +148,7 @@ namespace BS
             new BossDef
             {
                 Id = Giant, Name = "거인", MaxHealth = 230000, MoveSpeed = 4.0f, Radius = 1.3f, ContactDamage = 35,
+                MovingContactMultiple = 1.3f, StillContactMultiple = 0.7f,
                 Color = new Color(0.55f, 0.30f, 0.10f), MatchSeconds = DefaultMatchSeconds,
                 PhaseBurst = Burst(),
                 PhaseSkill = new BossSkillDef { Name = "난사", Key = "F", Effect = BossSkillEffect.ShotRing, CooldownSeconds = 12f, Damage = 10, Count = 14 },
@@ -158,6 +166,7 @@ namespace BS
             new BossDef
             {
                 Id = Sniper, Name = "저격수", MaxHealth = 170000, MoveSpeed = 5.0f, Radius = 0.7f, ContactDamage = 20,
+                SteadySeconds = 1f, SteadyShotMultiple = 1.6f,
                 Color = new Color(0.55f, 0.25f, 0.85f), MatchSeconds = DefaultMatchSeconds,
                 PhaseBurst = Burst(),
                 PhaseSkill = new BossSkillDef { Name = "진동", Key = "F", Effect = BossSkillEffect.Shockwave, CooldownSeconds = 10f, Damage = 30, Radius = 4.5f },
@@ -224,6 +233,10 @@ namespace BS
                 Skills = source.Skills,
                 PhaseSkill = source.PhaseSkill,
                 PhaseBurst = source.PhaseBurst,
+                SteadySeconds = source.SteadySeconds,
+                SteadyShotMultiple = source.SteadyShotMultiple,
+                MovingContactMultiple = source.MovingContactMultiple,
+                StillContactMultiple = source.StillContactMultiple,
             };
         }
     }

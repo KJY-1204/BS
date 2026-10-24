@@ -77,6 +77,8 @@ namespace BS
                 Skills = skills,
                 PhaseSkill = source.PhaseSkill?.Clone(),
                 PhaseBurst = source.PhaseBurst?.Clone(),
+                SteadySeconds = source.SteadySeconds, SteadyShotMultiple = source.SteadyShotMultiple,
+                MovingContactMultiple = source.MovingContactMultiple, StillContactMultiple = source.StillContactMultiple,
             };
         }
 

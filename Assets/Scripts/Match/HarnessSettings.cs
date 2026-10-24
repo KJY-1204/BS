@@ -59,6 +59,7 @@ namespace BS
                     if (!HarnessOverrides.IsKnown(o.name)) return $"unknown override '{o.name}' (known: {string.Join(", ", HarnessOverrides.Names)})";
                     if (float.IsNaN(o.value) || float.IsInfinity(o.value)) return $"override '{o.name}' is not a number";
                     if (o.name == "bossPhases" && o.value != 0f && o.value != 1f) return "override 'bossPhases' must be 0 or 1";
+                    if (o.name == "bossTraits" && o.value != 0f && o.value != 1f) return "override 'bossTraits' must be 0 or 1";
                     if (o.name == "startQRank" && (o.value < 0f || o.value > 3f || o.value != Math.Floor(o.value))) return "override 'startQRank' must be 0, 1, 2 or 3";
                     if ((o.name == "startERank" || o.name == "startRRank") && (o.value < 0f || o.value > 3f || o.value != Math.Floor(o.value))) return $"override '{o.name}' must be 0, 1, 2 or 3";
                     if (o.name == "startEvolutionSlot" && (o.value < 0f || o.value > 3f || o.value != Math.Floor(o.value))) return "override 'startEvolutionSlot' must be 0 (Q), 1 (E), 2 (R) or 3 (all three)";
@@ -105,6 +106,8 @@ namespace BS
             ["deviceMobs"] = new Entry { OnWorld = (w, v) => w.Mobs.DeviceSettings.MobsPerBatch = (int)v },
             // 0 keeps the match in phase 1 (no phase burst, the boss's third skill stays locked); 1 is the default.
             ["bossPhases"] = new Entry { OnWorld = (w, v) => w.BossPhasesEnabled = v != 0f },
+            // 0 turns the boss kind's trait off (Steady, Momentum); 1 is the default.
+            ["bossTraits"] = new Entry { OnWorld = (w, v) => w.Boss.TraitsEnabled = v != 0f },
             ["survivorHealthBonus"] = new Entry { OnWorld = (w, v) => w.SurvivorHealthBonus = (int)v },
             // Every survivor starts with their Q skill at this rank (0 to 3) and with this evolution of it (0 none, 1 or 2).
             ["startQRank"] = new Entry { OnWorld = (w, v) => w.StartQRank = (int)v },

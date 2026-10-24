@@ -220,7 +220,7 @@ namespace BS
             {
                 SurvivorBody body = bodies[i];
                 if (!IsAlive(body.ClientId)) continue;
-                if ((body.Position - boss.Position).sqrMagnitude <= reachSq) ApplyDamage(body.ClientId, boss.ContactDamage);
+                if ((body.Position - boss.Position).sqrMagnitude <= reachSq) ApplyDamage(body.ClientId, boss.CurrentContactDamage);
             }
         }
 

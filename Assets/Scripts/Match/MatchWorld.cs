@@ -208,6 +208,7 @@ namespace BS
             }
 
             if (hasBossBody) Boss.SetPosition(bossPosition);
+            Boss.Advance(dt);
 
             Survivors.Step(dt, survivorBodies, Mobs, Boss.Exists ? Boss : null);
 
@@ -228,7 +229,7 @@ namespace BS
             if (hasBossBody && Boss.Exists)
             {
                 float fraction = Boss.MaxHealth > 0 ? Boss.Health / (float)Boss.MaxHealth : 0f;
-                Attacks.SetModifiers(BossOwnerId, BossAttack.Damage(BossShotDamage, fraction), BossAttack.CooldownMultiplier(fraction));
+                Attacks.SetModifiers(BossOwnerId, Mathf.Max(1, Mathf.RoundToInt(BossAttack.Damage(BossShotDamage, fraction) * Boss.ShotMultiple)), BossAttack.CooldownMultiplier(fraction));
                 shooters.Add(new ShooterBody { ClientId = BossOwnerId, Position = Boss.Position, CanFire = Boss.CanBeHit });
             }
 

@@ -35,6 +35,27 @@ namespace BS
         public float Radius { get; private set; }
         public int ContactDamage { get; private set; }
 
+        /// <summary>A step that moves the boss less than this counts as standing still.</summary>
+        public const float StillDistance = 0.02f;
+
+        /// <summary>False turns the kind's trait off (the harness override bossTraits).</summary>
+        public bool TraitsEnabled { get; set; } = true;
+
+        /// <summary>True when the boss moved during the last <see cref="Advance"/>.</summary>
+        public bool Moving { get; private set; }
+
+        /// <summary>Seconds the boss has stood still since it last moved.</summary>
+        public float StillSeconds { get; private set; }
+
+        BossDef traits;
+        Vector2 lastPosition;
+
+        /// <summary>The contact damage now: the kind's trait scales it by whether the boss is moving.</summary>
+        public int CurrentContactDamage => TraitsEnabled ? BossTraits.ContactDamage(traits, ContactDamage, Moving) : ContactDamage;
+
+        /// <summary>The multiple the boss's basic shot deals now: the sniper's Steady after it has stood still long enough.</summary>
+        public float ShotMultiple => TraitsEnabled ? BossTraits.ShotMultiple(traits, StillSeconds) : 1f;
+
         /// <summary>True from the moment the boss falls until the simulation is reset.</summary>
         public bool HasFallen => Health <= 0;
 
@@ -61,6 +82,10 @@ namespace BS
             ContactDamage = def.ContactDamage;
             Position = position;
             JustFell = false;
+            traits = def;
+            lastPosition = position;
+            Moving = false;
+            StillSeconds = 0f;
         }
 
         /// <summary>No boss in this match.</summary>
@@ -69,6 +94,25 @@ namespace BS
             MaxHealth = 0;
             Health = 0;
             JustFell = false;
+            traits = null;
+            Moving = false;
+            StillSeconds = 0f;
+        }
+
+        /// <summary>Call once per step after the boss's position was set: tells whether the boss moved and how long it has stood still.</summary>
+        public void Advance(float dt)
+        {
+            if (!CanBeHit)
+            {
+                Moving = false;
+                StillSeconds = 0f;
+                lastPosition = Position;
+                return;
+            }
+
+            Moving = (Position - lastPosition).sqrMagnitude > StillDistance * StillDistance;
+            StillSeconds = Moving ? 0f : StillSeconds + dt;
+            lastPosition = Position;
         }
 
         /// <summary>Where the boss's player has moved it (the boss is not moved by the simulation).</summary>
