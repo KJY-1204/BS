@@ -524,7 +524,7 @@ namespace BS.Tests
             BossDef giant = BossCatalog.Get(BossCatalog.Giant);
             Assert.AreEqual(5.5f, giant.SkillWithEffect(BossSkillEffect.Shockwave).Radius);
             Assert.IsNull(giant.SkillWithEffect(BossSkillEffect.Beam), "the giant has no beam to draw");
-            Assert.IsNull(sniper.SkillWithEffect(BossSkillEffect.Roar));
+            Assert.AreSame(sniper.PhaseBurst, sniper.SkillWithEffect(BossSkillEffect.Roar), "the sniper only roars at a phase change, and the client draws that burst from this definition");
         }
 
         [Test]

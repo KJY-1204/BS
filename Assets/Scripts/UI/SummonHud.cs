@@ -77,24 +77,41 @@ namespace BS
 
         // ---- The boss's skills and their cooldowns ----
 
+        /// <summary>The skill of a slot for the playing kind: Q and E, then the third skill that phase 2 unlocks; null when the kind has none.</summary>
+        public static BossSkillDef SkillOfSlot(BossDef kind, int slot)
+        {
+            if (kind == null) return null;
+            if (slot == BossSkills.PhaseSlot) return kind.PhaseSkill;
+            return kind.Skills != null && slot >= 0 && slot < kind.Skills.Length ? kind.Skills[slot] : null;
+        }
+
+        /// <summary>The text of a skill cell: key, name and ready, the seconds left, or when it is locked what opens it.</summary>
+        public static string SkillCellText(BossSkillDef skill, float left, bool locked)
+        {
+            if (locked) return $"{skill.Key} {skill.Name} (국면 {BossPhases.Second}에 열림)";
+            return $"{skill.Key} {skill.Name} ({(left <= 0f ? "준비" : $"{left:F1}초")})";
+        }
+
         void DrawSkills(PlayerSummon summon)
         {
             const float cell = 150f;
             const float height = 22f;
-            float x = Screen.width * 0.5f - cell * BossSkills.Count * 0.5f;
+            float x = Screen.width * 0.5f - cell * BossSkills.SlotCount * 0.5f;
             float y = Screen.height - 150f;
+            int phase = RoleTable.Instance != null ? RoleTable.Instance.BossPhase : BossPhases.First;
 
-            for (int slot = 0; slot < BossSkills.Count; slot++)
+            for (int slot = 0; slot < BossSkills.SlotCount; slot++)
             {
-                float left = summon.SkillCooldown(slot);
-                bool ready = left <= 0f;
+                BossSkillDef skill = SkillOfSlot(BossCatalog.Current, slot);
+                if (skill == null) continue;
+                bool locked = slot == BossSkills.PhaseSlot && phase < BossPhases.Second;
+                float left = locked ? 0f : summon.SkillCooldown(slot);
+                bool ready = !locked && left <= 0f;
                 Rect rect = new Rect(x + slot * cell, y, cell - 4f, height);
 
                 Fill(rect, ready ? new Color(1f, 1f, 1f, 0.28f) : new Color(0f, 0f, 0f, 0.5f));
-                BossSkillDef skill = BossCatalog.Current.Skills[slot];
-                Fill(new Rect(rect.x, rect.y, 5f, rect.height), BossSkills.ColorOf(skill.Effect));
-                string state = ready ? "준비" : $"{left:F1}초";
-                GUI.Label(new Rect(rect.x + 6f, rect.y, rect.width - 6f, rect.height), $"{skill.Key} {skill.Name} ({state})", small);
+                Fill(new Rect(rect.x, rect.y, 5f, rect.height), locked ? new Color(0.4f, 0.4f, 0.4f) : BossSkills.ColorOf(skill.Effect));
+                GUI.Label(new Rect(rect.x + 6f, rect.y, rect.width - 6f, rect.height), SkillCellText(skill, left, locked), small);
             }
         }
 

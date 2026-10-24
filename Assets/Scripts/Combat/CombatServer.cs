@@ -65,6 +65,7 @@ namespace BS
             buffer = new byte[CombatCodec.MaxBatchBytes + 64];
             slotOf = MatchWorld.Current.SlotOf; // one delegate for every publish
             bossSkills.BaseDamageOverride = DevArgs.BossSkillDamage;
+            MatchWorld.Current.BossPhasesEnabled = DevArgs.BossPhases;
         }
 
         ulong BossOwnerId => MatchWorld.Current.BossOwnerId;
@@ -248,11 +249,11 @@ namespace BS
         {
             if (bossAvatar == null || !bossAvatar.IsSpawned) return;
             PlayerSummon view = bossAvatar.GetComponent<PlayerSummon>();
-            if (view != null && view.IsSpawned) view.ServerWriteSkills(bossSkills.CooldownLeft(0), bossSkills.CooldownLeft(1));
+            if (view != null && view.IsSpawned) view.ServerWriteSkills(bossSkills.CooldownLeft(0), bossSkills.CooldownLeft(1), bossSkills.CooldownLeft(BossSkills.PhaseSlot));
         }
 
         /// <summary>
-        /// A boss skill request (Q or E) from a player. Only the boss player's request counts, and only while the match runs and the
+        /// A boss skill request (Q, E or the third skill on F) from a player. Only the boss player's request counts, and only while the match runs and the
         /// boss stands. The skill is announced to everyone now and takes effect when its warning time has passed.
         /// </summary>
         public void OnBossSkillRequest(ulong clientId, int slot, ushort aim)

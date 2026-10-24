@@ -16,6 +16,9 @@ namespace BS
         public float bossT50 = -1f;
         public float bossT25 = -1f;
         public float bossT0 = -1f;
+        /// <summary>When the match entered phase 2 and phase 3; -1 when it never did (or the phases were off).</summary>
+        public float phaseT2 = -1f;
+        public float phaseT3 = -1f;
         public float bossHealthEnd = 1f;
         /// <summary>When the first survivor fell; -1 when none did.</summary>
         public float firstFall = -1f;
@@ -56,6 +59,8 @@ namespace BS
                 if (row.bossT50 < 0f && fraction <= 0.5f) row.bossT50 = t;
                 if (row.bossT25 < 0f && fraction <= 0.25f) row.bossT25 = t;
                 if (row.bossT0 < 0f && world.Boss.Health <= 0) row.bossT0 = t;
+                if (row.phaseT2 < 0f && world.BossSkills.Phase >= BossPhases.Second) row.phaseT2 = t;
+                if (row.phaseT3 < 0f && world.BossSkills.Phase >= BossPhases.Third) row.phaseT3 = t;
             }
 
             for (int i = 0; i < session.SurvivorIds.Count; i++)

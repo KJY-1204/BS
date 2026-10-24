@@ -215,6 +215,9 @@ namespace BS
             result.MobActions = MobActions.Run(Mobs, Projectiles, Survivors, survivorBodies, MobShooterOwner, BlastEvents);
 
             bool standing = BossOwnerId != NoBoss && Boss.Exists && Boss.CanBeHit;
+            // The boss's health moves the match through its phases; a change announces its burst (the announcement joins this step's events).
+            if (Boss.Exists && Boss.MaxHealth > 0)
+                BossSkills.UpdatePhase(Boss.Health / (float)Boss.MaxHealth, BossPhasesEnabled, true, Boss.Position, BossOwnerId, BlastEvents);
             result.BossSkillsReleased = BossSkills.Step(dt, true, standing, Projectiles, Survivors, survivorBodies, BossOwnerId, BlastEvents, Mobs);
 
             shooters.Clear();
@@ -274,6 +277,9 @@ namespace BS
             };
             return BossSkills.TryUse(slot, fromBoss, state, clientId, events);
         }
+
+        /// <summary>False keeps the match in phase 1 (no burst, the third skill stays locked): the harness override bossPhases and -bsBossPhases 0.</summary>
+        public bool BossPhasesEnabled { get; set; } = true;
 
         /// <summary>The boss player left the match (the server sets it).</summary>
         public bool BossLeft { get; set; }

@@ -176,7 +176,7 @@ namespace BS.Tests
         public void AnUnknownSlotIsRefused()
         {
             var r = new Rig();
-            Assert.AreEqual(BossSkillResult.UnknownSlot, r.Use(2));
+            Assert.AreEqual(BossSkillResult.UnknownSlot, r.Use(BossSkills.SlotCount));
             Assert.AreEqual(BossSkillResult.UnknownSlot, r.Use(-1));
             Assert.AreEqual(0, r.Sim.PendingCount);
         }

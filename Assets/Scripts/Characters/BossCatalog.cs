@@ -33,6 +33,9 @@ namespace BS
         public float Length;
         /// <summary>Half the width of a beam.</summary>
         public float HalfWidth;
+
+        /// <summary>A copy that can be changed without touching the original.</summary>
+        public BossSkillDef Clone() => (BossSkillDef)MemberwiseClone();
     }
 
     /// <summary>The boss's basic attack as data: a single straight shot.</summary>
@@ -68,12 +71,21 @@ namespace BS
         public BossAttackDef Attack;
         /// <summary>The skills of the Q and E keys.</summary>
         public BossSkillDef[] Skills;
+        /// <summary>The third skill (the F key) that phase 2 unlocks; its effect is one the kind's Q and E skills do not have.</summary>
+        public BossSkillDef PhaseSkill;
+        /// <summary>The burst of mobs that announces phase 2 and phase 3: a roar with the warning time and the mobs of phase 2.</summary>
+        public BossSkillDef PhaseBurst;
 
-        /// <summary>The first skill (of the kind's skills) that has this effect, or null.</summary>
+        /// <summary>
+        /// The first skill with this effect, looking at the kind's skills, then the phase skill, then the burst, or null. A client finds the size and
+        /// the warning time of an announcement here, so the effects of these must not repeat.
+        /// </summary>
         public BossSkillDef SkillWithEffect(BossSkillEffect effect)
         {
-            if (Skills == null) return null;
-            for (int i = 0; i < Skills.Length; i++) if (Skills[i].Effect == effect) return Skills[i];
+            if (Skills != null)
+                for (int i = 0; i < Skills.Length; i++) if (Skills[i].Effect == effect) return Skills[i];
+            if (PhaseSkill != null && PhaseSkill.Effect == effect) return PhaseSkill;
+            if (PhaseBurst != null && PhaseBurst.Effect == effect) return PhaseBurst;
             return null;
         }
     }
@@ -92,12 +104,25 @@ namespace BS
         /// <summary>How long a match lasts for every kind.</summary>
         const float DefaultMatchSeconds = 900f;
 
+        /// <summary>The burst of mobs that announces a phase change: the roar's effect, a count of mobs and the warning time every kind shares.</summary>
+        static BossSkillDef Burst() => new BossSkillDef
+        {
+            Name = "국면 전환", Key = "", Effect = BossSkillEffect.Roar, CooldownSeconds = 0f, WarningSeconds = BossPhases.BurstWarningSeconds,
+            Count = BossPhases.BurstMobs,
+        };
+
         static readonly BossDef[] kinds =
         {
             new BossDef
             {
                 Id = Standard, Name = "보스", MaxHealth = 190000, MoveSpeed = 4.5f, Radius = 0.9f, ContactDamage = 25,
                 Color = new Color(0.85f, 0.15f, 0.15f), MatchSeconds = DefaultMatchSeconds,
+                PhaseBurst = Burst(),
+                PhaseSkill = new BossSkillDef
+                {
+                    Name = "저격선", Key = "F", Effect = BossSkillEffect.Beam, CooldownSeconds = 14f, Damage = 25, WarningSeconds = 1.2f,
+                    Length = 20f, HalfWidth = 0.6f,
+                },
                 Attack = new BossAttackDef { BaseDamage = BossAttack.BaseDamage, CooldownSeconds = BossAttack.CooldownSeconds, Shape = BossAttack.Shape },
                 Skills = new[]
                 {
@@ -117,6 +142,8 @@ namespace BS
             {
                 Id = Giant, Name = "거인", MaxHealth = 230000, MoveSpeed = 4.0f, Radius = 1.3f, ContactDamage = 35,
                 Color = new Color(0.55f, 0.30f, 0.10f), MatchSeconds = DefaultMatchSeconds,
+                PhaseBurst = Burst(),
+                PhaseSkill = new BossSkillDef { Name = "난사", Key = "F", Effect = BossSkillEffect.ShotRing, CooldownSeconds = 12f, Damage = 10, Count = 14 },
                 Attack = new BossAttackDef
                 {
                     BaseDamage = 20, CooldownSeconds = 1.1f,
@@ -132,6 +159,8 @@ namespace BS
             {
                 Id = Sniper, Name = "저격수", MaxHealth = 170000, MoveSpeed = 5.0f, Radius = 0.7f, ContactDamage = 20,
                 Color = new Color(0.55f, 0.25f, 0.85f), MatchSeconds = DefaultMatchSeconds,
+                PhaseBurst = Burst(),
+                PhaseSkill = new BossSkillDef { Name = "진동", Key = "F", Effect = BossSkillEffect.Shockwave, CooldownSeconds = 10f, Damage = 30, Radius = 4.5f },
                 Attack = new BossAttackDef
                 {
                     BaseDamage = 5, CooldownSeconds = 0.5f,
@@ -193,6 +222,8 @@ namespace BS
                 MatchSeconds = DevArgs.MatchSeconds > 0f ? DevArgs.MatchSeconds : source.MatchSeconds,
                 Attack = source.Attack,
                 Skills = source.Skills,
+                PhaseSkill = source.PhaseSkill,
+                PhaseBurst = source.PhaseBurst,
             };
         }
     }

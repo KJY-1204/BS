@@ -38,12 +38,14 @@ namespace BS
         // The boss skills' cooldowns in tenths of a second, readable only by the boss player.
         readonly NetworkVariable<byte> skillCooldown0 = new NetworkVariable<byte>(0, NetworkVariableReadPermission.Owner, NetworkVariableWritePermission.Server);
         readonly NetworkVariable<byte> skillCooldown1 = new NetworkVariable<byte>(0, NetworkVariableReadPermission.Owner, NetworkVariableWritePermission.Server);
-        readonly bool[] heldSkillKeys = new bool[BossSkills.Count];
+        readonly NetworkVariable<byte> skillCooldown2 = new NetworkVariable<byte>(0, NetworkVariableReadPermission.Owner, NetworkVariableWritePermission.Server);
+        readonly bool[] heldSkillKeys = new bool[BossSkills.SlotCount];
         float nextAutoSkill;
         int autoSkillTurn;
 
         /// <summary>Seconds until a boss skill is ready (0 when ready); only meaningful for the boss player's own copy.</summary>
-        public float SkillCooldown(int slot) => slot == 0 ? skillCooldown0.Value / 10f : slot == 1 ? skillCooldown1.Value / 10f : 0f;
+        public float SkillCooldown(int slot) =>
+            slot == 0 ? skillCooldown0.Value / 10f : slot == 1 ? skillCooldown1.Value / 10f : slot == BossSkills.PhaseSlot ? skillCooldown2.Value / 10f : 0f;
 
         // The devices the boss has standing, the most it may have and the placing cooldown in tenths of a second (boss player only).
         readonly NetworkVariable<byte> deviceCount = new NetworkVariable<byte>(0, NetworkVariableReadPermission.Owner, NetworkVariableWritePermission.Server);
@@ -122,13 +124,14 @@ namespace BS
         }
 
         /// <summary>Server only: copies the boss skills' cooldowns (in seconds) to the boss player's replicated values.</summary>
-        public void ServerWriteSkills(float cooldown0, float cooldown1)
+        public void ServerWriteSkills(float cooldown0, float cooldown1, float cooldown2)
         {
-            byte a = (byte)Mathf.Clamp(Mathf.CeilToInt(cooldown0 * 10f), 0, 255);
-            byte b = (byte)Mathf.Clamp(Mathf.CeilToInt(cooldown1 * 10f), 0, 255);
+            byte a = BossControls.CooldownByte(cooldown0), b = BossControls.CooldownByte(cooldown1), c = BossControls.CooldownByte(cooldown2);
             if (skillCooldown0.Value != a) skillCooldown0.Value = a;
             if (skillCooldown1.Value != b) skillCooldown1.Value = b;
+            if (skillCooldown2.Value != c) skillCooldown2.Value = c;
         }
+
 
         /// <summary>Server only: copies the standing devices, their limit and the placing cooldown (in seconds) to the boss player.</summary>
         public void ServerWriteDevices(int count, int max, float cooldownSeconds)
@@ -292,10 +295,10 @@ namespace BS
             // R places a device at the boss's position.
             if (keyboard != null && keyboard.rKey.wasPressedThisFrame) SendPlaceDevice();
 
-            // Q and E are the boss's skills. A held key counts once, by comparing with the last frame's state.
-            for (int slot = 0; slot < BossSkills.Count && keyboard != null; slot++)
+            // Q and E are the boss's skills, F the one that phase 2 unlocks. A held key counts once, by comparing with the last frame's state.
+            for (int slot = 0; slot < BossSkills.SlotCount && keyboard != null; slot++)
             {
-                bool down = (slot == 0 ? keyboard.qKey : keyboard.eKey).isPressed;
+                bool down = (slot == 0 ? keyboard.qKey : slot == 1 ? keyboard.eKey : keyboard.fKey).isPressed;
                 if (down && !heldSkillKeys[slot]) SendSkill(slot);
                 heldSkillKeys[slot] = down;
             }
@@ -309,9 +312,9 @@ namespace BS
             if (since < nextAutoSkill) return;
 
             nextAutoSkill += DevArgs.AutoBossSkillSeconds;
-            string keys = DevArgs.AutoBossSkillKeys;
-            if (keys.Contains("q")) SendSkill(BossSkills.Barrage);
-            if (keys.Contains("e")) SendSkill(BossSkills.Shockwave);
+            int mask = BossControls.SlotMaskOfKeys(DevArgs.AutoBossSkillKeys);
+            for (int slot = 0; slot < BossSkills.SlotCount; slot++)
+                if ((mask & (1 << slot)) != 0) SendSkill(slot);
         }
 
         /// <summary>Development automation: place a device on a timer (it keeps going after the match so the refusal can be seen).</summary>

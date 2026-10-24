@@ -61,6 +61,9 @@ namespace BS
         // The result and the clock, for everyone's screen
         readonly NetworkVariable<ushort> secondsLeft = new NetworkVariable<ushort>(
             0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+        /// <summary>The phase of the match (1 to 3), decided by the boss's health on the server and seen by everyone.</summary>
+        readonly NetworkVariable<byte> bossPhase = new NetworkVariable<byte>(
+            BossPhases.First, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
         readonly NetworkVariable<byte> winner = new NetworkVariable<byte>(
             (byte)MatchWinner.None, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
         readonly NetworkVariable<byte> reason = new NetworkVariable<byte>(
@@ -83,6 +86,8 @@ namespace BS
 
         /// <summary>Whole seconds left in a match with a boss (0 when there is no clock).</summary>
         public int SecondsLeft => secondsLeft.Value;
+        /// <summary>The phase of the match with a boss (1 when there is none).</summary>
+        public int BossPhase => bossPhase.Value;
         public MatchWinner Winner => (MatchWinner)winner.Value;
         public MatchReason Reason => (MatchReason)reason.Value;
 
@@ -102,6 +107,7 @@ namespace BS
             Instance = this;
             phase.OnValueChanged += OnPhaseChanged;
             bossKind.OnValueChanged += OnBossKindChanged;
+            bossPhase.OnValueChanged += OnBossPhaseChanged;
             BossCatalog.SetCurrentKind(bossKind.Value);
 
             if (!IsServer) return;
@@ -147,6 +153,11 @@ namespace BS
 
         /// <summary>What the finished match came to, on every machine, while the room is finished. Null otherwise, and for a match without a boss.</summary>
         public MatchSummary Summary { get; private set; }
+
+        void OnBossPhaseChanged(byte previous, byte current)
+        {
+            if (current > BossPhases.First) Debug.Log($"[BS] boss phase seen: {current} (server={IsServer})");
+        }
 
         void OnPhaseChanged(byte previous, byte current)
         {
@@ -324,6 +335,7 @@ namespace BS
             bossLeft = false;
             hasBoss.Value = match.Enabled;
             secondsLeft.Value = (ushort)Mathf.Clamp(match.SecondsLeft, 0, ushort.MaxValue);
+            bossPhase.Value = BossPhases.First;
             winner.Value = (byte)MatchWinner.None;
             reason.Value = (byte)MatchReason.None;
 
@@ -351,6 +363,13 @@ namespace BS
             bool decided = world.ClockDecided;
             ushort seconds = (ushort)Mathf.Clamp(match.SecondsLeft, 0, ushort.MaxValue);
             if (secondsLeft.Value != seconds) secondsLeft.Value = seconds;
+
+            byte bossPhaseNow = (byte)world.BossSkills.Phase;
+            if (bossPhase.Value != bossPhaseNow)
+            {
+                Debug.Log($"[BS] boss phase: {bossPhase.Value} -> {bossPhaseNow} health={world.Boss.Health}/{world.Boss.MaxHealth}");
+                bossPhase.Value = bossPhaseNow;
+            }
 
             if (decided) FinishMatch();
         }
@@ -392,6 +411,7 @@ namespace BS
             bossLeft = false;
             hasBoss.Value = false;
             secondsLeft.Value = 0;
+            bossPhase.Value = BossPhases.First;
             winner.Value = (byte)MatchWinner.None;
             reason.Value = (byte)MatchReason.None;
         }

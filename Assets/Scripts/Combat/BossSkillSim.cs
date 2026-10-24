@@ -10,9 +10,13 @@ namespace BS
     /// </summary>
     public static class BossSkills
     {
+        /// <summary>The base skills, on Q and E.</summary>
         public const int Count = 2;
         public const int Barrage = 0;
         public const int Shockwave = 1;
+        /// <summary>The slot of the third skill (the F key) that phase 2 unlocks, and how many slots there are with it.</summary>
+        public const int PhaseSlot = 2;
+        public const int SlotCount = 3;
 
         public static readonly string[] Names = { "탄막", "충격파" };
         public static readonly string[] Keys = { "Q", "E" };
@@ -79,6 +83,8 @@ namespace BS
         /// <summary>The request did not come from the boss.</summary>
         Ignored = 3,
         UnknownSlot = 4,
+        /// <summary>The skill is not unlocked yet (the third skill before phase 2).</summary>
+        Locked = 5,
     }
 
     /// <summary>What the skills need to know about the boss at the moment one is used.</summary>
@@ -108,14 +114,22 @@ namespace BS
             public Vector2 Position;
             public ushort Aim;
             public int Damage;
+            /// <summary>When above zero, how many mobs a roar makes instead of its data's count (the burst of a phase change).</summary>
+            public int Mobs;
+            public bool IsBurst;
         }
 
-        readonly float[] cooldown = new float[BossSkills.Count];
+        readonly float[] cooldown = new float[BossSkills.SlotCount];
         readonly List<Pending> pending = new List<Pending>();
 
         /// <summary>Survivors hurt by beams and mobs made by roars since the last reset (for the development log).</summary>
         public int BeamHits { get; private set; }
         public int RoarMobs { get; private set; }
+        /// <summary>Mobs made by the bursts of phase changes since the last reset (for the development log and tests).</summary>
+        public int BurstMobs { get; private set; }
+
+        /// <summary>The phase of the match, 1 to 3; it only goes up and is 1 after a reset.</summary>
+        public int Phase { get; private set; } = BossPhases.First;
 
         /// <summary>The kind whose skills these are; the standard kind until a match says otherwise.</summary>
         public BossDef Kind { get; private set; } = BossCatalog.Default;
@@ -136,6 +150,8 @@ namespace BS
             pending.Clear();
             BeamHits = 0;
             RoarMobs = 0;
+            BurstMobs = 0;
+            Phase = BossPhases.First;
         }
 
         /// <summary>A new match with a boss of this kind.</summary>
@@ -143,6 +159,44 @@ namespace BS
         {
             Kind = kind ?? BossCatalog.Default;
             Reset();
+        }
+
+        /// <summary>The skill of a slot for the playing kind: Q and E are the kind's skills, the third is its phase skill; null when there is none.</summary>
+        BossSkillDef SkillOf(int slot)
+        {
+            if (slot < 0 || slot >= BossSkills.SlotCount) return null;
+            if (slot == BossSkills.PhaseSlot) return Kind.PhaseSkill;
+            return slot < Kind.Skills.Length ? Kind.Skills[slot] : null;
+        }
+
+        /// <summary>
+        /// Moves the phase up when the boss's health says so and, when it does and the match is running, announces the burst of mobs of the new
+        /// phase (a roar that takes effect after its warning; the announcement is added to <paramref name="events"/>). With <paramref name="enabled"/>
+        /// false the phase stays 1. Returns true when the phase went up.
+        /// </summary>
+        public bool UpdatePhase(float healthFraction, bool enabled, bool matchRunning, Vector2 bossPosition, ulong owner, List<CombatEvent> events)
+        {
+            if (!enabled) return false;
+            int next = Math.Max(Phase, BossPhases.PhaseOf(healthFraction));
+            if (next == Phase) return false;
+
+            Phase = next;
+            BossSkillDef burst = Kind.PhaseBurst;
+            if (matchRunning && burst != null)
+            {
+                pending.Add(new Pending
+                {
+                    Slot = -1, Def = burst, Remaining = burst.WarningSeconds, Position = bossPosition, Aim = 0, Damage = 0,
+                    Mobs = BossPhases.BurstMobsOf(burst.Count, Phase), IsBurst = true,
+                });
+                events.Add(new CombatEvent
+                {
+                    Kind = CombatEventKind.Skill, SkillId = BossSkills.WarningIdOf(burst.Effect), Owner = owner, Position = bossPosition,
+                    Rank = 1, Angle = 0,
+                    RangeScale = SkillCatalog.NormalScalePercent, DurationScale = SkillCatalog.NormalScalePercent,
+                });
+            }
+            return true;
         }
 
         /// <summary>
@@ -153,14 +207,16 @@ namespace BS
         {
             if (!fromBoss) return BossSkillResult.Ignored;
             if (!state.MatchRunning || !state.BossStanding) return BossSkillResult.Unavailable;
-            if (slot < 0 || slot >= BossSkills.Count || slot >= Kind.Skills.Length) return BossSkillResult.UnknownSlot;
+            BossSkillDef def = SkillOf(slot);
+            if (def == null) return BossSkillResult.UnknownSlot;
+            if (slot == BossSkills.PhaseSlot && Phase < BossPhases.Second) return BossSkillResult.Locked;
             if (cooldown[slot] > 0f) return BossSkillResult.Cooldown;
 
-            // The strengthening of the boss's shots applies: a weaker boss hits harder and its cooldown is shorter. Both are
-            // decided now, from the health of this moment.
-            BossSkillDef def = Kind.Skills[slot];
+            // The strengthening of the boss's shots applies: a weaker boss hits harder and its cooldown is shorter, and in the last phase
+            // every cooldown is shorter still. All are decided now, from the health and the phase of this moment.
             int baseDamage = BaseDamageOverride > 0 ? BaseDamageOverride : def.Damage;
-            cooldown[slot] = def.CooldownSeconds * BossAttack.CooldownMultiplier(state.HealthFraction);
+            float phaseFactor = Phase >= BossPhases.Third ? BossPhases.ThirdPhaseCooldownFactor : 1f;
+            cooldown[slot] = def.CooldownSeconds * BossAttack.CooldownMultiplier(state.HealthFraction) * phaseFactor;
             pending.Add(new Pending
             {
                 Slot = slot, Def = def, Remaining = def.WarningSeconds, Position = state.BossPosition, Aim = state.Aim,
@@ -243,8 +299,12 @@ namespace BS
                     break;
 
                 case BossSkillEffect.Roar:
-                    RoarMobs += ReleaseRoar(p, def, mobs);
+                {
+                    int made = ReleaseRoar(p, def, mobs);
+                    if (p.IsBurst) BurstMobs += made;
+                    else RoarMobs += made;
                     break;
+                }
             }
         }
 
@@ -276,9 +336,10 @@ namespace BS
             if (mobs == null) return 0;
             int made = 0;
             byte type = MobKinds.Encode(MobKinds.OriginSummoned, MobKinds.Basic);
-            for (int i = 0; i < def.Count; i++)
+            int count = p.Mobs > 0 ? p.Mobs : def.Count;
+            for (int i = 0; i < count; i++)
             {
-                float angle = i * 2f * Mathf.PI / Mathf.Max(1, def.Count);
+                float angle = i * 2f * Mathf.PI / Mathf.Max(1, count);
                 Vector2 spot = p.Position + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * RoarDistance;
                 if (!mobs.TrySpawn(spot, type, out _)) break;
                 made++;

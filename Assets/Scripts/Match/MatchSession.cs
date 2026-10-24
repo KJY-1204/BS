@@ -67,15 +67,7 @@ namespace BS
         {
             BossDef source = BossCatalog.Get(kind);
             var skills = new BossSkillDef[source.Skills.Length];
-            for (int i = 0; i < skills.Length; i++)
-            {
-                BossSkillDef s = source.Skills[i];
-                skills[i] = new BossSkillDef
-                {
-                    Name = s.Name, Key = s.Key, Effect = s.Effect, CooldownSeconds = s.CooldownSeconds, Damage = s.Damage,
-                    WarningSeconds = s.WarningSeconds, Count = s.Count, Radius = s.Radius, Length = s.Length, HalfWidth = s.HalfWidth,
-                };
-            }
+            for (int i = 0; i < skills.Length; i++) skills[i] = source.Skills[i].Clone();
 
             return new BossDef
             {
@@ -83,6 +75,8 @@ namespace BS
                 ContactDamage = source.ContactDamage, Color = source.Color, MatchSeconds = source.MatchSeconds,
                 Attack = new BossAttackDef { BaseDamage = source.Attack.BaseDamage, CooldownSeconds = source.Attack.CooldownSeconds, Shape = source.Attack.Shape },
                 Skills = skills,
+                PhaseSkill = source.PhaseSkill?.Clone(),
+                PhaseBurst = source.PhaseBurst?.Clone(),
             };
         }
 

@@ -86,6 +86,12 @@ namespace BS
         public float bossT0Share;
         public float bossHealthEndMean;
 
+        /// <summary>When the match entered phase 2 and phase 3, among the matches that did; the share is of all matches.</summary>
+        public Stat phaseT2 = new Stat();
+        public Stat phaseT3 = new Stat();
+        public float phaseT2Share;
+        public float phaseT3Share;
+
         public Stat firstFall = new Stat();
         public float firstFallShare;
         public float fallsMean;
@@ -123,6 +129,7 @@ namespace BS
             var reasons = new Dictionary<string, int>();
             var length = new List<float>();
             var t50 = new List<float>(); var t25 = new List<float>(); var t0 = new List<float>(); var firstFall = new List<float>();
+            var p2 = new List<float>(); var p3 = new List<float>();
             float bossEnd = 0f, falls = 0f, revives = 0f, alive = 0f, maxLevel = 0f, meanLevel = 0f, placed = 0f, destroyed = 0f, expired = 0f;
             int capped = 0;
 
@@ -139,6 +146,8 @@ namespace BS
                 if (r.bossT50 >= 0f) t50.Add(r.bossT50);
                 if (r.bossT25 >= 0f) t25.Add(r.bossT25);
                 if (r.bossT0 >= 0f) t0.Add(r.bossT0);
+                if (r.phaseT2 >= 0f) p2.Add(r.phaseT2);
+                if (r.phaseT3 >= 0f) p3.Add(r.phaseT3);
                 if (r.firstFall >= 0f) firstFall.Add(r.firstFall);
 
                 bossEnd += r.bossHealthEnd; falls += r.falls; revives += r.revives; alive += r.survivorsAliveEnd;
@@ -156,6 +165,8 @@ namespace BS
             s.bossT50 = Stat.Of(t50); s.bossT25 = Stat.Of(t25); s.bossT0 = Stat.Of(t0);
             s.bossT50Share = t50.Count / total; s.bossT25Share = t25.Count / total; s.bossT0Share = t0.Count / total;
             s.bossHealthEndMean = bossEnd / total;
+            s.phaseT2 = Stat.Of(p2); s.phaseT3 = Stat.Of(p3);
+            s.phaseT2Share = p2.Count / total; s.phaseT3Share = p3.Count / total;
             s.firstFall = Stat.Of(firstFall);
             s.firstFallShare = firstFall.Count / total;
             s.fallsMean = falls / total; s.revivesMean = revives / total; s.survivorsAliveEndMean = alive / total;
@@ -189,7 +200,7 @@ namespace BS
 
         // ---- CSV ----
 
-        public const string CsvHeader = "seed,winner,reason,lengthSeconds,bossT50,bossT25,bossT0,bossHealthEnd,firstFall,falls,revives,survivorsAliveEnd,maxLevel,meanLevel,devicesPlaced,devicesDestroyed,devicesExpired,stateHash";
+        public const string CsvHeader = "seed,winner,reason,lengthSeconds,bossT50,bossT25,bossT0,bossHealthEnd,firstFall,falls,revives,survivorsAliveEnd,maxLevel,meanLevel,devicesPlaced,devicesDestroyed,devicesExpired,stateHash,phaseT2,phaseT3";
 
         public static string ToCsv(IReadOnlyList<MatchRow> rows)
         {
@@ -201,7 +212,7 @@ namespace BS
                   .Append(F(r.bossT50)).Append(',').Append(F(r.bossT25)).Append(',').Append(F(r.bossT0)).Append(',').Append(F(r.bossHealthEnd)).Append(',')
                   .Append(F(r.firstFall)).Append(',').Append(r.falls).Append(',').Append(r.revives).Append(',').Append(r.survivorsAliveEnd).Append(',')
                   .Append(r.maxLevel).Append(',').Append(F(r.meanLevel)).Append(',').Append(r.devicesPlaced).Append(',').Append(r.devicesDestroyed).Append(',')
-                  .Append(r.devicesExpired).Append(',').Append(r.stateHash).AppendLine();
+                  .Append(r.devicesExpired).Append(',').Append(r.stateHash).Append(',').Append(F(r.phaseT2)).Append(',').Append(F(r.phaseT3)).AppendLine();
             }
             return sb.ToString();
         }
@@ -232,6 +243,8 @@ namespace BS
                 new Change("boss reaches 50% (share)", before.bossT50Share, now.bossT50Share),
                 new Change("boss 50% at (s, mean)", before.bossT50.mean, now.bossT50.mean),
                 new Change("boss 25% at (s, mean)", before.bossT25.mean, now.bossT25.mean),
+                new Change("phase 2 at (s, mean)", before.phaseT2.mean, now.phaseT2.mean),
+                new Change("phase 3 at (s, mean)", before.phaseT3.mean, now.phaseT3.mean),
                 new Change("boss health at the end (mean)", before.bossHealthEndMean, now.bossHealthEndMean),
                 new Change("first fall at (s, mean)", before.firstFall.mean, now.firstFall.mean),
                 new Change("falls per match", before.fallsMean, now.fallsMean),
@@ -285,6 +298,8 @@ namespace BS
             sb.AppendLine($"| match length | {Pct(1f)} | {F(s.length.mean)} | {F(s.length.median)} | {F(s.length.p10)} | {F(s.length.p90)} |");
             sb.AppendLine($"| boss at 50% | {Pct(s.bossT50Share)} | {F(s.bossT50.mean)} | {F(s.bossT50.median)} | {F(s.bossT50.p10)} | {F(s.bossT50.p90)} |");
             sb.AppendLine($"| boss at 25% | {Pct(s.bossT25Share)} | {F(s.bossT25.mean)} | {F(s.bossT25.median)} | {F(s.bossT25.p10)} | {F(s.bossT25.p90)} |");
+            sb.AppendLine($"| phase 2 starts | {Pct(s.phaseT2Share)} | {F(s.phaseT2.mean)} | {F(s.phaseT2.median)} | {F(s.phaseT2.p10)} | {F(s.phaseT2.p90)} |");
+            sb.AppendLine($"| phase 3 starts | {Pct(s.phaseT3Share)} | {F(s.phaseT3.mean)} | {F(s.phaseT3.median)} | {F(s.phaseT3.p10)} | {F(s.phaseT3.p90)} |");
             sb.AppendLine($"| boss at 0% | {Pct(s.bossT0Share)} | {F(s.bossT0.mean)} | {F(s.bossT0.median)} | {F(s.bossT0.p10)} | {F(s.bossT0.p90)} |");
             sb.AppendLine($"| first survivor falls | {Pct(s.firstFallShare)} | {F(s.firstFall.mean)} | {F(s.firstFall.median)} | {F(s.firstFall.p10)} | {F(s.firstFall.p90)} |");
             sb.AppendLine();

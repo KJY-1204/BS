@@ -36,8 +36,9 @@ namespace BS
     /// -bsBossHealth n   (host) the boss's maximum health
     /// -bsMatchSeconds s (host) the time limit of a match with a boss
     /// -bsBossChase     (boss player) walk toward the nearest survivor on its own
-    /// -bsAutoBossSkill q|e|qe s  (the boss player) press that boss skill key (or both) every s seconds
+    /// -bsAutoBossSkill q|e|f|qe|qef s  (the boss player) press those boss skill keys (any of q, e and f together) every s seconds
     /// -bsBossSkillDamage n  (host) the base damage of both boss skills (before the strengthening)
+    /// -bsBossPhases 0|1  (host) 0 keeps the match in phase 1: no phase burst and the third boss skill stays locked (default 1)
     /// -bsAutoSummonKind k[,k...]  (the boss player) the mob kinds the automatic summons ask for, in turn (0 basic, 1 fast, 2 tough)
     /// -bsAutoSummon s  (boss player) summon every s seconds
     /// -bsAutoOrderPlayer r s (boss player) s seconds after the match starts, order the survivor with role r
@@ -116,6 +117,8 @@ namespace BS
         public static string AutoBossSkillKeys { get; private set; } = "";
         public static float AutoBossSkillSeconds { get; private set; } = -1f;
         public static int BossSkillDamage { get; private set; }
+        /// <summary>False when -bsBossPhases 0 keeps the match in phase 1.</summary>
+        public static bool BossPhases { get; private set; } = true;
         /// <summary>The kinds the automatic summons ask for, one after another. Empty means the kind the player chose.</summary>
         public static int[] AutoSummonKinds { get; private set; } = new int[0];
         public static int AutoOrderPlayerRole { get; private set; } = -1;
@@ -208,6 +211,9 @@ namespace BS
                     case "-bsAutoBossSkill" when i + 2 < args.Length:
                         AutoBossSkillKeys = args[i + 1].ToLowerInvariant();
                         if (float.TryParse(args[i + 2], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float abs)) AutoBossSkillSeconds = abs;
+                        break;
+                    case "-bsBossPhases" when i + 1 < args.Length:
+                        if (int.TryParse(args[i + 1], out int bph)) BossPhases = bph != 0;
                         break;
                     case "-bsBossSkillDamage" when i + 1 < args.Length:
                         if (int.TryParse(args[i + 1], out int bsk)) BossSkillDamage = bsk;

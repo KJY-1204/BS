@@ -34,7 +34,9 @@ namespace BS
             // Practice matches have no boss: nothing here, as before.
             if (table.MatchHasBoss)
             {
+                TrackPhase(table);
                 DrawTopBar(table);
+                DrawPhaseBanner();
                 if (IsLocalBoss()) DrawSurvivorSummary();
             }
 
@@ -62,6 +64,34 @@ namespace BS
             return null;
         }
 
+        // ---- The phase of the match: a banner when it changes, the current one by the boss's bar ----
+
+        /// <summary>How long the banner of a new phase stays on the screen.</summary>
+        const float BannerSeconds = 4f;
+
+        int shownPhase = BossPhases.First;
+        float bannerUntil;
+
+        /// <summary>The boss bar's text: the kind's name, its health and the phase.</summary>
+        public static string BossBarText(string name, int health, int maxHealth, int phase) => $"{name}  {health} / {maxHealth}   국면 {phase}";
+
+        /// <summary>The banner when the match enters a phase.</summary>
+        public static string PhaseBannerText(int phase) => $"국면 {phase}";
+
+        void TrackPhase(RoleTable table)
+        {
+            int phase = table.BossPhase;
+            if (phase == shownPhase) return;
+            if (phase > shownPhase && phase > BossPhases.First) bannerUntil = Time.unscaledTime + BannerSeconds;
+            shownPhase = phase; // a lower number is a new match
+        }
+
+        void DrawPhaseBanner()
+        {
+            if (Time.unscaledTime >= bannerUntil || shownPhase <= BossPhases.First) return;
+            GUI.Label(new Rect(Screen.width * 0.5f - 200f, Screen.height * 0.2f, 400f, 44f), PhaseBannerText(shownPhase), big);
+        }
+
         // ---- Time and the boss's health, for everyone ----
 
         void DrawTopBar(RoleTable table)
@@ -80,7 +110,7 @@ namespace BS
             float fraction = boss.Combat.MaxHealth > 0 ? Mathf.Clamp01(boss.Combat.Health / (float)boss.Combat.MaxHealth) : 0f;
             Fill(new Rect(x, y + 38f, width, 16f), new Color(0f, 0f, 0f, 0.65f));
             Fill(new Rect(x + 2f, y + 40f, (width - 4f) * fraction, 12f), Color.Lerp(new Color(0.95f, 0.25f, 0.2f), new Color(0.95f, 0.6f, 0.2f), fraction));
-            GUI.Label(new Rect(x, y + 55f, width, 20f), $"{BossCatalog.Current.Name}  {boss.Combat.Health} / {boss.Combat.MaxHealth}", center);
+            GUI.Label(new Rect(x, y + 55f, width, 20f), BossBarText(BossCatalog.Current.Name, boss.Combat.Health, boss.Combat.MaxHealth, table.BossPhase), center);
         }
 
         // ---- The boss player sees every survivor ----

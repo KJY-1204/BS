@@ -404,7 +404,7 @@ namespace BS
             if (hasTarget && s.Time >= nextSkill)
             {
                 nextSkill = s.Time + Jitter(profile.ReactionSeconds);
-                for (int slot = 0; slot < BossSkills.Count; slot++) s.UseBossSkill(slot, angle);
+                for (int slot = 0; slot < BossSkills.SlotCount; slot++) s.UseBossSkill(slot, angle); // the third skill is refused until phase 2
             }
 
             if (s.Time >= nextDevice)

@@ -1,0 +1,117 @@
+{
+    "bossKind": 2,
+    "profile": "normal",
+    "characters": [
+        1,
+        2,
+        3,
+        4
+    ],
+    "firstSeed": 1,
+    "step": 0.019999999552965165,
+    "overrides": [
+        {
+            "name": "bossPhases",
+            "value": 0.0
+        }
+    ],
+    "note": "",
+    "matches": 120,
+    "survivorWins": 72,
+    "bossWins": 48,
+    "undecided": 0,
+    "survivorShare": 0.6000000238418579,
+    "reasons": [
+        {
+            "reason": "BossDefeated",
+            "count": 72
+        },
+        {
+            "reason": "AllSurvivorsFallen",
+            "count": 30
+        },
+        {
+            "reason": "TimeUp",
+            "count": 18
+        }
+    ],
+    "length": {
+        "count": 120,
+        "mean": 650.5491943359375,
+        "median": 803.5215454101563,
+        "p10": 64.34492492675781,
+        "p90": 900.0156860351563,
+        "min": 26.700420379638673,
+        "max": 900.0156860351563
+    },
+    "bossT50": {
+        "count": 92,
+        "mean": 466.4974670410156,
+        "median": 461.31500244140627,
+        "p10": 424.0534973144531,
+        "p90": 518.42138671875,
+        "min": 394.841552734375,
+        "max": 571.4751586914063
+    },
+    "bossT25": {
+        "count": 90,
+        "mean": 650.74658203125,
+        "median": 643.7756958007813,
+        "p10": 584.7140502929688,
+        "p90": 724.1541137695313,
+        "min": 553.1773071289063,
+        "max": 794.8130493164063
+    },
+    "bossT0": {
+        "count": 72,
+        "mean": 814.413330078125,
+        "median": 808.6265258789063,
+        "p10": 746.8522338867188,
+        "p90": 882.486572265625,
+        "min": 714.6948852539063,
+        "max": 897.6533813476563
+    },
+    "bossT50Share": 0.7666666507720947,
+    "bossT25Share": 0.75,
+    "bossT0Share": 0.6000000238418579,
+    "bossHealthEndMean": 0.24067836999893189,
+    "phaseT2": {
+        "count": 0,
+        "mean": 0.0,
+        "median": 0.0,
+        "p10": 0.0,
+        "p90": 0.0,
+        "min": 0.0,
+        "max": 0.0
+    },
+    "phaseT3": {
+        "count": 0,
+        "mean": 0.0,
+        "median": 0.0,
+        "p10": 0.0,
+        "p90": 0.0,
+        "min": 0.0,
+        "max": 0.0
+    },
+    "phaseT2Share": 0.0,
+    "phaseT3Share": 0.0,
+    "firstFall": {
+        "count": 120,
+        "mean": 29.40492057800293,
+        "median": 22.67032814025879,
+        "p10": 15.020153999328614,
+        "p90": 50.55896759033203,
+        "min": 6.1199951171875,
+        "max": 78.3588638305664
+    },
+    "firstFallShare": 1.0,
+    "fallsMean": 16.53333282470703,
+    "revivesMean": 15.324999809265137,
+    "survivorsAliveEndMean": 2.7916667461395265,
+    "maxLevelMean": 17.558332443237306,
+    "levelCapShare": 0.7666666507720947,
+    "meanLevelMean": 17.268749237060548,
+    "devicesPlacedMean": 1.0,
+    "devicesDestroyedMean": 0.5333333611488342,
+    "devicesExpiredMean": 0.46666666865348818
+}
