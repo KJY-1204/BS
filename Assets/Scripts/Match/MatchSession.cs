@@ -110,6 +110,7 @@ namespace BS
             // The boss
             Vector2 bossSpawn = ArenaConfig.SpawnPoint(RoleTable.BossRole);
             w.Boss.Reset(def, bossSpawn);
+            w.RescuePoint.Reset(Mix(Seed, 17, 5), bossSpawn);
             w.Attacks.Register(BossId, def.Attack.ToAttackDef(), true);
             w.Slots[BossId] = RoleTable.BossRole;
             w.BossSkills.Reset(def);

@@ -302,6 +302,15 @@ namespace BS
                 return;
             }
 
+            // With nothing close and nobody to rescue, an open rescue point is worth the walk: go in and stand there.
+            RescuePointSim point = w.RescuePoint;
+            if (point.IsOpen)
+            {
+                Vector2 toPoint = point.Center - me;
+                move = toPoint.magnitude > RescueConfig.Radius * 0.6f ? toPoint.normalized : Vector2.zero;
+                return;
+            }
+
             if (bossUp && bossDistance > shotRange * 0.75f) move = (bossPos - me).normalized;
             else move = Vector2.zero;
         }

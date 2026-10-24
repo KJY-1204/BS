@@ -177,6 +177,21 @@ namespace BS
 
         // The basic values are the fields above; a kind's value is the field times the kind's multiple.
         public float SpeedOf(byte kind) => Speed * MobKinds.Get(kind).SpeedMultiple;
+
+        /// <summary>A circle in which mobs move slower (the open rescue point); inactive by default.</summary>
+        public bool SlowZoneActive { get; private set; }
+        Vector2 slowZoneCenter;
+        float slowZoneRadius;
+        float slowZoneFactor = 1f;
+
+        /// <summary>Sets or clears the slow zone: a mob whose position is inside moves at this factor of its speed.</summary>
+        public void SetSlowZone(bool active, Vector2 center, float radius, float factor)
+        {
+            SlowZoneActive = active;
+            slowZoneCenter = center;
+            slowZoneRadius = radius;
+            slowZoneFactor = factor;
+        }
         public float RadiusOf(byte kind) => Radius * MobKinds.Get(kind).RadiusMultiple;
         public int MaxHealthOf(byte kind) => Mathf.Max(1, Mathf.RoundToInt(MaxHealth * MobKinds.Get(kind).HealthMultiple));
         /// <summary>How many times the basic contact damage this mob's touch deals.</summary>
@@ -853,6 +868,7 @@ namespace BS
             {
                 if (MobKinds.IsDeviceType(types[i])) continue; // a device stands still
                 float step = SpeedOf(MobKinds.KindOf(types[i])) * dt;
+                if (SlowZoneActive && (positions[i] - slowZoneCenter).sqrMagnitude <= slowZoneRadius * slowZoneRadius) step *= slowZoneFactor;
                 if (!TryGetTargetPosition(i, survivors, out Vector2 target)) continue;
 
                 Vector2 toTarget = target - positions[i];

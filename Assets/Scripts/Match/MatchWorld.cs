@@ -216,6 +216,9 @@ namespace BS
             result.MobActions = MobActions.Run(Mobs, Projectiles, Survivors, survivorBodies, MobShooterOwner, BlastEvents);
 
             bool standing = BossOwnerId != NoBoss && Boss.Exists && Boss.CanBeHit;
+            // The rescue point opens, fills and closes; while it is open the mobs inside it are slowed (the mobs phase of the next step reads this).
+            RescuePoint.Step(dt, MatchRunning && standing, survivorBodies, Survivors);
+            Mobs.SetSlowZone(RescuePoint.IsOpen, RescuePoint.Center, RescueConfig.Radius, RescueConfig.SlowFactor);
             // The boss's health moves the match through its phases; a change announces its burst (the announcement joins this step's events).
             if (Boss.Exists && Boss.MaxHealth > 0)
                 BossSkills.UpdatePhase(Boss.Health / (float)Boss.MaxHealth, BossPhasesEnabled, true, Boss.Position, BossOwnerId, BlastEvents);
@@ -281,6 +284,9 @@ namespace BS
 
         /// <summary>False keeps the match in phase 1 (no burst, the third skill stays locked): the harness override bossPhases and -bsBossPhases 0.</summary>
         public bool BossPhasesEnabled { get; set; } = true;
+
+        /// <summary>The rescue point: a map objective that survivors capture for a heal (see <see cref="RescuePointSim"/>).</summary>
+        public RescuePointSim RescuePoint { get; } = new RescuePointSim();
 
         /// <summary>The boss player left the match (the server sets it).</summary>
         public bool BossLeft { get; set; }

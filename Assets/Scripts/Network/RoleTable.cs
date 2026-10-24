@@ -64,6 +64,16 @@ namespace BS
         /// <summary>The phase of the match (1 to 3), decided by the boss's health on the server and seen by everyone.</summary>
         readonly NetworkVariable<byte> bossPhase = new NetworkVariable<byte>(
             BossPhases.First, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+        /// <summary>The rescue point for everyone's screen: 0 closed, 1 open; its centre, progress (0 to 100) and the seconds left.</summary>
+        // The centre is declared before the open flag so it arrives first and a listener of the flag reads the right place.
+        readonly NetworkVariable<Vector2> rescueCenter = new NetworkVariable<Vector2>(
+            Vector2.zero, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+        readonly NetworkVariable<byte> rescueOpen = new NetworkVariable<byte>(
+            0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+        readonly NetworkVariable<byte> rescueProgress = new NetworkVariable<byte>(
+            0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+        readonly NetworkVariable<byte> rescueLeft = new NetworkVariable<byte>(
+            0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
         readonly NetworkVariable<byte> winner = new NetworkVariable<byte>(
             (byte)MatchWinner.None, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
         readonly NetworkVariable<byte> reason = new NetworkVariable<byte>(
@@ -88,6 +98,11 @@ namespace BS
         public int SecondsLeft => secondsLeft.Value;
         /// <summary>The phase of the match with a boss (1 when there is none).</summary>
         public int BossPhase => bossPhase.Value;
+        public bool RescueOpen => rescueOpen.Value != 0;
+        public Vector2 RescueCenter => rescueCenter.Value;
+        /// <summary>0 to 1.</summary>
+        public float RescueProgress => rescueProgress.Value / 100f;
+        public int RescueSecondsLeft => rescueLeft.Value;
         public MatchWinner Winner => (MatchWinner)winner.Value;
         public MatchReason Reason => (MatchReason)reason.Value;
 
@@ -108,6 +123,7 @@ namespace BS
             phase.OnValueChanged += OnPhaseChanged;
             bossKind.OnValueChanged += OnBossKindChanged;
             bossPhase.OnValueChanged += OnBossPhaseChanged;
+            rescueOpen.OnValueChanged += OnRescueOpenChanged;
             BossCatalog.SetCurrentKind(bossKind.Value);
 
             if (!IsServer) return;
@@ -153,6 +169,11 @@ namespace BS
 
         /// <summary>What the finished match came to, on every machine, while the room is finished. Null otherwise, and for a match without a boss.</summary>
         public MatchSummary Summary { get; private set; }
+
+        void OnRescueOpenChanged(byte previous, byte current)
+        {
+            Debug.Log($"[BS] rescue point seen: {(current != 0 ? "open" : "closed")} center={rescueCenter.Value} (server={IsServer})");
+        }
 
         void OnBossPhaseChanged(byte previous, byte current)
         {
@@ -336,6 +357,9 @@ namespace BS
             hasBoss.Value = match.Enabled;
             secondsLeft.Value = (ushort)Mathf.Clamp(match.SecondsLeft, 0, ushort.MaxValue);
             bossPhase.Value = BossPhases.First;
+            rescueOpen.Value = 0;
+            rescueProgress.Value = 0;
+            rescueLeft.Value = 0;
             winner.Value = (byte)MatchWinner.None;
             reason.Value = (byte)MatchReason.None;
 
@@ -365,6 +389,19 @@ namespace BS
             if (secondsLeft.Value != seconds) secondsLeft.Value = seconds;
 
             byte bossPhaseNow = (byte)world.BossSkills.Phase;
+            RescuePointSim point = world.RescuePoint;
+            byte open = (byte)(point.IsOpen ? 1 : 0);
+            if (point.IsOpen && rescueCenter.Value != point.Center) rescueCenter.Value = point.Center;
+            byte progress = (byte)Mathf.Clamp(Mathf.RoundToInt(point.Progress * 100f), 0, 100);
+            if (rescueProgress.Value != progress) rescueProgress.Value = progress;
+            byte left = (byte)Mathf.Clamp(Mathf.CeilToInt(point.SecondsLeft), 0, 255);
+            if (rescueLeft.Value != left) rescueLeft.Value = left;
+            if (rescueOpen.Value != open)
+            {
+                if (open != 0) Debug.Log($"[BS] rescue point open: center={point.Center} (captured so far {point.Captured})");
+                rescueOpen.Value = open;
+            }
+
             if (bossPhase.Value != bossPhaseNow)
             {
                 Debug.Log($"[BS] boss phase: {bossPhase.Value} -> {bossPhaseNow} health={world.Boss.Health}/{world.Boss.MaxHealth}");
@@ -412,6 +449,9 @@ namespace BS
             hasBoss.Value = false;
             secondsLeft.Value = 0;
             bossPhase.Value = BossPhases.First;
+            rescueOpen.Value = 0;
+            rescueProgress.Value = 0;
+            rescueLeft.Value = 0;
             winner.Value = (byte)MatchWinner.None;
             reason.Value = (byte)MatchReason.None;
         }

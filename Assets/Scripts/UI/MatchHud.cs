@@ -37,6 +37,7 @@ namespace BS
                 TrackPhase(table);
                 DrawTopBar(table);
                 DrawPhaseBanner();
+                DrawRescuePoint(table);
                 if (IsLocalBoss()) DrawSurvivorSummary();
             }
 
@@ -90,6 +91,41 @@ namespace BS
         {
             if (Time.unscaledTime >= bannerUntil || shownPhase <= BossPhases.First) return;
             GUI.Label(new Rect(Screen.width * 0.5f - 200f, Screen.height * 0.2f, 400f, 44f), PhaseBannerText(shownPhase), big);
+        }
+
+        // ---- The rescue point, for everyone ----
+
+        /// <summary>The rescue point bar's text: the progress in percent and the seconds left before it closes.</summary>
+        public static string RescueBarText(float progress, int secondsLeft) => $"구호 지점  {Mathf.RoundToInt(Mathf.Clamp01(progress) * 100f)}%  ({secondsLeft}초)";
+
+        void DrawRescuePoint(RoleTable table)
+        {
+            if (!table.RescueOpen) return;
+
+            const float width = 300f;
+            float x = Screen.width * 0.5f - width * 0.5f;
+            float y = 92f;
+            float fraction = Mathf.Clamp01(table.RescueProgress);
+            Fill(new Rect(x, y, width, 16f), new Color(0f, 0f, 0f, 0.65f));
+            Fill(new Rect(x + 2f, y + 2f, (width - 4f) * fraction, 12f), new Color(0.3f, 0.85f, 0.9f));
+            GUI.Label(new Rect(x, y + 14f, width, 20f), RescueBarText(fraction, table.RescueSecondsLeft), center);
+
+            // The circle in the world: dots along its outline, placed from the camera's view of the centre and the radius.
+            Camera cam = Camera.main;
+            if (cam == null) return;
+            Vector3 c = cam.WorldToScreenPoint(table.RescueCenter);
+            Vector3 ex = cam.WorldToScreenPoint(table.RescueCenter + new Vector2(RescueConfig.Radius, 0f));
+            Vector3 ey = cam.WorldToScreenPoint(table.RescueCenter + new Vector2(0f, RescueConfig.Radius));
+            float rx = Mathf.Abs(ex.x - c.x);
+            float ry = Mathf.Abs(ey.y - c.y);
+            const int dots = 48;
+            for (int i = 0; i < dots; i++)
+            {
+                float angle = i * Mathf.PI * 2f / dots;
+                float px = c.x + Mathf.Cos(angle) * rx;
+                float py = Screen.height - (c.y + Mathf.Sin(angle) * ry);
+                Fill(new Rect(px - 2f, py - 2f, 4f, 4f), new Color(0.3f, 0.85f, 0.9f, 0.9f));
+            }
         }
 
         // ---- Time and the boss's health, for everyone ----

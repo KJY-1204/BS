@@ -123,6 +123,7 @@ namespace BS
             MatchWorld.Current.BossOwnerId = avatar.OwnerClientId;
             BossDef def = BossCatalog.ForMatch();
             Boss.Reset(def, avatar.transform.position);
+            MatchWorld.Current.RescuePoint.Reset(System.Environment.TickCount, avatar.transform.position);
 
             // The boss shoots like a survivor does, but its shots are hostile: they hurt survivors and pass through mobs.
             slots[avatar.OwnerClientId] = RoleTable.BossRole;
