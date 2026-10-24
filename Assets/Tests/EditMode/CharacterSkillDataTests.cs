@@ -232,7 +232,7 @@ namespace BS.Tests
             int[] ranks = NoRanks();
             foreach (SkillDef def in SkillCatalog.All) ranks[def.Id] = def.MaxRank % (SkillCatalog.MaxPackedRank + 1);
             int[] back = NoRanks();
-            SkillCatalog.Unpack(SkillCatalog.PackLow(ranks), SkillCatalog.PackHigh(ranks), back);
+            SkillCatalog.Unpack(SkillCatalog.PackAll(ranks), back);
             CollectionAssert.AreEqual(ranks, back);
         }
     }

@@ -52,7 +52,7 @@ namespace BS.Tests
             ranks[SkillCatalog.IdsPerPackedValue + 1] = 1;
 
             int[] back = NoRanks();
-            SkillCatalog.Unpack(SkillCatalog.PackLow(ranks), SkillCatalog.PackHigh(ranks), back);
+            SkillCatalog.Unpack(SkillCatalog.PackAll(ranks), back);
 
             CollectionAssert.AreEqual(ranks, back);
         }

@@ -111,7 +111,7 @@ namespace BS
 
         /// <summary>
         /// Gives a survivor each of the character's active skills (every slot, the R skill too, whatever its prerequisite) at the rank, and with a
-        /// positive <paramref name="passiveRank"/> the character's own passives as well, and with <paramref name="evolution"/> 1 or 2 the matching evolution of the Q skill. A rank above a skill's maximum is cut to it.
+        /// positive <paramref name="passiveRank"/> the character's own passives as well, and with <paramref name="evolution"/> 1 or 2 the matching evolution of the Q, E and R skills. A rank above a skill's maximum is cut to it.
         /// </summary>
         public static void GrantSkills(LevelingSim leveling, ulong id, byte character, int rank, int passiveRank, int evolution = 0)
         {
@@ -120,9 +120,12 @@ namespace BS
                 SkillDef def = SkillCatalog.ForSlot(slot, character);
                 if (def != null) leveling.GrantRank(id, def.Id, Math.Min(rank, def.MaxRank));
             }
-            // The first (1) or second (2) evolution of the Q skill, whatever the Q skill's rank.
-            SkillDef evolved = SkillCatalog.EvolutionOf(SkillCatalog.ForSlot(0, character), evolution);
-            if (evolved != null) leveling.GrantRank(id, evolved.Id, 1);
+            // The first (1) or second (2) evolution of the Q, E and R skills, whatever the rank of the base skill.
+            for (int slot = 0; slot < SkillCatalog.SkillSlots; slot++)
+            {
+                SkillDef evolved = SkillCatalog.EvolutionOf(SkillCatalog.ForSlot(slot, character), evolution);
+                if (evolved != null) leveling.GrantRank(id, evolved.Id, 1);
+            }
             if (passiveRank <= 0) return;
             foreach (SkillDef def in SkillCatalog.All)
                 if (!def.IsActive && def.Passive != PassiveEffectKind.None && def.Character == character)
@@ -251,7 +254,8 @@ namespace BS
         {
             if (entry.Growth == null || !entry.Growth.IsSpawned) return;
             entry.Growth.ServerWrite(Leveling.Level(id), Leveling.Xp(id), Mathf.FloorToInt(Skills.Mana(id)),
-                                     Mathf.RoundToInt(Skills.MaxMana(id)), SkillCatalog.PackLow(Leveling.Ranks(id)), SkillCatalog.PackHigh(Leveling.Ranks(id)));
+                                     Mathf.RoundToInt(Skills.MaxMana(id)), SkillCatalog.PackLow(Leveling.Ranks(id)), SkillCatalog.PackHigh(Leveling.Ranks(id)),
+                                     SkillCatalog.PackThird(Leveling.Ranks(id)));
         }
 
         // ---- Development helpers ----

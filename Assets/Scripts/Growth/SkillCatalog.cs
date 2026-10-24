@@ -77,6 +77,24 @@ namespace BS
         /// <summary>Sanae Q evolutions: a wide heal and a quick, small one.</summary>
         public const byte MiracleBig = 39;
         public const byte MiracleQuick = 40;
+        /// <summary>E evolutions: Reimu's barrier (long, short), Marisa's Stardust (long, rapid), Sakuya's knives (many, focused), Sanae's wind veil (wide, impact).</summary>
+        public const byte BarrierLong = 41;
+        public const byte BarrierShort = 42;
+        public const byte StardustLong = 43;
+        public const byte StardustRapid = 44;
+        public const byte KnivesMany = 45;
+        public const byte KnivesFocused = 46;
+        public const byte VeilWide = 47;
+        public const byte VeilImpact = 48;
+        /// <summary>R evolutions: Reimu's burst (wide, focused), Marisa's beam (broad, piercing), Sakuya's knives (dense, precise), Sanae's heal (wide, quick).</summary>
+        public const byte HeavenWide = 49;
+        public const byte HeavenFocus = 50;
+        public const byte SparkBroad = 51;
+        public const byte SparkPiercing = 52;
+        public const byte DollDense = 53;
+        public const byte DollPrecise = 54;
+        public const byte GreatWide = 55;
+        public const byte GreatQuick = 56;
     }
 
     /// <summary>What a character's own passive does. The common passives are worked out by <see cref="StatCalc"/> and have none of these.</summary>
@@ -177,10 +195,12 @@ namespace BS
         /// <summary>The slot of the R skills, which need the character's Q skill at <see cref="UltimateRequiresQRank"/> first.</summary>
         public const int UltimateSlot = 2;
         public const int UltimateRequiresQRank = 2;
-        /// <summary>Ranks are packed three bits per skill id into 64 bit values, 21 ids to a value (ids 1 to 21 in the low one, 22 to 42 in the high one).</summary>
-        public const int MaxSkillId = 42;
+        /// <summary>Ranks are packed three bits per skill id into 64 bit values, 21 ids to a value (ids 1 to 21 in the first, 22 to 42 in the second, 43 to 63 in the third).</summary>
+        public const int PackedValues = 3;
         /// <summary>How many skill ids one packed 64 bit value holds.</summary>
         public const int IdsPerPackedValue = 21;
+        /// <summary>The highest skill id the packed values can hold.</summary>
+        public const int MaxSkillId = PackedValues * IdsPerPackedValue;
         /// <summary>Ranks are packed three bits per skill, so a skill's maximum rank can be at most this.</summary>
         public const int MaxPackedRank = 7;
         const int PackBits = 3;
@@ -362,6 +382,119 @@ namespace BS
                 EvolvesFrom = SkillIds.Miracle, ExclusiveWith = SkillIds.MiracleBig, RequiresSkill = SkillIds.Miracle, RequiresRank = 3,
                 Radius = new[] { 4f }, Amount = new[] { 40 },
                 ManaCost = 20, Cooldown = 6f, Description = "회복은 적지만 싸고 자주 쓴다 (Q 진화)",
+            },
+            // ---- Evolutions of the E and R skills: one rank each, a trade against the base skill at its maximum rank ----
+            new SkillDef
+            {
+                Id = SkillIds.BarrierLong, Name = "결계 · 장기", IsActive = true, Slot = 1, Character = CharacterIds.Reimu, Effect = SkillEffectKind.Barrier, MaxRank = 1,
+                EvolvesFrom = SkillIds.Barrier, ExclusiveWith = SkillIds.BarrierShort, RequiresSkill = SkillIds.Barrier, RequiresRank = 3,
+                Duration = new[] { 4f },
+                ManaCost = 45, Cooldown = 22f, Description = "오래 지키지만 비싸고 느리다 (E 진화)",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.BarrierShort, Name = "결계 · 단기", IsActive = true, Slot = 1, Character = CharacterIds.Reimu, Effect = SkillEffectKind.Barrier, MaxRank = 1,
+                EvolvesFrom = SkillIds.Barrier, ExclusiveWith = SkillIds.BarrierLong, RequiresSkill = SkillIds.Barrier, RequiresRank = 3,
+                Duration = new[] { 1.2f },
+                ManaCost = 15, Cooldown = 7f, Description = "짧게 지키지만 싸고 자주 쓴다 (E 진화)",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.StardustLong, Name = "스타더스트 · 장기", IsActive = true, Slot = 1, Character = CharacterIds.Marisa, Effect = SkillEffectKind.AttackSpeed, MaxRank = 1,
+                EvolvesFrom = SkillIds.RapidFire, ExclusiveWith = SkillIds.StardustRapid, RequiresSkill = SkillIds.RapidFire, RequiresRank = 3,
+                Duration = new[] { 8f }, CooldownMultiplier = new[] { 0.55f },
+                ManaCost = 35, Cooldown = 18f, Description = "오래 가지만 덜 빠르고 비싸다 (E 진화)",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.StardustRapid, Name = "스타더스트 · 급속", IsActive = true, Slot = 1, Character = CharacterIds.Marisa, Effect = SkillEffectKind.AttackSpeed, MaxRank = 1,
+                EvolvesFrom = SkillIds.RapidFire, ExclusiveWith = SkillIds.StardustLong, RequiresSkill = SkillIds.RapidFire, RequiresRank = 3,
+                Duration = new[] { 3f }, CooldownMultiplier = new[] { 0.3f },
+                ManaCost = 20, Cooldown = 12f, Description = "아주 빠르지만 짧다 (E 진화)",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.KnivesMany, Name = "나이프 난사 · 다발", IsActive = true, Slot = 1, Character = CharacterIds.Sakuya, Effect = SkillEffectKind.Volley, MaxRank = 1,
+                EvolvesFrom = SkillIds.KnifeBarrage, ExclusiveWith = SkillIds.KnivesFocused, RequiresSkill = SkillIds.KnifeBarrage, RequiresRank = 3,
+                Count = new[] { 28 }, Damage = new[] { 8 },
+                ManaCost = 40, Cooldown = 12f, Description = "많이 던지지만 약하고 비싸다 (E 진화)",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.KnivesFocused, Name = "나이프 난사 · 집중", IsActive = true, Slot = 1, Character = CharacterIds.Sakuya, Effect = SkillEffectKind.Volley, MaxRank = 1,
+                EvolvesFrom = SkillIds.KnifeBarrage, ExclusiveWith = SkillIds.KnivesMany, RequiresSkill = SkillIds.KnifeBarrage, RequiresRank = 3,
+                Count = new[] { 8 }, Damage = new[] { 24 },
+                ManaCost = 25, Cooldown = 7f, Description = "적게 던지지만 강하고 빠르다 (E 진화)",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.VeilWide, Name = "바람의 장막 · 광역", IsActive = true, Slot = 1, Character = CharacterIds.Sanae, Effect = SkillEffectKind.Push, MaxRank = 1,
+                EvolvesFrom = SkillIds.WindVeil, ExclusiveWith = SkillIds.VeilImpact, RequiresSkill = SkillIds.WindVeil, RequiresRank = 3,
+                Radius = new[] { 6.5f }, Distance = new[] { 4f },
+                ManaCost = 35, Cooldown = 14f, Description = "넓게 밀지만 덜 밀고 비싸다 (E 진화)",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.VeilImpact, Name = "바람의 장막 · 충격", IsActive = true, Slot = 1, Character = CharacterIds.Sanae, Effect = SkillEffectKind.Push, MaxRank = 1,
+                EvolvesFrom = SkillIds.WindVeil, ExclusiveWith = SkillIds.VeilWide, RequiresSkill = SkillIds.WindVeil, RequiresRank = 3,
+                Radius = new[] { 3f }, Distance = new[] { 8f },
+                ManaCost = 25, Cooldown = 10f, Description = "좁지만 멀리 밀어낸다 (E 진화)",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.HeavenWide, Name = "몽상천생 · 광역", IsActive = true, Slot = 2, Character = CharacterIds.Reimu, Effect = SkillEffectKind.AreaDamage, MaxRank = 1,
+                EvolvesFrom = SkillIds.FantasyHeaven, ExclusiveWith = SkillIds.HeavenFocus, RequiresSkill = SkillIds.FantasyHeaven, RequiresRank = 3,
+                Radius = new[] { 10f }, Damage = new[] { 90 },
+                ManaCost = 85, Cooldown = 50f, Description = "훨씬 넓지만 약하고 비싸다 (R 진화)",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.HeavenFocus, Name = "몽상천생 · 집중", IsActive = true, Slot = 2, Character = CharacterIds.Reimu, Effect = SkillEffectKind.AreaDamage, MaxRank = 1,
+                EvolvesFrom = SkillIds.FantasyHeaven, ExclusiveWith = SkillIds.HeavenWide, RequiresSkill = SkillIds.FantasyHeaven, RequiresRank = 3,
+                Radius = new[] { 4.5f }, Damage = new[] { 220 },
+                ManaCost = 70, Cooldown = 35f, Description = "좁지만 아주 강하고 빠르다 (R 진화)",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.SparkBroad, Name = "파이널 스파크 · 광폭", IsActive = true, Slot = 2, Character = CharacterIds.Marisa, Effect = SkillEffectKind.Beam, MaxRank = 1,
+                EvolvesFrom = SkillIds.FinalSpark, ExclusiveWith = SkillIds.SparkPiercing, RequiresSkill = SkillIds.FinalSpark, RequiresRank = 3,
+                Length = new[] { 14f }, HalfWidth = new[] { 2.4f }, Damage = new[] { 160 },
+                ManaCost = 90, Cooldown = 50f, Description = "아주 넓지만 짧고 약하고 비싸다 (R 진화)",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.SparkPiercing, Name = "파이널 스파크 · 관통", IsActive = true, Slot = 2, Character = CharacterIds.Marisa, Effect = SkillEffectKind.Beam, MaxRank = 1,
+                EvolvesFrom = SkillIds.FinalSpark, ExclusiveWith = SkillIds.SparkBroad, RequiresSkill = SkillIds.FinalSpark, RequiresRank = 3,
+                Length = new[] { 24f }, HalfWidth = new[] { 1.0f }, Damage = new[] { 240 },
+                ManaCost = 80, Cooldown = 45f, Description = "아주 길고 강하지만 가늘다 (R 진화)",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.DollDense, Name = "킬링 도올 · 빽빽", IsActive = true, Slot = 2, Character = CharacterIds.Sakuya, Effect = SkillEffectKind.Volley, MaxRank = 1,
+                EvolvesFrom = SkillIds.KillingDoll, ExclusiveWith = SkillIds.DollPrecise, RequiresSkill = SkillIds.KillingDoll, RequiresRank = 3,
+                Count = new[] { 90 }, Damage = new[] { 11 },
+                ManaCost = 85, Cooldown = 50f, Description = "칼이 빽빽하지만 약하고 비싸다 (R 진화)",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.DollPrecise, Name = "킬링 도올 · 정밀", IsActive = true, Slot = 2, Character = CharacterIds.Sakuya, Effect = SkillEffectKind.Volley, MaxRank = 1,
+                EvolvesFrom = SkillIds.KillingDoll, ExclusiveWith = SkillIds.DollDense, RequiresSkill = SkillIds.KillingDoll, RequiresRank = 3,
+                Count = new[] { 36 }, Damage = new[] { 30 },
+                ManaCost = 60, Cooldown = 30f, Description = "칼은 적지만 강하고 싸다 (R 진화)",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.GreatWide, Name = "대기적 · 광역", IsActive = true, Slot = 2, Character = CharacterIds.Sanae, Effect = SkillEffectKind.Heal, MaxRank = 1,
+                EvolvesFrom = SkillIds.GreatMiracle, ExclusiveWith = SkillIds.GreatQuick, RequiresSkill = SkillIds.GreatMiracle, RequiresRank = 3,
+                Radius = new[] { 12f }, Amount = new[] { 110 },
+                ManaCost = 85, Cooldown = 55f, Description = "아주 넓지만 덜 낫게 하고 비싸다 (R 진화)",
+            },
+            new SkillDef
+            {
+                Id = SkillIds.GreatQuick, Name = "대기적 · 신속", IsActive = true, Slot = 2, Character = CharacterIds.Sanae, Effect = SkillEffectKind.Heal, MaxRank = 1,
+                EvolvesFrom = SkillIds.GreatMiracle, ExclusiveWith = SkillIds.GreatWide, RequiresSkill = SkillIds.GreatMiracle, RequiresRank = 3,
+                Radius = new[] { 8f }, Amount = new[] { 90 },
+                ManaCost = 55, Cooldown = 30f, Description = "회복은 적지만 싸고 자주 쓴다 (R 진화)",
             },
             new SkillDef
             {
@@ -595,11 +728,26 @@ namespace BS
         public static int RankOf(IReadOnlyList<int> ranks, byte skillId) =>
             skillId < ranks.Count ? ranks[skillId] : 0;
 
-        /// <summary>The ranks of skill ids 1 to 21, three bits each, id 1 in the lowest bits.</summary>
-        public static ulong PackLow(IReadOnlyList<int> ranks) => PackRange(ranks, 1);
+        /// <summary>The packed value number <paramref name="index"/> (0 to <see cref="PackedValues"/> - 1): the ranks of the 21 ids from index x 21 + 1, three bits each, the first id in the lowest bits.</summary>
+        public static ulong Pack(IReadOnlyList<int> ranks, int index) =>
+            index >= 0 && index < PackedValues ? PackRange(ranks, index * IdsPerPackedValue + 1) : 0UL;
 
-        /// <summary>The ranks of skill ids 22 to 42, three bits each, id 22 in the lowest bits.</summary>
-        public static ulong PackHigh(IReadOnlyList<int> ranks) => PackRange(ranks, IdsPerPackedValue + 1);
+        /// <summary>The ranks of skill ids 1 to 21.</summary>
+        public static ulong PackLow(IReadOnlyList<int> ranks) => Pack(ranks, 0);
+
+        /// <summary>The ranks of skill ids 22 to 42.</summary>
+        public static ulong PackHigh(IReadOnlyList<int> ranks) => Pack(ranks, 1);
+
+        /// <summary>The ranks of skill ids 43 to 63.</summary>
+        public static ulong PackThird(IReadOnlyList<int> ranks) => Pack(ranks, 2);
+
+        /// <summary>Every packed value, in order.</summary>
+        public static ulong[] PackAll(IReadOnlyList<int> ranks)
+        {
+            var values = new ulong[PackedValues];
+            for (int i = 0; i < values.Length; i++) values[i] = Pack(ranks, i);
+            return values;
+        }
 
         static ulong PackRange(IReadOnlyList<int> ranks, int firstId)
         {
@@ -609,19 +757,19 @@ namespace BS
             return packed;
         }
 
-        public static void Unpack(ulong low, ulong high, int[] into)
+        /// <summary>Fills <paramref name="into"/> (indexed by skill id) from the packed values; an id the values do not hold, and id 0, gets 0.</summary>
+        public static void Unpack(IReadOnlyList<ulong> values, int[] into)
         {
             for (int id = 0; id < into.Length; id++)
             {
-                if (id < 1 || id > MaxSkillId)
+                int index = (id - 1) / IdsPerPackedValue;
+                if (id < 1 || id > MaxSkillId || values == null || index >= values.Count)
                 {
                     into[id] = 0;
                     continue;
                 }
-                bool inLow = id <= IdsPerPackedValue;
-                ulong packed = inLow ? low : high;
-                int slot = inLow ? id - 1 : id - IdsPerPackedValue - 1;
-                into[id] = (int)((packed >> (slot * PackBits)) & MaxPackedRank);
+                int slot = (id - 1) % IdsPerPackedValue;
+                into[id] = (int)((values[index] >> (slot * PackBits)) & MaxPackedRank);
             }
         }
     }

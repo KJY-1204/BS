@@ -35,7 +35,7 @@ namespace BS.Tests
             SkillDef def = SkillCatalog.Get(evolution);
             var set = new List<(byte, int)> { (def.EvolvesFrom, 3), (evolution, 1) };
             set.AddRange(more);
-            return Fire(NewSkills(), def.Character, Q, Ranks(set.ToArray()));
+            return Fire(NewSkills(), def.Character, def.Slot, Ranks(set.ToArray()));
         }
 
         static MobSim Mobs(int health = 1000) => new MobSim(targetCount: 0) { MaxHealth = health };
@@ -57,7 +57,7 @@ namespace BS.Tests
         // ---- pressing Q fires the evolution ----
 
         [Test]
-        public void PressingQFiresTheEvolutionWithItsOwnCostCooldownAndValues()
+        public void PressingTheKeyFiresTheEvolutionWithItsOwnCostCooldownAndValues()
         {
             foreach (SkillDef evolution in SkillCatalog.All.Where(d => d.EvolvesFrom != 0))
             {
@@ -65,12 +65,12 @@ namespace BS.Tests
                 SkillSim sim = NewSkills();
                 int[] ranks = Ranks((baseSkill.Id, 3), (evolution.Id, 1));
 
-                SkillActivation act = Fire(sim, evolution.Character, Q, ranks);
+                SkillActivation act = Fire(sim, evolution.Character, evolution.Slot, ranks);
 
                 Assert.AreEqual(evolution.Id, act.SkillId, evolution.Name);
                 Assert.AreEqual(1, act.Rank);
                 Assert.AreEqual(1000f - evolution.ManaCost, sim.Mana(A), 1e-3f, evolution.Name);
-                Assert.AreEqual(evolution.Cooldown, sim.CooldownLeft(A, Q), 1e-3f, evolution.Name);
+                Assert.AreEqual(evolution.Cooldown, sim.CooldownLeft(A, evolution.Slot), 1e-3f, evolution.Name);
                 Assert.AreEqual(evolution.Cooldown, act.Cooldown, 1e-3f);
             }
         }

@@ -1,0 +1,15 @@
+{
+  "bossKind": 1,
+  "profile": "weak",
+  "characters": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "matches": 120,
+  "firstSeed": 1,
+  "step": 0.019999999552965164,
+  "overrides": [],
+  "baselinePath": ""
+}

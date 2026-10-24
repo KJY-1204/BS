@@ -115,7 +115,7 @@ namespace BS.Tests
         [Test]
         public void EveryIdSurvivesPackingWithoutMixingNeighbours()
         {
-            Assert.AreEqual(42, SkillCatalog.MaxSkillId);
+            Assert.AreEqual(63, SkillCatalog.MaxSkillId);
             Assert.AreEqual(7, SkillCatalog.MaxPackedRank);
             for (int id = 1; id <= SkillCatalog.MaxSkillId; id++)
             for (int rank = 0; rank <= SkillCatalog.MaxPackedRank; rank++)
@@ -124,7 +124,7 @@ namespace BS.Tests
                 ranks[id] = rank;
 
                 var back = NoRanks();
-                SkillCatalog.Unpack(SkillCatalog.PackLow(ranks), SkillCatalog.PackHigh(ranks), back);
+                SkillCatalog.Unpack(SkillCatalog.PackAll(ranks), back);
 
                 for (int other = 0; other < back.Length; other++)
                     Assert.AreEqual(other == id ? rank : 0, back[other], $"id {id} rank {rank} other {other}");
@@ -138,7 +138,7 @@ namespace BS.Tests
             for (int id = 1; id <= 42; id++) ranks[id] = (id % 7) + 1;
 
             var back = NoRanks();
-            SkillCatalog.Unpack(SkillCatalog.PackLow(ranks), SkillCatalog.PackHigh(ranks), back);
+            SkillCatalog.Unpack(SkillCatalog.PackAll(ranks), back);
 
             for (int id = 1; id <= 42; id++) Assert.AreEqual(ranks[id], back[id], $"id {id}");
             Assert.AreEqual(0, back[0], "id zero is not a skill");
@@ -154,12 +154,12 @@ namespace BS.Tests
             Assert.AreEqual(2UL, SkillCatalog.PackHigh(ranks));
 
             var back = NoRanks();
-            SkillCatalog.Unpack(SkillCatalog.PackLow(ranks), SkillCatalog.PackHigh(ranks), back);
+            SkillCatalog.Unpack(SkillCatalog.PackAll(ranks), back);
             Assert.AreEqual(5, back[21]);
             Assert.AreEqual(2, back[22]);
 
             ranks[21] = 0;
-            SkillCatalog.Unpack(SkillCatalog.PackLow(ranks), SkillCatalog.PackHigh(ranks), back);
+            SkillCatalog.Unpack(SkillCatalog.PackAll(ranks), back);
             Assert.AreEqual(0, back[21]);
             Assert.AreEqual(2, back[22], "clearing 21 does not touch 22");
         }

@@ -28,8 +28,11 @@ namespace BS
             (ushort)GrowthConfig.BaseMaxMana, NetworkVariableReadPermission.Owner, NetworkVariableWritePermission.Server);
         readonly NetworkVariable<ulong> ranksPacked = new NetworkVariable<ulong>(
             0, NetworkVariableReadPermission.Owner, NetworkVariableWritePermission.Server);
-        /// <summary>The ranks of skill ids 22 and above (see <see cref="SkillCatalog.PackHigh"/>).</summary>
+        /// <summary>The ranks of skill ids 22 to 42 (see <see cref="SkillCatalog.PackHigh"/>).</summary>
         readonly NetworkVariable<ulong> ranksPackedHigh = new NetworkVariable<ulong>(
+            0, NetworkVariableReadPermission.Owner, NetworkVariableWritePermission.Server);
+        /// <summary>The ranks of skill ids 43 and above (see <see cref="SkillCatalog.PackThird"/>).</summary>
+        readonly NetworkVariable<ulong> ranksPackedThird = new NetworkVariable<ulong>(
             0, NetworkVariableReadPermission.Owner, NetworkVariableWritePermission.Server);
 
         PlayerAvatar avatar;
@@ -81,9 +84,10 @@ namespace BS
 
             if (IsOwner)
             {
-                ranksPacked.OnValueChanged += (_, __) => { SkillCatalog.Unpack(ranksPacked.Value, ranksPackedHigh.Value, ranks); LogRanks(); };
-                ranksPackedHigh.OnValueChanged += (_, __) => { SkillCatalog.Unpack(ranksPacked.Value, ranksPackedHigh.Value, ranks); LogRanks(); };
-                SkillCatalog.Unpack(ranksPacked.Value, ranksPackedHigh.Value, ranks);
+                ranksPacked.OnValueChanged += (_, __) => { UnpackRanks(); LogRanks(); };
+                ranksPackedHigh.OnValueChanged += (_, __) => { UnpackRanks(); LogRanks(); };
+                ranksPackedThird.OnValueChanged += (_, __) => { UnpackRanks(); LogRanks(); };
+                UnpackRanks();
             }
 
             if (DevArgs.GrowthLog)
@@ -111,7 +115,9 @@ namespace BS
         // ---- Server side ----
 
         /// <summary>Server only: copies the simulation's values to the replicated variables when they change.</summary>
-        public void ServerWrite(int levelValue, int xpValue, int manaValue, int maxManaValue, ulong packedRanks, ulong packedRanksHigh)
+        void UnpackRanks() => SkillCatalog.Unpack(new[] { ranksPacked.Value, ranksPackedHigh.Value, ranksPackedThird.Value }, ranks);
+
+        public void ServerWrite(int levelValue, int xpValue, int manaValue, int maxManaValue, ulong packedRanks, ulong packedRanksHigh, ulong packedRanksThird)
         {
             byte l = (byte)Mathf.Clamp(levelValue, 1, 255);
             ushort x = (ushort)Mathf.Clamp(xpValue, 0, ushort.MaxValue);
@@ -124,8 +130,9 @@ namespace BS
             if (mana.Value != m) mana.Value = m;
             if (ranksPacked.Value != packedRanks) ranksPacked.Value = packedRanks;
             if (ranksPackedHigh.Value != packedRanksHigh) ranksPackedHigh.Value = packedRanksHigh;
+            if (ranksPackedThird.Value != packedRanksThird) ranksPackedThird.Value = packedRanksThird;
 
-            if (IsServer && IsOwner) SkillCatalog.Unpack(packedRanks, packedRanksHigh, ranks);
+            if (IsServer && IsOwner) SkillCatalog.Unpack(new[] { packedRanks, packedRanksHigh, packedRanksThird }, ranks);
         }
 
         /// <summary>Server only: tells the owner a skill choice has opened.</summary>

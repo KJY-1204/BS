@@ -1,0 +1,36 @@
+{
+  "bossKind": 1,
+  "profile": "weak",
+  "characters": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "matches": 120,
+  "firstSeed": 1,
+  "step": 0.019999999552965164,
+  "overrides": [
+    {
+      "name": "startQRank",
+      "value": 3
+    },
+    {
+      "name": "startERank",
+      "value": 3
+    },
+    {
+      "name": "startRRank",
+      "value": 3
+    },
+    {
+      "name": "startEvolution",
+      "value": 2
+    },
+    {
+      "name": "startEvolutionSlot",
+      "value": 3
+    }
+  ],
+  "baselinePath": ""
+}

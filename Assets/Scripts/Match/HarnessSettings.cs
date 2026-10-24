@@ -60,6 +60,8 @@ namespace BS
                     if (float.IsNaN(o.value) || float.IsInfinity(o.value)) return $"override '{o.name}' is not a number";
                     if (o.name == "bossPhases" && o.value != 0f && o.value != 1f) return "override 'bossPhases' must be 0 or 1";
                     if (o.name == "startQRank" && (o.value < 0f || o.value > 3f || o.value != Math.Floor(o.value))) return "override 'startQRank' must be 0, 1, 2 or 3";
+                    if ((o.name == "startERank" || o.name == "startRRank") && (o.value < 0f || o.value > 3f || o.value != Math.Floor(o.value))) return $"override '{o.name}' must be 0, 1, 2 or 3";
+                    if (o.name == "startEvolutionSlot" && (o.value < 0f || o.value > 3f || o.value != Math.Floor(o.value))) return "override 'startEvolutionSlot' must be 0 (Q), 1 (E), 2 (R) or 3 (all three)";
                     if (o.name == "startEvolutionRole" && (o.value < 0f || o.value > 4f || o.value != Math.Floor(o.value))) return "override 'startEvolutionRole' must be 0 to 4";
                     if (o.name == "startEvolution" && (o.value < 0f || o.value > 2f || o.value != Math.Floor(o.value))) return "override 'startEvolution' must be 0, 1 or 2";
                 }
@@ -107,6 +109,10 @@ namespace BS
             // Every survivor starts with their Q skill at this rank (0 to 3) and with this evolution of it (0 none, 1 or 2).
             ["startQRank"] = new Entry { OnWorld = (w, v) => w.StartQRank = (int)v },
             ["startEvolution"] = new Entry { OnWorld = (w, v) => w.StartEvolution = (int)v },
+            // The rank of the E and R skills every survivor starts with (0 to 3), and the slot startEvolution evolves (0 Q, 1 E, 2 R, 3 all three).
+            ["startERank"] = new Entry { OnWorld = (w, v) => w.StartERank = (int)v },
+            ["startRRank"] = new Entry { OnWorld = (w, v) => w.StartRRank = (int)v },
+            ["startEvolutionSlot"] = new Entry { OnWorld = (w, v) => w.StartEvolutionSlot = (int)v },
             // With startEvolution: only the survivor of this role (1 to 4) gets it; 0 gives it to everyone.
             ["startEvolutionRole"] = new Entry { OnWorld = (w, v) => w.StartEvolutionRole = (int)v },
             ["xpPerKill"] = new Entry { OnWorld = (w, v) => w.Leveling.XpPerKill = (int)v },

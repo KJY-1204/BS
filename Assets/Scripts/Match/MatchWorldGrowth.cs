@@ -56,15 +56,29 @@ namespace BS
         /// <summary>When above zero, only the survivor with this role (1 to 4) starts with the evolution (the harness override startEvolutionRole); zero gives it to every survivor.</summary>
         public int StartEvolutionRole { get; set; }
 
-        /// <summary>Gives a survivor the Q skill rank and the evolution this world starts them with.</summary>
+        /// <summary>The rank of the E and R skills every survivor starts with (the harness overrides startERank and startRRank), 0 for none.</summary>
+        public int StartERank { get; set; }
+        public int StartRRank { get; set; }
+
+        /// <summary>The slot whose skill <see cref="StartEvolution"/> evolves: 0 the Q skill (the default), 1 the E skill, 2 the R skill, 3 all three (the harness override startEvolutionSlot).</summary>
+        public int StartEvolutionSlot { get; set; }
+
+        /// <summary>Gives a survivor the Q, E and R skill ranks and the evolution this world starts them with.</summary>
         public void GrantStartSkills(ulong clientId, byte character)
         {
-            SkillDef q = SkillCatalog.ForSlot(0, character);
-            if (q == null) return;
-            if (StartQRank > 0) Leveling.GrantRank(clientId, q.Id, System.Math.Min(StartQRank, q.MaxRank));
+            int[] starts = { StartQRank, StartERank, StartRRank };
+            for (int slot = 0; slot < SkillCatalog.SkillSlots; slot++)
+            {
+                SkillDef baseSkill = SkillCatalog.ForSlot(slot, character);
+                if (baseSkill != null && starts[slot] > 0) Leveling.GrantRank(clientId, baseSkill.Id, System.Math.Min(starts[slot], baseSkill.MaxRank));
+            }
             if (StartEvolutionRole > 0 && SlotOf(clientId) != StartEvolutionRole) return;
-            SkillDef evolution = SkillCatalog.EvolutionOf(q, StartEvolution);
-            if (evolution != null) Leveling.GrantRank(clientId, evolution.Id, 1);
+            for (int slot = 0; slot < SkillCatalog.SkillSlots; slot++)
+            {
+                if (StartEvolutionSlot != SkillCatalog.SkillSlots && StartEvolutionSlot != slot) continue;
+                SkillDef evolution = SkillCatalog.EvolutionOf(SkillCatalog.ForSlot(slot, character), StartEvolution);
+                if (evolution != null) Leveling.GrantRank(clientId, evolution.Id, 1);
+            }
         }
 
         /// <summary>Added to every survivor's maximum health (the development argument that replaces the starting health). Zero in a real match.</summary>

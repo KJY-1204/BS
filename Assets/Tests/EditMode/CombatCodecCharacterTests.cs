@@ -178,6 +178,69 @@ namespace BS.Tests
         }
 
         [Test]
+        public void EvenTheBiggestEvolvedSkillsOfAllFourCharactersAddAlmostNothingToTheWorstCaseTraffic()
+        {
+            // Each ring of knives (base or evolved, E or R) once per cooldown: its skill event, every knife's fire event and, if every knife hit and pierced to the limit, its hits.
+            float bytesPerSecond = 0f;
+            foreach (CharacterDef c in CharacterCatalog.All)
+            {
+                for (int slot = 1; slot <= SkillCatalog.UltimateSlot; slot++)
+                {
+                    SkillDef baseSkill = SkillCatalog.ForSlot(slot, c.Id);
+                    float worst = 0f;
+                    foreach (SkillDef def in new[] { baseSkill }.Concat(SkillCatalog.All.Where(d => d.EvolvesFrom == baseSkill.Id)))
+                    {
+                        if (def.Effect != SkillEffectKind.Volley) continue;
+                        int knives = def.Count[def.MaxRank - 1];
+                        float bytes = CombatCodec.SkillSize + knives * (CombatCodec.FireSize + c.Attack.Shape.Pierce * CombatCodec.HitSize);
+                        worst = System.Math.Max(worst, bytes / def.Cooldown);
+                    }
+                    bytesPerSecond += worst;
+                }
+            }
+            Assert.Less(bytesPerSecond, 1000f, "every ring of knives at its worst still leaves most of the 10 KB per second budget");
+        }
+
+        [Test]
+        public void TheDenseRingAndTheOtherUltimatesAtTheSameMomentFitInTheMessagesWithoutLoss()
+        {
+            SkillDef dense = SkillCatalog.Get(SkillIds.DollDense);
+            int knives = dense.Count[0];
+            Assert.Greater(knives, SkillCatalog.Get(SkillIds.KillingDoll).Count[2], "the densest ring is bigger than the base ring");
+            var events = new List<CombatEvent>();
+            for (ushort i = 1; i <= knives; i++)
+                events.Add(new CombatEvent { Kind = CombatEventKind.Fire, ProjectileId = i, Slot = 3, Position = new Vector2(1, 1), Angle = (ushort)(i * 700) });
+            foreach (byte id in new[] { SkillIds.HeavenWide, SkillIds.SparkPiercing, SkillIds.DollDense, SkillIds.GreatQuick })
+                events.Add(new CombatEvent { Kind = CombatEventKind.Skill, SkillId = id, Slot = 1, Rank = 1, Angle = 5 });
+            for (ushort i = 1; i <= knives; i++) events.Add(Hit(false, i % 2 == 0));
+
+            int start = 0;
+            var all = new List<CombatEvent>();
+            var buffer = new byte[CombatCodec.MaxBatchBytes + 16];
+            while (start < events.Count)
+            {
+                int fit = CombatCodec.CountThatFit(events, start);
+                Assert.Greater(fit, 0);
+                int length = CombatCodec.WriteBatch(buffer, 5u, events, start, fit, null);
+                Assert.LessOrEqual(length, CombatCodec.MaxBatchBytes);
+
+                CombatCodec.TryReadHeader(buffer, length, out _, out int count);
+                int offset = CombatCodec.HeaderSize;
+                for (int i = 0; i < count; i++)
+                {
+                    Assert.IsTrue(CombatCodec.TryReadEvent(buffer, length, ref offset, out CombatEvent e));
+                    all.Add(e);
+                }
+                start += fit;
+            }
+
+            Assert.AreEqual(events.Count, all.Count);
+            for (int i = 0; i < events.Count; i++) Assert.AreEqual(events[i].Kind, all[i].Kind, $"order at {i}");
+            CollectionAssert.AreEqual(new byte[] { SkillIds.HeavenWide, SkillIds.SparkPiercing, SkillIds.DollDense, SkillIds.GreatQuick },
+                                      all.Where(e => e.Kind == CombatEventKind.Skill).Select(e => e.SkillId).ToArray(), "no skill event is lost");
+        }
+
+        [Test]
         public void FourUltimatesAtTheSameMomentFitInTheMessagesWithoutLoss()
         {
             SkillDef doll = SkillCatalog.Get(SkillIds.KillingDoll);

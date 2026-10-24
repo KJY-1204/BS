@@ -48,7 +48,7 @@ namespace BS
     /// -bsSummonEnergy n (host) the boss's maximum and starting summon energy
     /// -bsDevSkills r  (host) every survivor starts the match with their character's Q and E skills at rank r
     /// -bsDevPassive r (host) every survivor also starts with their character's own passive at rank r (needs -bsDevSkills)
-    /// -bsDevEvolve n (host) every survivor also starts with evolution n (1 or 2) of their Q skill (needs -bsDevSkills)
+    /// -bsDevEvolve n (host) every survivor also starts with evolution n (1 or 2) of their Q, E and R skills (needs -bsDevSkills)
     /// -bsSurvivorHealth n  survivor maximum health (host), to keep survivors alive in load tests
     /// -bsMobSpeed v    mob speed (host)
     /// -bsMobHealth n   mob maximum health (host); a high value keeps mobs alive under fire for load tests

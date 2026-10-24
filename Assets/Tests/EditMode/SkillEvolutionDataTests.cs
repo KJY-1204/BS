@@ -57,13 +57,18 @@ namespace BS.Tests
         }
 
         [Test]
-        public void OtherSlotsAreNeverReplaced()
+        public void EachSlotFiresAnEvolutionOfItsOwnBaseSkillAndNeverAnotherSlots()
         {
             int[] ranks = NoRanks();
             foreach (SkillDef d in SkillCatalog.All.Where(d => d.EvolvesFrom != 0)) ranks[d.Id] = 1;
             foreach (byte c in Characters)
-                foreach (int slot in new[] { 1, 2 })
-                    Assert.AreSame(SkillCatalog.ForSlot(slot, c), SkillCatalog.ActiveForSlot(slot, c, ranks));
+                for (int slot = 0; slot < SkillCatalog.SkillSlots; slot++)
+                {
+                    SkillDef fired = SkillCatalog.ActiveForSlot(slot, c, ranks);
+                    Assert.AreEqual(SkillCatalog.ForSlot(slot, c).Id, fired.EvolvesFrom, $"character {c} slot {slot}");
+                    Assert.AreEqual(slot, fired.Slot);
+                    Assert.AreEqual(c, fired.Character);
+                }
             Assert.IsNull(SkillCatalog.ActiveForSlot(0, CharacterIds.None, ranks));
         }
 
@@ -88,13 +93,15 @@ namespace BS.Tests
         // ---- 1.2 the data ----
 
         [Test]
-        public void ThereAreEightEvolutionsTwoForEachQSkillWithIdsThirtyThreeToForty()
+        public void ThereAreTwentyFourEvolutionsTwoForEachQEAndRSkillWithIdsThirtyThreeToFiftySix()
         {
             List<SkillDef> evolutions = SkillCatalog.All.Where(d => d.EvolvesFrom != 0).ToList();
-            Assert.AreEqual(8, evolutions.Count);
-            CollectionAssert.AreEquivalent(Enumerable.Range(33, 8).Select(i => (byte)i), evolutions.Select(d => d.Id));
+            Assert.AreEqual(24, evolutions.Count);
+            CollectionAssert.AreEquivalent(Enumerable.Range(33, 24).Select(i => (byte)i), evolutions.Select(d => d.Id));
             foreach (byte id in evolutions.Select(d => d.Id)) Assert.LessOrEqual(id, SkillCatalog.MaxSkillId);
-            foreach (byte c in Characters) Assert.AreEqual(2, EvolutionsOf(Q(c)).Count, $"character {c}");
+            foreach (byte c in Characters)
+                for (int slot = 0; slot < SkillCatalog.SkillSlots; slot++)
+                    Assert.AreEqual(2, EvolutionsOf(SkillCatalog.ForSlot(slot, c)).Count, $"character {c} slot {slot}");
             Assert.AreEqual(SkillCatalog.All.Count, SkillCatalog.All.Select(d => d.Id).Distinct().Count());
         }
 
@@ -132,7 +139,7 @@ namespace BS.Tests
             ranks[SkillCatalog.MaxSkillId] = 2;
 
             int[] back = NoRanks();
-            SkillCatalog.Unpack(SkillCatalog.PackLow(ranks), SkillCatalog.PackHigh(ranks), back);
+            SkillCatalog.Unpack(SkillCatalog.PackAll(ranks), back);
 
             CollectionAssert.AreEqual(ranks, back);
         }
@@ -148,6 +155,9 @@ namespace BS.Tests
             if (d.Damage != null) yield return ("damage", d.Damage[i], true);
             if (d.Duration != null) yield return ("duration", d.Duration[i], true);
             if (d.Amount != null) yield return ("amount", d.Amount[i], true);
+            if (d.Count != null) yield return ("count", d.Count[i], true);
+            if (d.Distance != null) yield return ("distance", d.Distance[i], true);
+            if (d.CooldownMultiplier != null) yield return ("cooldown multiplier", d.CooldownMultiplier[i], false); // a lower one is a stronger boost
         }
 
         [Test]
