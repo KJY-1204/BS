@@ -1,0 +1,16 @@
+{
+ "nf": "nf/devx",
+ "out": "devx",
+ "tags": [
+  {
+   "name": "fairy",
+   "row": "fairy",
+   "dur": 110
+  },
+  {
+   "name": "spawnfx",
+   "row": "spawnfx",
+   "dur": 100
+  }
+ ]
+}

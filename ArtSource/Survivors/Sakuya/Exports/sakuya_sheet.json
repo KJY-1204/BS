@@ -1,0 +1,376 @@
+{ "frames": [
+   {
+    "filename": "sakuya_anim 0.aseprite",
+    "frame": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 120
+   },
+   {
+    "filename": "sakuya_anim 1.aseprite",
+    "frame": { "x": 311, "y": 0, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 120
+   },
+   {
+    "filename": "sakuya_anim 2.aseprite",
+    "frame": { "x": 622, "y": 0, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 120
+   },
+   {
+    "filename": "sakuya_anim 3.aseprite",
+    "frame": { "x": 933, "y": 0, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 120
+   },
+   {
+    "filename": "sakuya_anim 4.aseprite",
+    "frame": { "x": 1244, "y": 0, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 120
+   },
+   {
+    "filename": "sakuya_anim 5.aseprite",
+    "frame": { "x": 1555, "y": 0, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 120
+   },
+   {
+    "filename": "sakuya_anim 6.aseprite",
+    "frame": { "x": 1866, "y": 0, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 90
+   },
+   {
+    "filename": "sakuya_anim 7.aseprite",
+    "frame": { "x": 2177, "y": 0, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 90
+   },
+   {
+    "filename": "sakuya_anim 8.aseprite",
+    "frame": { "x": 2488, "y": 0, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 90
+   },
+   {
+    "filename": "sakuya_anim 9.aseprite",
+    "frame": { "x": 2799, "y": 0, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 90
+   },
+   {
+    "filename": "sakuya_anim 10.aseprite",
+    "frame": { "x": 0, "y": 173, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 90
+   },
+   {
+    "filename": "sakuya_anim 11.aseprite",
+    "frame": { "x": 311, "y": 173, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 90
+   },
+   {
+    "filename": "sakuya_anim 12.aseprite",
+    "frame": { "x": 622, "y": 173, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 90
+   },
+   {
+    "filename": "sakuya_anim 13.aseprite",
+    "frame": { "x": 933, "y": 173, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 90
+   },
+   {
+    "filename": "sakuya_anim 14.aseprite",
+    "frame": { "x": 1244, "y": 173, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 80
+   },
+   {
+    "filename": "sakuya_anim 15.aseprite",
+    "frame": { "x": 1555, "y": 173, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 70
+   },
+   {
+    "filename": "sakuya_anim 16.aseprite",
+    "frame": { "x": 1866, "y": 173, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 70
+   },
+   {
+    "filename": "sakuya_anim 17.aseprite",
+    "frame": { "x": 2177, "y": 173, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 80
+   },
+   {
+    "filename": "sakuya_anim 18.aseprite",
+    "frame": { "x": 2488, "y": 173, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 80
+   },
+   {
+    "filename": "sakuya_anim 19.aseprite",
+    "frame": { "x": 2799, "y": 173, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 100
+   },
+   {
+    "filename": "sakuya_anim 20.aseprite",
+    "frame": { "x": 0, "y": 346, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 90
+   },
+   {
+    "filename": "sakuya_anim 21.aseprite",
+    "frame": { "x": 311, "y": 346, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 110
+   },
+   {
+    "filename": "sakuya_anim 22.aseprite",
+    "frame": { "x": 622, "y": 346, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 70
+   },
+   {
+    "filename": "sakuya_anim 23.aseprite",
+    "frame": { "x": 933, "y": 346, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 70
+   },
+   {
+    "filename": "sakuya_anim 24.aseprite",
+    "frame": { "x": 1244, "y": 346, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 80
+   },
+   {
+    "filename": "sakuya_anim 25.aseprite",
+    "frame": { "x": 1555, "y": 346, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 80
+   },
+   {
+    "filename": "sakuya_anim 26.aseprite",
+    "frame": { "x": 1866, "y": 346, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 90
+   },
+   {
+    "filename": "sakuya_anim 27.aseprite",
+    "frame": { "x": 2177, "y": 346, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 100
+   },
+   {
+    "filename": "sakuya_anim 28.aseprite",
+    "frame": { "x": 2488, "y": 346, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 80
+   },
+   {
+    "filename": "sakuya_anim 29.aseprite",
+    "frame": { "x": 2799, "y": 346, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 80
+   },
+   {
+    "filename": "sakuya_anim 30.aseprite",
+    "frame": { "x": 0, "y": 519, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 100
+   },
+   {
+    "filename": "sakuya_anim 31.aseprite",
+    "frame": { "x": 311, "y": 519, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 70
+   },
+   {
+    "filename": "sakuya_anim 32.aseprite",
+    "frame": { "x": 622, "y": 519, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 70
+   },
+   {
+    "filename": "sakuya_anim 33.aseprite",
+    "frame": { "x": 933, "y": 519, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 70
+   },
+   {
+    "filename": "sakuya_anim 34.aseprite",
+    "frame": { "x": 1244, "y": 519, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 70
+   },
+   {
+    "filename": "sakuya_anim 35.aseprite",
+    "frame": { "x": 1555, "y": 519, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 90
+   },
+   {
+    "filename": "sakuya_anim 36.aseprite",
+    "frame": { "x": 1866, "y": 519, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 90
+   },
+   {
+    "filename": "sakuya_anim 37.aseprite",
+    "frame": { "x": 2177, "y": 519, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 90
+   },
+   {
+    "filename": "sakuya_anim 38.aseprite",
+    "frame": { "x": 2488, "y": 519, "w": 311, "h": 173 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 311, "h": 173 },
+    "sourceSize": { "w": 311, "h": 173 },
+    "duration": 110
+   }
+ ],
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.3.18.6-x64",
+  "image": "sakuya_sheet.png",
+  "format": "RGBA8888",
+  "size": { "w": 3110, "h": 692 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "idle", "from": 0, "to": 5, "direction": "forward", "color": "#000000ff" },
+   { "name": "walk", "from": 6, "to": 13, "direction": "forward", "color": "#000000ff" },
+   { "name": "attack", "from": 14, "to": 19, "direction": "forward", "color": "#000000ff" },
+   { "name": "skill", "from": 20, "to": 27, "direction": "forward", "color": "#000000ff" },
+   { "name": "hit", "from": 28, "to": 30, "direction": "forward", "color": "#000000ff" },
+   { "name": "dash", "from": 31, "to": 34, "direction": "forward", "color": "#000000ff" },
+   { "name": "jump", "from": 35, "to": 38, "direction": "forward", "color": "#000000ff" }
+  ],
+  "layers": [
+   { "name": "fx_back", "opacity": 255, "blendMode": "normal" },
+   { "name": "body", "opacity": 255, "blendMode": "normal" },
+   { "name": "fx_front", "opacity": 255, "blendMode": "normal" }
+  ]
+ }
+}

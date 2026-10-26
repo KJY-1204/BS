@@ -1,0 +1,87 @@
+{
+ "out": "nf/sakuya",
+ "scale": 1.0,
+ "colors": 60,
+ "rows": {
+  "idle": {
+   "sheet": "sak1_keyed.png",
+   "box": [
+    112,
+    0,
+    310,
+    150
+   ],
+   "single": true,
+   "nofx": true
+  },
+  "walk": {
+   "sheet": "sak1_keyed.png",
+   "box": [
+    112,
+    160,
+    1440,
+    306
+   ],
+   "n": 8,
+   "nofx": true
+  },
+  "attack": {
+   "sheet": "sak1_keyed.png",
+   "box": [
+    112,
+    352,
+    1536,
+    502
+   ],
+   "cuts": [
+    112,
+    258,
+    428,
+    612,
+    752,
+    938,
+    1040,
+    1195,
+    1326,
+    1412,
+    1536
+   ]
+  },
+  "hit": {
+   "sheet": "sak1_keyed.png",
+   "box": [
+    112,
+    535,
+    640,
+    668
+   ],
+   "n": 3
+  },
+  "dash": {
+   "sheet": "sak1_keyed.png",
+   "box": [
+    112,
+    690,
+    1060,
+    812
+   ],
+   "cuts": [
+    112,
+    350,
+    565,
+    750,
+    1060
+   ]
+  },
+  "jump": {
+   "sheet": "sak1_keyed.png",
+   "box": [
+    112,
+    835,
+    905,
+    1000
+   ],
+   "n": 4
+  }
+ }
+}

@@ -1,0 +1,78 @@
+{
+ "out": "nf/marisa",
+ "scale": 1.0,
+ "colors": 60,
+ "rows": {
+  "walk": {
+   "sheet": "E:/Unity/BS/ArtSource/Reference/gpt_Marisa.png",
+   "box": [
+    112,
+    150,
+    1460,
+    314
+   ],
+   "n": 8,
+   "nofx": true,
+   "scale": 0.935
+  },
+  "attack": {
+   "sheet": "E:/Unity/BS/ArtSource/Reference/gpt_Marisa.png",
+   "box": [
+    112,
+    345,
+    1536,
+    498
+   ],
+   "n": 10
+  },
+  "hit": {
+   "sheet": "E:/Unity/BS/ArtSource/Reference/gpt_Marisa.png",
+   "box": [
+    112,
+    520,
+    640,
+    665
+   ],
+   "n": 3
+  },
+  "dash": {
+   "sheet": "E:/Unity/BS/ArtSource/Reference/gpt_Marisa.png",
+   "box": [
+    112,
+    675,
+    980,
+    805
+   ],
+   "n": 4
+  },
+  "jump": {
+   "sheet": "E:/Unity/BS/ArtSource/Reference/gpt_Marisa.png",
+   "box": [
+    112,
+    830,
+    900,
+    1000
+   ],
+   "n": 4,
+   "nofx": true,
+   "scale": 0.96
+  },
+  "skill": {
+   "sheet": "E:/Unity/BS/ArtSource/Reference/gpt_Marisa_2.png",
+   "box": [
+    0,
+    648,
+    1536,
+    796
+   ],
+   "n": 8,
+   "scale": 1.04
+  },
+  "idle": {
+   "sheet": "E:/Unity/BS/ArtSource/Reference/Marisa_Idle_01.png",
+   "single": true,
+   "nofx": true,
+   "scale": 0.94
+  }
+ }
+}

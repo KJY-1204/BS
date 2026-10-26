@@ -1,0 +1,40 @@
+{
+ "nf": "nf/giant",
+ "out": "giant",
+ "tags": [
+  {
+   "name": "idle",
+   "row": "idle",
+   "dur": 110
+  },
+  {
+   "name": "move",
+   "row": "move",
+   "dur": 90
+  },
+  {
+   "name": "attack",
+   "row": "atk",
+   "dur": 100
+  },
+  {
+   "name": "skill",
+   "row": "skill",
+   "dur": 150
+  },
+  {
+   "name": "hit",
+   "row": "hit",
+   "dur": [
+    80,
+    80,
+    140
+   ]
+  },
+  {
+   "name": "jump",
+   "row": "jump",
+   "dur": 100
+  }
+ ]
+}

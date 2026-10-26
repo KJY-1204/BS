@@ -1,0 +1,93 @@
+{
+ "out": "nf/reimu2",
+ "scale": 1.0,
+ "colors": 60,
+ "rows": {
+  "idle": {
+   "sheet": "E:/Unity/BS/ArtSource/Reference/gpt_reimu._2png.png",
+   "single": true,
+   "nofx": true,
+   "scale": 0.13
+  },
+  "walk": {
+   "sheet": "rei_keyed.png",
+   "box": [
+    150,
+    195,
+    1345,
+    338
+   ],
+   "n": 8,
+   "nofx": true
+  },
+  "attack": {
+   "sheet": "rei_keyed.png",
+   "box": [
+    130,
+    385,
+    1448,
+    536
+   ],
+   "cuts": [
+    130,
+    265,
+    380,
+    522,
+    652,
+    790,
+    948,
+    1068,
+    1195,
+    1300,
+    1448
+   ]
+  },
+  "hit": {
+   "sheet": "rei_keyed.png",
+   "box": [
+    150,
+    560,
+    610,
+    718
+   ],
+   "cuts": [
+    150,
+    285,
+    420,
+    610
+   ]
+  },
+  "dash": {
+   "sheet": "rei_keyed.png",
+   "box": [
+    150,
+    752,
+    935,
+    866
+   ],
+   "cuts": [
+    150,
+    350,
+    538,
+    740,
+    935
+   ]
+  },
+  "jump": {
+   "sheet": "rei_keyed.png",
+   "box": [
+    150,
+    892,
+    805,
+    1050
+   ],
+   "cuts": [
+    150,
+    335,
+    470,
+    630,
+    805
+   ]
+  }
+ }
+}

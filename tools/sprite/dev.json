@@ -1,0 +1,86 @@
+{
+ "out": "nf/dev",
+ "scale": 1.0,
+ "colors": 64,
+ "rows": {
+  "idle": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/dev_src.png",
+   "box": [
+    15,
+    10,
+    495,
+    535
+   ],
+   "single": true,
+   "scale": 0.32
+  },
+  "ready": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/dev_src.png",
+   "box": [
+    495,
+    180,
+    850,
+    535
+   ],
+   "single": true,
+   "scale": 0.5
+  },
+  "summon": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/dev_src.png",
+   "box": [
+    850,
+    175,
+    1180,
+    535
+   ],
+   "single": true,
+   "scale": 0.5
+  },
+  "done": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/dev_src.png",
+   "box": [
+    1180,
+    165,
+    1536,
+    545
+   ],
+   "single": true,
+   "scale": 0.5
+  },
+  "atk": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/dev_src.png",
+   "box": [
+    10,
+    822,
+    980,
+    995
+   ],
+   "cuts": [
+    10,
+    160,
+    320,
+    500,
+    690,
+    980
+   ],
+   "scale": 1.0
+  },
+  "destroy": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/dev_src.png",
+   "box": [
+    990,
+    780,
+    1536,
+    995
+   ],
+   "cuts": [
+    990,
+    1166,
+    1352,
+    1434,
+    1536
+   ],
+   "scale": 0.9
+  }
+ }
+}

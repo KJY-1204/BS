@@ -1,0 +1,340 @@
+{ "frames": [
+   {
+    "filename": "reimu_anim 0.aseprite",
+    "frame": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 120
+   },
+   {
+    "filename": "reimu_anim 1.aseprite",
+    "frame": { "x": 280, "y": 0, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 120
+   },
+   {
+    "filename": "reimu_anim 2.aseprite",
+    "frame": { "x": 560, "y": 0, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 120
+   },
+   {
+    "filename": "reimu_anim 3.aseprite",
+    "frame": { "x": 840, "y": 0, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 120
+   },
+   {
+    "filename": "reimu_anim 4.aseprite",
+    "frame": { "x": 1120, "y": 0, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 120
+   },
+   {
+    "filename": "reimu_anim 5.aseprite",
+    "frame": { "x": 1400, "y": 0, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 120
+   },
+   {
+    "filename": "reimu_anim 6.aseprite",
+    "frame": { "x": 1680, "y": 0, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 90
+   },
+   {
+    "filename": "reimu_anim 7.aseprite",
+    "frame": { "x": 1960, "y": 0, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 90
+   },
+   {
+    "filename": "reimu_anim 8.aseprite",
+    "frame": { "x": 2240, "y": 0, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 90
+   },
+   {
+    "filename": "reimu_anim 9.aseprite",
+    "frame": { "x": 2520, "y": 0, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 90
+   },
+   {
+    "filename": "reimu_anim 10.aseprite",
+    "frame": { "x": 0, "y": 169, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 90
+   },
+   {
+    "filename": "reimu_anim 11.aseprite",
+    "frame": { "x": 280, "y": 169, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 90
+   },
+   {
+    "filename": "reimu_anim 12.aseprite",
+    "frame": { "x": 560, "y": 169, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 90
+   },
+   {
+    "filename": "reimu_anim 13.aseprite",
+    "frame": { "x": 840, "y": 169, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 90
+   },
+   {
+    "filename": "reimu_anim 14.aseprite",
+    "frame": { "x": 1120, "y": 169, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 90
+   },
+   {
+    "filename": "reimu_anim 15.aseprite",
+    "frame": { "x": 1400, "y": 169, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 80
+   },
+   {
+    "filename": "reimu_anim 16.aseprite",
+    "frame": { "x": 1680, "y": 169, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 70
+   },
+   {
+    "filename": "reimu_anim 17.aseprite",
+    "frame": { "x": 1960, "y": 169, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 90
+   },
+   {
+    "filename": "reimu_anim 18.aseprite",
+    "frame": { "x": 2240, "y": 169, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 100
+   },
+   {
+    "filename": "reimu_anim 19.aseprite",
+    "frame": { "x": 2520, "y": 169, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 100
+   },
+   {
+    "filename": "reimu_anim 20.aseprite",
+    "frame": { "x": 0, "y": 338, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 90
+   },
+   {
+    "filename": "reimu_anim 21.aseprite",
+    "frame": { "x": 280, "y": 338, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 90
+   },
+   {
+    "filename": "reimu_anim 22.aseprite",
+    "frame": { "x": 560, "y": 338, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 140
+   },
+   {
+    "filename": "reimu_anim 23.aseprite",
+    "frame": { "x": 840, "y": 338, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 110
+   },
+   {
+    "filename": "reimu_anim 24.aseprite",
+    "frame": { "x": 1120, "y": 338, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 80
+   },
+   {
+    "filename": "reimu_anim 25.aseprite",
+    "frame": { "x": 1400, "y": 338, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 80
+   },
+   {
+    "filename": "reimu_anim 26.aseprite",
+    "frame": { "x": 1680, "y": 338, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 140
+   },
+   {
+    "filename": "reimu_anim 27.aseprite",
+    "frame": { "x": 1960, "y": 338, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 70
+   },
+   {
+    "filename": "reimu_anim 28.aseprite",
+    "frame": { "x": 2240, "y": 338, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 70
+   },
+   {
+    "filename": "reimu_anim 29.aseprite",
+    "frame": { "x": 2520, "y": 338, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 70
+   },
+   {
+    "filename": "reimu_anim 30.aseprite",
+    "frame": { "x": 0, "y": 507, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 70
+   },
+   {
+    "filename": "reimu_anim 31.aseprite",
+    "frame": { "x": 280, "y": 507, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 90
+   },
+   {
+    "filename": "reimu_anim 32.aseprite",
+    "frame": { "x": 560, "y": 507, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 90
+   },
+   {
+    "filename": "reimu_anim 33.aseprite",
+    "frame": { "x": 840, "y": 507, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 90
+   },
+   {
+    "filename": "reimu_anim 34.aseprite",
+    "frame": { "x": 1120, "y": 507, "w": 280, "h": 169 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 280, "h": 169 },
+    "sourceSize": { "w": 280, "h": 169 },
+    "duration": 110
+   }
+ ],
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.3.18.6-x64",
+  "image": "reimu_sheet.png",
+  "format": "RGBA8888",
+  "size": { "w": 2800, "h": 676 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "idle", "from": 0, "to": 5, "direction": "forward", "color": "#000000ff" },
+   { "name": "walk", "from": 6, "to": 13, "direction": "forward", "color": "#000000ff" },
+   { "name": "attack", "from": 14, "to": 18, "direction": "forward", "color": "#000000ff" },
+   { "name": "skill", "from": 19, "to": 23, "direction": "forward", "color": "#000000ff" },
+   { "name": "hit", "from": 24, "to": 26, "direction": "forward", "color": "#000000ff" },
+   { "name": "dash", "from": 27, "to": 30, "direction": "forward", "color": "#000000ff" },
+   { "name": "jump", "from": 31, "to": 34, "direction": "forward", "color": "#000000ff" }
+  ],
+  "layers": [
+   { "name": "fx_back", "opacity": 255, "blendMode": "normal" },
+   { "name": "body", "opacity": 255, "blendMode": "normal" },
+   { "name": "fx_front", "opacity": 255, "blendMode": "normal" }
+  ]
+ }
+}

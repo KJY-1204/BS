@@ -1,0 +1,109 @@
+{
+ "out": "nf/sniper",
+ "scale": 1.0,
+ "colors": 64,
+ "rows": {
+  "idle": {
+   "sheet": "E:/Unity/BS/ArtSource/Reference/\uc800\uaca9\uc218.png",
+   "box": [
+    188,
+    0,
+    470,
+    185
+   ],
+   "single": true,
+   "nofx": true
+  },
+  "move": {
+   "sheet": "E:/Unity/BS/ArtSource/Reference/\uc800\uaca9\uc218.png",
+   "box": [
+    188,
+    195,
+    1448,
+    335
+   ],
+   "n": 8,
+   "nofx": true
+  },
+  "hit": {
+   "sheet": "E:/Unity/BS/ArtSource/Reference/\uc800\uaca9\uc218.png",
+   "box": [
+    188,
+    560,
+    640,
+    700
+   ],
+   "n": 3
+  },
+  "dash": {
+   "sheet": "E:/Unity/BS/ArtSource/Reference/\uc800\uaca9\uc218.png",
+   "box": [
+    188,
+    735,
+    1070,
+    870
+   ],
+   "cuts": [
+    188,
+    385,
+    600,
+    820,
+    1070
+   ],
+   "glowmin": 110
+  },
+  "jump": {
+   "sheet": "E:/Unity/BS/ArtSource/Reference/\uc800\uaca9\uc218.png",
+   "box": [
+    188,
+    885,
+    1020,
+    1050
+   ],
+   "cuts": [
+    188,
+    380,
+    590,
+    790,
+    1020
+   ],
+   "glowmin": 110
+  },
+  "a1": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/snip_clean.png",
+   "box": [
+    0,
+    120,
+    1774,
+    432
+   ],
+   "cuts": [
+    0,
+    383,
+    690,
+    1040,
+    1420,
+    1774
+   ],
+   "scale": 0.5
+  },
+  "a2": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/snip_clean.png",
+   "box": [
+    0,
+    490,
+    1774,
+    758
+   ],
+   "cuts": [
+    0,
+    320,
+    800,
+    1260,
+    1500,
+    1774
+   ],
+   "scale": 0.5
+  }
+ }
+}

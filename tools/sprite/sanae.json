@@ -1,0 +1,87 @@
+{
+ "out": "nf/sanae",
+ "scale": 1.0,
+ "colors": 60,
+ "rows": {
+  "idle": {
+   "sheet": "E:/Unity/BS/ArtSource/Reference/Sanae_.png",
+   "single": true,
+   "nofx": true,
+   "scale": 0.19
+  },
+  "walk": {
+   "sheet": "sana_keyed.png",
+   "box": [
+    150,
+    195,
+    1345,
+    338
+   ],
+   "n": 8,
+   "nofx": true
+  },
+  "attack": {
+   "sheet": "sana_keyed.png",
+   "box": [
+    150,
+    350,
+    1448,
+    552
+   ],
+   "cuts": [
+    150,
+    288,
+    468,
+    648,
+    768,
+    938,
+    1050,
+    1168,
+    1305,
+    1448
+   ]
+  },
+  "hit": {
+   "sheet": "sana_keyed.png",
+   "box": [
+    150,
+    580,
+    672,
+    718
+   ],
+   "n": 3
+  },
+  "dash": {
+   "sheet": "sana_keyed.png",
+   "box": [
+    150,
+    760,
+    975,
+    872
+   ],
+   "cuts": [
+    150,
+    355,
+    568,
+    757,
+    975
+   ]
+  },
+  "jump": {
+   "sheet": "sana_keyed.png",
+   "box": [
+    150,
+    890,
+    915,
+    1050
+   ],
+   "cuts": [
+    150,
+    310,
+    505,
+    700,
+    915
+   ]
+  }
+ }
+}

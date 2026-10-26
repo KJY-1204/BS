@@ -1,0 +1,79 @@
+{
+ "nf": "nf/dev",
+ "out": "dev",
+ "tags": [
+  {
+   "name": "idle",
+   "row": "idle",
+   "dur": 140,
+   "breath": {
+    "n": 6,
+    "blobs": [
+     [
+      0,
+      -90,
+      50,
+      40,
+      0,
+      1.5,
+      0.0
+     ],
+     [
+      -50,
+      -60,
+      25,
+      40,
+      -1,
+      1,
+      0.8
+     ],
+     [
+      50,
+      -60,
+      25,
+      40,
+      1,
+      1,
+      1.6
+     ]
+    ]
+   }
+  },
+  {
+   "name": "ready",
+   "row": "ready",
+   "dur": 200
+  },
+  {
+   "name": "summoning",
+   "row": "summon",
+   "dur": 200
+  },
+  {
+   "name": "summoned",
+   "row": "done",
+   "dur": 200
+  },
+  {
+   "name": "attack",
+   "row": "atk",
+   "dur": [
+    110,
+    110,
+    110,
+    90,
+    130
+   ]
+  },
+  {
+   "name": "destroy",
+   "row": "destroy",
+   "dur": [
+    120,
+    100,
+    110,
+    150
+   ]
+  }
+ ]
+}

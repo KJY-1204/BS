@@ -1,0 +1,42 @@
+{
+ "out": "nf/devx",
+ "scale": 0.6,
+ "colors": 48,
+ "rows": {
+  "fairy": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/dev_src.png",
+   "box": [
+    10,
+    592,
+    925,
+    770
+   ],
+   "cuts": [
+    10,
+    128,
+    240,
+    355,
+    490,
+    610,
+    745,
+    925
+   ]
+  },
+  "spawnfx": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/dev_src.png",
+   "box": [
+    925,
+    585,
+    1536,
+    770
+   ],
+   "cuts": [
+    925,
+    1060,
+    1195,
+    1372,
+    1536
+   ]
+  }
+ }
+}
