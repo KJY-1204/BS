@@ -45,7 +45,7 @@ When the match enters phase 2 or phase 3 the server SHALL announce it with a war
 - **THEN** no mobs appear
 
 ### Requirement: Phase 2 unlocks a third boss skill on the F key
-Phase 2 SHALL unlock a third boss skill, used with the F key, whose effect depends on the boss kind and is one the kind's Q and E skills do not have: the beam for the standard kind, the shot ring for the giant, the shockwave for the sniper. Before phase 2 pressing F SHALL do nothing and start no cooldown, and the skill SHALL be ready the moment it is unlocked.
+Phase 2 SHALL unlock a third boss skill, used with the F key, whose effect depends on the boss kind and is one the kind's Q and E skills do not have: the roar for the standard kind (its rally, aimed at the target), the shot ring for the giant, the shockwave for the sniper. Before phase 2 pressing F SHALL do nothing and start no cooldown, and the skill SHALL be ready the moment it is unlocked.
 
 #### Scenario: Locked
 - **WHEN** the boss player presses F in phase 1
@@ -57,7 +57,7 @@ Phase 2 SHALL unlock a third boss skill, used with the F key, whose effect depen
 
 #### Scenario: The kind's effect
 - **WHEN** the boss player plays the standard kind, the giant or the sniper and uses the skill
-- **THEN** it is the beam, the shot ring or the shockwave
+- **THEN** it is the roar, the shot ring or the shockwave
 
 ### Requirement: The third skill follows the rules of the Q and E skills
 The third skill SHALL be usable only by the boss player, only while the match is running and the boss stands, only when its own cooldown has passed, and SHALL cost no summon energy. It SHALL be announced before it takes effect and SHALL grow stronger as the boss loses health by the same rules as the other skills.
