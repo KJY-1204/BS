@@ -186,7 +186,7 @@ namespace BS
         /// <summary>A new match: both skills ready, nothing announced.</summary>
         public void Reset()
         {
-            for (int i = 0; i < cooldown.Length; i++) cooldown[i] = 0f;
+            for (int i = 0; i < cooldown.Length; i++) cooldown[i] = Math.Max(0f, SkillOf(i)?.OpeningCooldownSeconds ?? 0f);
             pending.Clear();
             BeamHits = 0;
             RoarMobs = 0;

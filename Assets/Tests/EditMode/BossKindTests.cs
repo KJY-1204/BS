@@ -221,6 +221,10 @@ namespace BS.Tests
                 Mobs = new MobSim(hardCap: mobCap, targetCount: 0);
                 targets = new SurvivorTargets(Survivors, id => (byte)id);
                 Survivors.InvulnerabilitySeconds = 0f;
+
+                // The giant's leap strike starts the match on its opening cooldown: let it run down so every skill is ready.
+                for (int i = 0; i < 1100; i++) Sim.Step(Dt, true, true, Projectiles, Survivors, Bodies, BossOwner, Events, Mobs);
+                Events.Clear();
             }
 
             public void AddSurvivor(ulong id, float x, float y, int health = 200)
@@ -532,13 +536,11 @@ namespace BS.Tests
         {
             foreach (BossDef kind in BossCatalog.All)
             {
-                var rig = new Rig(kind.Id);
-                rig.BossPosition = new Vector2(2f, 3f);
-                rig.Aim = 12345;
                 for (int slot = 0; slot < 2; slot++)
                 {
-                    rig.Events.Clear();
-                    rig.Sim.Reset(kind);
+                    var rig = new Rig(kind.Id); // a fresh match each time, with the opening cooldown run down
+                    rig.BossPosition = new Vector2(2f, 3f);
+                    rig.Aim = 12345;
                     rig.Use(slot);
                     CombatEvent e = rig.Events.Single(x => x.Kind == CombatEventKind.Skill);
                     Assert.AreEqual(new Vector2(2f, 3f), e.Position, $"{kind.Name} slot {slot}");

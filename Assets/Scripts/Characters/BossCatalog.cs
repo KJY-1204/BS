@@ -35,6 +35,8 @@ namespace BS
         public float HalfWidth;
         /// <summary>True when the skill strikes where the nearest living survivor stands (a beam: aims at it) instead of at the boss.</summary>
         public bool AtTarget;
+        /// <summary>The cooldown the skill starts a match with (0 starts it ready): a skill that lands on a survivor is held back for the first seconds.</summary>
+        public float OpeningCooldownSeconds;
 
         /// <summary>A copy that can be changed without touching the original.</summary>
         public BossSkillDef Clone() => (BossSkillDef)MemberwiseClone();
@@ -155,7 +157,7 @@ namespace BS
             },
             new BossDef
             {
-                Id = Giant, Name = "거인", MaxHealth = 230000, MoveSpeed = 4.0f, Radius = 1.3f, ContactDamage = 35,
+                Id = Giant, Name = "거인", MaxHealth = 236000, MoveSpeed = 4.0f, Radius = 1.3f, ContactDamage = 35,
                 MovingContactMultiple = 1.3f, StillContactMultiple = 0.7f,
                 TraitName = "기세", TraitText = "움직이면 접촉 피해 x1.3, 멈추면 x0.7",
                 Color = new Color(0.55f, 0.30f, 0.10f), MatchSeconds = DefaultMatchSeconds,
@@ -168,7 +170,7 @@ namespace BS
                 },
                 Skills = new[]
                 {
-                    new BossSkillDef { Name = "도약 강타", Key = "Q", Effect = BossSkillEffect.Shockwave, CooldownSeconds = 7f, Damage = 40, Radius = 5.5f, WarningSeconds = 1.1f, AtTarget = true },
+                    new BossSkillDef { Name = "도약 강타", Key = "Q", Effect = BossSkillEffect.Shockwave, CooldownSeconds = 7f, Damage = 40, Radius = 5.5f, WarningSeconds = 1.1f, AtTarget = true, OpeningCooldownSeconds = 20f },
                     new BossSkillDef { Name = "포효", Key = "E", Effect = BossSkillEffect.Roar, CooldownSeconds = 14f, WarningSeconds = 1.0f, Count = 6 },
                 },
             },

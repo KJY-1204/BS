@@ -13,7 +13,9 @@ namespace BS.Tests
             var settings = new HarnessSettings { bossKind = kind };
             settings.overrides.Add(new NamedValue { name = "mobAutoTarget", value = 0f });
             settings.overrides.Add(new NamedValue { name = "matchSeconds", value = 120f });
-            return MatchSession.Start(settings, 1);
+            MatchSession s = MatchSession.Start(settings, 1);
+            for (int i = 0; i < 1100; i++) s.Advance(); // the giant's leap strike starts on its opening cooldown
+            return s;
         }
 
         static void Teleport(MatchSession s, ulong id, Vector2 position)

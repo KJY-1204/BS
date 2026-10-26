@@ -37,7 +37,7 @@ namespace BS.Tests
             Assert.AreEqual(4.5f, standard.MoveSpeed);
 
             BossDef giant = BossCatalog.Get(BossCatalog.Giant);
-            Assert.AreEqual(230000, giant.MaxHealth);
+            Assert.AreEqual(236000, giant.MaxHealth);
             Assert.AreEqual(4.0f, giant.MoveSpeed);
 
             BossDef sniper = BossCatalog.Get(BossCatalog.Sniper);

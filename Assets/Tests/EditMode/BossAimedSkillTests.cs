@@ -19,9 +19,12 @@ namespace BS.Tests
             return s;
         }
 
+        /// <summary>A match with the opening cooldown of the giant's leap strike already run down.</summary>
         static MatchSession Start(byte kind)
         {
-            return MatchSession.Start(Settings(kind), 1);
+            MatchSession s = MatchSession.Start(Settings(kind), 1);
+            for (int i = 0; i < Mathf.RoundToInt((BossCatalog.Get(kind).Skills[0].OpeningCooldownSeconds + 1f) / Dt); i++) s.Advance();
+            return s;
         }
 
         [TearDown]
@@ -220,6 +223,54 @@ namespace BS.Tests
             Assert.IsTrue(s.BossData.Skills[0].AtTarget);
             Assert.IsTrue(BossCatalog.ForMatch(BossCatalog.Giant).Skills[0].AtTarget);
             Assert.IsTrue(BossCatalog.Get(BossCatalog.Standard).PhaseSkill.Clone().AtTarget);
+        }
+
+        // ---- the opening cooldown of the leap strike ----
+
+        static BossSkillState State() => new BossSkillState { MatchRunning = true, BossStanding = true, HealthFraction = 1f };
+
+        [Test]
+        public void TheGiantsLeapStrikeStartsTheMatchOnItsOpeningCooldownAndTheOtherSkillsStartReady()
+        {
+            var sim = new BossSkillSim();
+            sim.Reset(BossCatalog.Get(BossCatalog.Giant));
+            var events = new List<CombatEvent>();
+
+            Assert.AreEqual(20f, sim.CooldownLeft(0));
+            Assert.AreEqual(0f, sim.CooldownLeft(1), "the roar is ready at once");
+            Assert.AreEqual(BossSkillResult.Cooldown, sim.TryUse(0, true, State(), 1, events));
+            Assert.AreEqual(BossSkillResult.Used, sim.TryUse(1, true, State(), 1, events));
+
+            var projectiles = new ProjectileSim();
+            var survivors = new SurvivorSim();
+            for (int i = 0; i < 1010; i++) sim.Step(Dt, true, true, projectiles, survivors, new List<SurvivorBody>(), 1, events);
+
+            Assert.AreEqual(0f, sim.CooldownLeft(0));
+            Assert.AreEqual(BossSkillResult.Used, sim.TryUse(0, true, State(), 1, events));
+
+            sim.Reset(BossCatalog.Get(BossCatalog.Giant));
+            Assert.AreEqual(20f, sim.CooldownLeft(0), "a second match starts the opening cooldown again");
+        }
+
+        [Test]
+        public void OnlyTheGiantsLeapStrikeHasAnOpeningCooldown()
+        {
+            foreach (BossDef kind in BossCatalog.All)
+            {
+                var skills = kind.Skills.Concat(new[] { kind.PhaseSkill, kind.PhaseBurst });
+                foreach (BossSkillDef skill in skills)
+                {
+                    bool leap = kind.Id == BossCatalog.Giant && skill == kind.Skills[0];
+                    Assert.AreEqual(leap ? 20f : 0f, skill.OpeningCooldownSeconds, $"{kind.Name} {skill.Name}");
+                }
+            }
+
+            var sim = new BossSkillSim();
+            foreach (byte id in new[] { BossCatalog.Standard, BossCatalog.Sniper })
+            {
+                sim.Reset(BossCatalog.Get(id));
+                for (int slot = 0; slot < 2; slot++) Assert.AreEqual(0f, sim.CooldownLeft(slot), $"kind {id} slot {slot}");
+            }
         }
     }
 }
