@@ -71,8 +71,10 @@ namespace BS.Tests
         public void AnAnnouncedBeamPushesAcrossItsLineToTheSideTheBodyIsOnAndNotBeyondItsEnd()
         {
             MatchSession s = Start(BossCatalog.Sniper);
-            Assert.AreEqual(BossSkillResult.Used, s.UseBossSkill(BossSkills.Shockwave, 0)); // the sniper's E skill is the beam, aimed along +x (angle 0)
             Vector2 start = s.PositionOf(MatchSession.BossId);
+            ParkOthers(s, 1);
+            Teleport(s, 1, start + new Vector2(10f, 0f)); // the nearest survivor stands along +x, where the targeted shot will aim
+            Assert.AreEqual(BossSkillResult.Used, s.UseBossSkill(BossSkills.Shockwave, 0)); // the sniper's E skill is the beam, aimed by itself at the nearest survivor
             BossSkillDef def = BossCatalog.Get(BossCatalog.Sniper).Skills[1];
             Assert.AreEqual(BossSkillEffect.Beam, def.Effect);
 

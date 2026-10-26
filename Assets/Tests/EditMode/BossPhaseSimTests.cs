@@ -131,9 +131,9 @@ namespace BS.Tests
             Assert.AreEqual(0f, r.Sim.CooldownLeft(Phase));
             Assert.AreEqual(BossSkillResult.Used, r.Use(Phase));
 
-            BossSkillDef beam = BossCatalog.Get(BossCatalog.Standard).PhaseSkill;
-            Assert.AreEqual(beam.CooldownSeconds * BossAttack.CooldownMultiplier(0.6f), r.Sim.CooldownLeft(Phase), 1e-3f);
-            Assert.AreEqual(1, r.Events.Count(e => e.Kind == CombatEventKind.Skill && e.SkillId == BossSkills.WarningIdBeam));
+            BossSkillDef rally = BossCatalog.Get(BossCatalog.Standard).PhaseSkill;
+            Assert.AreEqual(rally.CooldownSeconds * BossAttack.CooldownMultiplier(0.6f), r.Sim.CooldownLeft(Phase), 1e-3f);
+            Assert.AreEqual(1, r.Events.Count(e => e.Kind == CombatEventKind.Skill && e.SkillId == BossSkills.WarningIdRoar));
         }
 
         [Test]
@@ -144,12 +144,13 @@ namespace BS.Tests
             r.BossPosition = new Vector2(0f, 6f);
             r.AddSurvivor(10, 0f, 0f);
             r.AddSurvivor(11, 6f, 0f);
+            int before = r.Mobs.Count;
             r.Use(Phase);
 
             r.Step(BossCatalog.Get(BossCatalog.Standard).PhaseSkill.WarningSeconds + 0.1f);
 
-            Assert.Less(r.Survivors.Health(10), 1000, "on the beam's line straight down from the boss");
-            Assert.AreEqual(1000, r.Survivors.Health(11), "off the line");
+            Assert.AreEqual(before + BossCatalog.Get(BossCatalog.Standard).PhaseSkill.Count + r.Sim.BurstMobs, r.Mobs.Count, "the rally's mobs appear (and the phase burst's)");
+            Assert.AreEqual(1000, r.Survivors.Health(10));
         }
 
         [Test]
@@ -157,7 +158,7 @@ namespace BS.Tests
         {
             var expected = new Dictionary<byte, BossSkillEffect>
             {
-                { BossCatalog.Standard, BossSkillEffect.Beam }, { BossCatalog.Giant, BossSkillEffect.ShotRing }, { BossCatalog.Sniper, BossSkillEffect.Shockwave },
+                { BossCatalog.Standard, BossSkillEffect.Roar }, { BossCatalog.Giant, BossSkillEffect.ShotRing }, { BossCatalog.Sniper, BossSkillEffect.Shockwave },
             };
             foreach (var pair in expected)
             {

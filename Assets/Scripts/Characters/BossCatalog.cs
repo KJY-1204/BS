@@ -33,6 +33,8 @@ namespace BS
         public float Length;
         /// <summary>Half the width of a beam.</summary>
         public float HalfWidth;
+        /// <summary>True when the skill strikes where the nearest living survivor stands (a beam: aims at it) instead of at the boss.</summary>
+        public bool AtTarget;
 
         /// <summary>A copy that can be changed without touching the original.</summary>
         public BossSkillDef Clone() => (BossSkillDef)MemberwiseClone();
@@ -133,8 +135,8 @@ namespace BS
                 PhaseBurst = Burst(),
                 PhaseSkill = new BossSkillDef
                 {
-                    Name = "저격선", Key = "F", Effect = BossSkillEffect.Beam, CooldownSeconds = 14f, Damage = 25, WarningSeconds = 1.2f,
-                    Length = 20f, HalfWidth = 0.6f,
+                    Name = "집결", Key = "F", Effect = BossSkillEffect.Roar, CooldownSeconds = 16f, WarningSeconds = BossPhases.BurstWarningSeconds,
+                    Count = 8, AtTarget = true,
                 },
                 Attack = new BossAttackDef { BaseDamage = BossAttack.BaseDamage, CooldownSeconds = BossAttack.CooldownSeconds, Shape = BossAttack.Shape },
                 Skills = new[]
@@ -166,7 +168,7 @@ namespace BS
                 },
                 Skills = new[]
                 {
-                    new BossSkillDef { Name = "대지 강타", Key = "Q", Effect = BossSkillEffect.Shockwave, CooldownSeconds = 7f, Damage = 35, Radius = 5.5f },
+                    new BossSkillDef { Name = "도약 강타", Key = "Q", Effect = BossSkillEffect.Shockwave, CooldownSeconds = 7f, Damage = 40, Radius = 5.5f, WarningSeconds = 1.1f, AtTarget = true },
                     new BossSkillDef { Name = "포효", Key = "E", Effect = BossSkillEffect.Roar, CooldownSeconds = 14f, WarningSeconds = 1.0f, Count = 6 },
                 },
             },
@@ -188,8 +190,8 @@ namespace BS
                     new BossSkillDef { Name = "탄막", Key = "Q", Effect = BossSkillEffect.ShotRing, CooldownSeconds = 9f, Damage = 10, Count = 16 },
                     new BossSkillDef
                     {
-                        Name = "저격", Key = "E", Effect = BossSkillEffect.Beam, CooldownSeconds = 12f, Damage = 30, WarningSeconds = 1.2f,
-                        Length = 24f, HalfWidth = 0.5f,
+                        Name = "표적 저격", Key = "E", Effect = BossSkillEffect.Beam, CooldownSeconds = 12f, Damage = 30, WarningSeconds = 1.5f,
+                        Length = 24f, HalfWidth = 0.5f, AtTarget = true,
                     },
                 },
             },

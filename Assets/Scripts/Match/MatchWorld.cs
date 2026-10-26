@@ -282,6 +282,20 @@ namespace BS
                 Aim = aim,
                 HealthFraction = fraction,
             };
+
+            // The nearest living survivor to the boss, for the skills that strike where a survivor stands.
+            float nearestSq = float.MaxValue;
+            for (int i = 0; i < Bodies.Count; i++)
+            {
+                MatchBody body = Bodies[i];
+                if (body.Role == RoleTable.BossRole || !Survivors.IsAlive(body.ClientId)) continue;
+                float d = (body.Position - Boss.Position).sqrMagnitude;
+                if (d >= nearestSq) continue;
+                nearestSq = d;
+                state.HasTarget = true;
+                state.TargetPosition = body.Position;
+            }
+
             return BossSkills.TryUse(slot, fromBoss, state, clientId, events);
         }
 

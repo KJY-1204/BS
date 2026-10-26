@@ -272,7 +272,7 @@ namespace BS.Tests
             giant.AddSurvivor(1, 5f, 0f);
             giant.Use(0);
             giant.Step(BossCatalog.Get(BossCatalog.Giant).Skills[0].WarningSeconds + 0.1f);
-            Assert.AreEqual(200 - 35, giant.Survivors.Health(1));
+            Assert.AreEqual(200 - 40, giant.Survivors.Health(1));
 
             var standard = new Rig(BossCatalog.Standard);
             standard.AddSurvivor(1, 5f, 0f);
@@ -519,7 +519,7 @@ namespace BS.Tests
             Assert.IsNotNull(beam);
             Assert.AreEqual(24f, beam.Length);
             Assert.AreEqual(0.5f, beam.HalfWidth);
-            Assert.AreEqual(1.2f, beam.WarningSeconds);
+            Assert.AreEqual(1.5f, beam.WarningSeconds);
 
             BossDef giant = BossCatalog.Get(BossCatalog.Giant);
             Assert.AreEqual(5.5f, giant.SkillWithEffect(BossSkillEffect.Shockwave).Radius);

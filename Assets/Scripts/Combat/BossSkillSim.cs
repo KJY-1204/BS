@@ -97,6 +97,9 @@ namespace BS
         public ushort Aim;
         /// <summary>The boss's health from 0 to 1; the strengthening of its shots applies to its skills too.</summary>
         public float HealthFraction;
+        /// <summary>True when a living survivor exists: <see cref="TargetPosition"/> is then the nearest one to the boss, for the skills aimed at the target.</summary>
+        public bool HasTarget;
+        public Vector2 TargetPosition;
     }
 
     /// <summary>
@@ -254,16 +257,30 @@ namespace BS
             int baseDamage = BaseDamageOverride > 0 ? BaseDamageOverride : def.Damage;
             float phaseFactor = Phase >= BossPhases.Third ? BossPhases.ThirdPhaseCooldownFactor : 1f;
             cooldown[slot] = def.CooldownSeconds * BossAttack.CooldownMultiplier(state.HealthFraction) * phaseFactor;
+
+            // A skill aimed at the target strikes where the nearest living survivor stands now (a beam starts at the boss and aims at it).
+            Vector2 place = state.BossPosition;
+            ushort aim = state.Aim;
+            if (def.AtTarget && state.HasTarget)
+            {
+                if (def.Effect == BossSkillEffect.Beam)
+                {
+                    Vector2 toTarget = state.TargetPosition - state.BossPosition;
+                    if (toTarget.sqrMagnitude > 1e-6f) aim = AimMath.QuantizeAngle(Mathf.Atan2(toTarget.y, toTarget.x));
+                }
+                else place = state.TargetPosition;
+            }
+
             pending.Add(new Pending
             {
-                Slot = slot, Def = def, Remaining = def.WarningSeconds, Position = state.BossPosition, Aim = state.Aim,
+                Slot = slot, Def = def, Remaining = def.WarningSeconds, Position = place, Aim = aim,
                 Damage = BossAttack.Damage(baseDamage, state.HealthFraction),
             });
 
             events.Add(new CombatEvent
             {
-                Kind = CombatEventKind.Skill, SkillId = BossSkills.WarningIdOf(def.Effect), Owner = owner, Position = state.BossPosition,
-                Rank = 1, Angle = state.Aim,
+                Kind = CombatEventKind.Skill, SkillId = BossSkills.WarningIdOf(def.Effect), Owner = owner, Position = place,
+                Rank = 1, Angle = aim,
                 RangeScale = SkillCatalog.NormalScalePercent, DurationScale = SkillCatalog.NormalScalePercent,
             });
             return BossSkillResult.Used;

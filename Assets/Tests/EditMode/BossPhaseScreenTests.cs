@@ -61,11 +61,11 @@ namespace BS.Tests
         [Test]
         public void ASkillCellSaysReadyTheSecondsLeftOrWhatOpensIt()
         {
-            BossSkillDef beam = BossCatalog.Get(BossCatalog.Standard).PhaseSkill;
+            BossSkillDef rally = BossCatalog.Get(BossCatalog.Standard).PhaseSkill;
 
-            Assert.AreEqual("F 저격선 (준비)", SummonHud.SkillCellText(beam, 0f, false));
-            Assert.AreEqual("F 저격선 (3.5초)", SummonHud.SkillCellText(beam, 3.5f, false));
-            Assert.AreEqual("F 저격선 (국면 2에 열림)", SummonHud.SkillCellText(beam, 0f, true));
+            Assert.AreEqual("F 집결 (준비)", SummonHud.SkillCellText(rally, 0f, false));
+            Assert.AreEqual("F 집결 (3.5초)", SummonHud.SkillCellText(rally, 3.5f, false));
+            Assert.AreEqual("F 집결 (국면 2에 열림)", SummonHud.SkillCellText(rally, 0f, true));
             BossSkillDef q = BossCatalog.Get(BossCatalog.Standard).Skills[0];
             Assert.AreEqual($"Q {q.Name} (준비)", SummonHud.SkillCellText(q, 0f, false));
         }

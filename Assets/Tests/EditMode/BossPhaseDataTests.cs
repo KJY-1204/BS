@@ -60,9 +60,9 @@ namespace BS.Tests
         }
 
         [Test]
-        public void ThePhaseSkillsAreTheBeamTheShotRingAndTheShockwave()
+        public void ThePhaseSkillsAreTheRoarTheShotRingAndTheShockwave()
         {
-            Assert.AreEqual(BossSkillEffect.Beam, BossCatalog.Get(BossCatalog.Standard).PhaseSkill.Effect);
+            Assert.AreEqual(BossSkillEffect.Roar, BossCatalog.Get(BossCatalog.Standard).PhaseSkill.Effect);
             Assert.AreEqual(BossSkillEffect.ShotRing, BossCatalog.Get(BossCatalog.Giant).PhaseSkill.Effect);
             Assert.AreEqual(BossSkillEffect.Shockwave, BossCatalog.Get(BossCatalog.Sniper).PhaseSkill.Effect);
         }
@@ -74,13 +74,14 @@ namespace BS.Tests
             {
                 BossSkillDef s = kind.PhaseSkill;
                 Assert.Greater(s.CooldownSeconds, 0f, kind.Name);
-                Assert.Greater(s.Damage, 0, kind.Name);
+                if (s.Effect != BossSkillEffect.Roar) Assert.Greater(s.Damage, 0, kind.Name);
                 Assert.Greater(s.WarningSeconds, 0f, kind.Name);
                 switch (s.Effect)
                 {
                     case BossSkillEffect.Beam: Assert.Greater(s.Length, 0f); Assert.Greater(s.HalfWidth, 0f); break;
                     case BossSkillEffect.ShotRing: Assert.Greater(s.Count, 0); break;
                     case BossSkillEffect.Shockwave: Assert.Greater(s.Radius, 0f); break;
+                    case BossSkillEffect.Roar: Assert.Greater(s.Count, 0); break;
                 }
             }
         }
@@ -121,8 +122,10 @@ namespace BS.Tests
             BossDef giant = BossCatalog.Get(BossCatalog.Giant);
             Assert.AreSame(giant.Skills.Single(s => s.Effect == BossSkillEffect.Roar), giant.SkillWithEffect(BossSkillEffect.Roar));
             BossDef standard = BossCatalog.Get(BossCatalog.Standard);
-            Assert.AreSame(standard.PhaseSkill, standard.SkillWithEffect(BossSkillEffect.Beam));
-            Assert.AreSame(standard.PhaseBurst, standard.SkillWithEffect(BossSkillEffect.Roar));
+            Assert.AreSame(standard.PhaseSkill, standard.SkillWithEffect(BossSkillEffect.Roar), "the rally comes before the burst");
+            BossDef sniper = BossCatalog.Get(BossCatalog.Sniper);
+            Assert.AreSame(sniper.Skills.Single(s => s.Effect == BossSkillEffect.Beam), sniper.SkillWithEffect(BossSkillEffect.Beam));
+            Assert.AreSame(sniper.PhaseBurst, sniper.SkillWithEffect(BossSkillEffect.Roar));
         }
 
         [Test]
