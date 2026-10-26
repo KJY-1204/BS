@@ -20,6 +20,8 @@ namespace BS
         public const float HealFraction = 0.5f;
         /// <summary>The speed factor of a mob inside an open point.</summary>
         public const float SlowFactor = 0.6f;
+        /// <summary>How much faster the boss's skill cooldowns run while it contests an open point.</summary>
+        public const float ContestCooldownRate = 1.5f;
         /// <summary>A point's centre is at least this far from where the boss starts.</summary>
         public const float MinBossDistance = 12f;
     }

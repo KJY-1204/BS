@@ -222,6 +222,8 @@ namespace BS
                 (Boss.Position - RescuePoint.Center).magnitude <= RescueConfig.Radius + Boss.Radius;
             RescuePoint.Step(dt, MatchRunning && standing, survivorBodies, Survivors, bossInPoint);
             Mobs.SetSlowZone(RescuePoint.IsOpen, RescuePoint.Center, RescueConfig.Radius, RescueConfig.SlowFactor);
+            // A boss that holds the point has its skill cooldowns run faster (the reward for stopping the capture).
+            BossSkills.CooldownRate = RescuePoint.Contested ? RescueConfig.ContestCooldownRate : 1f;
             // The boss's health moves the match through its phases; a change announces its burst (the announcement joins this step's events).
             if (Boss.Exists && Boss.MaxHealth > 0)
                 BossSkills.UpdatePhase(Boss.Health / (float)Boss.MaxHealth, BossPhasesEnabled, true, Boss.Position, BossOwnerId, BlastEvents);

@@ -177,6 +177,9 @@ namespace BS
             return push;
         }
 
+        /// <summary>How fast the cooldowns run (1 is real time): the world raises it while the boss holds a rescue point. The announcements are not affected.</summary>
+        public float CooldownRate { get; set; } = 1f;
+
         /// <summary>Skills that are announced and have not taken effect yet.</summary>
         public int PendingCount => pending.Count;
 
@@ -300,7 +303,7 @@ namespace BS
                 return 0;
             }
 
-            for (int i = 0; i < cooldown.Length; i++) cooldown[i] = Math.Max(0f, cooldown[i] - dt);
+            for (int i = 0; i < cooldown.Length; i++) cooldown[i] = Math.Max(0f, cooldown[i] - dt * CooldownRate);
 
             int released = 0;
             for (int i = pending.Count - 1; i >= 0; i--)
