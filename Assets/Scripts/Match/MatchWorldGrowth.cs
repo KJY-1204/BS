@@ -289,6 +289,9 @@ namespace BS
                 if (!Survivors.IsAlive(growthIds[i])) Skills.EndBuff(growthIds[i]);
         }
 
+        /// <summary>The share of the maximum health a level up heals (the harness override levelUpHeal; 0 heals nothing).</summary>
+        public float LevelUpHealFraction { get; set; } = GrowthConfig.LevelUpHealFraction;
+
         void ProcessGrowthEvents()
         {
             drained.Clear();
@@ -301,6 +304,8 @@ namespace BS
 
                 // A level up and a closed offer change what the survivor can do: its stats are worked out again.
                 if (e.Kind == GrowthEventKind.LevelUp || e.Kind == GrowthEventKind.OfferClosed) ApplyStats(e.ClientId);
+                if (e.Kind == GrowthEventKind.LevelUp && LevelUpHealFraction > 0f)
+                    Survivors.Heal(e.ClientId, Mathf.Max(1, Mathf.RoundToInt(Survivors.MaxHealthOf(e.ClientId) * LevelUpHealFraction)));
                 GrowthEvents.Add(e);
             }
         }

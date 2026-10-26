@@ -62,6 +62,7 @@ namespace BS
                     if (o.name == "bossTraits" && o.value != 0f && o.value != 1f) return "override 'bossTraits' must be 0 or 1";
                     if (o.name == "rescuePoints" && o.value != 0f && o.value != 1f) return "override 'rescuePoints' must be 0 or 1";
                     if (o.name == "rescueContest" && o.value != 0f && o.value != 1f) return "override 'rescueContest' must be 0 or 1";
+                    if (o.name == "levelUpHeal" && (o.value < 0f || o.value > 1f)) return "override 'levelUpHeal' must be 0 to 1";
                     if (o.name == "evolutionOfferGuarantee" && o.value != 0f && o.value != 1f) return "override 'evolutionOfferGuarantee' must be 0 or 1";
                     if (o.name == "startQRank" && (o.value < 0f || o.value > 3f || o.value != Math.Floor(o.value))) return "override 'startQRank' must be 0, 1, 2 or 3";
                     if ((o.name == "startERank" || o.name == "startRRank") && (o.value < 0f || o.value > 3f || o.value != Math.Floor(o.value))) return $"override '{o.name}' must be 0, 1, 2 or 3";
@@ -117,6 +118,8 @@ namespace BS
             ["rescueContest"] = new Entry { OnWorld = (w, v) => w.RescuePoint.ContestEnabled = v != 0f },
             // 0 builds level-up offers without the evolution guarantee; 1 is the default.
             ["evolutionOfferGuarantee"] = new Entry { OnWorld = (w, v) => w.Leveling.GuaranteeEvolutionOffer = v != 0f },
+            // The share of the maximum health a level up heals (0 heals nothing); the default is GrowthConfig.LevelUpHealFraction.
+            ["levelUpHeal"] = new Entry { OnWorld = (w, v) => w.LevelUpHealFraction = v },
             ["survivorHealthBonus"] = new Entry { OnWorld = (w, v) => w.SurvivorHealthBonus = (int)v },
             // Every survivor starts with their Q skill at this rank (0 to 3) and with this evolution of it (0 none, 1 or 2).
             ["startQRank"] = new Entry { OnWorld = (w, v) => w.StartQRank = (int)v },

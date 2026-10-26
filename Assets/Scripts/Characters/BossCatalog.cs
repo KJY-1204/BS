@@ -127,7 +127,7 @@ namespace BS
         {
             new BossDef
             {
-                Id = Standard, Name = "보스", MaxHealth = 190000, MoveSpeed = 4.5f, Radius = 0.9f, ContactDamage = 25,
+                Id = Standard, Name = "보스", MaxHealth = 195000, MoveSpeed = 4.5f, Radius = 0.9f, ContactDamage = 25,
                 SummonedSpeedMultiple = 1.25f, TraitName = "지휘", TraitText = "소환한 몹이 25% 더 빨리 움직인다",
                 Color = new Color(0.85f, 0.15f, 0.15f), MatchSeconds = DefaultMatchSeconds,
                 PhaseBurst = Burst(),
@@ -172,7 +172,7 @@ namespace BS
             },
             new BossDef
             {
-                Id = Sniper, Name = "저격수", MaxHealth = 170000, MoveSpeed = 5.0f, Radius = 0.7f, ContactDamage = 20,
+                Id = Sniper, Name = "저격수", MaxHealth = 182000, MoveSpeed = 5.0f, Radius = 0.7f, ContactDamage = 20,
                 SteadySeconds = 1f, SteadyShotMultiple = 1.6f,
                 TraitName = "정조준", TraitText = "1초 멈추면 기본 탄 피해 x1.6",
                 Color = new Color(0.55f, 0.25f, 0.85f), MatchSeconds = DefaultMatchSeconds,

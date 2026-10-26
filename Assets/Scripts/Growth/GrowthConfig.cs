@@ -18,6 +18,8 @@ namespace BS
 
         // Automatic growth for every level gained after the first.
         public const int HealthPerLevel = 10;
+        /// <summary>The share of their maximum health a survivor gets back at each level up (a first value, tuned with the harness).</summary>
+        public const float LevelUpHealFraction = 0.05f;
         public const int ManaPerLevel = 5;
         public const int DamagePerLevel = 1;
 
