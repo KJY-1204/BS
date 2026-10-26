@@ -26,7 +26,7 @@ When a survivor is created, the server SHALL set the survivor's starting maximum
 
 #### Scenario: Growth adds to the character's base
 - **WHEN** a survivor of any character reaches level 2
-- **THEN** the maximum health and mana rise by the common per-level amounts above that character's starting values, and current health and mana are not healed
+- **THEN** the maximum health and mana rise by the common per-level amounts above that character's starting values, and current mana is not refilled (health is healed only by the level-up heal)
 
 ### Requirement: Movement speed follows the character
 A character's movement speed SHALL come from its data on the server, and the owner's own local movement SHALL use the same value, so that the owner is not corrected during normal movement.
