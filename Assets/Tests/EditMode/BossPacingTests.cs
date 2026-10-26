@@ -41,7 +41,7 @@ namespace BS.Tests
             Assert.AreEqual(4.0f, giant.MoveSpeed);
 
             BossDef sniper = BossCatalog.Get(BossCatalog.Sniper);
-            Assert.AreEqual(182000, sniper.MaxHealth);
+            Assert.AreEqual(186000, sniper.MaxHealth);
             Assert.AreEqual(5.0f, sniper.MoveSpeed);
             Assert.AreEqual(5, sniper.Attack.BaseDamage);
             Assert.AreEqual(30, sniper.SkillWithEffect(BossSkillEffect.Beam).Damage);
