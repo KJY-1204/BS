@@ -1,15 +1,28 @@
-using Unity.Netcode;
 using UnityEngine;
 
 namespace BS
 {
-    /// <summary>Follows only the local player's character and stays inside the arena.</summary>
+    /// <summary>
+    /// The camera every player sees the match through: it shows the whole arena, centred on it, whatever the shape of the window. It
+    /// does not follow any character (the class keeps its name so the scene does not change).
+    /// </summary>
     [RequireComponent(typeof(Camera))]
     public class CameraFollow : MonoBehaviour
     {
-        [SerializeField] float orthographicSize = 6f;
+        /// <summary>Only a fallback before the first frame: the size is set from the window's aspect ratio every frame.</summary>
+        [SerializeField] float orthographicSize = 10f;
 
         Camera cam;
+
+        /// <summary>
+        /// The half-height of an orthographic view that shows the whole arena for a window of this aspect ratio (width over height):
+        /// limited by the arena's height in a wide window and by its width in a narrow one.
+        /// </summary>
+        public static float SizeToFitArena(float aspect)
+        {
+            float safeAspect = Mathf.Max(0.01f, aspect);
+            return Mathf.Max(ArenaConfig.Height * 0.5f, ArenaConfig.Width * 0.5f / safeAspect);
+        }
 
         void Awake()
         {
@@ -20,21 +33,8 @@ namespace BS
 
         void LateUpdate()
         {
-            Vector2 focus = Vector2.zero;
-
-            NetworkManager nm = NetworkManager.Singleton;
-            if (nm != null && nm.IsListening && nm.LocalClient != null && nm.LocalClient.PlayerObject != null)
-                focus = nm.LocalClient.PlayerObject.transform.position;
-
-            transform.position = new Vector3(ClampAxis(focus.x, ArenaConfig.Width, orthographicSize * cam.aspect),
-                                             ClampAxis(focus.y, ArenaConfig.Height, orthographicSize),
-                                             transform.position.z);
-        }
-
-        static float ClampAxis(float value, float arenaSize, float halfView)
-        {
-            float limit = arenaSize * 0.5f - halfView;
-            return limit <= 0f ? 0f : Mathf.Clamp(value, -limit, limit);
+            cam.orthographicSize = SizeToFitArena(cam.aspect);
+            transform.position = new Vector3(0f, 0f, transform.position.z);
         }
     }
 }

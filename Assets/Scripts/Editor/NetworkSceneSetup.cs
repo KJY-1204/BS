@@ -67,7 +67,7 @@ namespace BS.Editor
             {
                 if (cam.GetComponent<CameraFollow>() == null) cam.gameObject.AddComponent<CameraFollow>();
                 cam.orthographic = true;
-                cam.orthographicSize = 6f;
+                cam.orthographicSize = 10f;
                 cam.backgroundColor = new Color(0.05f, 0.05f, 0.07f);
                 cam.clearFlags = CameraClearFlags.SolidColor;
                 cam.transform.position = new Vector3(0f, 0f, -10f);
