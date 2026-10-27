@@ -116,6 +116,158 @@
    ],
    "scale": 0.4291,
    "_orig": 0.5
+  },
+  "q1": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/p1_src.png",
+   "box": [
+    0,
+    190,
+    1536,
+    500
+   ],
+   "cuts": [
+    0,
+    300,
+    620,
+    920,
+    1240,
+    1536
+   ],
+   "scale": 0.28,
+   "glowmin": 120
+  },
+  "q2": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/p1_src.png",
+   "box": [
+    0,
+    560,
+    1536,
+    965
+   ],
+   "cuts": [
+    0,
+    300,
+    600,
+    920,
+    1200,
+    1536
+   ],
+   "scale": 0.28,
+   "glowmin": 120
+  },
+  "e1": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/p2_src.png",
+   "box": [
+    0,
+    40,
+    1536,
+    300
+   ],
+   "cuts": [
+    0,
+    255,
+    520,
+    770,
+    1050,
+    1290,
+    1536
+   ],
+   "scale": 0.4,
+   "glowmin": 120
+  },
+  "e2": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/p2_src.png",
+   "box": [
+    0,
+    300,
+    1536,
+    540
+   ],
+   "cuts": [
+    0,
+    255,
+    520,
+    1536
+   ],
+   "scale": 0.4,
+   "glowmin": 120
+  },
+  "e3": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/p2_src.png",
+   "box": [
+    0,
+    545,
+    1536,
+    800
+   ],
+   "cuts": [
+    0,
+    250,
+    520,
+    700,
+    920,
+    1170,
+    1536
+   ],
+   "scale": 0.4,
+   "glowmin": 120
+  },
+  "f1": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/p3_src.png",
+   "box": [
+    0,
+    60,
+    1536,
+    340
+   ],
+   "cuts": [
+    0,
+    205,
+    405,
+    600,
+    830,
+    1035,
+    1536
+   ],
+   "scale": 0.58,
+   "glowmin": 120
+  },
+  "f2": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/p3_src.png",
+   "box": [
+    0,
+    340,
+    1536,
+    560
+   ],
+   "cuts": [
+    0,
+    285,
+    590,
+    880,
+    1130,
+    1536
+   ],
+   "scale": 0.58,
+   "glowmin": 120
+  },
+  "f3": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/p3_src.png",
+   "box": [
+    0,
+    560,
+    1536,
+    740
+   ],
+   "cuts": [
+    0,
+    330,
+    670,
+    1250,
+    1536
+   ],
+   "scale": 0.58,
+   "glowmin": 120
   }
  }
 }

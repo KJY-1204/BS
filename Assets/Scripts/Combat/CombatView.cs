@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -266,6 +266,8 @@ namespace BS
             BossSkillDef def = BossCatalog.Current.SkillWithEffect(kind) ?? BossCatalog.Default.SkillWithEffect(kind);
             if (def == null) return;
 
+            PlayBossCast(def.Key);
+
             Color color = BossSkills.ColorOf(kind);
             switch (kind)
             {
@@ -282,6 +284,15 @@ namespace BS
                     AddBossBeam(effect, def, color);
                     break;
             }
+        }
+
+        /// <summary>The boss plays the cast clip of the skill key it used (Q, E or F); a skill with no key plays nothing.</summary>
+        static void PlayBossCast(string key)
+        {
+            string clip = key == "Q" ? "skill" : key == "E" ? "skill_e" : key == "F" ? "skill_f" : null;
+            if (clip == null) return;
+            for (int i = 0; i < PlayerAvatar.All.Count; i++)
+                if (PlayerAvatar.All[i] != null && PlayerAvatar.All[i].Role == RoleTable.BossRole) PlayerAvatar.All[i].PlaySkillClip(clip);
         }
 
         void AddBossBeam(SkillEffect effect, BossSkillDef def, Color color)

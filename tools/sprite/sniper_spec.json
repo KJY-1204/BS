@@ -67,6 +67,68 @@
    ]
   },
   {
+   "name": "skill",
+   "row": "q1",
+   "dur": 90
+  },
+  {
+   "name": "skill",
+   "row": "q2",
+   "dur": [
+    90,
+    90,
+    90,
+    110,
+    140
+   ]
+  },
+  {
+   "name": "skill_e",
+   "row": "e1",
+   "dur": 90
+  },
+  {
+   "name": "skill_e",
+   "row": "e2",
+   "dur": [
+    90,
+    90,
+    200
+   ]
+  },
+  {
+   "name": "skill_e",
+   "row": "e3",
+   "dur": [
+    90,
+    90,
+    100,
+    100,
+    100,
+    150
+   ]
+  },
+  {
+   "name": "skill_f",
+   "row": "f1",
+   "dur": 90
+  },
+  {
+   "name": "skill_f",
+   "row": "f2",
+   "dur": 90
+  },
+  {
+   "name": "skill_f",
+   "row": "f3",
+   "dur": [
+    100,
+    100,
+    100,
+    160
+   ]
+  },
+  {
    "name": "hit",
    "row": "hit",
    "dur": [

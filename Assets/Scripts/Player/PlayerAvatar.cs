@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -333,6 +333,14 @@ namespace BS
             // The characters that have a clip for the second skill or the ultimate show it; the others use their one skill clip.
             string wanted = slot == SkillCatalog.UltimateSlot ? "ultimate" : slot == 1 ? "skill_e" : "skill";
             skillClipName = art != null && art.Find(wanted) != null ? wanted : "skill";
+        }
+
+        /// <summary>The cast clip is named directly (a boss's skill keys Q, E and F); without that clip nothing plays.</summary>
+        public void PlaySkillClip(string clipName)
+        {
+            if (art == null || art.Find(clipName) == null) return;
+            skillStart = Time.time;
+            skillClipName = clipName;
         }
 
         string ArtId()

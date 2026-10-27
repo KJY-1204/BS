@@ -227,6 +227,36 @@ TextureImporter:
   - first:
       213: -7449009153962863211
     second: sniper_09
+  - first:
+      213: -7857444922868746267
+    second: sniper_65
+  - first:
+      213: -7844100801137825503
+    second: sniper_66
+  - first:
+      213: -5749074271017410368
+    second: sniper_67
+  - first:
+      213: 1411358996403908289
+    second: sniper_68
+  - first:
+      213: -839244894737403764
+    second: sniper_69
+  - first:
+      213: 5309786450000762169
+    second: sniper_70
+  - first:
+      213: 372799957595760999
+    second: sniper_71
+  - first:
+      213: 5878767390308297317
+    second: sniper_72
+  - first:
+      213: -1747373408571806700
+    second: sniper_73
+  - first:
+      213: -1566943624033605564
+    second: sniper_74
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -365,11 +395,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 474
-        width: 305
-        height: 158
+        y: 1365
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -386,12 +416,12 @@ TextureImporter:
       name: sniper_01
       rect:
         serializedVersion: 2
-        x: 305
-        y: 474
-        width: 305
-        height: 158
+        x: 523
+        y: 1365
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -408,12 +438,12 @@ TextureImporter:
       name: sniper_02
       rect:
         serializedVersion: 2
-        x: 610
-        y: 474
-        width: 305
-        height: 158
+        x: 1046
+        y: 1365
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -430,12 +460,12 @@ TextureImporter:
       name: sniper_03
       rect:
         serializedVersion: 2
-        x: 915
-        y: 474
-        width: 305
-        height: 158
+        x: 1569
+        y: 1365
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -452,12 +482,12 @@ TextureImporter:
       name: sniper_04
       rect:
         serializedVersion: 2
-        x: 1220
-        y: 474
-        width: 305
-        height: 158
+        x: 2092
+        y: 1365
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -474,12 +504,12 @@ TextureImporter:
       name: sniper_05
       rect:
         serializedVersion: 2
-        x: 1525
-        y: 474
-        width: 305
-        height: 158
+        x: 2615
+        y: 1365
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -496,12 +526,12 @@ TextureImporter:
       name: sniper_06
       rect:
         serializedVersion: 2
-        x: 1830
-        y: 474
-        width: 305
-        height: 158
+        x: 3138
+        y: 1365
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -518,12 +548,12 @@ TextureImporter:
       name: sniper_07
       rect:
         serializedVersion: 2
-        x: 2135
-        y: 474
-        width: 305
-        height: 158
+        x: 3661
+        y: 1365
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -540,12 +570,12 @@ TextureImporter:
       name: sniper_08
       rect:
         serializedVersion: 2
-        x: 2440
-        y: 474
-        width: 305
-        height: 158
+        x: 4184
+        y: 1365
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -562,12 +592,12 @@ TextureImporter:
       name: sniper_09
       rect:
         serializedVersion: 2
-        x: 2745
-        y: 474
-        width: 305
-        height: 158
+        x: 4707
+        y: 1365
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -585,11 +615,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 316
-        width: 305
-        height: 158
+        y: 1170
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -606,12 +636,12 @@ TextureImporter:
       name: sniper_11
       rect:
         serializedVersion: 2
-        x: 305
-        y: 316
-        width: 305
-        height: 158
+        x: 523
+        y: 1170
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -628,12 +658,12 @@ TextureImporter:
       name: sniper_12
       rect:
         serializedVersion: 2
-        x: 610
-        y: 316
-        width: 305
-        height: 158
+        x: 1046
+        y: 1170
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -650,12 +680,12 @@ TextureImporter:
       name: sniper_13
       rect:
         serializedVersion: 2
-        x: 915
-        y: 316
-        width: 305
-        height: 158
+        x: 1569
+        y: 1170
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -672,12 +702,12 @@ TextureImporter:
       name: sniper_14
       rect:
         serializedVersion: 2
-        x: 1220
-        y: 316
-        width: 305
-        height: 158
+        x: 2092
+        y: 1170
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -694,12 +724,12 @@ TextureImporter:
       name: sniper_15
       rect:
         serializedVersion: 2
-        x: 1525
-        y: 316
-        width: 305
-        height: 158
+        x: 2615
+        y: 1170
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -716,12 +746,12 @@ TextureImporter:
       name: sniper_16
       rect:
         serializedVersion: 2
-        x: 1830
-        y: 316
-        width: 305
-        height: 158
+        x: 3138
+        y: 1170
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -738,12 +768,12 @@ TextureImporter:
       name: sniper_17
       rect:
         serializedVersion: 2
-        x: 2135
-        y: 316
-        width: 305
-        height: 158
+        x: 3661
+        y: 1170
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -760,12 +790,12 @@ TextureImporter:
       name: sniper_18
       rect:
         serializedVersion: 2
-        x: 2440
-        y: 316
-        width: 305
-        height: 158
+        x: 4184
+        y: 1170
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -782,12 +812,12 @@ TextureImporter:
       name: sniper_19
       rect:
         serializedVersion: 2
-        x: 2745
-        y: 316
-        width: 305
-        height: 158
+        x: 4707
+        y: 1170
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -805,11 +835,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 158
-        width: 305
-        height: 158
+        y: 975
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -826,12 +856,12 @@ TextureImporter:
       name: sniper_21
       rect:
         serializedVersion: 2
-        x: 305
-        y: 158
-        width: 305
-        height: 158
+        x: 523
+        y: 975
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -848,12 +878,12 @@ TextureImporter:
       name: sniper_22
       rect:
         serializedVersion: 2
-        x: 610
-        y: 158
-        width: 305
-        height: 158
+        x: 1046
+        y: 975
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -870,12 +900,12 @@ TextureImporter:
       name: sniper_23
       rect:
         serializedVersion: 2
-        x: 915
-        y: 158
-        width: 305
-        height: 158
+        x: 1569
+        y: 975
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -892,12 +922,12 @@ TextureImporter:
       name: sniper_24
       rect:
         serializedVersion: 2
-        x: 1220
-        y: 158
-        width: 305
-        height: 158
+        x: 2092
+        y: 975
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -914,12 +944,12 @@ TextureImporter:
       name: sniper_25
       rect:
         serializedVersion: 2
-        x: 1525
-        y: 158
-        width: 305
-        height: 158
+        x: 2615
+        y: 975
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -936,12 +966,12 @@ TextureImporter:
       name: sniper_26
       rect:
         serializedVersion: 2
-        x: 1830
-        y: 158
-        width: 305
-        height: 158
+        x: 3138
+        y: 975
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -958,12 +988,12 @@ TextureImporter:
       name: sniper_27
       rect:
         serializedVersion: 2
-        x: 2135
-        y: 158
-        width: 305
-        height: 158
+        x: 3661
+        y: 975
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -980,12 +1010,12 @@ TextureImporter:
       name: sniper_28
       rect:
         serializedVersion: 2
-        x: 2440
-        y: 158
-        width: 305
-        height: 158
+        x: 4184
+        y: 975
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1002,12 +1032,12 @@ TextureImporter:
       name: sniper_29
       rect:
         serializedVersion: 2
-        x: 2745
-        y: 158
-        width: 305
-        height: 158
+        x: 4707
+        y: 975
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1025,11 +1055,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 305
-        height: 158
+        y: 780
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1046,12 +1076,12 @@ TextureImporter:
       name: sniper_31
       rect:
         serializedVersion: 2
-        x: 305
-        y: 0
-        width: 305
-        height: 158
+        x: 523
+        y: 780
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1068,12 +1098,12 @@ TextureImporter:
       name: sniper_32
       rect:
         serializedVersion: 2
-        x: 610
-        y: 0
-        width: 305
-        height: 158
+        x: 1046
+        y: 780
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1090,12 +1120,12 @@ TextureImporter:
       name: sniper_33
       rect:
         serializedVersion: 2
-        x: 915
-        y: 0
-        width: 305
-        height: 158
+        x: 1569
+        y: 780
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1112,12 +1142,12 @@ TextureImporter:
       name: sniper_34
       rect:
         serializedVersion: 2
-        x: 1220
-        y: 0
-        width: 305
-        height: 158
+        x: 2092
+        y: 780
+        width: 523
+        height: 195
       alignment: 9
-      pivot: {x: 0.43278688, y: 0.43512657}
+      pivot: {x: 0.66921604, y: 0.39358974}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1126,6 +1156,886 @@ TextureImporter:
       bones: []
       spriteID: c38f5ff52af6a4f20800000000000000
       internalID: 3407658811244542012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_35
+      rect:
+        serializedVersion: 2
+        x: 2615
+        y: 780
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf651fb1e0a02fd90800000000000000
+      internalID: -7065573809676265733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_36
+      rect:
+        serializedVersion: 2
+        x: 3138
+        y: 780
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e420d105fe465c40800000000000000
+      internalID: 5500670809084011745
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_37
+      rect:
+        serializedVersion: 2
+        x: 3661
+        y: 780
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e671896fb0fe62d30800000000000000
+      internalID: 4406472120089450350
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_38
+      rect:
+        serializedVersion: 2
+        x: 4184
+        y: 780
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c603f89327c1c070800000000000000
+      internalID: 8124994158456932035
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_39
+      rect:
+        serializedVersion: 2
+        x: 4707
+        y: 780
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02ad13c5202506830800000000000000
+      internalID: 4062337033978370592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_40
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 585
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 168db86678ff4d250800000000000000
+      internalID: 5968676363178858593
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_41
+      rect:
+        serializedVersion: 2
+        x: 523
+        y: 585
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75f883a1546150bc0800000000000000
+      internalID: -3817620623078158505
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_42
+      rect:
+        serializedVersion: 2
+        x: 1046
+        y: 585
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 217353a1af4bd4590800000000000000
+      internalID: -7688290002577049838
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_43
+      rect:
+        serializedVersion: 2
+        x: 1569
+        y: 585
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8cc06f31b3b170210800000000000000
+      internalID: 1299036958071590088
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_44
+      rect:
+        serializedVersion: 2
+        x: 2092
+        y: 585
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2da4a916226edbd30800000000000000
+      internalID: 4448965042252696274
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_45
+      rect:
+        serializedVersion: 2
+        x: 2615
+        y: 585
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 141a881ad1723ebb0800000000000000
+      internalID: -4908036160686087871
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_46
+      rect:
+        serializedVersion: 2
+        x: 3138
+        y: 585
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91b417ffc0e106cc0800000000000000
+      internalID: -3719940251033973991
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_47
+      rect:
+        serializedVersion: 2
+        x: 3661
+        y: 585
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1eb54600b91756340800000000000000
+      internalID: 4856412683729394657
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_48
+      rect:
+        serializedVersion: 2
+        x: 4184
+        y: 585
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e998d52ac9778d600800000000000000
+      internalID: 493275673819711902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_49
+      rect:
+        serializedVersion: 2
+        x: 4707
+        y: 585
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 829a3ac8c05915810800000000000000
+      internalID: 1752345611155515688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_50
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 390
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3808ac79291e3a7b0800000000000000
+      internalID: -5214075923836796797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_51
+      rect:
+        serializedVersion: 2
+        x: 523
+        y: 390
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0588996567eedd470800000000000000
+      internalID: 8421149070279149648
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_52
+      rect:
+        serializedVersion: 2
+        x: 1046
+        y: 390
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 877782ec8757617f0800000000000000
+      internalID: -642196735138433160
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_53
+      rect:
+        serializedVersion: 2
+        x: 1569
+        y: 390
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6575118ae354f2fe0800000000000000
+      internalID: -1211673639329376426
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_54
+      rect:
+        serializedVersion: 2
+        x: 2092
+        y: 390
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 33a4c5f782fb93240800000000000000
+      internalID: 4772055460832102963
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_55
+      rect:
+        serializedVersion: 2
+        x: 2615
+        y: 390
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b2525fc32d79b0b0800000000000000
+      internalID: -5712397059587157324
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_56
+      rect:
+        serializedVersion: 2
+        x: 3138
+        y: 390
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a3a909ad366e09f0800000000000000
+      internalID: -500350093576526936
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_57
+      rect:
+        serializedVersion: 2
+        x: 3661
+        y: 390
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fcecd1df928b11f80800000000000000
+      internalID: -8137520561202016561
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_58
+      rect:
+        serializedVersion: 2
+        x: 4184
+        y: 390
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 16de1e53115817a00800000000000000
+      internalID: 752528921712520545
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_59
+      rect:
+        serializedVersion: 2
+        x: 4707
+        y: 390
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0a517f076d6f9dc0800000000000000
+      internalID: -3630062485229184498
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_60
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 195
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d95807c15d683dfa0800000000000000
+      internalID: -5777125647122922083
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_61
+      rect:
+        serializedVersion: 2
+        x: 523
+        y: 195
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 991485933fa20f940800000000000000
+      internalID: 5327805583306801561
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_62
+      rect:
+        serializedVersion: 2
+        x: 1046
+        y: 195
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e76748e7435774f40800000000000000
+      internalID: 5712663520664123006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_63
+      rect:
+        serializedVersion: 2
+        x: 1569
+        y: 195
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d0938f19fcee6910800000000000000
+      internalID: 1832662653106098389
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_64
+      rect:
+        serializedVersion: 2
+        x: 2092
+        y: 195
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cde3f60827299d3f0800000000000000
+      internalID: -875507632068149540
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_65
+      rect:
+        serializedVersion: 2
+        x: 2615
+        y: 195
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5e73632297fb4f290800000000000000
+      internalID: -7857444922868746267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_66
+      rect:
+        serializedVersion: 2
+        x: 3138
+        y: 195
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 129a2d591e7242390800000000000000
+      internalID: -7844100801137825503
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_67
+      rect:
+        serializedVersion: 2
+        x: 3661
+        y: 195
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c06ba0196f2730b0800000000000000
+      internalID: -5749074271017410368
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_68
+      rect:
+        serializedVersion: 2
+        x: 4184
+        y: 195
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1cee43f8787269310800000000000000
+      internalID: 1411358996403908289
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_69
+      rect:
+        serializedVersion: 2
+        x: 4707
+        y: 195
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c80fd99f6376a54f0800000000000000
+      internalID: -839244894737403764
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_70
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9355a71d4a620b940800000000000000
+      internalID: 5309786450000762169
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_71
+      rect:
+        serializedVersion: 2
+        x: 523
+        y: 0
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 769a6c416937c2500800000000000000
+      internalID: 372799957595760999
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_72
+      rect:
+        serializedVersion: 2
+        x: 1046
+        y: 0
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56ae9706bc3959150800000000000000
+      internalID: 5878767390308297317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_73
+      rect:
+        serializedVersion: 2
+        x: 1569
+        y: 0
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41c2d14942510c7e0800000000000000
+      internalID: -1747373408571806700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_74
+      rect:
+        serializedVersion: 2
+        x: 2092
+        y: 0
+        width: 523
+        height: 195
+      alignment: 9
+      pivot: {x: 0.66921604, y: 0.39358974}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 448e9627319114ae0800000000000000
+      internalID: -1566943624033605564
       vertices: []
       indices: 
       edges: []
@@ -1216,7 +2126,17 @@ TextureImporter:
       sniper_62: 5712663520664123006
       sniper_63: 1832662653106098389
       sniper_64: -875507632068149540
+      sniper_65: -7857444922868746267
+      sniper_66: -7844100801137825503
+      sniper_67: -5749074271017410368
+      sniper_68: 1411358996403908289
+      sniper_69: -839244894737403764
       sniper_7: 9053908894261832788
+      sniper_70: 5309786450000762169
+      sniper_71: 372799957595760999
+      sniper_72: 5878767390308297317
+      sniper_73: -1747373408571806700
+      sniper_74: -1566943624033605564
       sniper_8: 3062846882995537502
       sniper_9: -3704956333977570874
   mipmapLimitGroupName: 
