@@ -236,13 +236,13 @@ namespace BS
                 }
                 case SkillEffectKind.TimeStop:
                     // The whole arena: a pale blue ring that sweeps out far past the screen edge.
-                    AddRing(effect.Position, Mathf.Sqrt(ArenaConfig.Width * ArenaConfig.Width + ArenaConfig.Height * ArenaConfig.Height), new Color(0.6f, 0.8f, 1f), StopRingSeconds, 0.04f);
+                    AddRing(effect.Position, Mathf.Sqrt(ArenaConfig.Width * ArenaConfig.Width + ArenaConfig.Height * ArenaConfig.Height), new Color(0.6f, 0.8f, 1f), StopRingSeconds, 0.04f, RingArt("fx_sakuya_stop"));
                     break;
                 case SkillEffectKind.Heal:
-                    AddRing(effect.Position, SkillEffectSize.Radius(def, effect.Rank, effect.RangeScale), new Color(0.4f, 1f, 0.5f), HealRingSeconds);
+                    AddArtRing(effect.Position, SkillEffectSize.Radius(def, effect.Rank, effect.RangeScale), new Color(0.4f, 1f, 0.5f), HealRingSeconds, "fx_sanae_heal");
                     break;
                 case SkillEffectKind.Push:
-                    AddRing(effect.Position, SkillEffectSize.Radius(def, effect.Rank, effect.RangeScale), new Color(1f, 1f, 1f), PushRingSeconds);
+                    AddArtRing(effect.Position, SkillEffectSize.Radius(def, effect.Rank, effect.RangeScale), new Color(1f, 1f, 1f), PushRingSeconds, "fx_sanae_push");
                     break;
                 case SkillEffectKind.Beam:
                     AddBeam(effect, SkillEffectSize.Length(def, effect.Rank, effect.RangeScale), SkillEffectSize.Width(def, effect.Rank, effect.RangeScale), BeamArt(def));
@@ -330,6 +330,19 @@ namespace BS
 
         const float BossBeamFlashSeconds = 0.25f;
 
+        static SpriteAnimSet.Clip RingArt(string key)
+        {
+            SpriteAnimSet set = SpriteLibrary.Get(key);
+            return set != null ? set.Find("fx") : null;
+        }
+
+        /// <summary>A ring drawn from a picture whose circle fills 84% of it, so it is scaled up to put the circle on the skill's radius.</summary>
+        void AddArtRing(Vector2 center, float radius, Color fallback, float seconds, string key)
+        {
+            SpriteAnimSet.Clip art = RingArt(key);
+            if (art != null) AddRing(center, radius * 1.19f, Color.white, seconds, 0.3f, art);
+            else AddRing(center, radius, fallback, seconds);
+        }
         void AddRing(Vector2 center, float radius, Color color, float seconds, float startScale = 0.3f, SpriteAnimSet.Clip art = null)
         {
             rings[nextRing] = new Ring { Center = center, Radius = radius, Start = Time.time, Color = color, Seconds = seconds, StartScale = startScale, Art = art };
@@ -600,6 +613,16 @@ namespace BS
                 float t = age / FlashSeconds;
                 sr.enabled = true;
                 sr.transform.position = new Vector3(flashes[i].Position.x, flashes[i].Position.y, 0f);
+                SpriteAnimSet.Clip flashArt = RingArt("fx_hit_flash");
+                if (flashArt != null)
+                {
+                    // The spark art plays once over the flash, bigger when it killed.
+                    sr.sprite = SpriteAnimSet.SpriteAt(flashArt, t * flashArt.TotalSeconds, false);
+                    sr.transform.localScale = Vector3.one * (flashes[i].Killed ? 1.4f : 0.9f);
+                    sr.color = Color.white;
+                    continue;
+                }
+                sr.sprite = SpriteFactory.Square;
                 sr.transform.localScale = Vector3.one * Mathf.Lerp(0.3f, flashes[i].Killed ? 1.1f : 0.7f, t);
                 Color c = flashes[i].Killed ? new Color(1f, 0.6f, 0.2f) : Color.white;
                 c.a = 1f - t;
