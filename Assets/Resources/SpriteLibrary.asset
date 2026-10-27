@@ -81,6 +81,10 @@ MonoBehaviour:
     set: {fileID: 11400000, guid: 81a0638df7f4907429ad43d0fac58d8e, type: 2}
   - key: fx_puff
     set: {fileID: 11400000, guid: e600152f30d4fb847874bf36f32bf46b, type: 2}
+  - key: fx_shockwave_giant
+    set: {fileID: 11400000, guid: d28f1b56bd7ca764d9caec489bd6bf19, type: 2}
+  - key: fx_shockwave_sniper
+    set: {fileID: 11400000, guid: 18658cf5610a52242b68709272e3ab5b, type: 2}
   - key: fx_hit_flash
     set: {fileID: 11400000, guid: 2e56b22f61dd600419d0a4f24172c8c0, type: 2}
   - key: fx_ring_standard

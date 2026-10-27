@@ -109,6 +109,8 @@ namespace BS.Editor
             new Effect { Key = "fx_marisa_final_beam", Name = "marisa_final_beam", WorldLength = 1f, PivotX = 0f },
             new Effect { Key = "fx_boss_beam", Name = "boss_beam", WorldLength = 1f, PivotX = 0f },
             new Effect { Key = "fx_puff", Name = "puff", WorldLength = 1f, PivotX = 0.5f },
+            new Effect { Key = "fx_shockwave_giant", Name = "shockwave_giant", WorldLength = 1f, PivotX = 0.5f },
+            new Effect { Key = "fx_shockwave_sniper", Name = "shockwave_sniper", WorldLength = 1f, PivotX = 0.5f },
             new Effect { Key = "fx_hit_flash", Name = "hit_flash", WorldLength = 1f, PivotX = 0.5f },
             new Effect { Key = "fx_ring_standard", Name = "boss_ring_standard", WorldLength = 1f, PivotX = 0.5f },
             new Effect { Key = "fx_ring_giant", Name = "boss_ring_giant", WorldLength = 1f, PivotX = 0.5f },

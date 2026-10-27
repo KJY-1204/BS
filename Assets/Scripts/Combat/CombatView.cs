@@ -273,6 +273,7 @@ namespace BS
             {
                 case BossSkillEffect.Shockwave:
                     AddBossRing(effect.Position, def.Radius, color, def.WarningSeconds);
+                    AddShockwaveImpact(effect.Position, def.Radius, def.WarningSeconds);
                     break;
                 case BossSkillEffect.ShotRing:
                     AddBossRing(effect.Position, BossSkills.BarrageWarningRadius, color, def.WarningSeconds);
@@ -293,6 +294,15 @@ namespace BS
             if (clip == null) return;
             for (int i = 0; i < PlayerAvatar.All.Count; i++)
                 if (PlayerAvatar.All[i] != null && PlayerAvatar.All[i].Role == RoleTable.BossRole) PlayerAvatar.All[i].PlaySkillClip(clip);
+        }
+
+        /// <summary>The ground burst where a boss shockwave lands, shown when its warning ends (which is when the server applies it).</summary>
+        void AddShockwaveImpact(Vector2 center, float radius, float delay)
+        {
+            SpriteAnimSet set = SpriteLibrary.Get("fx_shockwave_" + BossCatalog.Current.SpriteId);
+            SpriteAnimSet.Clip art = set != null ? set.Find("fx") : null;
+            if (art == null) return;
+            AddRing(center, radius * 1.03f, Color.white, art.TotalSeconds, 1f, art, delay);
         }
 
         /// <summary>A boss warning ring: the boss kind's ring picture when there is one (it keeps its own colors), else the plain tinted ring.</summary>
@@ -343,9 +353,9 @@ namespace BS
             if (art != null) AddRing(center, radius * 1.19f, Color.white, seconds, 0.3f, art);
             else AddRing(center, radius, fallback, seconds);
         }
-        void AddRing(Vector2 center, float radius, Color color, float seconds, float startScale = 0.3f, SpriteAnimSet.Clip art = null)
+        void AddRing(Vector2 center, float radius, Color color, float seconds, float startScale = 0.3f, SpriteAnimSet.Clip art = null, float delay = 0f)
         {
-            rings[nextRing] = new Ring { Center = center, Radius = radius, Start = Time.time, Color = color, Seconds = seconds, StartScale = startScale, Art = art };
+            rings[nextRing] = new Ring { Center = center, Radius = radius, Start = Time.time + delay, Color = color, Seconds = seconds, StartScale = startScale, Art = art };
             nextRing = (nextRing + 1) % MaxRings;
         }
 
@@ -431,7 +441,7 @@ namespace BS
             {
                 SpriteRenderer sr = ringSprites[i];
                 float age = Time.time - rings[i].Start;
-                if (rings[i].Radius <= 0f || age > rings[i].Seconds)
+                if (rings[i].Radius <= 0f || age < 0f || age > rings[i].Seconds)
                 {
                     if (sr.enabled) sr.enabled = false;
                     continue;

@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d174b7bb8519b634ebabb86011786b4b, type: 3}
+  m_Name: fx_shockwave_sniper
+  m_EditorClassIdentifier: BS.Runtime::BS.SpriteAnimSet
+  clips:
+  - name: fx
+    frames:
+    - {fileID: 5935917510151063424, guid: 1d672cc36c70eac49b0d8e1874ce4883, type: 3}
+    - {fileID: -1533920543587471681, guid: 1d672cc36c70eac49b0d8e1874ce4883, type: 3}
+    - {fileID: -6962855416471379920, guid: 1d672cc36c70eac49b0d8e1874ce4883, type: 3}
+    - {fileID: -3602848087579429117, guid: 1d672cc36c70eac49b0d8e1874ce4883, type: 3}
+    - {fileID: -897156965447031661, guid: 1d672cc36c70eac49b0d8e1874ce4883, type: 3}
+    - {fileID: -4136410496410727404, guid: 1d672cc36c70eac49b0d8e1874ce4883, type: 3}
+    - {fileID: 1923197303236205933, guid: 1d672cc36c70eac49b0d8e1874ce4883, type: 3}
+    - {fileID: 3309961062079935865, guid: 1d672cc36c70eac49b0d8e1874ce4883, type: 3}
+    seconds:
+    - 0.05
+    - 0.05
+    - 0.06
+    - 0.06
+    - 0.07
+    - 0.08
+    - 0.1
+    - 0.12
+  facesRight: 1
+  spins: 0

@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d174b7bb8519b634ebabb86011786b4b, type: 3}
+  m_Name: fx_shockwave_giant
+  m_EditorClassIdentifier: BS.Runtime::BS.SpriteAnimSet
+  clips:
+  - name: fx
+    frames:
+    - {fileID: -4130404870674611140, guid: df324e62197614e45b44c0b20287ee59, type: 3}
+    - {fileID: -5042582838371672821, guid: df324e62197614e45b44c0b20287ee59, type: 3}
+    - {fileID: -4405538701993914618, guid: df324e62197614e45b44c0b20287ee59, type: 3}
+    - {fileID: -9000479392924842981, guid: df324e62197614e45b44c0b20287ee59, type: 3}
+    - {fileID: 2864923471150985536, guid: df324e62197614e45b44c0b20287ee59, type: 3}
+    - {fileID: -7957451654891759412, guid: df324e62197614e45b44c0b20287ee59, type: 3}
+    - {fileID: -8103435168758215449, guid: df324e62197614e45b44c0b20287ee59, type: 3}
+    - {fileID: 6837581453007030590, guid: df324e62197614e45b44c0b20287ee59, type: 3}
+    seconds:
+    - 0.05
+    - 0.05
+    - 0.06
+    - 0.06
+    - 0.07
+    - 0.08
+    - 0.1
+    - 0.12
+  facesRight: 1
+  spins: 0
