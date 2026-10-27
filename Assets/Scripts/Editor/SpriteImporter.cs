@@ -1,4 +1,4 @@
-#pragma warning disable CS0618 // the sprite sheet slicing API is the simplest way to cut a sheet from a script
+﻿#pragma warning disable CS0618 // the sprite sheet slicing API is the simplest way to cut a sheet from a script
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -103,6 +103,9 @@ namespace BS.Editor
             new Effect { Key = "fx_reimu_r_ring", Name = "reimu_r_ring", WorldLength = 1f, PivotX = 0.5f },
             new Effect { Key = "fx_marisa_beam", Name = "marisa_beam", WorldLength = 1f, PivotX = 0f },
             new Effect { Key = "fx_marisa_stardust", Name = "marisa_stardust", WorldLength = 1f, PivotX = 0.5f },
+            new Effect { Key = "fx_ring_standard", Name = "boss_ring_standard", WorldLength = 1f, PivotX = 0.5f },
+            new Effect { Key = "fx_ring_giant", Name = "boss_ring_giant", WorldLength = 1f, PivotX = 0.5f },
+            new Effect { Key = "fx_ring_sniper", Name = "boss_ring_sniper", WorldLength = 1f, PivotX = 0.5f },
         };
 
         /// <summary>An effect strip (frames side by side, listed in a json): cut into frames, pivot in the middle, one "fx" clip.</summary>

@@ -272,13 +272,13 @@ namespace BS
             switch (kind)
             {
                 case BossSkillEffect.Shockwave:
-                    AddRing(effect.Position, def.Radius, color, def.WarningSeconds, 0.1f);
+                    AddBossRing(effect.Position, def.Radius, color, def.WarningSeconds);
                     break;
                 case BossSkillEffect.ShotRing:
-                    AddRing(effect.Position, BossSkills.BarrageWarningRadius, color, def.WarningSeconds, 0.1f);
+                    AddBossRing(effect.Position, BossSkills.BarrageWarningRadius, color, def.WarningSeconds);
                     break;
                 case BossSkillEffect.Roar:
-                    AddRing(effect.Position, BossSkillSim.RoarDistance, color, def.WarningSeconds, 0.1f);
+                    AddBossRing(effect.Position, BossSkillSim.RoarDistance, color, def.WarningSeconds);
                     break;
                 case BossSkillEffect.Beam:
                     AddBossBeam(effect, def, color);
@@ -295,6 +295,14 @@ namespace BS
                 if (PlayerAvatar.All[i] != null && PlayerAvatar.All[i].Role == RoleTable.BossRole) PlayerAvatar.All[i].PlaySkillClip(clip);
         }
 
+        /// <summary>A boss warning ring: the boss kind's ring picture when there is one (it keeps its own colors), else the plain tinted ring.</summary>
+        void AddBossRing(Vector2 center, float radius, Color color, float seconds)
+        {
+            SpriteAnimSet set = SpriteLibrary.Get("fx_ring_" + BossCatalog.Current.SpriteId);
+            SpriteAnimSet.Clip art = set != null ? set.Find("fx") : null;
+            if (art != null) AddRing(center, radius, new Color(1f, 1f, 1f, 0.9f), seconds, 0.1f, art);
+            else AddRing(center, radius, color, seconds, 0.1f);
+        }
         void AddBossBeam(SkillEffect effect, BossSkillDef def, Color color)
         {
             float radians = AimMath.DequantizeAngle(effect.Angle);

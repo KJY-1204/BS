@@ -69,3 +69,9 @@ MonoBehaviour:
     set: {fileID: 11400000, guid: 42ff48ebeef555a4ab01628c20b5113e, type: 2}
   - key: fx_marisa_stardust
     set: {fileID: 11400000, guid: 124ba9270fb4d3149b14891baebabc81, type: 2}
+  - key: fx_ring_standard
+    set: {fileID: 11400000, guid: 11572f7ff1d804a43908414a9c929af8, type: 2}
+  - key: fx_ring_giant
+    set: {fileID: 11400000, guid: fe93fe050243cac42a7778eb86f28c2e, type: 2}
+  - key: fx_ring_sniper
+    set: {fileID: 11400000, guid: 355cbe6774162e24fbad12eb464a14e7, type: 2}
