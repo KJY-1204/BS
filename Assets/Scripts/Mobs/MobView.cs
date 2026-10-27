@@ -43,6 +43,7 @@ namespace BS
         readonly Dictionary<ushort, DeviceTrack> devices = new Dictionary<ushort, DeviceTrack>();
         readonly List<ushort> goneScratch = new List<ushort>();
         readonly List<DeathPlay> deathPlays = new List<DeathPlay>();
+        readonly List<DeathPlay> puffs = new List<DeathPlay>();
         const float DeathFadeSeconds = 0.25f;
         Sprite square;
         int active;
@@ -120,6 +121,7 @@ namespace BS
             }
 
             PlayDeviceDeaths();
+            DrawPuffs();
 
             for (int i = count; i < active; i++)
                 pool[i].gameObject.SetActive(false);
@@ -136,7 +138,7 @@ namespace BS
                 MobEvent beat = beatScratch[i];
                 if (!devices.TryGetValue(beat.Id, out DeviceTrack track)) devices[beat.Id] = track = new DeviceTrack { Position = beat.Position, Seen = true };
                 if (beat.Device == MobEvent.DeviceReady) track.ReadyAt = Time.time;
-                else track.ProducedAt = Time.time;
+                else { track.ProducedAt = Time.time; AddPuff(beat.Position); }
             }
         }
 
@@ -152,6 +154,38 @@ namespace BS
             else if (track.ReadyAt > track.ProducedAt)
                 name = now - track.ReadyAt < ReadySeconds ? "ready" : "summoning";
             return art.Find(name) ?? art.Find("idle");
+        }
+
+        /// <summary>The smoke ring a device puffs out when it makes mobs.</summary>
+        void AddPuff(Vector2 position)
+        {
+            if (SpriteLibrary.Get("fx_puff") == null) return;
+            SpriteRenderer sr = null;
+            for (int k = 0; k < puffs.Count; k++)
+                if (!puffs[k].Renderer.gameObject.activeSelf) { sr = puffs[k].Renderer; puffs.RemoveAt(k); break; }
+            if (sr == null)
+            {
+                var go = new GameObject("DevicePuff");
+                go.transform.SetParent(transform, false);
+                sr = go.AddComponent<SpriteRenderer>();
+                sr.sortingOrder = 4;
+            }
+            sr.gameObject.SetActive(true);
+            sr.transform.localPosition = new Vector3(position.x, position.y - 0.3f, 0f);
+            sr.transform.localScale = Vector3.one * 2.6f;
+            puffs.Add(new DeathPlay { Renderer = sr, Start = Time.time });
+        }
+
+        void DrawPuffs()
+        {
+            SpriteAnimSet.Clip clip = SpriteLibrary.Get("fx_puff")?.Find("fx");
+            for (int i = 0; i < puffs.Count; i++)
+            {
+                float age = Time.time - puffs[i].Start;
+                SpriteRenderer sr = puffs[i].Renderer;
+                if (clip == null || age > clip.TotalSeconds) { sr.gameObject.SetActive(false); continue; }
+                sr.sprite = SpriteAnimSet.SpriteAt(clip, age, false);
+            }
         }
 
         /// <summary>A device that is no longer there (destroyed or expired) breaks apart where it stood.</summary>

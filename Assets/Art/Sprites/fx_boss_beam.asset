@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d174b7bb8519b634ebabb86011786b4b, type: 3}
+  m_Name: fx_boss_beam
+  m_EditorClassIdentifier: BS.Runtime::BS.SpriteAnimSet
+  clips:
+  - name: fx
+    frames:
+    - {fileID: -8691271048643483344, guid: c2f0fe311c71cb44a92d72eb1bb5d151, type: 3}
+    - {fileID: -4276322855379617583, guid: c2f0fe311c71cb44a92d72eb1bb5d151, type: 3}
+    - {fileID: 3373145897747681774, guid: c2f0fe311c71cb44a92d72eb1bb5d151, type: 3}
+    - {fileID: -4331526169979611535, guid: c2f0fe311c71cb44a92d72eb1bb5d151, type: 3}
+    seconds:
+    - 0.05
+    - 0.05
+    - 0.05
+    - 0.05
+  facesRight: 1
+  spins: 0

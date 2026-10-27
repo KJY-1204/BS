@@ -75,6 +75,12 @@ MonoBehaviour:
     set: {fileID: 11400000, guid: 511709483e965844e8db316f8a31e0b7, type: 2}
   - key: fx_sakuya_stop
     set: {fileID: 11400000, guid: b01586e10cd70b24285767f21820b09a, type: 2}
+  - key: fx_marisa_final_beam
+    set: {fileID: 11400000, guid: 3df25565376abc44bbd103fe5861dbc5, type: 2}
+  - key: fx_boss_beam
+    set: {fileID: 11400000, guid: 81a0638df7f4907429ad43d0fac58d8e, type: 2}
+  - key: fx_puff
+    set: {fileID: 11400000, guid: e600152f30d4fb847874bf36f32bf46b, type: 2}
   - key: fx_hit_flash
     set: {fileID: 11400000, guid: 2e56b22f61dd600419d0a4f24172c8c0, type: 2}
   - key: fx_ring_standard

@@ -323,7 +323,7 @@ namespace BS
             beams[nextBeam] = new Beam
             {
                 Origin = effect.Position, Degrees = degrees, Length = length, Width = def.HalfWidth * 2f,
-                Start = Time.time + def.WarningSeconds, Seconds = BossBeamFlashSeconds, Color = color,
+                Start = Time.time + def.WarningSeconds, Seconds = BossBeamFlashSeconds, Color = color, Art = RingArt("fx_boss_beam"),
             };
             nextBeam = (nextBeam + 1) % MaxBeams;
         }
@@ -550,7 +550,7 @@ namespace BS
         static SpriteAnimSet.Clip BeamArt(SkillDef def)
         {
             if (def.Character != CharacterIds.Marisa) return null;
-            SpriteAnimSet set = SpriteLibrary.Get("fx_marisa_beam");
+            SpriteAnimSet set = SpriteLibrary.Get(def.Slot == SkillCatalog.UltimateSlot ? "fx_marisa_final_beam" : "fx_marisa_beam");
             return set != null ? set.Find("fx") : null;
         }
 
