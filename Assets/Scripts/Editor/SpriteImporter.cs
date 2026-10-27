@@ -97,6 +97,8 @@ namespace BS.Editor
             new Shot { Key = "shot_standard", WorldLength = 1.0f },
             new Shot { Key = "shot_giant", WorldLength = 1.6f },
             new Shot { Key = "shot_sniper", WorldLength = 0.6f },
+            new Shot { Key = "shot_mob_ghost", WorldLength = 0.6f },
+            new Shot { Key = "fx_blast", WorldLength = 1f },
         };
 
         /// <summary>A single-image shot: one sprite, pivot in the middle, sized so its long side is <see cref="Shot.WorldLength"/>.</summary>

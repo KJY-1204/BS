@@ -55,3 +55,7 @@ MonoBehaviour:
     set: {fileID: 11400000, guid: 3e1004bc207c5f242b675ab5be88841d, type: 2}
   - key: shot_sniper
     set: {fileID: 11400000, guid: 383058fd15197094bb5b439ae106d47e, type: 2}
+  - key: shot_mob_ghost
+    set: {fileID: 11400000, guid: 13020606e14468441b8e5dd67b7cbb54, type: 2}
+  - key: fx_blast
+    set: {fileID: 11400000, guid: e3e84895294972e47abe66fec17a8ff1, type: 2}

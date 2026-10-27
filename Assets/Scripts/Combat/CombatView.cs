@@ -72,6 +72,8 @@ namespace BS
             public float Seconds;
             /// <summary>The fraction of the full size the ring starts at.</summary>
             public float StartScale;
+            /// <summary>The ring's art (one unit across); null draws the plain ring.</summary>
+            public Sprite Art;
         }
         struct Beam
         {
@@ -185,7 +187,12 @@ namespace BS
             foreach (SkillEffect effect in skillEffects) OnSkill(effect);
 
             // A mob's blast is a short ring of its radius (a placeholder shape).
-            foreach (ExplosionEffect blast in combat.DueExplosions) AddRing(blast.Position, blast.Radius, new Color(1f, 0.85f, 0.2f), 0.35f, 0.2f);
+            SpriteAnimSet blastArt = SpriteLibrary.Get("fx_blast");
+            foreach (ExplosionEffect blast in combat.DueExplosions)
+            {
+                if (blastArt != null) AddRing(blast.Position, blast.Radius, Color.white, 0.35f, 0.2f, blastArt.clips[0].frames[0]);
+                else AddRing(blast.Position, blast.Radius, new Color(1f, 0.85f, 0.2f), 0.35f, 0.2f);
+            }
             combat.DueExplosions.Clear();
 
             DrawFlashes();
@@ -293,9 +300,9 @@ namespace BS
 
         const float BossBeamFlashSeconds = 0.25f;
 
-        void AddRing(Vector2 center, float radius, Color color, float seconds, float startScale = 0.3f)
+        void AddRing(Vector2 center, float radius, Color color, float seconds, float startScale = 0.3f, Sprite art = null)
         {
-            rings[nextRing] = new Ring { Center = center, Radius = radius, Start = Time.time, Color = color, Seconds = seconds, StartScale = startScale };
+            rings[nextRing] = new Ring { Center = center, Radius = radius, Start = Time.time, Color = color, Seconds = seconds, StartScale = startScale, Art = art };
             nextRing = (nextRing + 1) % MaxRings;
         }
 
@@ -372,6 +379,7 @@ namespace BS
 
                 float t = age / rings[i].Seconds;
                 sr.enabled = true;
+                sr.sprite = rings[i].Art != null ? rings[i].Art : SpriteFactory.Ring;
                 sr.transform.position = new Vector3(rings[i].Center.x, rings[i].Center.y, 0f);
                 sr.transform.localScale = Vector3.one * (rings[i].Radius * 2f * Mathf.Lerp(rings[i].StartScale, 1f, t));
                 Color c = rings[i].Color;
@@ -461,7 +469,7 @@ namespace BS
         static string ProjectileArtKey(byte slot, CharacterDef character)
         {
             if (slot == RoleTable.BossRole) return "shot_" + BossCatalog.Current.SpriteId;
-            if (slot == CombatServer.MobShooterSlot) return null;
+            if (slot == CombatServer.MobShooterSlot) return "shot_" + MobKinds.Get(MobKinds.Ranged).SpriteId;
             return character != null ? "shot_" + character.SpriteId : null;
         }
 

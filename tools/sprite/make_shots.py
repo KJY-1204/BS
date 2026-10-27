@@ -75,3 +75,13 @@ save('shot_giant', smooth(load(os.path.join(SCR, 'giant_src.png'), (1308, 895, 1
 save('fx_seal', smooth(load(os.path.join(SCR, 'giant_src.png'), (1212, 872, 1310, 978)), 0.6, 24))
 # Standard boss: the crescent
 save('shot_standard', smooth(load(os.path.join(SCR, 'std_src.png'), (1078, 504, 1122, 563))[:, ::-1].copy(), 1.0, 20))
+# Mob art (the enemy sheet's bottom strip): the ghost's flame shot, tip leading, and the UFO's blast ring
+MOB = os.path.join(ART, 'Reference', 'Touhou_Enemies_OriginalFrames_.png')
+def alpha_core(a, thr=150):
+    a = a.copy(); a[..., 3] = np.where(a[..., 3] >= thr, 255, 0)
+    lab, n = ndi.label(a[..., 3] > 0, structure=np.ones((3, 3)))
+    if n:
+        sizes = ndi.sum(a[..., 3] > 0, lab, range(1, n + 1)); a[..., 3] = np.where(lab == (int(np.argmax(sizes)) + 1), 255, 0)
+    return outline(trim(a, 1))
+save('shot_mob_ghost', alpha_core(load(MOB, (830, 965, 868, 1012))), rot=-90)
+save('fx_blast', alpha_core(load(MOB, (1200, 965, 1246, 1012))))
