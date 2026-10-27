@@ -40,6 +40,7 @@ namespace BS
         float artSpeed;
         bool facingRight = true;
         float skillStart = float.NegativeInfinity;
+        string skillClipName = "skill";
 
         readonly NetworkVariable<Vector2> serverPos = new NetworkVariable<Vector2>(
             Vector2.zero, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
@@ -326,7 +327,13 @@ namespace BS
         }
 
         /// <summary>A skill was cast: the character plays its skill animation once.</summary>
-        public void PlaySkill() => skillStart = Time.time;
+        public void PlaySkill(int slot)
+        {
+            skillStart = Time.time;
+            // The characters that have a clip for the second skill or the ultimate show it; the others use their one skill clip.
+            string wanted = slot == SkillCatalog.UltimateSlot ? "ultimate" : slot == 1 ? "skill_e" : "skill";
+            skillClipName = art != null && art.Find(wanted) != null ? wanted : "skill";
+        }
 
         string ArtId()
         {
@@ -362,12 +369,12 @@ namespace BS
             bool down = !IsAlive;
             bool firing = Combat != null && !down && (Combat.IsFiring || Time.time < Combat.MuzzleFlashUntil + 0.25f);
 
-            SpriteAnimSet.Clip skill = art.Find("skill");
+            SpriteAnimSet.Clip skill = art.Find(skillClipName);
             bool casting = !down && skill != null && Time.time - skillStart < skill.TotalSeconds;
 
             string clipName;
             if (down) clipName = "hit";
-            else if (casting) clipName = "skill";
+            else if (casting) clipName = skillClipName;
             else if (firing) clipName = "attack";
             else if (artSpeed > 0.4f) clipName = boss ? "move" : "walk";
             else clipName = "idle";

@@ -92,13 +92,17 @@ namespace BS.Editor
             public string Name;
             /// <summary>How big the picture is in the arena along its long side (the views scale it to the skill's size).</summary>
             public float WorldLength;
+            /// <summary>Where along its width the picture is pinned: 0.5 in the middle, 0 at the left end (a beam starts at its caster).</summary>
+            public float PivotX;
         }
 
         static Effect[] Effects() => new[]
         {
-            new Effect { Key = "fx_reimu_barrier", Name = "reimu_barrier", WorldLength = 1f },
-            new Effect { Key = "fx_reimu_q_burst", Name = "reimu_q_burst", WorldLength = 1f },
-            new Effect { Key = "fx_reimu_r_ring", Name = "reimu_r_ring", WorldLength = 1f },
+            new Effect { Key = "fx_reimu_barrier", Name = "reimu_barrier", WorldLength = 1f, PivotX = 0.5f },
+            new Effect { Key = "fx_reimu_q_burst", Name = "reimu_q_burst", WorldLength = 1f, PivotX = 0.5f },
+            new Effect { Key = "fx_reimu_r_ring", Name = "reimu_r_ring", WorldLength = 1f, PivotX = 0.5f },
+            new Effect { Key = "fx_marisa_beam", Name = "marisa_beam", WorldLength = 1f, PivotX = 0f },
+            new Effect { Key = "fx_marisa_stardust", Name = "marisa_stardust", WorldLength = 1f, PivotX = 0.5f },
         };
 
         /// <summary>An effect strip (frames side by side, listed in a json): cut into frames, pivot in the middle, one "fx" clip.</summary>
@@ -126,8 +130,8 @@ namespace BS.Editor
                 {
                     name = $"{e.Key}_{i:00}",
                     rect = new Rect(f.x, texHeight - f.y - f.h, f.w, f.h),
-                    alignment = (int)SpriteAlignment.Center,
-                    pivot = new Vector2(0.5f, 0.5f),
+                    alignment = (int)SpriteAlignment.Custom,
+                    pivot = new Vector2(e.PivotX, 0.5f),
                 };
             }
 

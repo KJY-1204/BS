@@ -1,0 +1,588 @@
+fileFormatVersion: 2
+guid: 02dba7e663d10514d829f9eed9a8504c
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3130418838747841780
+    second: fx_marisa_stardust_0
+  - first:
+      213: -6544758773714172575
+    second: fx_marisa_stardust_1
+  - first:
+      213: -2906944442256808410
+    second: fx_marisa_stardust_2
+  - first:
+      213: 7387412546972151429
+    second: fx_marisa_stardust_3
+  - first:
+      213: -1175009269334020315
+    second: fx_marisa_stardust_4
+  - first:
+      213: -4350473984868966849
+    second: fx_marisa_stardust_5
+  - first:
+      213: 7571315335650518953
+    second: fx_marisa_stardust_6
+  - first:
+      213: 46292408048671325
+    second: fx_marisa_stardust_7
+  - first:
+      213: -3542267502450931772
+    second: fx_marisa_stardust_8
+  - first:
+      213: 4476065309923696014
+    second: fx_marisa_stardust_9
+  - first:
+      213: 707902461337342020
+    second: fx_marisa_stardust_10
+  - first:
+      213: -2251132628976546127
+    second: fx_marisa_stardust_11
+  - first:
+      213: 2555678478700635113
+    second: fx_marisa_stardust_12
+  - first:
+      213: -504622217153961801
+    second: fx_marisa_stardust_13
+  - first:
+      213: -8029610676328886237
+    second: fx_marisa_stardust_14
+  - first:
+      213: -5072497843378504019
+    second: fx_marisa_stardust_15
+  - first:
+      213: -4792743609221811932
+    second: fx_marisa_stardust_16
+  - first:
+      213: 1138728370290551222
+    second: fx_marisa_stardust_17
+  - first:
+      213: -1880143098941174338
+    second: fx_marisa_stardust_18
+  - first:
+      213: 9041201147572719011
+    second: fx_marisa_stardust_19
+  - first:
+      213: 3242569364525455100
+    second: fx_marisa_stardust_20
+  - first:
+      213: -3988664064363892572
+    second: fx_marisa_stardust_21
+  - first:
+      213: -4376078354069676927
+    second: fx_marisa_stardust_22
+  - first:
+      213: -2240823421776077663
+    second: fx_marisa_stardust_23
+  - first:
+      213: -6816666263250147151
+    second: fx_marisa_stardust_24
+  - first:
+      213: -6145267584285653566
+    second: fx_marisa_stardust_25
+  - first:
+      213: -5858190018476546107
+    second: fx_marisa_stardust_26
+  - first:
+      213: 4760749161828727663
+    second: fx_marisa_stardust_27
+  - first:
+      213: -1577509736487898381
+    second: fx_marisa_stardust_28
+  - first:
+      213: -2092645192446096338
+    second: fx_marisa_stardust_29
+  - first:
+      213: -4948997381529797137
+    second: fx_marisa_stardust_30
+  - first:
+      213: 1152690433321876534
+    second: fx_marisa_stardust_31
+  - first:
+      213: 4888977201144213865
+    second: fx_marisa_stardust_00
+  - first:
+      213: 8694307263846441781
+    second: fx_marisa_stardust_01
+  - first:
+      213: -5515407939403106883
+    second: fx_marisa_stardust_02
+  - first:
+      213: 785910421634214508
+    second: fx_marisa_stardust_03
+  - first:
+      213: -2320566411838291486
+    second: fx_marisa_stardust_04
+  - first:
+      213: -7438584225472889296
+    second: fx_marisa_stardust_05
+  - first:
+      213: -7710482320467213459
+    second: fx_marisa_stardust_06
+  - first:
+      213: -2664171522460357603
+    second: fx_marisa_stardust_07
+  - first:
+      213: -6317547484462362675
+    second: fx_marisa_stardust_08
+  - first:
+      213: -8671753218653299263
+    second: fx_marisa_stardust_09
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 170
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 16384
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: fx_marisa_stardust_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 170
+        height: 170
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9613f2d8cd229d340800000000000000
+      internalID: 4888977201144213865
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_marisa_stardust_01
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 0
+        width: 170
+        height: 170
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5336aad546268a870800000000000000
+      internalID: 8694307263846441781
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_marisa_stardust_02
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 0
+        width: 170
+        height: 170
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db5328473b55573b0800000000000000
+      internalID: -5515407939403106883
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_marisa_stardust_03
+      rect:
+        serializedVersion: 2
+        x: 510
+        y: 0
+        width: 170
+        height: 170
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6ae8c25d5d18ea00800000000000000
+      internalID: 785910421634214508
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_marisa_stardust_04
+      rect:
+        serializedVersion: 2
+        x: 680
+        y: 0
+        width: 170
+        height: 170
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e10da0b421bbcfd0800000000000000
+      internalID: -2320566411838291486
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_marisa_stardust_05
+      rect:
+        serializedVersion: 2
+        x: 850
+        y: 0
+        width: 170
+        height: 170
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03e3dd8ee07d4c890800000000000000
+      internalID: -7438584225472889296
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_marisa_stardust_06
+      rect:
+        serializedVersion: 2
+        x: 1020
+        y: 0
+        width: 170
+        height: 170
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d634f917e2ddef490800000000000000
+      internalID: -7710482320467213459
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_marisa_stardust_07
+      rect:
+        serializedVersion: 2
+        x: 1190
+        y: 0
+        width: 170
+        height: 170
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1ce90f9d16f60bd0800000000000000
+      internalID: -2664171522460357603
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_marisa_stardust_08
+      rect:
+        serializedVersion: 2
+        x: 1360
+        y: 0
+        width: 170
+        height: 170
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dcf45f0e8009358a0800000000000000
+      internalID: -6317547484462362675
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_marisa_stardust_09
+      rect:
+        serializedVersion: 2
+        x: 1530
+        y: 0
+        width: 170
+        height: 170
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1cdd15e746eb7a780800000000000000
+      internalID: -8671753218653299263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_marisa_stardust_10
+      rect:
+        serializedVersion: 2
+        x: 1700
+        y: 0
+        width: 170
+        height: 170
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44013a7b989f2d900800000000000000
+      internalID: 707902461337342020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_marisa_stardust_11
+      rect:
+        serializedVersion: 2
+        x: 1870
+        y: 0
+        width: 170
+        height: 170
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1becf8b0dce52c0e0800000000000000
+      internalID: -2251132628976546127
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      fx_marisa_stardust_0: -3130418838747841780
+      fx_marisa_stardust_00: 4888977201144213865
+      fx_marisa_stardust_01: 8694307263846441781
+      fx_marisa_stardust_02: -5515407939403106883
+      fx_marisa_stardust_03: 785910421634214508
+      fx_marisa_stardust_04: -2320566411838291486
+      fx_marisa_stardust_05: -7438584225472889296
+      fx_marisa_stardust_06: -7710482320467213459
+      fx_marisa_stardust_07: -2664171522460357603
+      fx_marisa_stardust_08: -6317547484462362675
+      fx_marisa_stardust_09: -8671753218653299263
+      fx_marisa_stardust_1: -6544758773714172575
+      fx_marisa_stardust_10: 707902461337342020
+      fx_marisa_stardust_11: -2251132628976546127
+      fx_marisa_stardust_12: 2555678478700635113
+      fx_marisa_stardust_13: -504622217153961801
+      fx_marisa_stardust_14: -8029610676328886237
+      fx_marisa_stardust_15: -5072497843378504019
+      fx_marisa_stardust_16: -4792743609221811932
+      fx_marisa_stardust_17: 1138728370290551222
+      fx_marisa_stardust_18: -1880143098941174338
+      fx_marisa_stardust_19: 9041201147572719011
+      fx_marisa_stardust_2: -2906944442256808410
+      fx_marisa_stardust_20: 3242569364525455100
+      fx_marisa_stardust_21: -3988664064363892572
+      fx_marisa_stardust_22: -4376078354069676927
+      fx_marisa_stardust_23: -2240823421776077663
+      fx_marisa_stardust_24: -6816666263250147151
+      fx_marisa_stardust_25: -6145267584285653566
+      fx_marisa_stardust_26: -5858190018476546107
+      fx_marisa_stardust_27: 4760749161828727663
+      fx_marisa_stardust_28: -1577509736487898381
+      fx_marisa_stardust_29: -2092645192446096338
+      fx_marisa_stardust_3: 7387412546972151429
+      fx_marisa_stardust_30: -4948997381529797137
+      fx_marisa_stardust_31: 1152690433321876534
+      fx_marisa_stardust_4: -1175009269334020315
+      fx_marisa_stardust_5: -4350473984868966849
+      fx_marisa_stardust_6: 7571315335650518953
+      fx_marisa_stardust_7: 46292408048671325
+      fx_marisa_stardust_8: -3542267502450931772
+      fx_marisa_stardust_9: 4476065309923696014
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

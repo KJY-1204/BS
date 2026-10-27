@@ -1,380 +1,434 @@
 { "frames": [
    {
     "filename": "marisa_anim 0.aseprite",
-    "frame": { "x": 0, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 0, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
     "duration": 120
    },
    {
     "filename": "marisa_anim 1.aseprite",
-    "frame": { "x": 307, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 345, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
     "duration": 120
    },
    {
     "filename": "marisa_anim 2.aseprite",
-    "frame": { "x": 614, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 690, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
     "duration": 120
    },
    {
     "filename": "marisa_anim 3.aseprite",
-    "frame": { "x": 921, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 1035, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
     "duration": 120
    },
    {
     "filename": "marisa_anim 4.aseprite",
-    "frame": { "x": 1228, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 1380, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
     "duration": 120
    },
    {
     "filename": "marisa_anim 5.aseprite",
-    "frame": { "x": 1535, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 1725, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
     "duration": 120
    },
    {
     "filename": "marisa_anim 6.aseprite",
-    "frame": { "x": 1842, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 2070, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
     "duration": 90
    },
    {
     "filename": "marisa_anim 7.aseprite",
-    "frame": { "x": 2149, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 2415, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
     "duration": 90
    },
    {
     "filename": "marisa_anim 8.aseprite",
-    "frame": { "x": 2456, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 2760, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
     "duration": 90
    },
    {
     "filename": "marisa_anim 9.aseprite",
-    "frame": { "x": 2763, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 3105, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
     "duration": 90
    },
    {
     "filename": "marisa_anim 10.aseprite",
-    "frame": { "x": 3070, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 3450, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
     "duration": 90
    },
    {
     "filename": "marisa_anim 11.aseprite",
-    "frame": { "x": 3377, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 3795, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
     "duration": 90
    },
    {
     "filename": "marisa_anim 12.aseprite",
-    "frame": { "x": 3684, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 4140, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
     "duration": 90
    },
    {
     "filename": "marisa_anim 13.aseprite",
-    "frame": { "x": 3991, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 4485, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
     "duration": 90
    },
    {
     "filename": "marisa_anim 14.aseprite",
-    "frame": { "x": 4298, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 4830, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
     "duration": 80
    },
    {
     "filename": "marisa_anim 15.aseprite",
-    "frame": { "x": 4605, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 5175, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
     "duration": 90
    },
    {
     "filename": "marisa_anim 16.aseprite",
-    "frame": { "x": 4912, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 5520, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
     "duration": 80
    },
    {
     "filename": "marisa_anim 17.aseprite",
-    "frame": { "x": 5219, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 5865, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
     "duration": 70
    },
    {
     "filename": "marisa_anim 18.aseprite",
-    "frame": { "x": 5526, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 6210, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
     "duration": 70
    },
    {
     "filename": "marisa_anim 19.aseprite",
-    "frame": { "x": 5833, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 6555, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
     "duration": 70
    },
    {
     "filename": "marisa_anim 20.aseprite",
-    "frame": { "x": 6140, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 6900, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
     "duration": 80
    },
    {
     "filename": "marisa_anim 21.aseprite",
-    "frame": { "x": 6447, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 7245, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
     "duration": 80
    },
    {
     "filename": "marisa_anim 22.aseprite",
-    "frame": { "x": 6754, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 7590, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
     "duration": 100
    },
    {
     "filename": "marisa_anim 23.aseprite",
-    "frame": { "x": 7061, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 7935, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
-    "duration": 90
-   },
-   {
-    "filename": "marisa_anim 24.aseprite",
-    "frame": { "x": 7368, "y": 0, "w": 307, "h": 194 },
-    "rotated": false,
-    "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
-    "duration": 90
-   },
-   {
-    "filename": "marisa_anim 25.aseprite",
-    "frame": { "x": 7675, "y": 0, "w": 307, "h": 194 },
-    "rotated": false,
-    "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
-    "duration": 70
-   },
-   {
-    "filename": "marisa_anim 26.aseprite",
-    "frame": { "x": 7982, "y": 0, "w": 307, "h": 194 },
-    "rotated": false,
-    "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
-    "duration": 70
-   },
-   {
-    "filename": "marisa_anim 27.aseprite",
-    "frame": { "x": 8289, "y": 0, "w": 307, "h": 194 },
-    "rotated": false,
-    "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
-    "duration": 70
-   },
-   {
-    "filename": "marisa_anim 28.aseprite",
-    "frame": { "x": 8596, "y": 0, "w": 307, "h": 194 },
-    "rotated": false,
-    "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
-    "duration": 80
-   },
-   {
-    "filename": "marisa_anim 29.aseprite",
-    "frame": { "x": 8903, "y": 0, "w": 307, "h": 194 },
-    "rotated": false,
-    "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
-    "duration": 80
-   },
-   {
-    "filename": "marisa_anim 30.aseprite",
-    "frame": { "x": 9210, "y": 0, "w": 307, "h": 194 },
-    "rotated": false,
-    "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
     "duration": 100
    },
    {
-    "filename": "marisa_anim 31.aseprite",
-    "frame": { "x": 9517, "y": 0, "w": 307, "h": 194 },
+    "filename": "marisa_anim 24.aseprite",
+    "frame": { "x": 8280, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
-    "duration": 80
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
+    "duration": 110
+   },
+   {
+    "filename": "marisa_anim 25.aseprite",
+    "frame": { "x": 8625, "y": 0, "w": 345, "h": 335 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
+    "duration": 110
+   },
+   {
+    "filename": "marisa_anim 26.aseprite",
+    "frame": { "x": 8970, "y": 0, "w": 345, "h": 335 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
+    "duration": 120
+   },
+   {
+    "filename": "marisa_anim 27.aseprite",
+    "frame": { "x": 9315, "y": 0, "w": 345, "h": 335 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
+    "duration": 120
+   },
+   {
+    "filename": "marisa_anim 28.aseprite",
+    "frame": { "x": 9660, "y": 0, "w": 345, "h": 335 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
+    "duration": 110
+   },
+   {
+    "filename": "marisa_anim 29.aseprite",
+    "frame": { "x": 10005, "y": 0, "w": 345, "h": 335 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
+    "duration": 130
+   },
+   {
+    "filename": "marisa_anim 30.aseprite",
+    "frame": { "x": 10350, "y": 0, "w": 345, "h": 335 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
+    "duration": 150
+   },
+   {
+    "filename": "marisa_anim 31.aseprite",
+    "frame": { "x": 10695, "y": 0, "w": 345, "h": 335 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
+    "duration": 90
    },
    {
     "filename": "marisa_anim 32.aseprite",
-    "frame": { "x": 9824, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 11040, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
-    "duration": 80
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
+    "duration": 90
    },
    {
     "filename": "marisa_anim 33.aseprite",
-    "frame": { "x": 10131, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 11385, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
     "duration": 100
    },
    {
     "filename": "marisa_anim 34.aseprite",
-    "frame": { "x": 10438, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 11730, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
-    "duration": 70
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
+    "duration": 100
    },
    {
     "filename": "marisa_anim 35.aseprite",
-    "frame": { "x": 10745, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 12075, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
-    "duration": 70
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
+    "duration": 110
    },
    {
     "filename": "marisa_anim 36.aseprite",
-    "frame": { "x": 11052, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 12420, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
-    "duration": 70
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
+    "duration": 150
    },
    {
     "filename": "marisa_anim 37.aseprite",
-    "frame": { "x": 11359, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 12765, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
-    "duration": 70
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
+    "duration": 80
    },
    {
     "filename": "marisa_anim 38.aseprite",
-    "frame": { "x": 11666, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 13110, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
-    "duration": 90
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
+    "duration": 80
    },
    {
     "filename": "marisa_anim 39.aseprite",
-    "frame": { "x": 11973, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 13455, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
-    "duration": 90
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
+    "duration": 100
    },
    {
     "filename": "marisa_anim 40.aseprite",
-    "frame": { "x": 12280, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 13800, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
-    "duration": 90
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
+    "duration": 70
    },
    {
     "filename": "marisa_anim 41.aseprite",
-    "frame": { "x": 12587, "y": 0, "w": 307, "h": 194 },
+    "frame": { "x": 14145, "y": 0, "w": 345, "h": 335 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 307, "h": 194 },
-    "sourceSize": { "w": 307, "h": 194 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
+    "duration": 70
+   },
+   {
+    "filename": "marisa_anim 42.aseprite",
+    "frame": { "x": 14490, "y": 0, "w": 345, "h": 335 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
+    "duration": 70
+   },
+   {
+    "filename": "marisa_anim 43.aseprite",
+    "frame": { "x": 14835, "y": 0, "w": 345, "h": 335 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
+    "duration": 70
+   },
+   {
+    "filename": "marisa_anim 44.aseprite",
+    "frame": { "x": 15180, "y": 0, "w": 345, "h": 335 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
+    "duration": 90
+   },
+   {
+    "filename": "marisa_anim 45.aseprite",
+    "frame": { "x": 15525, "y": 0, "w": 345, "h": 335 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
+    "duration": 90
+   },
+   {
+    "filename": "marisa_anim 46.aseprite",
+    "frame": { "x": 15870, "y": 0, "w": 345, "h": 335 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
+    "duration": 90
+   },
+   {
+    "filename": "marisa_anim 47.aseprite",
+    "frame": { "x": 16215, "y": 0, "w": 345, "h": 335 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 335 },
+    "sourceSize": { "w": 345, "h": 335 },
     "duration": 110
    }
  ],
@@ -383,16 +437,17 @@
   "version": "1.3.18.6-x64",
   "image": "marisa_sheet.png",
   "format": "RGBA8888",
-  "size": { "w": 12894, "h": 194 },
+  "size": { "w": 16560, "h": 335 },
   "scale": "1",
   "frameTags": [
    { "name": "idle", "from": 0, "to": 5, "direction": "forward", "color": "#000000ff" },
    { "name": "walk", "from": 6, "to": 13, "direction": "forward", "color": "#000000ff" },
    { "name": "attack", "from": 14, "to": 22, "direction": "forward", "color": "#000000ff" },
    { "name": "skill", "from": 23, "to": 30, "direction": "forward", "color": "#000000ff" },
-   { "name": "hit", "from": 31, "to": 33, "direction": "forward", "color": "#000000ff" },
-   { "name": "dash", "from": 34, "to": 37, "direction": "forward", "color": "#000000ff" },
-   { "name": "jump", "from": 38, "to": 41, "direction": "forward", "color": "#000000ff" }
+   { "name": "skill_e", "from": 31, "to": 36, "direction": "forward", "color": "#000000ff" },
+   { "name": "hit", "from": 37, "to": 39, "direction": "forward", "color": "#000000ff" },
+   { "name": "dash", "from": 40, "to": 43, "direction": "forward", "color": "#000000ff" },
+   { "name": "jump", "from": 44, "to": 47, "direction": "forward", "color": "#000000ff" }
   ]
  }
 }

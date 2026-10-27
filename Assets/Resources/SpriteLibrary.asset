@@ -65,3 +65,7 @@ MonoBehaviour:
     set: {fileID: 11400000, guid: 43117dabf438c3640b052f1a269bf7ba, type: 2}
   - key: fx_reimu_r_ring
     set: {fileID: 11400000, guid: 5f87803e169e3fa428151c3f2981e4e2, type: 2}
+  - key: fx_marisa_beam
+    set: {fileID: 11400000, guid: 42ff48ebeef555a4ab01628c20b5113e, type: 2}
+  - key: fx_marisa_stardust
+    set: {fileID: 11400000, guid: 124ba9270fb4d3149b14891baebabc81, type: 2}

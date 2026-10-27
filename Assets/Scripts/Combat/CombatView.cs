@@ -86,6 +86,8 @@ namespace BS
             public float Seconds;
             /// <summary>Its color; an unset (transparent) color means the survivors' pale yellow.</summary>
             public Color Color;
+            /// <summary>The beam's art (its left end at the origin, one unit long); null draws the plain bar.</summary>
+            public SpriteAnimSet.Clip Art;
             /// <summary>A steady line (a warning) keeps its width and strength until it ends instead of fading.</summary>
             public bool Steady;
         }
@@ -220,7 +222,7 @@ namespace BS
             SkillDef def = SkillCatalog.Get(effect.SkillId);
             if (def == null || effect.Rank < 1 || effect.Rank > def.MaxRank) return;
 
-            FindBySlot(effect.Slot)?.GetComponent<PlayerAvatar>()?.PlaySkill();
+            FindBySlot(effect.Slot)?.GetComponent<PlayerAvatar>()?.PlaySkill(def.Slot);
 
             switch (def.Effect)
             {
@@ -243,10 +245,10 @@ namespace BS
                     AddRing(effect.Position, SkillEffectSize.Radius(def, effect.Rank, effect.RangeScale), new Color(1f, 1f, 1f), PushRingSeconds);
                     break;
                 case SkillEffectKind.Beam:
-                    AddBeam(effect, SkillEffectSize.Length(def, effect.Rank, effect.RangeScale), SkillEffectSize.Width(def, effect.Rank, effect.RangeScale));
+                    AddBeam(effect, SkillEffectSize.Length(def, effect.Rank, effect.RangeScale), SkillEffectSize.Width(def, effect.Rank, effect.RangeScale), BeamArt(def));
                     break;
                 case SkillEffectKind.AttackSpeed:
-                    SetAura(effect.Slot, Time.time + SkillEffectSize.Seconds(def, effect.Rank, effect.DurationScale), new Color(1f, 0.9f, 0.3f), null);
+                    SetAura(effect.Slot, Time.time + SkillEffectSize.Seconds(def, effect.Rank, effect.DurationScale), new Color(1f, 0.9f, 0.3f), StardustArt(def));
                     break;
                 case SkillEffectKind.Barrier:
                     SetAura(effect.Slot, Time.time + SkillEffectSize.Seconds(def, effect.Rank, effect.DurationScale), new Color(0.7f, 0.9f, 1f), BarrierArt(def));
@@ -323,7 +325,7 @@ namespace BS
             auraArt[slot] = art;
         }
 
-        void AddBeam(SkillEffect effect, float length, float width)
+        void AddBeam(SkillEffect effect, float length, float width, SpriteAnimSet.Clip art = null)
         {
             float radians = AimMath.DequantizeAngle(effect.Angle);
             Vector2 direction = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
@@ -331,7 +333,7 @@ namespace BS
             {
                 Origin = effect.Position, Degrees = radians * Mathf.Rad2Deg,
                 Length = ClipToArena(effect.Position, direction, length), Width = width, Start = Time.time,
-                Seconds = BeamSeconds, Color = new Color(1f, 1f, 0.8f),
+                Seconds = BeamSeconds, Color = new Color(1f, 1f, 0.8f), Art = art,
             };
             nextBeam = (nextBeam + 1) % MaxBeams;
         }
@@ -364,10 +366,26 @@ namespace BS
 
                 float t = beams[i].Steady ? 0f : age / seconds;
                 float radians = beams[i].Degrees * Mathf.Deg2Rad;
-                Vector2 middle = beams[i].Origin + new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)) * (beams[i].Length * 0.5f);
+                Vector2 direction = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
                 sr.enabled = true;
-                sr.transform.position = new Vector3(middle.x, middle.y, 0f);
                 sr.transform.rotation = Quaternion.Euler(0f, 0f, beams[i].Degrees);
+
+                SpriteAnimSet.Clip art = beams[i].Art;
+                if (art != null)
+                {
+                    // Art: from the caster outward, stretched to the beam's length; its height is a little more than the beam is wide.
+                    Sprite frame = SpriteAnimSet.SpriteAt(art, age, true);
+                    float aspect = frame.rect.height / frame.rect.width;
+                    sr.sprite = frame;
+                    sr.transform.position = new Vector3(beams[i].Origin.x, beams[i].Origin.y, 0f);
+                    sr.transform.localScale = new Vector3(beams[i].Length, beams[i].Width * 1.7f * Mathf.Lerp(1f, 0.7f, t) / aspect, 1f);
+                    sr.color = new Color(1f, 1f, 1f, Mathf.Clamp01((1f - t) / 0.35f));
+                    continue;
+                }
+
+                Vector2 middle = beams[i].Origin + direction * (beams[i].Length * 0.5f);
+                sr.sprite = SpriteFactory.Square;
+                sr.transform.position = new Vector3(middle.x, middle.y, 0f);
                 sr.transform.localScale = new Vector3(beams[i].Length, beams[i].Width * Mathf.Lerp(1f, 0.4f, t), 1f);
                 Color c = beams[i].Color.a > 0f ? beams[i].Color : new Color(1f, 1f, 0.8f);
                 c.a = beams[i].Steady ? c.a : c.a * (1f - t);
@@ -493,6 +511,21 @@ namespace BS
         {
             if (def.Character != CharacterIds.Reimu) return null;
             SpriteAnimSet set = SpriteLibrary.Get(def.Slot == SkillCatalog.UltimateSlot ? "fx_reimu_r_ring" : "fx_reimu_q_burst");
+            return set != null ? set.Find("fx") : null;
+        }
+
+        /// <summary>Marisa's sparks, both the Master and the Final one, are the same beam picture at their own width.</summary>
+        static SpriteAnimSet.Clip BeamArt(SkillDef def)
+        {
+            if (def.Character != CharacterIds.Marisa) return null;
+            SpriteAnimSet set = SpriteLibrary.Get("fx_marisa_beam");
+            return set != null ? set.Find("fx") : null;
+        }
+
+        static SpriteAnimSet.Clip StardustArt(SkillDef def)
+        {
+            if (def.Character != CharacterIds.Marisa) return null;
+            SpriteAnimSet set = SpriteLibrary.Get("fx_marisa_stardust");
             return set != null ? set.Find("fx") : null;
         }
 

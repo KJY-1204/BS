@@ -83,6 +83,65 @@
    "nofx": true,
    "scale": 0.8902,
    "_orig": 0.94
+  },
+  "qa": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/m1_clean.png",
+   "box": [
+    20,
+    224,
+    1515,
+    516
+   ],
+   "cuts": [
+    20,
+    318,
+    621,
+    916,
+    1217,
+    1515
+   ],
+   "scale": 0.66
+  },
+  "qb": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/m1_clean.png",
+   "box": [
+    20,
+    599,
+    1515,
+    938
+   ],
+   "cuts": [
+    20,
+    306,
+    606,
+    975,
+    1268,
+    1515
+   ],
+   "scale": 0.66,
+   "skip": [
+    1,
+    2
+   ]
+  },
+  "ea": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/m2_src.png",
+   "box": [
+    0,
+    0,
+    1536,
+    462
+   ],
+   "cuts": [
+    0,
+    215,
+    430,
+    655,
+    880,
+    1180,
+    1536
+   ],
+   "scale": 0.7
   }
  }
 }
