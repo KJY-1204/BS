@@ -236,6 +236,30 @@ TextureImporter:
   - first:
       213: 7967119572205797024
     second: giant_67
+  - first:
+      213: -2268562147625363561
+    second: giant_68
+  - first:
+      213: 2935187816788651900
+    second: giant_69
+  - first:
+      213: -2127625620223681053
+    second: giant_70
+  - first:
+      213: -4690149508021712552
+    second: giant_71
+  - first:
+      213: 5284560151193329751
+    second: giant_72
+  - first:
+      213: -1993042736351072303
+    second: giant_73
+  - first:
+      213: 4152913247115063292
+    second: giant_74
+  - first:
+      213: -7075665146841964772
+    second: giant_75
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -374,11 +398,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 1500
-        width: 441
+        y: 1750
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -395,12 +419,12 @@ TextureImporter:
       name: giant_01
       rect:
         serializedVersion: 2
-        x: 441
-        y: 1500
-        width: 441
+        x: 321
+        y: 1750
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -417,12 +441,12 @@ TextureImporter:
       name: giant_02
       rect:
         serializedVersion: 2
-        x: 882
-        y: 1500
-        width: 441
+        x: 642
+        y: 1750
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -439,12 +463,12 @@ TextureImporter:
       name: giant_03
       rect:
         serializedVersion: 2
-        x: 1323
-        y: 1500
-        width: 441
+        x: 963
+        y: 1750
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -461,12 +485,12 @@ TextureImporter:
       name: giant_04
       rect:
         serializedVersion: 2
-        x: 1764
-        y: 1500
-        width: 441
+        x: 1284
+        y: 1750
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -483,12 +507,12 @@ TextureImporter:
       name: giant_05
       rect:
         serializedVersion: 2
-        x: 2205
-        y: 1500
-        width: 441
+        x: 1605
+        y: 1750
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -505,12 +529,12 @@ TextureImporter:
       name: giant_06
       rect:
         serializedVersion: 2
-        x: 2646
-        y: 1500
-        width: 441
+        x: 1926
+        y: 1750
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -527,12 +551,12 @@ TextureImporter:
       name: giant_07
       rect:
         serializedVersion: 2
-        x: 3087
-        y: 1500
-        width: 441
+        x: 2247
+        y: 1750
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -549,12 +573,12 @@ TextureImporter:
       name: giant_08
       rect:
         serializedVersion: 2
-        x: 3528
-        y: 1500
-        width: 441
+        x: 2568
+        y: 1750
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -571,12 +595,12 @@ TextureImporter:
       name: giant_09
       rect:
         serializedVersion: 2
-        x: 3969
-        y: 1500
-        width: 441
+        x: 2889
+        y: 1750
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -594,11 +618,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 1250
-        width: 441
+        y: 1500
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -615,12 +639,12 @@ TextureImporter:
       name: giant_11
       rect:
         serializedVersion: 2
-        x: 441
-        y: 1250
-        width: 441
+        x: 321
+        y: 1500
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -637,12 +661,12 @@ TextureImporter:
       name: giant_12
       rect:
         serializedVersion: 2
-        x: 882
-        y: 1250
-        width: 441
+        x: 642
+        y: 1500
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -659,12 +683,12 @@ TextureImporter:
       name: giant_13
       rect:
         serializedVersion: 2
-        x: 1323
-        y: 1250
-        width: 441
+        x: 963
+        y: 1500
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -681,12 +705,12 @@ TextureImporter:
       name: giant_14
       rect:
         serializedVersion: 2
-        x: 1764
-        y: 1250
-        width: 441
+        x: 1284
+        y: 1500
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -703,12 +727,12 @@ TextureImporter:
       name: giant_15
       rect:
         serializedVersion: 2
-        x: 2205
-        y: 1250
-        width: 441
+        x: 1605
+        y: 1500
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -725,12 +749,12 @@ TextureImporter:
       name: giant_16
       rect:
         serializedVersion: 2
-        x: 2646
-        y: 1250
-        width: 441
+        x: 1926
+        y: 1500
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -747,12 +771,12 @@ TextureImporter:
       name: giant_17
       rect:
         serializedVersion: 2
-        x: 3087
-        y: 1250
-        width: 441
+        x: 2247
+        y: 1500
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -769,12 +793,12 @@ TextureImporter:
       name: giant_18
       rect:
         serializedVersion: 2
-        x: 3528
-        y: 1250
-        width: 441
+        x: 2568
+        y: 1500
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -791,12 +815,12 @@ TextureImporter:
       name: giant_19
       rect:
         serializedVersion: 2
-        x: 3969
-        y: 1250
-        width: 441
+        x: 2889
+        y: 1500
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -814,11 +838,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 1000
-        width: 441
+        y: 1250
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -835,12 +859,12 @@ TextureImporter:
       name: giant_21
       rect:
         serializedVersion: 2
-        x: 441
-        y: 1000
-        width: 441
+        x: 321
+        y: 1250
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -857,12 +881,12 @@ TextureImporter:
       name: giant_22
       rect:
         serializedVersion: 2
-        x: 882
-        y: 1000
-        width: 441
+        x: 642
+        y: 1250
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -879,12 +903,12 @@ TextureImporter:
       name: giant_23
       rect:
         serializedVersion: 2
-        x: 1323
-        y: 1000
-        width: 441
+        x: 963
+        y: 1250
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -901,12 +925,12 @@ TextureImporter:
       name: giant_24
       rect:
         serializedVersion: 2
-        x: 1764
-        y: 1000
-        width: 441
+        x: 1284
+        y: 1250
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -923,12 +947,12 @@ TextureImporter:
       name: giant_25
       rect:
         serializedVersion: 2
-        x: 2205
-        y: 1000
-        width: 441
+        x: 1605
+        y: 1250
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -945,12 +969,12 @@ TextureImporter:
       name: giant_26
       rect:
         serializedVersion: 2
-        x: 2646
-        y: 1000
-        width: 441
+        x: 1926
+        y: 1250
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -967,12 +991,12 @@ TextureImporter:
       name: giant_27
       rect:
         serializedVersion: 2
-        x: 3087
-        y: 1000
-        width: 441
+        x: 2247
+        y: 1250
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -989,12 +1013,12 @@ TextureImporter:
       name: giant_28
       rect:
         serializedVersion: 2
-        x: 3528
-        y: 1000
-        width: 441
+        x: 2568
+        y: 1250
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1011,12 +1035,12 @@ TextureImporter:
       name: giant_29
       rect:
         serializedVersion: 2
-        x: 3969
-        y: 1000
-        width: 441
+        x: 2889
+        y: 1250
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1034,11 +1058,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 750
-        width: 441
+        y: 1000
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1055,12 +1079,12 @@ TextureImporter:
       name: giant_31
       rect:
         serializedVersion: 2
-        x: 441
-        y: 750
-        width: 441
+        x: 321
+        y: 1000
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1077,12 +1101,12 @@ TextureImporter:
       name: giant_32
       rect:
         serializedVersion: 2
-        x: 882
-        y: 750
-        width: 441
+        x: 642
+        y: 1000
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1099,12 +1123,12 @@ TextureImporter:
       name: giant_33
       rect:
         serializedVersion: 2
-        x: 1323
-        y: 750
-        width: 441
+        x: 963
+        y: 1000
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1121,12 +1145,12 @@ TextureImporter:
       name: giant_34
       rect:
         serializedVersion: 2
-        x: 1764
-        y: 750
-        width: 441
+        x: 1284
+        y: 1000
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1143,12 +1167,12 @@ TextureImporter:
       name: giant_35
       rect:
         serializedVersion: 2
-        x: 2205
-        y: 750
-        width: 441
+        x: 1605
+        y: 1000
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1165,12 +1189,12 @@ TextureImporter:
       name: giant_36
       rect:
         serializedVersion: 2
-        x: 2646
-        y: 750
-        width: 441
+        x: 1926
+        y: 1000
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1187,12 +1211,12 @@ TextureImporter:
       name: giant_37
       rect:
         serializedVersion: 2
-        x: 3087
-        y: 750
-        width: 441
+        x: 2247
+        y: 1000
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1209,12 +1233,12 @@ TextureImporter:
       name: giant_38
       rect:
         serializedVersion: 2
-        x: 3528
-        y: 750
-        width: 441
+        x: 2568
+        y: 1000
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1231,12 +1255,12 @@ TextureImporter:
       name: giant_39
       rect:
         serializedVersion: 2
-        x: 3969
-        y: 750
-        width: 441
+        x: 2889
+        y: 1000
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1254,11 +1278,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 500
-        width: 441
+        y: 750
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1275,12 +1299,12 @@ TextureImporter:
       name: giant_41
       rect:
         serializedVersion: 2
-        x: 441
-        y: 500
-        width: 441
+        x: 321
+        y: 750
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1297,12 +1321,12 @@ TextureImporter:
       name: giant_42
       rect:
         serializedVersion: 2
-        x: 882
-        y: 500
-        width: 441
+        x: 642
+        y: 750
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1319,12 +1343,12 @@ TextureImporter:
       name: giant_43
       rect:
         serializedVersion: 2
-        x: 1323
-        y: 500
-        width: 441
+        x: 963
+        y: 750
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1341,12 +1365,12 @@ TextureImporter:
       name: giant_44
       rect:
         serializedVersion: 2
-        x: 1764
-        y: 500
-        width: 441
+        x: 1284
+        y: 750
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1363,12 +1387,12 @@ TextureImporter:
       name: giant_45
       rect:
         serializedVersion: 2
-        x: 2205
-        y: 500
-        width: 441
+        x: 1605
+        y: 750
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1385,12 +1409,12 @@ TextureImporter:
       name: giant_46
       rect:
         serializedVersion: 2
-        x: 2646
-        y: 500
-        width: 441
+        x: 1926
+        y: 750
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1407,12 +1431,12 @@ TextureImporter:
       name: giant_47
       rect:
         serializedVersion: 2
-        x: 3087
-        y: 500
-        width: 441
+        x: 2247
+        y: 750
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1429,12 +1453,12 @@ TextureImporter:
       name: giant_48
       rect:
         serializedVersion: 2
-        x: 3528
-        y: 500
-        width: 441
+        x: 2568
+        y: 750
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1451,12 +1475,12 @@ TextureImporter:
       name: giant_49
       rect:
         serializedVersion: 2
-        x: 3969
-        y: 500
-        width: 441
+        x: 2889
+        y: 750
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1474,11 +1498,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 250
-        width: 441
+        y: 500
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1495,12 +1519,12 @@ TextureImporter:
       name: giant_51
       rect:
         serializedVersion: 2
-        x: 441
-        y: 250
-        width: 441
+        x: 321
+        y: 500
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1517,12 +1541,12 @@ TextureImporter:
       name: giant_52
       rect:
         serializedVersion: 2
-        x: 882
-        y: 250
-        width: 441
+        x: 642
+        y: 500
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1539,12 +1563,12 @@ TextureImporter:
       name: giant_53
       rect:
         serializedVersion: 2
-        x: 1323
-        y: 250
-        width: 441
+        x: 963
+        y: 500
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1561,12 +1585,12 @@ TextureImporter:
       name: giant_54
       rect:
         serializedVersion: 2
-        x: 1764
-        y: 250
-        width: 441
+        x: 1284
+        y: 500
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1583,12 +1607,12 @@ TextureImporter:
       name: giant_55
       rect:
         serializedVersion: 2
-        x: 2205
-        y: 250
-        width: 441
+        x: 1605
+        y: 500
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1605,12 +1629,12 @@ TextureImporter:
       name: giant_56
       rect:
         serializedVersion: 2
-        x: 2646
-        y: 250
-        width: 441
+        x: 1926
+        y: 500
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1627,12 +1651,12 @@ TextureImporter:
       name: giant_57
       rect:
         serializedVersion: 2
-        x: 3087
-        y: 250
-        width: 441
+        x: 2247
+        y: 500
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1649,12 +1673,12 @@ TextureImporter:
       name: giant_58
       rect:
         serializedVersion: 2
-        x: 3528
-        y: 250
-        width: 441
+        x: 2568
+        y: 500
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1671,12 +1695,12 @@ TextureImporter:
       name: giant_59
       rect:
         serializedVersion: 2
-        x: 3969
-        y: 250
-        width: 441
+        x: 2889
+        y: 500
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1694,11 +1718,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 441
+        y: 250
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1715,12 +1739,12 @@ TextureImporter:
       name: giant_61
       rect:
         serializedVersion: 2
-        x: 441
-        y: 0
-        width: 441
+        x: 321
+        y: 250
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1737,12 +1761,12 @@ TextureImporter:
       name: giant_62
       rect:
         serializedVersion: 2
-        x: 882
-        y: 0
-        width: 441
+        x: 642
+        y: 250
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1759,12 +1783,12 @@ TextureImporter:
       name: giant_63
       rect:
         serializedVersion: 2
-        x: 1323
-        y: 0
-        width: 441
+        x: 963
+        y: 250
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1781,12 +1805,12 @@ TextureImporter:
       name: giant_64
       rect:
         serializedVersion: 2
-        x: 1764
-        y: 0
-        width: 441
+        x: 1284
+        y: 250
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1803,12 +1827,12 @@ TextureImporter:
       name: giant_65
       rect:
         serializedVersion: 2
-        x: 2205
-        y: 0
-        width: 441
+        x: 1605
+        y: 250
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1825,12 +1849,12 @@ TextureImporter:
       name: giant_66
       rect:
         serializedVersion: 2
-        x: 2646
-        y: 0
-        width: 441
+        x: 1926
+        y: 250
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1847,12 +1871,12 @@ TextureImporter:
       name: giant_67
       rect:
         serializedVersion: 2
-        x: 3087
-        y: 0
-        width: 441
+        x: 2247
+        y: 250
+        width: 321
         height: 250
       alignment: 9
-      pivot: {x: 0.6507937, y: 0.467}
+      pivot: {x: 0.52024925, y: 0.467}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1861,6 +1885,182 @@ TextureImporter:
       bones: []
       spriteID: 0ae73601a05e09e60800000000000000
       internalID: 7967119572205797024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_68
+      rect:
+        serializedVersion: 2
+        x: 2568
+        y: 250
+        width: 321
+        height: 250
+      alignment: 9
+      pivot: {x: 0.52024925, y: 0.467}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79794effeb27480e0800000000000000
+      internalID: -2268562147625363561
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_69
+      rect:
+        serializedVersion: 2
+        x: 2889
+        y: 250
+        width: 321
+        height: 250
+      alignment: 9
+      pivot: {x: 0.52024925, y: 0.467}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7fedb0a4c1ebb820800000000000000
+      internalID: 2935187816788651900
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_70
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 321
+        height: 250
+      alignment: 9
+      pivot: {x: 0.52024925, y: 0.467}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ed1c8365c72972e0800000000000000
+      internalID: -2127625620223681053
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_71
+      rect:
+        serializedVersion: 2
+        x: 321
+        y: 0
+        width: 321
+        height: 250
+      alignment: 9
+      pivot: {x: 0.52024925, y: 0.467}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85984e63fdd39eeb0800000000000000
+      internalID: -4690149508021712552
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_72
+      rect:
+        serializedVersion: 2
+        x: 642
+        y: 0
+        width: 321
+        height: 250
+      alignment: 9
+      pivot: {x: 0.52024925, y: 0.467}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 750201e6577865940800000000000000
+      internalID: 5284560151193329751
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_73
+      rect:
+        serializedVersion: 2
+        x: 963
+        y: 0
+        width: 321
+        height: 250
+      alignment: 9
+      pivot: {x: 0.52024925, y: 0.467}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1df2f9dd03a4754e0800000000000000
+      internalID: -1993042736351072303
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_74
+      rect:
+        serializedVersion: 2
+        x: 1284
+        y: 0
+        width: 321
+        height: 250
+      alignment: 9
+      pivot: {x: 0.52024925, y: 0.467}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cffae4d589c12a930800000000000000
+      internalID: 4152913247115063292
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_75
+      rect:
+        serializedVersion: 2
+        x: 1605
+        y: 0
+        width: 321
+        height: 250
+      alignment: 9
+      pivot: {x: 0.52024925, y: 0.467}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1f5fd499003ecd90800000000000000
+      internalID: -7075665146841964772
       vertices: []
       indices: 
       edges: []
@@ -1954,7 +2154,15 @@ TextureImporter:
       giant_65: 1196521841997155148
       giant_66: 6706514068165846374
       giant_67: 7967119572205797024
+      giant_68: -2268562147625363561
+      giant_69: 2935187816788651900
       giant_7: -4611700234075528446
+      giant_70: -2127625620223681053
+      giant_71: -4690149508021712552
+      giant_72: 5284560151193329751
+      giant_73: -1993042736351072303
+      giant_74: 4152913247115063292
+      giant_75: -7075665146841964772
       giant_8: -6071434970362387642
       giant_9: 124174905436886057
   mipmapLimitGroupName: 

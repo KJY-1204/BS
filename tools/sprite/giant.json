@@ -129,80 +129,75 @@
    "_orig": 1.0
   },
   "q1": {
-   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/g1_clean.png",
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/h1_src.png",
    "box": [
     0,
-    150,
-    1536,
-    425
+    0,
+    2172,
+    325
    ],
-   "scale": 0.42,
+   "scale": 0.5,
    "glowmin": 120,
    "cuts": [
     0,
-    372,
-    678,
-    935,
-    1195,
-    1536
+    163,
+    320,
+    467,
+    603,
+    744,
+    896,
+    1032,
+    1249,
+    1455,
+    1634,
+    1846,
+    2172
    ]
   },
   "q2": {
-   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/g1_clean.png",
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/h1_src.png",
    "box": [
     0,
-    425,
-    1536,
-    750
+    325,
+    2172,
+    545
    ],
-   "scale": 0.42,
+   "scale": 0.5,
    "glowmin": 120,
    "cuts": [
     0,
-    205,
-    478,
-    885,
-    1290,
-    1536
+    215,
+    430,
+    740,
+    1090,
+    1440,
+    1760,
+    2172
    ]
   },
   "e1": {
-   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/g2_k.png",
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/h2_src.png",
    "box": [
     0,
-    10,
-    1536,
-    350
-   ],
-   "scale": 0.5,
-   "glowmin": 120,
-   "cuts": [
     0,
-    200,
-    395,
-    590,
-    780,
-    970,
-    1148,
-    1536
-   ]
+    1672,
+    260
+   ],
+   "n": 6,
+   "scale": 0.5,
+   "glowmin": 120
   },
   "e2": {
-   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/g2_k.png",
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/h2_src.png",
    "box": [
     0,
-    350,
-    1536,
-    700
+    260,
+    1672,
+    525
    ],
+   "n": 5,
    "scale": 0.5,
-   "glowmin": 120,
-   "cuts": [
-    0,
-    455,
-    875,
-    1536
-   ]
+   "glowmin": 120
   },
   "f1": {
    "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/g3_src.png",
@@ -239,6 +234,18 @@
    "scale": 0.8,
    "glowmin": 120,
    "n": 6
+  },
+  "e3": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/h2_src.png",
+   "box": [
+    0,
+    525,
+    1672,
+    720
+   ],
+   "n": 4,
+   "scale": 0.5,
+   "glowmin": 120
   }
  }
 }

@@ -1,8 +1,8 @@
 {
- "w": 441,
+ "w": 321,
  "h": 250,
  "pivot": [
-  287,
+  167,
   185
  ],
  "frames": [
@@ -199,7 +199,7 @@
    }
   },
   {
-   "dur": 120,
+   "dur": 110,
    "layers": {
     "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/25_fx_back.png",
     "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/25_body.png",
@@ -207,7 +207,7 @@
    }
   },
   {
-   "dur": 120,
+   "dur": 110,
    "layers": {
     "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/26_fx_back.png",
     "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/26_body.png",
@@ -231,7 +231,7 @@
    }
   },
   {
-   "dur": 110,
+   "dur": 90,
    "layers": {
     "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/29_fx_back.png",
     "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/29_body.png",
@@ -239,7 +239,7 @@
    }
   },
   {
-   "dur": 80,
+   "dur": 90,
    "layers": {
     "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/30_fx_back.png",
     "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/30_body.png",
@@ -247,7 +247,7 @@
    }
   },
   {
-   "dur": 100,
+   "dur": 90,
    "layers": {
     "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/31_fx_back.png",
     "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/31_body.png",
@@ -255,7 +255,7 @@
    }
   },
   {
-   "dur": 120,
+   "dur": 80,
    "layers": {
     "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/32_fx_back.png",
     "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/32_body.png",
@@ -263,7 +263,7 @@
    }
   },
   {
-   "dur": 150,
+   "dur": 80,
    "layers": {
     "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/33_fx_back.png",
     "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/33_body.png",
@@ -271,7 +271,7 @@
    }
   },
   {
-   "dur": 180,
+   "dur": 80,
    "layers": {
     "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/34_fx_back.png",
     "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/34_body.png",
@@ -279,7 +279,7 @@
    }
   },
   {
-   "dur": 100,
+   "dur": 90,
    "layers": {
     "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/35_fx_back.png",
     "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/35_body.png",
@@ -303,7 +303,7 @@
    }
   },
   {
-   "dur": 100,
+   "dur": 110,
    "layers": {
     "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/38_fx_back.png",
     "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/38_body.png",
@@ -311,7 +311,7 @@
    }
   },
   {
-   "dur": 100,
+   "dur": 130,
    "layers": {
     "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/39_fx_back.png",
     "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/39_body.png",
@@ -319,7 +319,7 @@
    }
   },
   {
-   "dur": 100,
+   "dur": 160,
    "layers": {
     "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/40_fx_back.png",
     "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/40_body.png",
@@ -327,7 +327,7 @@
    }
   },
   {
-   "dur": 100,
+   "dur": 200,
    "layers": {
     "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/41_fx_back.png",
     "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/41_body.png",
@@ -335,7 +335,7 @@
    }
   },
   {
-   "dur": 120,
+   "dur": 100,
    "layers": {
     "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/42_fx_back.png",
     "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/42_body.png",
@@ -343,7 +343,7 @@
    }
   },
   {
-   "dur": 120,
+   "dur": 100,
    "layers": {
     "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/43_fx_back.png",
     "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/43_body.png",
@@ -351,7 +351,7 @@
    }
   },
   {
-   "dur": 200,
+   "dur": 100,
    "layers": {
     "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/44_fx_back.png",
     "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/44_body.png",
@@ -359,7 +359,7 @@
    }
   },
   {
-   "dur": 80,
+   "dur": 100,
    "layers": {
     "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/45_fx_back.png",
     "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/45_body.png",
@@ -367,7 +367,7 @@
    }
   },
   {
-   "dur": 80,
+   "dur": 100,
    "layers": {
     "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/46_fx_back.png",
     "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/46_body.png",
@@ -375,7 +375,7 @@
    }
   },
   {
-   "dur": 80,
+   "dur": 100,
    "layers": {
     "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/47_fx_back.png",
     "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/47_body.png",
@@ -383,7 +383,7 @@
    }
   },
   {
-   "dur": 80,
+   "dur": 110,
    "layers": {
     "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/48_fx_back.png",
     "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/48_body.png",
@@ -391,7 +391,7 @@
    }
   },
   {
-   "dur": 80,
+   "dur": 110,
    "layers": {
     "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/49_fx_back.png",
     "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/49_body.png",
@@ -399,7 +399,7 @@
    }
   },
   {
-   "dur": 80,
+   "dur": 110,
    "layers": {
     "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/50_fx_back.png",
     "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/50_body.png",
@@ -407,7 +407,7 @@
    }
   },
   {
-   "dur": 80,
+   "dur": 130,
    "layers": {
     "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/51_fx_back.png",
     "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/51_body.png",
@@ -415,7 +415,7 @@
    }
   },
   {
-   "dur": 80,
+   "dur": 180,
    "layers": {
     "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/52_fx_back.png",
     "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/52_body.png",
@@ -511,7 +511,7 @@
    }
   },
   {
-   "dur": 140,
+   "dur": 80,
    "layers": {
     "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/64_fx_back.png",
     "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/64_body.png",
@@ -519,7 +519,7 @@
    }
   },
   {
-   "dur": 100,
+   "dur": 80,
    "layers": {
     "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/65_fx_back.png",
     "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/65_body.png",
@@ -527,7 +527,7 @@
    }
   },
   {
-   "dur": 100,
+   "dur": 80,
    "layers": {
     "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/66_fx_back.png",
     "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/66_body.png",
@@ -535,7 +535,7 @@
    }
   },
   {
-   "dur": 100,
+   "dur": 80,
    "layers": {
     "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/67_fx_back.png",
     "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/67_body.png",
@@ -543,11 +543,75 @@
    }
   },
   {
-   "dur": 100,
+   "dur": 80,
    "layers": {
     "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/68_fx_back.png",
     "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/68_body.png",
     "fx_front": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/68_fx_front.png"
+   }
+  },
+  {
+   "dur": 80,
+   "layers": {
+    "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/69_fx_back.png",
+    "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/69_body.png",
+    "fx_front": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/69_fx_front.png"
+   }
+  },
+  {
+   "dur": 80,
+   "layers": {
+    "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/70_fx_back.png",
+    "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/70_body.png",
+    "fx_front": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/70_fx_front.png"
+   }
+  },
+  {
+   "dur": 80,
+   "layers": {
+    "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/71_fx_back.png",
+    "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/71_body.png",
+    "fx_front": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/71_fx_front.png"
+   }
+  },
+  {
+   "dur": 140,
+   "layers": {
+    "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/72_fx_back.png",
+    "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/72_body.png",
+    "fx_front": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/72_fx_front.png"
+   }
+  },
+  {
+   "dur": 100,
+   "layers": {
+    "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/73_fx_back.png",
+    "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/73_body.png",
+    "fx_front": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/73_fx_front.png"
+   }
+  },
+  {
+   "dur": 100,
+   "layers": {
+    "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/74_fx_back.png",
+    "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/74_body.png",
+    "fx_front": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/74_fx_front.png"
+   }
+  },
+  {
+   "dur": 100,
+   "layers": {
+    "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/75_fx_back.png",
+    "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/75_body.png",
+    "fx_front": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/75_fx_front.png"
+   }
+  },
+  {
+   "dur": 100,
+   "layers": {
+    "fx_back": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/76_fx_back.png",
+    "body": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/76_body.png",
+    "fx_front": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/frames/76_fx_front.png"
    }
   }
  ],
@@ -570,27 +634,27 @@
   {
    "name": "skill",
    "start": 25,
-   "end": 34
+   "end": 41
   },
   {
    "name": "skill_e",
-   "start": 35,
-   "end": 44
+   "start": 42,
+   "end": 52
   },
   {
    "name": "skill_f",
-   "start": 45,
-   "end": 61
+   "start": 53,
+   "end": 69
   },
   {
    "name": "hit",
-   "start": 62,
-   "end": 64
+   "start": 70,
+   "end": 72
   },
   {
    "name": "jump",
-   "start": 65,
-   "end": 68
+   "start": 73,
+   "end": 76
   }
  ]
 }
