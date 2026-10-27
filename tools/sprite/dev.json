@@ -12,7 +12,8 @@
     535
    ],
    "single": true,
-   "scale": 0.32
+   "scale": 0.32,
+   "_orig": 0.32
   },
   "ready": {
    "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/dev_src.png",
@@ -23,7 +24,8 @@
     535
    ],
    "single": true,
-   "scale": 0.5
+   "scale": 0.463,
+   "_orig": 0.5
   },
   "summon": {
    "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/dev_src.png",
@@ -34,7 +36,8 @@
     535
    ],
    "single": true,
-   "scale": 0.5
+   "scale": 0.495,
+   "_orig": 0.5
   },
   "done": {
    "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/dev_src.png",
@@ -45,7 +48,8 @@
     545
    ],
    "single": true,
-   "scale": 0.5
+   "scale": 0.475,
+   "_orig": 0.5
   },
   "atk": {
    "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/dev_src.png",
@@ -63,7 +67,8 @@
     690,
     980
    ],
-   "scale": 1.0
+   "scale": 1.1,
+   "_orig": 1.0
   },
   "destroy": {
    "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/dev_src.png",
@@ -80,7 +85,8 @@
     1434,
     1536
    ],
-   "scale": 0.9
+   "scale": 0.9,
+   "_orig": 0.9
   }
  }
 }

@@ -7,7 +7,8 @@
    "sheet": "E:/Unity/BS/ArtSource/Reference/gpt_reimu._2png.png",
    "single": true,
    "nofx": true,
-   "scale": 0.13
+   "scale": 0.1095,
+   "_orig": 0.13
   },
   "walk": {
    "sheet": "rei_keyed.png",
@@ -18,7 +19,9 @@
     338
    ],
    "n": 8,
-   "nofx": true
+   "nofx": true,
+   "_orig": 1.0,
+   "scale": 0.9058
   },
   "attack": {
    "sheet": "rei_keyed.png",
@@ -40,7 +43,9 @@
     1195,
     1300,
     1448
-   ]
+   ],
+   "_orig": 1.0,
+   "scale": 0.9058
   },
   "hit": {
    "sheet": "rei_keyed.png",
@@ -55,7 +60,9 @@
     285,
     420,
     610
-   ]
+   ],
+   "_orig": 1.0,
+   "scale": 0.9058
   },
   "dash": {
    "sheet": "rei_keyed.png",
@@ -71,7 +78,9 @@
     538,
     740,
     935
-   ]
+   ],
+   "_orig": 1.0,
+   "scale": 0.9058
   },
   "jump": {
    "sheet": "rei_keyed.png",
@@ -87,7 +96,9 @@
     470,
     630,
     805
-   ]
+   ],
+   "_orig": 1.0,
+   "scale": 0.9058
   }
  }
 }

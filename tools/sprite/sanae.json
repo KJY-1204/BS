@@ -7,7 +7,8 @@
    "sheet": "E:/Unity/BS/ArtSource/Reference/Sanae_.png",
    "single": true,
    "nofx": true,
-   "scale": 0.19
+   "scale": 0.1538,
+   "_orig": 0.19
   },
   "walk": {
    "sheet": "sana_keyed.png",
@@ -18,7 +19,9 @@
     338
    ],
    "n": 8,
-   "nofx": true
+   "nofx": true,
+   "_orig": 1.0,
+   "scale": 1.0
   },
   "attack": {
    "sheet": "sana_keyed.png",
@@ -39,7 +42,9 @@
     1168,
     1305,
     1448
-   ]
+   ],
+   "_orig": 1.0,
+   "scale": 1.0
   },
   "hit": {
    "sheet": "sana_keyed.png",
@@ -49,7 +54,9 @@
     672,
     718
    ],
-   "n": 3
+   "n": 3,
+   "_orig": 1.0,
+   "scale": 1.0
   },
   "dash": {
    "sheet": "sana_keyed.png",
@@ -65,7 +72,9 @@
     568,
     757,
     975
-   ]
+   ],
+   "_orig": 1.0,
+   "scale": 1.0
   },
   "jump": {
    "sheet": "sana_keyed.png",
@@ -81,7 +90,9 @@
     505,
     700,
     915
-   ]
+   ],
+   "_orig": 1.0,
+   "scale": 1.0
   }
  }
 }

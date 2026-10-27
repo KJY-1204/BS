@@ -12,7 +12,9 @@
     150
    ],
    "single": true,
-   "nofx": true
+   "nofx": true,
+   "_orig": 1.0,
+   "scale": 0.8803
   },
   "walk": {
    "sheet": "sak1_keyed.png",
@@ -23,7 +25,9 @@
     306
    ],
    "n": 8,
-   "nofx": true
+   "nofx": true,
+   "_orig": 1.0,
+   "scale": 0.8803
   },
   "attack": {
    "sheet": "sak1_keyed.png",
@@ -45,7 +49,9 @@
     1326,
     1412,
     1536
-   ]
+   ],
+   "_orig": 1.0,
+   "scale": 0.8803
   },
   "hit": {
    "sheet": "sak1_keyed.png",
@@ -55,7 +61,9 @@
     640,
     668
    ],
-   "n": 3
+   "n": 3,
+   "_orig": 1.0,
+   "scale": 0.8803
   },
   "dash": {
    "sheet": "sak1_keyed.png",
@@ -71,7 +79,9 @@
     565,
     750,
     1060
-   ]
+   ],
+   "_orig": 1.0,
+   "scale": 0.8803
   },
   "jump": {
    "sheet": "sak1_keyed.png",
@@ -81,7 +91,9 @@
     905,
     1000
    ],
-   "n": 4
+   "n": 4,
+   "_orig": 1.0,
+   "scale": 0.8803
   }
  }
 }
