@@ -410,11 +410,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 276
-        height: 154
+        y: 1668
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -431,12 +431,12 @@ TextureImporter:
       name: sakuya_01
       rect:
         serializedVersion: 2
-        x: 276
-        y: 0
-        width: 276
-        height: 154
+        x: 596
+        y: 1668
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -453,12 +453,12 @@ TextureImporter:
       name: sakuya_02
       rect:
         serializedVersion: 2
-        x: 552
-        y: 0
-        width: 276
-        height: 154
+        x: 1192
+        y: 1668
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -475,12 +475,12 @@ TextureImporter:
       name: sakuya_03
       rect:
         serializedVersion: 2
-        x: 828
-        y: 0
-        width: 276
-        height: 154
+        x: 1788
+        y: 1668
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -497,12 +497,12 @@ TextureImporter:
       name: sakuya_04
       rect:
         serializedVersion: 2
-        x: 1104
-        y: 0
-        width: 276
-        height: 154
+        x: 2384
+        y: 1668
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -519,12 +519,12 @@ TextureImporter:
       name: sakuya_05
       rect:
         serializedVersion: 2
-        x: 1380
-        y: 0
-        width: 276
-        height: 154
+        x: 2980
+        y: 1668
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -541,12 +541,12 @@ TextureImporter:
       name: sakuya_06
       rect:
         serializedVersion: 2
-        x: 1656
-        y: 0
-        width: 276
-        height: 154
+        x: 3576
+        y: 1668
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -563,12 +563,12 @@ TextureImporter:
       name: sakuya_07
       rect:
         serializedVersion: 2
-        x: 1932
-        y: 0
-        width: 276
-        height: 154
+        x: 4172
+        y: 1668
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -585,12 +585,12 @@ TextureImporter:
       name: sakuya_08
       rect:
         serializedVersion: 2
-        x: 2208
-        y: 0
-        width: 276
-        height: 154
+        x: 4768
+        y: 1668
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -607,12 +607,12 @@ TextureImporter:
       name: sakuya_09
       rect:
         serializedVersion: 2
-        x: 2484
-        y: 0
-        width: 276
-        height: 154
+        x: 5364
+        y: 1668
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -629,12 +629,12 @@ TextureImporter:
       name: sakuya_10
       rect:
         serializedVersion: 2
-        x: 2760
-        y: 0
-        width: 276
-        height: 154
+        x: 0
+        y: 1390
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -651,12 +651,12 @@ TextureImporter:
       name: sakuya_11
       rect:
         serializedVersion: 2
-        x: 3036
-        y: 0
-        width: 276
-        height: 154
+        x: 596
+        y: 1390
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -673,12 +673,12 @@ TextureImporter:
       name: sakuya_12
       rect:
         serializedVersion: 2
-        x: 3312
-        y: 0
-        width: 276
-        height: 154
+        x: 1192
+        y: 1390
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -695,12 +695,12 @@ TextureImporter:
       name: sakuya_13
       rect:
         serializedVersion: 2
-        x: 3588
-        y: 0
-        width: 276
-        height: 154
+        x: 1788
+        y: 1390
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -717,12 +717,12 @@ TextureImporter:
       name: sakuya_14
       rect:
         serializedVersion: 2
-        x: 3864
-        y: 0
-        width: 276
-        height: 154
+        x: 2384
+        y: 1390
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -739,12 +739,12 @@ TextureImporter:
       name: sakuya_15
       rect:
         serializedVersion: 2
-        x: 4140
-        y: 0
-        width: 276
-        height: 154
+        x: 2980
+        y: 1390
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -761,12 +761,12 @@ TextureImporter:
       name: sakuya_16
       rect:
         serializedVersion: 2
-        x: 4416
-        y: 0
-        width: 276
-        height: 154
+        x: 3576
+        y: 1390
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -783,12 +783,12 @@ TextureImporter:
       name: sakuya_17
       rect:
         serializedVersion: 2
-        x: 4692
-        y: 0
-        width: 276
-        height: 154
+        x: 4172
+        y: 1390
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -805,12 +805,12 @@ TextureImporter:
       name: sakuya_18
       rect:
         serializedVersion: 2
-        x: 4968
-        y: 0
-        width: 276
-        height: 154
+        x: 4768
+        y: 1390
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -827,12 +827,12 @@ TextureImporter:
       name: sakuya_19
       rect:
         serializedVersion: 2
-        x: 5244
-        y: 0
-        width: 276
-        height: 154
+        x: 5364
+        y: 1390
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -849,12 +849,12 @@ TextureImporter:
       name: sakuya_20
       rect:
         serializedVersion: 2
-        x: 5520
-        y: 0
-        width: 276
-        height: 154
+        x: 0
+        y: 1112
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -871,12 +871,12 @@ TextureImporter:
       name: sakuya_21
       rect:
         serializedVersion: 2
-        x: 5796
-        y: 0
-        width: 276
-        height: 154
+        x: 596
+        y: 1112
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -893,12 +893,12 @@ TextureImporter:
       name: sakuya_22
       rect:
         serializedVersion: 2
-        x: 6072
-        y: 0
-        width: 276
-        height: 154
+        x: 1192
+        y: 1112
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -915,12 +915,12 @@ TextureImporter:
       name: sakuya_23
       rect:
         serializedVersion: 2
-        x: 6348
-        y: 0
-        width: 276
-        height: 154
+        x: 1788
+        y: 1112
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -937,12 +937,12 @@ TextureImporter:
       name: sakuya_24
       rect:
         serializedVersion: 2
-        x: 6624
-        y: 0
-        width: 276
-        height: 154
+        x: 2384
+        y: 1112
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -959,12 +959,12 @@ TextureImporter:
       name: sakuya_25
       rect:
         serializedVersion: 2
-        x: 6900
-        y: 0
-        width: 276
-        height: 154
+        x: 2980
+        y: 1112
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -981,12 +981,12 @@ TextureImporter:
       name: sakuya_26
       rect:
         serializedVersion: 2
-        x: 7176
-        y: 0
-        width: 276
-        height: 154
+        x: 3576
+        y: 1112
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1003,12 +1003,12 @@ TextureImporter:
       name: sakuya_27
       rect:
         serializedVersion: 2
-        x: 7452
-        y: 0
-        width: 276
-        height: 154
+        x: 4172
+        y: 1112
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1025,12 +1025,12 @@ TextureImporter:
       name: sakuya_28
       rect:
         serializedVersion: 2
-        x: 7728
-        y: 0
-        width: 276
-        height: 154
+        x: 4768
+        y: 1112
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1047,12 +1047,12 @@ TextureImporter:
       name: sakuya_29
       rect:
         serializedVersion: 2
-        x: 8004
-        y: 0
-        width: 276
-        height: 154
+        x: 5364
+        y: 1112
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1069,12 +1069,12 @@ TextureImporter:
       name: sakuya_30
       rect:
         serializedVersion: 2
-        x: 8280
-        y: 0
-        width: 276
-        height: 154
+        x: 0
+        y: 834
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1091,12 +1091,12 @@ TextureImporter:
       name: sakuya_31
       rect:
         serializedVersion: 2
-        x: 8556
-        y: 0
-        width: 276
-        height: 154
+        x: 596
+        y: 834
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1113,12 +1113,12 @@ TextureImporter:
       name: sakuya_32
       rect:
         serializedVersion: 2
-        x: 8832
-        y: 0
-        width: 276
-        height: 154
+        x: 1192
+        y: 834
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1135,12 +1135,12 @@ TextureImporter:
       name: sakuya_33
       rect:
         serializedVersion: 2
-        x: 9108
-        y: 0
-        width: 276
-        height: 154
+        x: 1788
+        y: 834
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1157,12 +1157,12 @@ TextureImporter:
       name: sakuya_34
       rect:
         serializedVersion: 2
-        x: 9384
-        y: 0
-        width: 276
-        height: 154
+        x: 2384
+        y: 834
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1179,12 +1179,12 @@ TextureImporter:
       name: sakuya_35
       rect:
         serializedVersion: 2
-        x: 9660
-        y: 0
-        width: 276
-        height: 154
+        x: 2980
+        y: 834
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1201,12 +1201,12 @@ TextureImporter:
       name: sakuya_36
       rect:
         serializedVersion: 2
-        x: 9936
-        y: 0
-        width: 276
-        height: 154
+        x: 3576
+        y: 834
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1223,12 +1223,12 @@ TextureImporter:
       name: sakuya_37
       rect:
         serializedVersion: 2
-        x: 10212
-        y: 0
-        width: 276
-        height: 154
+        x: 4172
+        y: 834
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1245,12 +1245,12 @@ TextureImporter:
       name: sakuya_38
       rect:
         serializedVersion: 2
-        x: 10488
-        y: 0
-        width: 276
-        height: 154
+        x: 4768
+        y: 834
+        width: 596
+        height: 278
       alignment: 9
-      pivot: {x: 0.38405797, y: 0.45616883}
+      pivot: {x: 0.511745, y: 0.32104316}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1259,6 +1259,512 @@ TextureImporter:
       bones: []
       spriteID: c880134ba7fc81170800000000000000
       internalID: 8149491651642984588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_39
+      rect:
+        serializedVersion: 2
+        x: 5364
+        y: 834
+        width: 596
+        height: 278
+      alignment: 9
+      pivot: {x: 0.511745, y: 0.32104316}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 741c84e2dbc05a070800000000000000
+      internalID: 8116907910070059335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_40
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 556
+        width: 596
+        height: 278
+      alignment: 9
+      pivot: {x: 0.511745, y: 0.32104316}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f512be6650e8effa0800000000000000
+      internalID: -5765014319134989985
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_41
+      rect:
+        serializedVersion: 2
+        x: 596
+        y: 556
+        width: 596
+        height: 278
+      alignment: 9
+      pivot: {x: 0.511745, y: 0.32104316}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bdd740b5287edeba0800000000000000
+      internalID: -6057931376684663333
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_42
+      rect:
+        serializedVersion: 2
+        x: 1192
+        y: 556
+        width: 596
+        height: 278
+      alignment: 9
+      pivot: {x: 0.511745, y: 0.32104316}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3320e29d2d21d1a10800000000000000
+      internalID: 1881680916106838579
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_43
+      rect:
+        serializedVersion: 2
+        x: 1788
+        y: 556
+        width: 596
+        height: 278
+      alignment: 9
+      pivot: {x: 0.511745, y: 0.32104316}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 711511855d23eee60800000000000000
+      internalID: 7993382280516161815
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_44
+      rect:
+        serializedVersion: 2
+        x: 2384
+        y: 556
+        width: 596
+        height: 278
+      alignment: 9
+      pivot: {x: 0.511745, y: 0.32104316}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b4e3af8a0304f000800000000000000
+      internalID: 68683238211839152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_45
+      rect:
+        serializedVersion: 2
+        x: 2980
+        y: 556
+        width: 596
+        height: 278
+      alignment: 9
+      pivot: {x: 0.511745, y: 0.32104316}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f60fe0a56690f7e10800000000000000
+      internalID: 2197485478382334063
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_46
+      rect:
+        serializedVersion: 2
+        x: 3576
+        y: 556
+        width: 596
+        height: 278
+      alignment: 9
+      pivot: {x: 0.511745, y: 0.32104316}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5253ec4bd3acc5a0800000000000000
+      internalID: -6499639999919336869
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_47
+      rect:
+        serializedVersion: 2
+        x: 4172
+        y: 556
+        width: 596
+        height: 278
+      alignment: 9
+      pivot: {x: 0.511745, y: 0.32104316}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4bdf62b4a48ba240800000000000000
+      internalID: 4804079270423944014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_48
+      rect:
+        serializedVersion: 2
+        x: 4768
+        y: 556
+        width: 596
+        height: 278
+      alignment: 9
+      pivot: {x: 0.511745, y: 0.32104316}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9594f7be596261330800000000000000
+      internalID: 3681172170764929369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_49
+      rect:
+        serializedVersion: 2
+        x: 5364
+        y: 556
+        width: 596
+        height: 278
+      alignment: 9
+      pivot: {x: 0.511745, y: 0.32104316}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 150ed01a17b137c50800000000000000
+      internalID: 6661698448658391121
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_50
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 278
+        width: 596
+        height: 278
+      alignment: 9
+      pivot: {x: 0.511745, y: 0.32104316}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6999ac33a277f93f0800000000000000
+      internalID: -891863178054821482
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_51
+      rect:
+        serializedVersion: 2
+        x: 596
+        y: 278
+        width: 596
+        height: 278
+      alignment: 9
+      pivot: {x: 0.511745, y: 0.32104316}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7cec4272d28d052f0800000000000000
+      internalID: -986050629952287033
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_52
+      rect:
+        serializedVersion: 2
+        x: 1192
+        y: 278
+        width: 596
+        height: 278
+      alignment: 9
+      pivot: {x: 0.511745, y: 0.32104316}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 779bea4282eefbb00800000000000000
+      internalID: 846657111150475639
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_53
+      rect:
+        serializedVersion: 2
+        x: 1788
+        y: 278
+        width: 596
+        height: 278
+      alignment: 9
+      pivot: {x: 0.511745, y: 0.32104316}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3078ca448a81cf980800000000000000
+      internalID: -8503894885396609277
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_54
+      rect:
+        serializedVersion: 2
+        x: 2384
+        y: 278
+        width: 596
+        height: 278
+      alignment: 9
+      pivot: {x: 0.511745, y: 0.32104316}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d15d9cec718833f80800000000000000
+      internalID: -8128003266638654179
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_55
+      rect:
+        serializedVersion: 2
+        x: 2980
+        y: 278
+        width: 596
+        height: 278
+      alignment: 9
+      pivot: {x: 0.511745, y: 0.32104316}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4d5b3a77cd1f81f0800000000000000
+      internalID: -1040580246312886966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_56
+      rect:
+        serializedVersion: 2
+        x: 3576
+        y: 278
+        width: 596
+        height: 278
+      alignment: 9
+      pivot: {x: 0.511745, y: 0.32104316}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4c40a210b6ff1f90800000000000000
+      internalID: -6980589661313807282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_57
+      rect:
+        serializedVersion: 2
+        x: 4172
+        y: 278
+        width: 596
+        height: 278
+      alignment: 9
+      pivot: {x: 0.511745, y: 0.32104316}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7926d959cba1582f0800000000000000
+      internalID: -971340747362180457
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_58
+      rect:
+        serializedVersion: 2
+        x: 4768
+        y: 278
+        width: 596
+        height: 278
+      alignment: 9
+      pivot: {x: 0.511745, y: 0.32104316}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6497a254534968be0800000000000000
+      internalID: -1475328871402669754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_59
+      rect:
+        serializedVersion: 2
+        x: 5364
+        y: 278
+        width: 596
+        height: 278
+      alignment: 9
+      pivot: {x: 0.511745, y: 0.32104316}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64ca639c1f30f24b0800000000000000
+      internalID: -5463143485979317178
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_60
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 596
+        height: 278
+      alignment: 9
+      pivot: {x: 0.511745, y: 0.32104316}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7cb4444a710a62b0800000000000000
+      internalID: -5590654362784056198
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_61
+      rect:
+        serializedVersion: 2
+        x: 596
+        y: 0
+        width: 596
+        height: 278
+      alignment: 9
+      pivot: {x: 0.511745, y: 0.32104316}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95f6f0afc72072a90800000000000000
+      internalID: -7338894331982418087
       vertices: []
       indices: 
       edges: []

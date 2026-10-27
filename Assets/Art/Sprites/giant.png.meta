@@ -332,7 +332,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
+        y: 603
         width: 279
         height: 201
       alignment: 9
@@ -354,7 +354,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 279
-        y: 0
+        y: 603
         width: 279
         height: 201
       alignment: 9
@@ -376,7 +376,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 558
-        y: 0
+        y: 603
         width: 279
         height: 201
       alignment: 9
@@ -398,7 +398,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 837
-        y: 0
+        y: 603
         width: 279
         height: 201
       alignment: 9
@@ -420,7 +420,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1116
-        y: 0
+        y: 603
         width: 279
         height: 201
       alignment: 9
@@ -442,7 +442,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1395
-        y: 0
+        y: 603
         width: 279
         height: 201
       alignment: 9
@@ -464,7 +464,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1674
-        y: 0
+        y: 603
         width: 279
         height: 201
       alignment: 9
@@ -486,7 +486,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1953
-        y: 0
+        y: 603
         width: 279
         height: 201
       alignment: 9
@@ -508,7 +508,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 2232
-        y: 0
+        y: 603
         width: 279
         height: 201
       alignment: 9
@@ -530,7 +530,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 2511
-        y: 0
+        y: 603
         width: 279
         height: 201
       alignment: 9
@@ -551,8 +551,8 @@ TextureImporter:
       name: giant_10
       rect:
         serializedVersion: 2
-        x: 2790
-        y: 0
+        x: 0
+        y: 402
         width: 279
         height: 201
       alignment: 9
@@ -573,8 +573,8 @@ TextureImporter:
       name: giant_11
       rect:
         serializedVersion: 2
-        x: 3069
-        y: 0
+        x: 279
+        y: 402
         width: 279
         height: 201
       alignment: 9
@@ -595,8 +595,8 @@ TextureImporter:
       name: giant_12
       rect:
         serializedVersion: 2
-        x: 3348
-        y: 0
+        x: 558
+        y: 402
         width: 279
         height: 201
       alignment: 9
@@ -617,8 +617,8 @@ TextureImporter:
       name: giant_13
       rect:
         serializedVersion: 2
-        x: 3627
-        y: 0
+        x: 837
+        y: 402
         width: 279
         height: 201
       alignment: 9
@@ -639,8 +639,8 @@ TextureImporter:
       name: giant_14
       rect:
         serializedVersion: 2
-        x: 3906
-        y: 0
+        x: 1116
+        y: 402
         width: 279
         height: 201
       alignment: 9
@@ -661,8 +661,8 @@ TextureImporter:
       name: giant_15
       rect:
         serializedVersion: 2
-        x: 4185
-        y: 0
+        x: 1395
+        y: 402
         width: 279
         height: 201
       alignment: 9
@@ -683,8 +683,8 @@ TextureImporter:
       name: giant_16
       rect:
         serializedVersion: 2
-        x: 4464
-        y: 0
+        x: 1674
+        y: 402
         width: 279
         height: 201
       alignment: 9
@@ -705,8 +705,8 @@ TextureImporter:
       name: giant_17
       rect:
         serializedVersion: 2
-        x: 4743
-        y: 0
+        x: 1953
+        y: 402
         width: 279
         height: 201
       alignment: 9
@@ -727,8 +727,8 @@ TextureImporter:
       name: giant_18
       rect:
         serializedVersion: 2
-        x: 5022
-        y: 0
+        x: 2232
+        y: 402
         width: 279
         height: 201
       alignment: 9
@@ -749,8 +749,8 @@ TextureImporter:
       name: giant_19
       rect:
         serializedVersion: 2
-        x: 5301
-        y: 0
+        x: 2511
+        y: 402
         width: 279
         height: 201
       alignment: 9
@@ -771,8 +771,8 @@ TextureImporter:
       name: giant_20
       rect:
         serializedVersion: 2
-        x: 5580
-        y: 0
+        x: 0
+        y: 201
         width: 279
         height: 201
       alignment: 9
@@ -793,8 +793,8 @@ TextureImporter:
       name: giant_21
       rect:
         serializedVersion: 2
-        x: 5859
-        y: 0
+        x: 279
+        y: 201
         width: 279
         height: 201
       alignment: 9
@@ -815,8 +815,8 @@ TextureImporter:
       name: giant_22
       rect:
         serializedVersion: 2
-        x: 6138
-        y: 0
+        x: 558
+        y: 201
         width: 279
         height: 201
       alignment: 9
@@ -837,8 +837,8 @@ TextureImporter:
       name: giant_23
       rect:
         serializedVersion: 2
-        x: 6417
-        y: 0
+        x: 837
+        y: 201
         width: 279
         height: 201
       alignment: 9
@@ -859,8 +859,8 @@ TextureImporter:
       name: giant_24
       rect:
         serializedVersion: 2
-        x: 6696
-        y: 0
+        x: 1116
+        y: 201
         width: 279
         height: 201
       alignment: 9
@@ -881,8 +881,8 @@ TextureImporter:
       name: giant_25
       rect:
         serializedVersion: 2
-        x: 6975
-        y: 0
+        x: 1395
+        y: 201
         width: 279
         height: 201
       alignment: 9
@@ -903,8 +903,8 @@ TextureImporter:
       name: giant_26
       rect:
         serializedVersion: 2
-        x: 7254
-        y: 0
+        x: 1674
+        y: 201
         width: 279
         height: 201
       alignment: 9
@@ -925,8 +925,8 @@ TextureImporter:
       name: giant_27
       rect:
         serializedVersion: 2
-        x: 7533
-        y: 0
+        x: 1953
+        y: 201
         width: 279
         height: 201
       alignment: 9
@@ -947,8 +947,8 @@ TextureImporter:
       name: giant_28
       rect:
         serializedVersion: 2
-        x: 7812
-        y: 0
+        x: 2232
+        y: 201
         width: 279
         height: 201
       alignment: 9
@@ -969,8 +969,8 @@ TextureImporter:
       name: giant_29
       rect:
         serializedVersion: 2
-        x: 8091
-        y: 0
+        x: 2511
+        y: 201
         width: 279
         height: 201
       alignment: 9
@@ -991,7 +991,7 @@ TextureImporter:
       name: giant_30
       rect:
         serializedVersion: 2
-        x: 8370
+        x: 0
         y: 0
         width: 279
         height: 201
@@ -1013,7 +1013,7 @@ TextureImporter:
       name: giant_31
       rect:
         serializedVersion: 2
-        x: 8649
+        x: 279
         y: 0
         width: 279
         height: 201
@@ -1035,7 +1035,7 @@ TextureImporter:
       name: giant_32
       rect:
         serializedVersion: 2
-        x: 8928
+        x: 558
         y: 0
         width: 279
         height: 201
@@ -1057,7 +1057,7 @@ TextureImporter:
       name: giant_33
       rect:
         serializedVersion: 2
-        x: 9207
+        x: 837
         y: 0
         width: 279
         height: 201
@@ -1079,7 +1079,7 @@ TextureImporter:
       name: giant_34
       rect:
         serializedVersion: 2
-        x: 9486
+        x: 1116
         y: 0
         width: 279
         height: 201
@@ -1101,7 +1101,7 @@ TextureImporter:
       name: giant_35
       rect:
         serializedVersion: 2
-        x: 9765
+        x: 1395
         y: 0
         width: 279
         height: 201
@@ -1123,7 +1123,7 @@ TextureImporter:
       name: giant_36
       rect:
         serializedVersion: 2
-        x: 10044
+        x: 1674
         y: 0
         width: 279
         height: 201

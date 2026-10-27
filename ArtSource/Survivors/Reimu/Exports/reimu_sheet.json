@@ -91,7 +91,7 @@
    },
    {
     "filename": "reimu_anim 10.aseprite",
-    "frame": { "x": 2660, "y": 0, "w": 266, "h": 199 },
+    "frame": { "x": 0, "y": 199, "w": 266, "h": 199 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 266, "h": 199 },
@@ -100,7 +100,7 @@
    },
    {
     "filename": "reimu_anim 11.aseprite",
-    "frame": { "x": 2926, "y": 0, "w": 266, "h": 199 },
+    "frame": { "x": 266, "y": 199, "w": 266, "h": 199 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 266, "h": 199 },
@@ -109,7 +109,7 @@
    },
    {
     "filename": "reimu_anim 12.aseprite",
-    "frame": { "x": 3192, "y": 0, "w": 266, "h": 199 },
+    "frame": { "x": 532, "y": 199, "w": 266, "h": 199 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 266, "h": 199 },
@@ -118,7 +118,7 @@
    },
    {
     "filename": "reimu_anim 13.aseprite",
-    "frame": { "x": 3458, "y": 0, "w": 266, "h": 199 },
+    "frame": { "x": 798, "y": 199, "w": 266, "h": 199 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 266, "h": 199 },
@@ -127,7 +127,7 @@
    },
    {
     "filename": "reimu_anim 14.aseprite",
-    "frame": { "x": 3724, "y": 0, "w": 266, "h": 199 },
+    "frame": { "x": 1064, "y": 199, "w": 266, "h": 199 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 266, "h": 199 },
@@ -136,7 +136,7 @@
    },
    {
     "filename": "reimu_anim 15.aseprite",
-    "frame": { "x": 3990, "y": 0, "w": 266, "h": 199 },
+    "frame": { "x": 1330, "y": 199, "w": 266, "h": 199 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 266, "h": 199 },
@@ -145,7 +145,7 @@
    },
    {
     "filename": "reimu_anim 16.aseprite",
-    "frame": { "x": 4256, "y": 0, "w": 266, "h": 199 },
+    "frame": { "x": 1596, "y": 199, "w": 266, "h": 199 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 266, "h": 199 },
@@ -154,7 +154,7 @@
    },
    {
     "filename": "reimu_anim 17.aseprite",
-    "frame": { "x": 4522, "y": 0, "w": 266, "h": 199 },
+    "frame": { "x": 1862, "y": 199, "w": 266, "h": 199 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 266, "h": 199 },
@@ -163,7 +163,7 @@
    },
    {
     "filename": "reimu_anim 18.aseprite",
-    "frame": { "x": 4788, "y": 0, "w": 266, "h": 199 },
+    "frame": { "x": 2128, "y": 199, "w": 266, "h": 199 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 266, "h": 199 },
@@ -172,7 +172,7 @@
    },
    {
     "filename": "reimu_anim 19.aseprite",
-    "frame": { "x": 5054, "y": 0, "w": 266, "h": 199 },
+    "frame": { "x": 2394, "y": 199, "w": 266, "h": 199 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 266, "h": 199 },
@@ -181,7 +181,7 @@
    },
    {
     "filename": "reimu_anim 20.aseprite",
-    "frame": { "x": 5320, "y": 0, "w": 266, "h": 199 },
+    "frame": { "x": 0, "y": 398, "w": 266, "h": 199 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 266, "h": 199 },
@@ -190,7 +190,7 @@
    },
    {
     "filename": "reimu_anim 21.aseprite",
-    "frame": { "x": 5586, "y": 0, "w": 266, "h": 199 },
+    "frame": { "x": 266, "y": 398, "w": 266, "h": 199 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 266, "h": 199 },
@@ -199,7 +199,7 @@
    },
    {
     "filename": "reimu_anim 22.aseprite",
-    "frame": { "x": 5852, "y": 0, "w": 266, "h": 199 },
+    "frame": { "x": 532, "y": 398, "w": 266, "h": 199 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 266, "h": 199 },
@@ -208,7 +208,7 @@
    },
    {
     "filename": "reimu_anim 23.aseprite",
-    "frame": { "x": 6118, "y": 0, "w": 266, "h": 199 },
+    "frame": { "x": 798, "y": 398, "w": 266, "h": 199 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 266, "h": 199 },
@@ -217,7 +217,7 @@
    },
    {
     "filename": "reimu_anim 24.aseprite",
-    "frame": { "x": 6384, "y": 0, "w": 266, "h": 199 },
+    "frame": { "x": 1064, "y": 398, "w": 266, "h": 199 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 266, "h": 199 },
@@ -226,7 +226,7 @@
    },
    {
     "filename": "reimu_anim 25.aseprite",
-    "frame": { "x": 6650, "y": 0, "w": 266, "h": 199 },
+    "frame": { "x": 1330, "y": 398, "w": 266, "h": 199 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 266, "h": 199 },
@@ -235,7 +235,7 @@
    },
    {
     "filename": "reimu_anim 26.aseprite",
-    "frame": { "x": 6916, "y": 0, "w": 266, "h": 199 },
+    "frame": { "x": 1596, "y": 398, "w": 266, "h": 199 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 266, "h": 199 },
@@ -244,7 +244,7 @@
    },
    {
     "filename": "reimu_anim 27.aseprite",
-    "frame": { "x": 7182, "y": 0, "w": 266, "h": 199 },
+    "frame": { "x": 1862, "y": 398, "w": 266, "h": 199 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 266, "h": 199 },
@@ -253,7 +253,7 @@
    },
    {
     "filename": "reimu_anim 28.aseprite",
-    "frame": { "x": 7448, "y": 0, "w": 266, "h": 199 },
+    "frame": { "x": 2128, "y": 398, "w": 266, "h": 199 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 266, "h": 199 },
@@ -262,7 +262,7 @@
    },
    {
     "filename": "reimu_anim 29.aseprite",
-    "frame": { "x": 7714, "y": 0, "w": 266, "h": 199 },
+    "frame": { "x": 2394, "y": 398, "w": 266, "h": 199 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 266, "h": 199 },
@@ -271,7 +271,7 @@
    },
    {
     "filename": "reimu_anim 30.aseprite",
-    "frame": { "x": 7980, "y": 0, "w": 266, "h": 199 },
+    "frame": { "x": 0, "y": 597, "w": 266, "h": 199 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 266, "h": 199 },
@@ -280,7 +280,7 @@
    },
    {
     "filename": "reimu_anim 31.aseprite",
-    "frame": { "x": 8246, "y": 0, "w": 266, "h": 199 },
+    "frame": { "x": 266, "y": 597, "w": 266, "h": 199 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 266, "h": 199 },
@@ -289,7 +289,7 @@
    },
    {
     "filename": "reimu_anim 32.aseprite",
-    "frame": { "x": 8512, "y": 0, "w": 266, "h": 199 },
+    "frame": { "x": 532, "y": 597, "w": 266, "h": 199 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 266, "h": 199 },
@@ -298,7 +298,7 @@
    },
    {
     "filename": "reimu_anim 33.aseprite",
-    "frame": { "x": 8778, "y": 0, "w": 266, "h": 199 },
+    "frame": { "x": 798, "y": 597, "w": 266, "h": 199 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 266, "h": 199 },
@@ -307,7 +307,7 @@
    },
    {
     "filename": "reimu_anim 34.aseprite",
-    "frame": { "x": 9044, "y": 0, "w": 266, "h": 199 },
+    "frame": { "x": 1064, "y": 597, "w": 266, "h": 199 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 266, "h": 199 },
@@ -316,7 +316,7 @@
    },
    {
     "filename": "reimu_anim 35.aseprite",
-    "frame": { "x": 9310, "y": 0, "w": 266, "h": 199 },
+    "frame": { "x": 1330, "y": 597, "w": 266, "h": 199 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 266, "h": 199 },
@@ -325,7 +325,7 @@
    },
    {
     "filename": "reimu_anim 36.aseprite",
-    "frame": { "x": 9576, "y": 0, "w": 266, "h": 199 },
+    "frame": { "x": 1596, "y": 597, "w": 266, "h": 199 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 266, "h": 199 },
@@ -334,7 +334,7 @@
    },
    {
     "filename": "reimu_anim 37.aseprite",
-    "frame": { "x": 9842, "y": 0, "w": 266, "h": 199 },
+    "frame": { "x": 1862, "y": 597, "w": 266, "h": 199 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 266, "h": 199 },
@@ -347,7 +347,7 @@
   "version": "1.3.18.6-x64",
   "image": "reimu_sheet.png",
   "format": "RGBA8888",
-  "size": { "w": 10108, "h": 199 },
+  "size": { "w": 2660, "h": 796 },
   "scale": "1",
   "frameTags": [
    { "name": "idle", "from": 0, "to": 5, "direction": "forward", "color": "#000000ff" },

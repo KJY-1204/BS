@@ -91,7 +91,7 @@
    },
    {
     "filename": "device_anim 10.aseprite",
-    "frame": { "x": 3450, "y": 0, "w": 345, "h": 229 },
+    "frame": { "x": 0, "y": 229, "w": 345, "h": 229 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 229 },
@@ -100,7 +100,7 @@
    },
    {
     "filename": "device_anim 11.aseprite",
-    "frame": { "x": 3795, "y": 0, "w": 345, "h": 229 },
+    "frame": { "x": 345, "y": 229, "w": 345, "h": 229 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 229 },
@@ -109,7 +109,7 @@
    },
    {
     "filename": "device_anim 12.aseprite",
-    "frame": { "x": 4140, "y": 0, "w": 345, "h": 229 },
+    "frame": { "x": 690, "y": 229, "w": 345, "h": 229 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 229 },
@@ -118,7 +118,7 @@
    },
    {
     "filename": "device_anim 13.aseprite",
-    "frame": { "x": 4485, "y": 0, "w": 345, "h": 229 },
+    "frame": { "x": 1035, "y": 229, "w": 345, "h": 229 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 229 },
@@ -127,7 +127,7 @@
    },
    {
     "filename": "device_anim 14.aseprite",
-    "frame": { "x": 4830, "y": 0, "w": 345, "h": 229 },
+    "frame": { "x": 1380, "y": 229, "w": 345, "h": 229 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 229 },
@@ -136,7 +136,7 @@
    },
    {
     "filename": "device_anim 15.aseprite",
-    "frame": { "x": 5175, "y": 0, "w": 345, "h": 229 },
+    "frame": { "x": 1725, "y": 229, "w": 345, "h": 229 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 229 },
@@ -145,7 +145,7 @@
    },
    {
     "filename": "device_anim 16.aseprite",
-    "frame": { "x": 5520, "y": 0, "w": 345, "h": 229 },
+    "frame": { "x": 2070, "y": 229, "w": 345, "h": 229 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 229 },
@@ -154,7 +154,7 @@
    },
    {
     "filename": "device_anim 17.aseprite",
-    "frame": { "x": 5865, "y": 0, "w": 345, "h": 229 },
+    "frame": { "x": 2415, "y": 229, "w": 345, "h": 229 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 345, "h": 229 },
@@ -167,7 +167,7 @@
   "version": "1.3.18.6-x64",
   "image": "device_sheet.png",
   "format": "RGBA8888",
-  "size": { "w": 6210, "h": 229 },
+  "size": { "w": 3450, "h": 458 },
   "scale": "1",
   "frameTags": [
    { "name": "idle", "from": 0, "to": 5, "direction": "forward", "color": "#000000ff" },

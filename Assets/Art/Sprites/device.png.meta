@@ -308,7 +308,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
+        y: 229
         width: 345
         height: 229
       alignment: 9
@@ -330,7 +330,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 345
-        y: 0
+        y: 229
         width: 345
         height: 229
       alignment: 9
@@ -352,7 +352,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 690
-        y: 0
+        y: 229
         width: 345
         height: 229
       alignment: 9
@@ -374,7 +374,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1035
-        y: 0
+        y: 229
         width: 345
         height: 229
       alignment: 9
@@ -396,7 +396,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1380
-        y: 0
+        y: 229
         width: 345
         height: 229
       alignment: 9
@@ -418,7 +418,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1725
-        y: 0
+        y: 229
         width: 345
         height: 229
       alignment: 9
@@ -440,7 +440,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 2070
-        y: 0
+        y: 229
         width: 345
         height: 229
       alignment: 9
@@ -462,7 +462,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 2415
-        y: 0
+        y: 229
         width: 345
         height: 229
       alignment: 9
@@ -484,7 +484,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 2760
-        y: 0
+        y: 229
         width: 345
         height: 229
       alignment: 9
@@ -506,7 +506,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 3105
-        y: 0
+        y: 229
         width: 345
         height: 229
       alignment: 9
@@ -527,7 +527,7 @@ TextureImporter:
       name: device_10
       rect:
         serializedVersion: 2
-        x: 3450
+        x: 0
         y: 0
         width: 345
         height: 229
@@ -549,7 +549,7 @@ TextureImporter:
       name: device_11
       rect:
         serializedVersion: 2
-        x: 3795
+        x: 345
         y: 0
         width: 345
         height: 229
@@ -571,7 +571,7 @@ TextureImporter:
       name: device_12
       rect:
         serializedVersion: 2
-        x: 4140
+        x: 690
         y: 0
         width: 345
         height: 229
@@ -593,7 +593,7 @@ TextureImporter:
       name: device_13
       rect:
         serializedVersion: 2
-        x: 4485
+        x: 1035
         y: 0
         width: 345
         height: 229
@@ -615,7 +615,7 @@ TextureImporter:
       name: device_14
       rect:
         serializedVersion: 2
-        x: 4830
+        x: 1380
         y: 0
         width: 345
         height: 229
@@ -637,7 +637,7 @@ TextureImporter:
       name: device_15
       rect:
         serializedVersion: 2
-        x: 5175
+        x: 1725
         y: 0
         width: 345
         height: 229
@@ -659,7 +659,7 @@ TextureImporter:
       name: device_16
       rect:
         serializedVersion: 2
-        x: 5520
+        x: 2070
         y: 0
         width: 345
         height: 229
@@ -681,7 +681,7 @@ TextureImporter:
       name: device_17
       rect:
         serializedVersion: 2
-        x: 5865
+        x: 2415
         y: 0
         width: 345
         height: 229

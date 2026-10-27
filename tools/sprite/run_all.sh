@@ -5,7 +5,7 @@ one(){ cfg=$1; spec=$2; out=$3; name=$4
   python -I assemble_char.py $spec.json | tail -2 | tr '\n' ' '
   mkdir -p $out/Exports
   "$A" -b --script-param manifest=$SC/manifest.lua --script-param out=$out/${name}_anim.aseprite --script build.lua >/dev/null 2>&1
-  "$A" -b $out/${name}_anim.aseprite --sheet $out/Exports/${name}_sheet.png --data $out/Exports/${name}_sheet.json --format json-array --list-tags >/dev/null 2>&1
+  "$A" -b $out/${name}_anim.aseprite --sheet-columns 10 --sheet $out/Exports/${name}_sheet.png --data $out/Exports/${name}_sheet.json --format json-array --list-tags >/dev/null 2>&1
   python -I -c "
 from PIL import Image
 import json

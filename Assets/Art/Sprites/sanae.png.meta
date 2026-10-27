@@ -317,7 +317,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
+        y: 687
         width: 276
         height: 229
       alignment: 9
@@ -339,7 +339,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 276
-        y: 0
+        y: 687
         width: 276
         height: 229
       alignment: 9
@@ -361,7 +361,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 552
-        y: 0
+        y: 687
         width: 276
         height: 229
       alignment: 9
@@ -383,7 +383,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 828
-        y: 0
+        y: 687
         width: 276
         height: 229
       alignment: 9
@@ -405,7 +405,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1104
-        y: 0
+        y: 687
         width: 276
         height: 229
       alignment: 9
@@ -427,7 +427,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1380
-        y: 0
+        y: 687
         width: 276
         height: 229
       alignment: 9
@@ -449,7 +449,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1656
-        y: 0
+        y: 687
         width: 276
         height: 229
       alignment: 9
@@ -471,7 +471,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1932
-        y: 0
+        y: 687
         width: 276
         height: 229
       alignment: 9
@@ -493,7 +493,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 2208
-        y: 0
+        y: 687
         width: 276
         height: 229
       alignment: 9
@@ -515,7 +515,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 2484
-        y: 0
+        y: 687
         width: 276
         height: 229
       alignment: 9
@@ -536,8 +536,8 @@ TextureImporter:
       name: sanae_10
       rect:
         serializedVersion: 2
-        x: 2760
-        y: 0
+        x: 0
+        y: 458
         width: 276
         height: 229
       alignment: 9
@@ -558,8 +558,8 @@ TextureImporter:
       name: sanae_11
       rect:
         serializedVersion: 2
-        x: 3036
-        y: 0
+        x: 276
+        y: 458
         width: 276
         height: 229
       alignment: 9
@@ -580,8 +580,8 @@ TextureImporter:
       name: sanae_12
       rect:
         serializedVersion: 2
-        x: 3312
-        y: 0
+        x: 552
+        y: 458
         width: 276
         height: 229
       alignment: 9
@@ -602,8 +602,8 @@ TextureImporter:
       name: sanae_13
       rect:
         serializedVersion: 2
-        x: 3588
-        y: 0
+        x: 828
+        y: 458
         width: 276
         height: 229
       alignment: 9
@@ -624,8 +624,8 @@ TextureImporter:
       name: sanae_14
       rect:
         serializedVersion: 2
-        x: 3864
-        y: 0
+        x: 1104
+        y: 458
         width: 276
         height: 229
       alignment: 9
@@ -646,8 +646,8 @@ TextureImporter:
       name: sanae_15
       rect:
         serializedVersion: 2
-        x: 4140
-        y: 0
+        x: 1380
+        y: 458
         width: 276
         height: 229
       alignment: 9
@@ -668,8 +668,8 @@ TextureImporter:
       name: sanae_16
       rect:
         serializedVersion: 2
-        x: 4416
-        y: 0
+        x: 1656
+        y: 458
         width: 276
         height: 229
       alignment: 9
@@ -690,8 +690,8 @@ TextureImporter:
       name: sanae_17
       rect:
         serializedVersion: 2
-        x: 4692
-        y: 0
+        x: 1932
+        y: 458
         width: 276
         height: 229
       alignment: 9
@@ -712,8 +712,8 @@ TextureImporter:
       name: sanae_18
       rect:
         serializedVersion: 2
-        x: 4968
-        y: 0
+        x: 2208
+        y: 458
         width: 276
         height: 229
       alignment: 9
@@ -734,8 +734,8 @@ TextureImporter:
       name: sanae_19
       rect:
         serializedVersion: 2
-        x: 5244
-        y: 0
+        x: 2484
+        y: 458
         width: 276
         height: 229
       alignment: 9
@@ -756,8 +756,8 @@ TextureImporter:
       name: sanae_20
       rect:
         serializedVersion: 2
-        x: 5520
-        y: 0
+        x: 0
+        y: 229
         width: 276
         height: 229
       alignment: 9
@@ -778,8 +778,8 @@ TextureImporter:
       name: sanae_21
       rect:
         serializedVersion: 2
-        x: 5796
-        y: 0
+        x: 276
+        y: 229
         width: 276
         height: 229
       alignment: 9
@@ -800,8 +800,8 @@ TextureImporter:
       name: sanae_22
       rect:
         serializedVersion: 2
-        x: 6072
-        y: 0
+        x: 552
+        y: 229
         width: 276
         height: 229
       alignment: 9
@@ -822,8 +822,8 @@ TextureImporter:
       name: sanae_23
       rect:
         serializedVersion: 2
-        x: 6348
-        y: 0
+        x: 828
+        y: 229
         width: 276
         height: 229
       alignment: 9
@@ -844,8 +844,8 @@ TextureImporter:
       name: sanae_24
       rect:
         serializedVersion: 2
-        x: 6624
-        y: 0
+        x: 1104
+        y: 229
         width: 276
         height: 229
       alignment: 9
@@ -866,8 +866,8 @@ TextureImporter:
       name: sanae_25
       rect:
         serializedVersion: 2
-        x: 6900
-        y: 0
+        x: 1380
+        y: 229
         width: 276
         height: 229
       alignment: 9
@@ -888,8 +888,8 @@ TextureImporter:
       name: sanae_26
       rect:
         serializedVersion: 2
-        x: 7176
-        y: 0
+        x: 1656
+        y: 229
         width: 276
         height: 229
       alignment: 9
@@ -910,8 +910,8 @@ TextureImporter:
       name: sanae_27
       rect:
         serializedVersion: 2
-        x: 7452
-        y: 0
+        x: 1932
+        y: 229
         width: 276
         height: 229
       alignment: 9
@@ -932,8 +932,8 @@ TextureImporter:
       name: sanae_28
       rect:
         serializedVersion: 2
-        x: 7728
-        y: 0
+        x: 2208
+        y: 229
         width: 276
         height: 229
       alignment: 9
@@ -954,8 +954,8 @@ TextureImporter:
       name: sanae_29
       rect:
         serializedVersion: 2
-        x: 8004
-        y: 0
+        x: 2484
+        y: 229
         width: 276
         height: 229
       alignment: 9
@@ -976,7 +976,7 @@ TextureImporter:
       name: sanae_30
       rect:
         serializedVersion: 2
-        x: 8280
+        x: 0
         y: 0
         width: 276
         height: 229
@@ -998,7 +998,7 @@ TextureImporter:
       name: sanae_31
       rect:
         serializedVersion: 2
-        x: 8556
+        x: 276
         y: 0
         width: 276
         height: 229
@@ -1020,7 +1020,7 @@ TextureImporter:
       name: sanae_32
       rect:
         serializedVersion: 2
-        x: 8832
+        x: 552
         y: 0
         width: 276
         height: 229
@@ -1042,7 +1042,7 @@ TextureImporter:
       name: sanae_33
       rect:
         serializedVersion: 2
-        x: 9108
+        x: 828
         y: 0
         width: 276
         height: 229
@@ -1064,7 +1064,7 @@ TextureImporter:
       name: sanae_34
       rect:
         serializedVersion: 2
-        x: 9384
+        x: 1104
         y: 0
         width: 276
         height: 229
@@ -1086,7 +1086,7 @@ TextureImporter:
       name: sanae_35
       rect:
         serializedVersion: 2
-        x: 9660
+        x: 1380
         y: 0
         width: 276
         height: 229
@@ -1108,7 +1108,7 @@ TextureImporter:
       name: sanae_36
       rect:
         serializedVersion: 2
-        x: 9936
+        x: 1656
         y: 0
         width: 276
         height: 229
@@ -1130,7 +1130,7 @@ TextureImporter:
       name: sanae_37
       rect:
         serializedVersion: 2
-        x: 10212
+        x: 1932
         y: 0
         width: 276
         height: 229
