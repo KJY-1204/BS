@@ -39,6 +39,7 @@ namespace BS
         Vector2 artLastPos;
         float artSpeed;
         bool facingRight = true;
+        float skillStart = float.NegativeInfinity;
 
         readonly NetworkVariable<Vector2> serverPos = new NetworkVariable<Vector2>(
             Vector2.zero, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
@@ -324,6 +325,9 @@ namespace BS
             UpdateArt();
         }
 
+        /// <summary>A skill was cast: the character plays its skill animation once.</summary>
+        public void PlaySkill() => skillStart = Time.time;
+
         string ArtId()
         {
             if (role.Value == RoleTable.BossRole) return BossCatalog.Current.SpriteId;
@@ -358,8 +362,12 @@ namespace BS
             bool down = !IsAlive;
             bool firing = Combat != null && !down && (Combat.IsFiring || Time.time < Combat.MuzzleFlashUntil + 0.25f);
 
+            SpriteAnimSet.Clip skill = art.Find("skill");
+            bool casting = !down && skill != null && Time.time - skillStart < skill.TotalSeconds;
+
             string clipName;
             if (down) clipName = "hit";
+            else if (casting) clipName = "skill";
             else if (firing) clipName = "attack";
             else if (artSpeed > 0.4f) clipName = boss ? "move" : "walk";
             else clipName = "idle";
@@ -367,7 +375,7 @@ namespace BS
             SpriteAnimSet.Clip clip = art.Find(clipName) ?? art.FindAny("idle", "move");
             if (clip == null) return;
             if (clip.name != artClip) { artClip = clip.name; artClock = 0f; }
-            body.sprite = SpriteAnimSet.SpriteAt(clip, artClock, !down);
+            body.sprite = SpriteAnimSet.SpriteAt(clip, casting ? Time.time - skillStart : artClock, !down && !casting);
 
             if (firing && Combat != null) facingRight = AimMath.Direction(Combat.AimAngle).x >= 0f;
             else if (Mathf.Abs(dx) > 1e-4f) facingRight = dx > 0f;

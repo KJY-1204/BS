@@ -72,8 +72,8 @@ namespace BS
             public float Seconds;
             /// <summary>The fraction of the full size the ring starts at.</summary>
             public float StartScale;
-            /// <summary>The ring's art (one unit across); null draws the plain ring.</summary>
-            public Sprite Art;
+            /// <summary>The ring's art, played once over its life (one unit across); null draws the plain ring.</summary>
+            public SpriteAnimSet.Clip Art;
         }
         struct Beam
         {
@@ -98,6 +98,8 @@ namespace BS
         int nextRing;
         readonly SpriteRenderer[] auraSprites = new SpriteRenderer[5];
         readonly float[] auraEndsAt = new float[5];
+        /// <summary>The animation drawn as a slot's aura, or null for the plain ring.</summary>
+        readonly SpriteAnimSet.Clip[] auraArt = new SpriteAnimSet.Clip[5];
         readonly List<SkillEffect> skillEffects = new List<SkillEffect>();
 
         /// <summary>Mob health bars currently on screen (for tests and logs).</summary>
@@ -190,7 +192,7 @@ namespace BS
             SpriteAnimSet blastArt = SpriteLibrary.Get("fx_blast");
             foreach (ExplosionEffect blast in combat.DueExplosions)
             {
-                if (blastArt != null) AddRing(blast.Position, blast.Radius, Color.white, 0.35f, 0.2f, blastArt.clips[0].frames[0]);
+                if (blastArt != null) AddRing(blast.Position, blast.Radius, Color.white, 0.35f, 0.2f, blastArt.clips[0]);
                 else AddRing(blast.Position, blast.Radius, new Color(1f, 0.85f, 0.2f), 0.35f, 0.2f);
             }
             combat.DueExplosions.Clear();
@@ -218,11 +220,18 @@ namespace BS
             SkillDef def = SkillCatalog.Get(effect.SkillId);
             if (def == null || effect.Rank < 1 || effect.Rank > def.MaxRank) return;
 
+            FindBySlot(effect.Slot)?.GetComponent<PlayerAvatar>()?.PlaySkill();
+
             switch (def.Effect)
             {
                 case SkillEffectKind.AreaDamage:
-                    AddRing(effect.Position, SkillEffectSize.Radius(def, effect.Rank, effect.RangeScale), new Color(1f, 0.6f, 0.2f), RingSeconds);
+                {
+                    float radius = SkillEffectSize.Radius(def, effect.Rank, effect.RangeScale);
+                    SpriteAnimSet.Clip art = AreaArt(def);
+                    if (art != null) AddRing(effect.Position, radius, Color.white, RingSeconds, def.Slot == SkillCatalog.UltimateSlot ? 0.5f : 0.6f, art);
+                    else AddRing(effect.Position, radius, new Color(1f, 0.6f, 0.2f), RingSeconds);
                     break;
+                }
                 case SkillEffectKind.TimeStop:
                     // The whole arena: a pale blue ring that sweeps out far past the screen edge.
                     AddRing(effect.Position, Mathf.Sqrt(ArenaConfig.Width * ArenaConfig.Width + ArenaConfig.Height * ArenaConfig.Height), new Color(0.6f, 0.8f, 1f), StopRingSeconds, 0.04f);
@@ -237,10 +246,10 @@ namespace BS
                     AddBeam(effect, SkillEffectSize.Length(def, effect.Rank, effect.RangeScale), SkillEffectSize.Width(def, effect.Rank, effect.RangeScale));
                     break;
                 case SkillEffectKind.AttackSpeed:
-                    SetAura(effect.Slot, Time.time + SkillEffectSize.Seconds(def, effect.Rank, effect.DurationScale), new Color(1f, 0.9f, 0.3f));
+                    SetAura(effect.Slot, Time.time + SkillEffectSize.Seconds(def, effect.Rank, effect.DurationScale), new Color(1f, 0.9f, 0.3f), null);
                     break;
                 case SkillEffectKind.Barrier:
-                    SetAura(effect.Slot, Time.time + SkillEffectSize.Seconds(def, effect.Rank, effect.DurationScale), new Color(0.7f, 0.9f, 1f));
+                    SetAura(effect.Slot, Time.time + SkillEffectSize.Seconds(def, effect.Rank, effect.DurationScale), new Color(0.7f, 0.9f, 1f), BarrierArt(def));
                     break;
             }
         }
@@ -300,17 +309,18 @@ namespace BS
 
         const float BossBeamFlashSeconds = 0.25f;
 
-        void AddRing(Vector2 center, float radius, Color color, float seconds, float startScale = 0.3f, Sprite art = null)
+        void AddRing(Vector2 center, float radius, Color color, float seconds, float startScale = 0.3f, SpriteAnimSet.Clip art = null)
         {
             rings[nextRing] = new Ring { Center = center, Radius = radius, Start = Time.time, Color = color, Seconds = seconds, StartScale = startScale, Art = art };
             nextRing = (nextRing + 1) % MaxRings;
         }
 
-        void SetAura(int slot, float endsAt, Color color)
+        void SetAura(int slot, float endsAt, Color color, SpriteAnimSet.Clip art)
         {
             if (slot < 0 || slot >= auraEndsAt.Length) return;
             auraEndsAt[slot] = endsAt;
             auraColors[slot] = color;
+            auraArt[slot] = art;
         }
 
         void AddBeam(SkillEffect effect, float length, float width)
@@ -379,11 +389,12 @@ namespace BS
 
                 float t = age / rings[i].Seconds;
                 sr.enabled = true;
-                sr.sprite = rings[i].Art != null ? rings[i].Art : SpriteFactory.Ring;
+                sr.sprite = rings[i].Art != null ? SpriteAnimSet.SpriteAt(rings[i].Art, t * rings[i].Art.TotalSeconds, false) : SpriteFactory.Ring;
                 sr.transform.position = new Vector3(rings[i].Center.x, rings[i].Center.y, 0f);
                 sr.transform.localScale = Vector3.one * (rings[i].Radius * 2f * Mathf.Lerp(rings[i].StartScale, 1f, t));
                 Color c = rings[i].Color;
-                c.a = 1f - t;
+                // Art keeps its own colors and shows fully for most of its life before it fades.
+                c.a = rings[i].Art != null ? Mathf.Clamp01((1f - t) / 0.4f) : 1f - t;
                 sr.color = c;
             }
         }
@@ -400,9 +411,21 @@ namespace BS
                 if (!active) continue;
 
                 float pulse = 1.5f + 0.15f * Mathf.Sin(Time.time * 10f);
-                sr.color = auraColors[slot];
+                SpriteAnimSet.Clip art = auraArt[slot];
+                if (art != null)
+                {
+                    // The art's ring fills about three quarters of its picture.
+                    sr.sprite = SpriteAnimSet.SpriteAt(art, Time.time, true);
+                    sr.color = Color.white;
+                    sr.transform.localScale = Vector3.one * (pulse * 1.4f);
+                }
+                else
+                {
+                    sr.sprite = SpriteFactory.Ring;
+                    sr.color = auraColors[slot];
+                    sr.transform.localScale = Vector3.one * pulse;
+                }
                 sr.transform.position = owner.transform.position;
-                sr.transform.localScale = Vector3.one * pulse;
             }
         }
 
@@ -463,6 +486,21 @@ namespace BS
 
             for (int i = count; i < projectilesShown; i++) projectileSprites[i].enabled = false;
             projectilesShown = count;
+        }
+
+        /// <summary>The art of an area skill: Reimu's seal bursts where it lands, her ultimate spreads a ring. Null keeps the plain ring.</summary>
+        static SpriteAnimSet.Clip AreaArt(SkillDef def)
+        {
+            if (def.Character != CharacterIds.Reimu) return null;
+            SpriteAnimSet set = SpriteLibrary.Get(def.Slot == SkillCatalog.UltimateSlot ? "fx_reimu_r_ring" : "fx_reimu_q_burst");
+            return set != null ? set.Find("fx") : null;
+        }
+
+        static SpriteAnimSet.Clip BarrierArt(SkillDef def)
+        {
+            if (def.Character != CharacterIds.Reimu) return null;
+            SpriteAnimSet set = SpriteLibrary.Get("fx_reimu_barrier");
+            return set != null ? set.Find("fx") : null;
         }
 
         /// <summary>The sprite set key of a shot: its character's, its boss kind's, or none for a mob's (which keeps its placeholder).</summary>

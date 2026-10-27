@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d174b7bb8519b634ebabb86011786b4b, type: 3}
+  m_Name: fx_reimu_barrier
+  m_EditorClassIdentifier: BS.Runtime::BS.SpriteAnimSet
+  clips:
+  - name: fx
+    frames:
+    - {fileID: -8502461146263078357, guid: 8767bd8cbdbddf545b6a6e4945822c19, type: 3}
+    - {fileID: -2941469457597232304, guid: 8767bd8cbdbddf545b6a6e4945822c19, type: 3}
+    - {fileID: -2298361498575448901, guid: 8767bd8cbdbddf545b6a6e4945822c19, type: 3}
+    - {fileID: 4926093039779507324, guid: 8767bd8cbdbddf545b6a6e4945822c19, type: 3}
+    - {fileID: -664249686280597310, guid: 8767bd8cbdbddf545b6a6e4945822c19, type: 3}
+    - {fileID: -5967049188087998950, guid: 8767bd8cbdbddf545b6a6e4945822c19, type: 3}
+    - {fileID: -8886509518394847303, guid: 8767bd8cbdbddf545b6a6e4945822c19, type: 3}
+    - {fileID: 7540328916690342910, guid: 8767bd8cbdbddf545b6a6e4945822c19, type: 3}
+    seconds:
+    - 0.09
+    - 0.09
+    - 0.09
+    - 0.09
+    - 0.09
+    - 0.09
+    - 0.09
+    - 0.09
+  facesRight: 1
+  spins: 0

@@ -67,6 +67,12 @@ namespace BS.Editor
                 if (set != null) library.Add(new SpriteLibrary.Entry { key = shot.Key, set = set });
             }
 
+            foreach (Effect effect in Effects())
+            {
+                SpriteAnimSet set = ImportEffect(artRoot, effect);
+                if (set != null) library.Add(new SpriteLibrary.Entry { key = effect.Key, set = set });
+            }
+
             const string libraryPath = "Assets/Resources/SpriteLibrary.asset";
             var lib = AssetDatabase.LoadAssetAtPath<SpriteLibrary>(libraryPath);
             if (lib == null)
@@ -78,6 +84,86 @@ namespace BS.Editor
             EditorUtility.SetDirty(lib);
             AssetDatabase.SaveAssets();
             Debug.Log($"[BS] imported {library.Count} sprite sets");
+        }
+
+        struct Effect
+        {
+            public string Key;
+            public string Name;
+            /// <summary>How big the picture is in the arena along its long side (the views scale it to the skill's size).</summary>
+            public float WorldLength;
+        }
+
+        static Effect[] Effects() => new[]
+        {
+            new Effect { Key = "fx_reimu_barrier", Name = "reimu_barrier", WorldLength = 1f },
+            new Effect { Key = "fx_reimu_q_burst", Name = "reimu_q_burst", WorldLength = 1f },
+            new Effect { Key = "fx_reimu_r_ring", Name = "reimu_r_ring", WorldLength = 1f },
+        };
+
+        /// <summary>An effect strip (frames side by side, listed in a json): cut into frames, pivot in the middle, one "fx" clip.</summary>
+        static SpriteAnimSet ImportEffect(string artRoot, Effect e)
+        {
+            string png = Path.Combine(artRoot, "Effects", e.Name + ".png");
+            string json = Path.Combine(artRoot, "Effects", e.Name + ".json");
+            if (!File.Exists(png) || !File.Exists(json))
+            {
+                Debug.LogWarning($"[BS] effect source missing for {e.Key}: {png}");
+                return null;
+            }
+
+            string assetPng = $"Assets/Art/Sprites/{e.Key}.png";
+            File.Copy(png, Path.GetFullPath(assetPng), true);
+            AssetDatabase.ImportAsset(assetPng, ImportAssetOptions.ForceUpdate);
+
+            AsepriteSheet data = JsonUtility.FromJson<AsepriteSheet>(File.ReadAllText(json));
+            int texHeight = data.meta.size.h;
+            var metas = new SpriteMetaData[data.frames.Length];
+            for (int i = 0; i < metas.Length; i++)
+            {
+                AsepriteRect f = data.frames[i].frame;
+                metas[i] = new SpriteMetaData
+                {
+                    name = $"{e.Key}_{i:00}",
+                    rect = new Rect(f.x, texHeight - f.y - f.h, f.w, f.h),
+                    alignment = (int)SpriteAlignment.Center,
+                    pivot = new Vector2(0.5f, 0.5f),
+                };
+            }
+
+            var importer = (TextureImporter)AssetImporter.GetAtPath(assetPng);
+            importer.textureType = TextureImporterType.Sprite;
+            importer.spriteImportMode = SpriteImportMode.Multiple;
+            importer.spritePixelsPerUnit = Mathf.Max(data.frames[0].frame.w, data.frames[0].frame.h) / e.WorldLength;
+            importer.filterMode = FilterMode.Point;
+            importer.textureCompression = TextureImporterCompression.Uncompressed;
+            importer.mipmapEnabled = false;
+            importer.alphaIsTransparency = true;
+            importer.maxTextureSize = 16384;
+            importer.spritesheet = metas;
+            importer.SaveAndReimport();
+
+            var sprites = new Dictionary<string, Sprite>();
+            foreach (Object o in AssetDatabase.LoadAllAssetsAtPath(assetPng))
+                if (o is Sprite sprite) sprites[sprite.name] = sprite;
+
+            var clip = new SpriteAnimSet.Clip { name = "fx", frames = new Sprite[metas.Length], seconds = new float[metas.Length] };
+            for (int i = 0; i < metas.Length; i++)
+            {
+                clip.frames[i] = sprites[$"{e.Key}_{i:00}"];
+                clip.seconds[i] = data.frames[i].duration / 1000f;
+            }
+
+            string assetPath = $"Assets/Art/Sprites/{e.Key}.asset";
+            var set = AssetDatabase.LoadAssetAtPath<SpriteAnimSet>(assetPath);
+            if (set == null)
+            {
+                set = ScriptableObject.CreateInstance<SpriteAnimSet>();
+                AssetDatabase.CreateAsset(set, assetPath);
+            }
+            set.clips = new[] { clip };
+            EditorUtility.SetDirty(set);
+            return set;
         }
 
         struct Shot

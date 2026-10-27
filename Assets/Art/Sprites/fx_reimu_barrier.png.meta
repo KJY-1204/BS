@@ -1,0 +1,452 @@
+fileFormatVersion: 2
+guid: 8767bd8cbdbddf545b6a6e4945822c19
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7726098966162165942
+    second: fx_reimu_barrier_0
+  - first:
+      213: -5985003115828319291
+    second: fx_reimu_barrier_1
+  - first:
+      213: -3721224462408241119
+    second: fx_reimu_barrier_2
+  - first:
+      213: 1111314379226366351
+    second: fx_reimu_barrier_3
+  - first:
+      213: 928522115717879928
+    second: fx_reimu_barrier_4
+  - first:
+      213: -7236565721454933108
+    second: fx_reimu_barrier_5
+  - first:
+      213: 4905135355048318958
+    second: fx_reimu_barrier_6
+  - first:
+      213: -7733005116441371644
+    second: fx_reimu_barrier_7
+  - first:
+      213: -4831437764966392968
+    second: fx_reimu_barrier_8
+  - first:
+      213: 4096977878876332038
+    second: fx_reimu_barrier_9
+  - first:
+      213: 2657062210497415145
+    second: fx_reimu_barrier_10
+  - first:
+      213: 962836163996846168
+    second: fx_reimu_barrier_11
+  - first:
+      213: 7421832736070574699
+    second: fx_reimu_barrier_12
+  - first:
+      213: -8999553700452416643
+    second: fx_reimu_barrier_13
+  - first:
+      213: 7902144502119991184
+    second: fx_reimu_barrier_14
+  - first:
+      213: 3088016211286231910
+    second: fx_reimu_barrier_15
+  - first:
+      213: 4497382223302990983
+    second: fx_reimu_barrier_16
+  - first:
+      213: 5133682557701986930
+    second: fx_reimu_barrier_17
+  - first:
+      213: -5104052238140934267
+    second: fx_reimu_barrier_18
+  - first:
+      213: 7296649913729601476
+    second: fx_reimu_barrier_19
+  - first:
+      213: -8845894536142621662
+    second: fx_reimu_barrier_20
+  - first:
+      213: 7900309223588577394
+    second: fx_reimu_barrier_21
+  - first:
+      213: -8502461146263078357
+    second: fx_reimu_barrier_00
+  - first:
+      213: -2941469457597232304
+    second: fx_reimu_barrier_01
+  - first:
+      213: -2298361498575448901
+    second: fx_reimu_barrier_02
+  - first:
+      213: 4926093039779507324
+    second: fx_reimu_barrier_03
+  - first:
+      213: -664249686280597310
+    second: fx_reimu_barrier_04
+  - first:
+      213: -5967049188087998950
+    second: fx_reimu_barrier_05
+  - first:
+      213: -8886509518394847303
+    second: fx_reimu_barrier_06
+  - first:
+      213: 7540328916690342910
+    second: fx_reimu_barrier_07
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 153
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 16384
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: fx_reimu_barrier_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 153
+        height: 153
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2abd6ca2a0310a80800000000000000
+      internalID: -8502461146263078357
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_reimu_barrier_01
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 0
+        width: 153
+        height: 153
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05b8146ec1dcd27d0800000000000000
+      internalID: -2941469457597232304
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_reimu_barrier_02
+      rect:
+        serializedVersion: 2
+        x: 306
+        y: 0
+        width: 153
+        height: 153
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb4d9ffe4649a10e0800000000000000
+      internalID: -2298361498575448901
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_reimu_barrier_03
+      rect:
+        serializedVersion: 2
+        x: 459
+        y: 0
+        width: 153
+        height: 153
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7ce496258ffc5440800000000000000
+      internalID: 4926093039779507324
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_reimu_barrier_04
+      rect:
+        serializedVersion: 2
+        x: 612
+        y: 0
+        width: 153
+        height: 153
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c0941ffd6c18c6f0800000000000000
+      internalID: -664249686280597310
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_reimu_barrier_05
+      rect:
+        serializedVersion: 2
+        x: 765
+        y: 0
+        width: 153
+        height: 153
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a165bb2d068c03da0800000000000000
+      internalID: -5967049188087998950
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_reimu_barrier_06
+      rect:
+        serializedVersion: 2
+        x: 918
+        y: 0
+        width: 153
+        height: 153
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9bf82fefca6cca480800000000000000
+      internalID: -8886509518394847303
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_reimu_barrier_07
+      rect:
+        serializedVersion: 2
+        x: 1071
+        y: 0
+        width: 153
+        height: 153
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef31fe80331a4a860800000000000000
+      internalID: 7540328916690342910
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      fx_reimu_barrier_0: 7726098966162165942
+      fx_reimu_barrier_00: -8502461146263078357
+      fx_reimu_barrier_01: -2941469457597232304
+      fx_reimu_barrier_02: -2298361498575448901
+      fx_reimu_barrier_03: 4926093039779507324
+      fx_reimu_barrier_04: -664249686280597310
+      fx_reimu_barrier_05: -5967049188087998950
+      fx_reimu_barrier_06: -8886509518394847303
+      fx_reimu_barrier_07: 7540328916690342910
+      fx_reimu_barrier_1: -5985003115828319291
+      fx_reimu_barrier_10: 2657062210497415145
+      fx_reimu_barrier_11: 962836163996846168
+      fx_reimu_barrier_12: 7421832736070574699
+      fx_reimu_barrier_13: -8999553700452416643
+      fx_reimu_barrier_14: 7902144502119991184
+      fx_reimu_barrier_15: 3088016211286231910
+      fx_reimu_barrier_16: 4497382223302990983
+      fx_reimu_barrier_17: 5133682557701986930
+      fx_reimu_barrier_18: -5104052238140934267
+      fx_reimu_barrier_19: 7296649913729601476
+      fx_reimu_barrier_2: -3721224462408241119
+      fx_reimu_barrier_20: -8845894536142621662
+      fx_reimu_barrier_21: 7900309223588577394
+      fx_reimu_barrier_3: 1111314379226366351
+      fx_reimu_barrier_4: 928522115717879928
+      fx_reimu_barrier_5: -7236565721454933108
+      fx_reimu_barrier_6: 4905135355048318958
+      fx_reimu_barrier_7: -7733005116441371644
+      fx_reimu_barrier_8: -4831437764966392968
+      fx_reimu_barrier_9: 4096977878876332038
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

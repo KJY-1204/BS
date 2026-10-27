@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d174b7bb8519b634ebabb86011786b4b, type: 3}
+  m_Name: fx_reimu_r_ring
+  m_EditorClassIdentifier: BS.Runtime::BS.SpriteAnimSet
+  clips:
+  - name: fx
+    frames:
+    - {fileID: -8179013326336429828, guid: 433f83c33cc8cbc468372b2e6c8756ad, type: 3}
+    - {fileID: 5539635368234163725, guid: 433f83c33cc8cbc468372b2e6c8756ad, type: 3}
+    - {fileID: 5866106217111702498, guid: 433f83c33cc8cbc468372b2e6c8756ad, type: 3}
+    seconds:
+    - 0.1
+    - 0.1
+    - 0.15
+  facesRight: 1
+  spins: 0

@@ -59,3 +59,9 @@ MonoBehaviour:
     set: {fileID: 11400000, guid: 13020606e14468441b8e5dd67b7cbb54, type: 2}
   - key: fx_blast
     set: {fileID: 11400000, guid: e3e84895294972e47abe66fec17a8ff1, type: 2}
+  - key: fx_reimu_barrier
+    set: {fileID: 11400000, guid: 89947129b889968428e6378eeba15945, type: 2}
+  - key: fx_reimu_q_burst
+    set: {fileID: 11400000, guid: 43117dabf438c3640b052f1a269bf7ba, type: 2}
+  - key: fx_reimu_r_ring
+    set: {fileID: 11400000, guid: 5f87803e169e3fa428151c3f2981e4e2, type: 2}
