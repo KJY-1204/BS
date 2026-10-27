@@ -12,6 +12,7 @@ import json
 m=json.load(open('manifest.json'));W,H=m['w'],m['h'];s=Image.open('sheet_char.png');n=len(m['frames'])
 fr=[s.crop(((i%10)*W,(i//10)*H,(i%10)*W+W,(i//10)*H+H)) for i in range(n)]
 fr[0].save(r'$out/Exports/${name}_preview.gif',save_all=True,append_images=fr[1:],duration=100,loop=0,disposal=2)"
+  cp manifest.json $out/Exports/${name}_manifest.json
   echo "$name done"; }
 one reimu2 reimu_spec $R/Survivors/Reimu reimu
 one marisa marisa_spec $R/Survivors/Marisa marisa

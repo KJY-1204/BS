@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d174b7bb8519b634ebabb86011786b4b, type: 3}
+  m_Name: mob_fairy_red
+  m_EditorClassIdentifier: BS.Runtime::BS.SpriteAnimSet
+  clips:
+  - name: idle
+    frames:
+    - {fileID: -2593362416257331068, guid: b4a78395989e53b43907300c7e73f2e3, type: 3}
+    - {fileID: 1708719095974904015, guid: b4a78395989e53b43907300c7e73f2e3, type: 3}
+    - {fileID: -5208721035195578549, guid: b4a78395989e53b43907300c7e73f2e3, type: 3}
+    - {fileID: 6608727220669836812, guid: b4a78395989e53b43907300c7e73f2e3, type: 3}
+    - {fileID: -4119139072303049859, guid: b4a78395989e53b43907300c7e73f2e3, type: 3}
+    - {fileID: 4493429739123273818, guid: b4a78395989e53b43907300c7e73f2e3, type: 3}
+    seconds:
+    - 0.11
+    - 0.11
+    - 0.11
+    - 0.11
+    - 0.11
+    - 0.11
+  - name: move
+    frames:
+    - {fileID: 5775866100556018344, guid: b4a78395989e53b43907300c7e73f2e3, type: 3}
+    - {fileID: -6898215878217893551, guid: b4a78395989e53b43907300c7e73f2e3, type: 3}
+    - {fileID: 4821244438441497132, guid: b4a78395989e53b43907300c7e73f2e3, type: 3}
+    - {fileID: 107987261613134783, guid: b4a78395989e53b43907300c7e73f2e3, type: 3}
+    - {fileID: 9154958110903986552, guid: b4a78395989e53b43907300c7e73f2e3, type: 3}
+    - {fileID: -6624270981901466012, guid: b4a78395989e53b43907300c7e73f2e3, type: 3}
+    seconds:
+    - 0.08
+    - 0.08
+    - 0.08
+    - 0.08
+    - 0.08
+    - 0.08
+  facesRight: 0

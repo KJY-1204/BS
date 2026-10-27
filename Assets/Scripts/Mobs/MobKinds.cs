@@ -22,6 +22,8 @@ namespace BS
     public sealed class MobKindDef
     {
         public string Name;
+        /// <summary>The key of the kind's sprite set in the sprite library.</summary>
+        public string SpriteId = "";
         public float SpeedMultiple = 1f;
         public float HealthMultiple = 1f;
         public float RadiusMultiple = 1f;
@@ -87,19 +89,19 @@ namespace BS
 
         static readonly MobKindDef[] kinds =
         {
-            new MobKindDef { Name = "기본", Color = new Color(0.95f, 0.55f, 0.15f) },
-            new MobKindDef { Name = "빠른 몹", SpeedMultiple = 1.6f, HealthMultiple = 0.5f, RadiusMultiple = 0.8f, ContactDamageMultiple = 0.8f,
+            new MobKindDef { Name = "기본", SpriteId = "mob_fairy_red", Color = new Color(0.95f, 0.55f, 0.15f) },
+            new MobKindDef { Name = "빠른 몹", SpriteId = "mob_fairy_blue", SpeedMultiple = 1.6f, HealthMultiple = 0.5f, RadiusMultiple = 0.8f, ContactDamageMultiple = 0.8f,
                              CostMultiple = 0.8f, GroupMultiple = 1.25f, Color = new Color(0.2f, 0.75f, 0.8f) },
-            new MobKindDef { Name = "단단한 몹", SpeedMultiple = 0.6f, HealthMultiple = 4f, RadiusMultiple = 1.25f, ContactDamageMultiple = 1.5f,
+            new MobKindDef { Name = "단단한 몹", SpriteId = "mob_umbrella", SpeedMultiple = 0.6f, HealthMultiple = 4f, RadiusMultiple = 1.25f, ContactDamageMultiple = 1.5f,
                              CostMultiple = 3f, GroupMultiple = 0.5f, Color = new Color(0.5f, 0.28f, 0.14f) },
-            new MobKindDef { Name = "원거리 몹", SpeedMultiple = 1f, HealthMultiple = 0.8f, RadiusMultiple = 1f, ContactDamageMultiple = 0.6f,
+            new MobKindDef { Name = "원거리 몹", SpriteId = "mob_ghost", SpeedMultiple = 1f, HealthMultiple = 0.8f, RadiusMultiple = 1f, ContactDamageMultiple = 0.6f,
                              CostMultiple = 2f, GroupMultiple = 0.5f, Color = new Color(0.6f, 0.4f, 0.9f),
                              Behavior = MobBehavior.Ranged, HoldDistance = 6f, ShootRange = 9f, ShotCooldownSeconds = 2.5f, ShotDamage = 8 },
-            new MobKindDef { Name = "폭발 몹", SpeedMultiple = 1.4f, HealthMultiple = 0.6f, RadiusMultiple = 1f, ContactDamageMultiple = 0.5f,
+            new MobKindDef { Name = "폭발 몹", SpriteId = "mob_ufo", SpeedMultiple = 1.4f, HealthMultiple = 0.6f, RadiusMultiple = 1f, ContactDamageMultiple = 0.5f,
                              CostMultiple = 1.6f, GroupMultiple = 0.75f, Color = new Color(0.95f, 0.85f, 0.2f),
                              Behavior = MobBehavior.Exploder, TriggerDistance = 1.6f, FuseSeconds = 0.7f, BlastRadius = 2.2f, BlastDamage = 25 },
             // The boss's device: a still, sturdy body that hurts nobody by touch. Speed and contact damage are zero.
-            new MobKindDef { Name = "장치", SpeedMultiple = 0f, HealthMultiple = 4f, RadiusMultiple = 1.15f, ContactDamageMultiple = 0f,
+            new MobKindDef { Name = "장치", SpriteId = "device", SpeedMultiple = 0f, HealthMultiple = 4f, RadiusMultiple = 1.15f, ContactDamageMultiple = 0f,
                              CostMultiple = 0f, GroupMultiple = 0f, Color = new Color(0.25f, 0.9f, 0.45f), Behavior = MobBehavior.Device },
         };
 
@@ -138,6 +140,14 @@ namespace BS
         public static byte KindOf(byte type) => (byte)(type >> 1);
 
         public static bool IsSummoned(byte type) => (type & 1) != 0;
+
+        /// <summary>The key of the sprite set a mob of this encoded type is drawn with: a basic mob a boss summoned is a green fairy, not a red one.</summary>
+        public static string SpriteIdOf(byte type)
+        {
+            byte kind = KindOf(type);
+            if (kind == Basic && IsSummoned(type)) return "mob_fairy_green";
+            return Get(kind).SpriteId;
+        }
 
         /// <summary>The color a mob of this encoded type is drawn in.</summary>
         public static Color ColorOf(byte type)

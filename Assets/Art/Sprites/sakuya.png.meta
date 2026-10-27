@@ -1,0 +1,1374 @@
+fileFormatVersion: 2
+guid: f035678a907ac2a40b648809d32c53e0
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3035659534344684837
+    second: sakuya_0
+  - first:
+      213: 2408576217553281250
+    second: sakuya_1
+  - first:
+      213: -8375662435873505340
+    second: sakuya_2
+  - first:
+      213: -8203253275930691995
+    second: sakuya_3
+  - first:
+      213: 20774954037011443
+    second: sakuya_4
+  - first:
+      213: 8927972193843852779
+    second: sakuya_5
+  - first:
+      213: 243639648339978790
+    second: sakuya_6
+  - first:
+      213: -5870217309288544167
+    second: sakuya_7
+  - first:
+      213: 1100260673862975797
+    second: sakuya_8
+  - first:
+      213: -4325111037793992448
+    second: sakuya_9
+  - first:
+      213: 8687965002536314063
+    second: sakuya_10
+  - first:
+      213: 4922072096796261114
+    second: sakuya_11
+  - first:
+      213: 7258266798302846140
+    second: sakuya_12
+  - first:
+      213: -3951962713332352951
+    second: sakuya_13
+  - first:
+      213: -1396024891411870447
+    second: sakuya_14
+  - first:
+      213: 4874774706361902396
+    second: sakuya_15
+  - first:
+      213: 8317340021217363522
+    second: sakuya_16
+  - first:
+      213: 2692013596329312470
+    second: sakuya_17
+  - first:
+      213: -8546727911878630998
+    second: sakuya_18
+  - first:
+      213: 3595935445215725620
+    second: sakuya_19
+  - first:
+      213: -5221240281199198516
+    second: sakuya_20
+  - first:
+      213: -886997475697556036
+    second: sakuya_21
+  - first:
+      213: 6466865796190070430
+    second: sakuya_22
+  - first:
+      213: -221884994065547826
+    second: sakuya_23
+  - first:
+      213: 5601295388605709734
+    second: sakuya_24
+  - first:
+      213: 2167175010311884238
+    second: sakuya_25
+  - first:
+      213: -302882050547285959
+    second: sakuya_26
+  - first:
+      213: -2536840562494636964
+    second: sakuya_27
+  - first:
+      213: 59238996003913052
+    second: sakuya_28
+  - first:
+      213: 8957389371347085838
+    second: sakuya_29
+  - first:
+      213: 4417125819441712336
+    second: sakuya_30
+  - first:
+      213: 146011822351567612
+    second: sakuya_31
+  - first:
+      213: -2407718307372464790
+    second: sakuya_32
+  - first:
+      213: -4236623509399716030
+    second: sakuya_33
+  - first:
+      213: 1091170055383700041
+    second: sakuya_34
+  - first:
+      213: -582589904750601691
+    second: sakuya_35
+  - first:
+      213: 4402888621831353209
+    second: sakuya_36
+  - first:
+      213: 4222405496086793098
+    second: sakuya_37
+  - first:
+      213: 8149491651642984588
+    second: sakuya_38
+  - first:
+      213: 8116907910070059335
+    second: sakuya_39
+  - first:
+      213: -5765014319134989985
+    second: sakuya_40
+  - first:
+      213: -6057931376684663333
+    second: sakuya_41
+  - first:
+      213: 1881680916106838579
+    second: sakuya_42
+  - first:
+      213: 7993382280516161815
+    second: sakuya_43
+  - first:
+      213: 68683238211839152
+    second: sakuya_44
+  - first:
+      213: 2197485478382334063
+    second: sakuya_45
+  - first:
+      213: -6499639999919336869
+    second: sakuya_46
+  - first:
+      213: 4804079270423944014
+    second: sakuya_47
+  - first:
+      213: 3681172170764929369
+    second: sakuya_48
+  - first:
+      213: 6661698448658391121
+    second: sakuya_49
+  - first:
+      213: -891863178054821482
+    second: sakuya_50
+  - first:
+      213: -986050629952287033
+    second: sakuya_51
+  - first:
+      213: 846657111150475639
+    second: sakuya_52
+  - first:
+      213: -8503894885396609277
+    second: sakuya_53
+  - first:
+      213: -8128003266638654179
+    second: sakuya_54
+  - first:
+      213: -1040580246312886966
+    second: sakuya_55
+  - first:
+      213: -6980589661313807282
+    second: sakuya_56
+  - first:
+      213: -971340747362180457
+    second: sakuya_57
+  - first:
+      213: -1475328871402669754
+    second: sakuya_58
+  - first:
+      213: -5463143485979317178
+    second: sakuya_59
+  - first:
+      213: -5590654362784056198
+    second: sakuya_60
+  - first:
+      213: -7338894331982418087
+    second: sakuya_61
+  - first:
+      213: 5496990918820386682
+    second: sakuya_62
+  - first:
+      213: -7622741137359357177
+    second: sakuya_63
+  - first:
+      213: 5904447753995906140
+    second: sakuya_64
+  - first:
+      213: -3052952207785722022
+    second: sakuya_65
+  - first:
+      213: -5563582692650340425
+    second: sakuya_66
+  - first:
+      213: 5533986306939539737
+    second: sakuya_67
+  - first:
+      213: 1327544169673045750
+    second: sakuya_68
+  - first:
+      213: 7141513164520036857
+    second: sakuya_69
+  - first:
+      213: -3911888990450631608
+    second: sakuya_70
+  - first:
+      213: -6905225074102191641
+    second: sakuya_71
+  - first:
+      213: 377434838548728509
+    second: sakuya_72
+  - first:
+      213: -425301022319437160
+    second: sakuya_73
+  - first:
+      213: -2879225218241538427
+    second: sakuya_74
+  - first:
+      213: -6607178866050197013
+    second: sakuya_75
+  - first:
+      213: 220539450746687998
+    second: sakuya_76
+  - first:
+      213: 9072758880221122477
+    second: sakuya_77
+  - first:
+      213: -5232817282727486285
+    second: sakuya_78
+  - first:
+      213: -5706589159499493421
+    second: sakuya_79
+  - first:
+      213: 3315657287944024858
+    second: sakuya_00
+  - first:
+      213: 1790195842647449718
+    second: sakuya_01
+  - first:
+      213: -7019275568648933685
+    second: sakuya_02
+  - first:
+      213: -2049863522385847881
+    second: sakuya_03
+  - first:
+      213: -3075322926909082419
+    second: sakuya_04
+  - first:
+      213: 8806055563562404935
+    second: sakuya_05
+  - first:
+      213: 5873352614418586250
+    second: sakuya_06
+  - first:
+      213: 1416861962494076139
+    second: sakuya_07
+  - first:
+      213: -8702299538484742376
+    second: sakuya_08
+  - first:
+      213: -2771813748872934374
+    second: sakuya_09
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 83
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 16384
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: sakuya_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a13b6dc7cb4930e20800000000000000
+      internalID: 3315657287944024858
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_01
+      rect:
+        serializedVersion: 2
+        x: 276
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 670e16f42ad08d810800000000000000
+      internalID: 1790195842647449718
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_02
+      rect:
+        serializedVersion: 2
+        x: 552
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bce2a1e5f06869e90800000000000000
+      internalID: -7019275568648933685
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_03
+      rect:
+        serializedVersion: 2
+        x: 828
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b9192eacfb6d83e0800000000000000
+      internalID: -2049863522385847881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_04
+      rect:
+        serializedVersion: 2
+        x: 1104
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc438fb77124255d0800000000000000
+      internalID: -3075322926909082419
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_05
+      rect:
+        serializedVersion: 2
+        x: 1380
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74c4d7ae0e4653a70800000000000000
+      internalID: 8806055563562404935
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_06
+      rect:
+        serializedVersion: 2
+        x: 1656
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8a180f9517528150800000000000000
+      internalID: 5873352614418586250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_07
+      rect:
+        serializedVersion: 2
+        x: 1932
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be4e832b274b9a310800000000000000
+      internalID: 1416861962494076139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_08
+      rect:
+        serializedVersion: 2
+        x: 2208
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 817329f2da83b3780800000000000000
+      internalID: -8702299538484742376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_09
+      rect:
+        serializedVersion: 2
+        x: 2484
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1c82e2c41a8889d0800000000000000
+      internalID: -2771813748872934374
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_10
+      rect:
+        serializedVersion: 2
+        x: 2760
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc4e335932ad19870800000000000000
+      internalID: 8687965002536314063
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_11
+      rect:
+        serializedVersion: 2
+        x: 3036
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: afa37686e76be4440800000000000000
+      internalID: 4922072096796261114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_12
+      rect:
+        serializedVersion: 2
+        x: 3312
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cbc5ad5723b8ab460800000000000000
+      internalID: 7258266798302846140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_13
+      rect:
+        serializedVersion: 2
+        x: 3588
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9487c32c9dec729c0800000000000000
+      internalID: -3951962713332352951
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_14
+      rect:
+        serializedVersion: 2
+        x: 3864
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 11dcac9f1c250ace0800000000000000
+      internalID: -1396024891411870447
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_15
+      rect:
+        serializedVersion: 2
+        x: 4140
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c35a2cc84cda6a340800000000000000
+      internalID: 4874774706361902396
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_16
+      rect:
+        serializedVersion: 2
+        x: 4416
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2460dc0aea02d6370800000000000000
+      internalID: 8317340021217363522
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_17
+      rect:
+        serializedVersion: 2
+        x: 4692
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d00bbb5a14fb5520800000000000000
+      internalID: 2692013596329312470
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_18
+      rect:
+        serializedVersion: 2
+        x: 4968
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa1ee842f3ce36980800000000000000
+      internalID: -8546727911878630998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_19
+      rect:
+        serializedVersion: 2
+        x: 5244
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 438c15f3c3457e130800000000000000
+      internalID: 3595935445215725620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_20
+      rect:
+        serializedVersion: 2
+        x: 5520
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cce3928a0ad6a87b0800000000000000
+      internalID: -5221240281199198516
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_21
+      rect:
+        serializedVersion: 2
+        x: 5796
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb50160de70c0b3f0800000000000000
+      internalID: -886997475697556036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_22
+      rect:
+        serializedVersion: 2
+        x: 6072
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e966800cd2ceeb950800000000000000
+      internalID: 6466865796190070430
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_23
+      rect:
+        serializedVersion: 2
+        x: 6348
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ecdbbb306c4bbecf0800000000000000
+      internalID: -221884994065547826
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_24
+      rect:
+        serializedVersion: 2
+        x: 6624
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ad70ef9a7ccbbd40800000000000000
+      internalID: 5601295388605709734
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_25
+      rect:
+        serializedVersion: 2
+        x: 6900
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ecd4ebf803a531e10800000000000000
+      internalID: 2167175010311884238
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_26
+      rect:
+        serializedVersion: 2
+        x: 7176
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93089483162fbcbf0800000000000000
+      internalID: -302882050547285959
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_27
+      rect:
+        serializedVersion: 2
+        x: 7452
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5c74bcf2f45bccd0800000000000000
+      internalID: -2536840562494636964
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_28
+      rect:
+        serializedVersion: 2
+        x: 7728
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5df9a19d8572d000800000000000000
+      internalID: 59238996003913052
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_29
+      rect:
+        serializedVersion: 2
+        x: 8004
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0aa00acc2a0f4c70800000000000000
+      internalID: 8957389371347085838
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_30
+      rect:
+        serializedVersion: 2
+        x: 8280
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0dc8704a788cc4d30800000000000000
+      internalID: 4417125819441712336
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_31
+      rect:
+        serializedVersion: 2
+        x: 8556
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cfac5449afcb60200800000000000000
+      internalID: 146011822351567612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_32
+      rect:
+        serializedVersion: 2
+        x: 8832
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a650cd1c4f0169ed0800000000000000
+      internalID: -2407718307372464790
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_33
+      rect:
+        serializedVersion: 2
+        x: 9108
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 24f39236d5d7435c0800000000000000
+      internalID: -4236623509399716030
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_34
+      rect:
+        serializedVersion: 2
+        x: 9384
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94250b4526d942f00800000000000000
+      internalID: 1091170055383700041
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_35
+      rect:
+        serializedVersion: 2
+        x: 9660
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52a9c9d71993ae7f0800000000000000
+      internalID: -582589904750601691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_36
+      rect:
+        serializedVersion: 2
+        x: 9936
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 973fdd1cfd33a1d30800000000000000
+      internalID: 4402888621831353209
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_37
+      rect:
+        serializedVersion: 2
+        x: 10212
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8b09eb6d6ff89a30800000000000000
+      internalID: 4222405496086793098
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sakuya_38
+      rect:
+        serializedVersion: 2
+        x: 10488
+        y: 0
+        width: 276
+        height: 154
+      alignment: 9
+      pivot: {x: 0.38405797, y: 0.45616883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c880134ba7fc81170800000000000000
+      internalID: 8149491651642984588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      sakuya_0: -3035659534344684837
+      sakuya_00: 3315657287944024858
+      sakuya_01: 1790195842647449718
+      sakuya_02: -7019275568648933685
+      sakuya_03: -2049863522385847881
+      sakuya_04: -3075322926909082419
+      sakuya_05: 8806055563562404935
+      sakuya_06: 5873352614418586250
+      sakuya_07: 1416861962494076139
+      sakuya_08: -8702299538484742376
+      sakuya_09: -2771813748872934374
+      sakuya_1: 2408576217553281250
+      sakuya_10: 8687965002536314063
+      sakuya_11: 4922072096796261114
+      sakuya_12: 7258266798302846140
+      sakuya_13: -3951962713332352951
+      sakuya_14: -1396024891411870447
+      sakuya_15: 4874774706361902396
+      sakuya_16: 8317340021217363522
+      sakuya_17: 2692013596329312470
+      sakuya_18: -8546727911878630998
+      sakuya_19: 3595935445215725620
+      sakuya_2: -8375662435873505340
+      sakuya_20: -5221240281199198516
+      sakuya_21: -886997475697556036
+      sakuya_22: 6466865796190070430
+      sakuya_23: -221884994065547826
+      sakuya_24: 5601295388605709734
+      sakuya_25: 2167175010311884238
+      sakuya_26: -302882050547285959
+      sakuya_27: -2536840562494636964
+      sakuya_28: 59238996003913052
+      sakuya_29: 8957389371347085838
+      sakuya_3: -8203253275930691995
+      sakuya_30: 4417125819441712336
+      sakuya_31: 146011822351567612
+      sakuya_32: -2407718307372464790
+      sakuya_33: -4236623509399716030
+      sakuya_34: 1091170055383700041
+      sakuya_35: -582589904750601691
+      sakuya_36: 4402888621831353209
+      sakuya_37: 4222405496086793098
+      sakuya_38: 8149491651642984588
+      sakuya_39: 8116907910070059335
+      sakuya_4: 20774954037011443
+      sakuya_40: -5765014319134989985
+      sakuya_41: -6057931376684663333
+      sakuya_42: 1881680916106838579
+      sakuya_43: 7993382280516161815
+      sakuya_44: 68683238211839152
+      sakuya_45: 2197485478382334063
+      sakuya_46: -6499639999919336869
+      sakuya_47: 4804079270423944014
+      sakuya_48: 3681172170764929369
+      sakuya_49: 6661698448658391121
+      sakuya_5: 8927972193843852779
+      sakuya_50: -891863178054821482
+      sakuya_51: -986050629952287033
+      sakuya_52: 846657111150475639
+      sakuya_53: -8503894885396609277
+      sakuya_54: -8128003266638654179
+      sakuya_55: -1040580246312886966
+      sakuya_56: -6980589661313807282
+      sakuya_57: -971340747362180457
+      sakuya_58: -1475328871402669754
+      sakuya_59: -5463143485979317178
+      sakuya_6: 243639648339978790
+      sakuya_60: -5590654362784056198
+      sakuya_61: -7338894331982418087
+      sakuya_62: 5496990918820386682
+      sakuya_63: -7622741137359357177
+      sakuya_64: 5904447753995906140
+      sakuya_65: -3052952207785722022
+      sakuya_66: -5563582692650340425
+      sakuya_67: 5533986306939539737
+      sakuya_68: 1327544169673045750
+      sakuya_69: 7141513164520036857
+      sakuya_7: -5870217309288544167
+      sakuya_70: -3911888990450631608
+      sakuya_71: -6905225074102191641
+      sakuya_72: 377434838548728509
+      sakuya_73: -425301022319437160
+      sakuya_74: -2879225218241538427
+      sakuya_75: -6607178866050197013
+      sakuya_76: 220539450746687998
+      sakuya_77: 9072758880221122477
+      sakuya_78: -5232817282727486285
+      sakuya_79: -5706589159499493421
+      sakuya_8: 1100260673862975797
+      sakuya_9: -4325111037793992448
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

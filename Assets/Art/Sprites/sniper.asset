@@ -1,0 +1,104 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d174b7bb8519b634ebabb86011786b4b, type: 3}
+  m_Name: sniper
+  m_EditorClassIdentifier: BS.Runtime::BS.SpriteAnimSet
+  clips:
+  - name: idle
+    frames:
+    - {fileID: -5623537993542197556, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    - {fileID: -4444032205476429384, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    - {fileID: 2010185677934765129, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    - {fileID: -6799160771647150995, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    - {fileID: 8722313220800174576, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    - {fileID: 1234430287161148760, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    seconds:
+    - 0.12
+    - 0.12
+    - 0.12
+    - 0.12
+    - 0.12
+    - 0.12
+  - name: move
+    frames:
+    - {fileID: -3458580047298003154, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    - {fileID: -1316831795824288994, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    - {fileID: -2594840845313772842, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    - {fileID: -7449009153962863211, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    - {fileID: -1149225576057212129, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    - {fileID: -4368441124444164293, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    - {fileID: -5396067675519349251, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    - {fileID: -7242826965737003249, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    seconds:
+    - 0.09
+    - 0.09
+    - 0.09
+    - 0.09
+    - 0.09
+    - 0.09
+    - 0.09
+    - 0.09
+  - name: attack
+    frames:
+    - {fileID: -7978331350518992790, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    - {fileID: 5943659364005314267, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    - {fileID: 6697126706255016218, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    - {fileID: 3434727043307543663, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    - {fileID: 117317098620887993, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    - {fileID: -4189620420274829145, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    - {fileID: -5633268724543447966, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    - {fileID: 7658690325202072548, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    - {fileID: -513842784080332941, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    - {fileID: 2341027347892781989, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    seconds:
+    - 0.1
+    - 0.11
+    - 0.1
+    - 0.1
+    - 0.11
+    - 0.11
+    - 0.12
+    - 0.15
+    - 0.11
+    - 0.11
+  - name: hit
+    frames:
+    - {fileID: -521647548871316734, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    - {fileID: -7062870629639108748, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    - {fileID: 4426011579061683968, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    seconds:
+    - 0.08
+    - 0.08
+    - 0.12
+  - name: dash
+    frames:
+    - {fileID: 1065140710877573827, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    - {fileID: 89980073660342804, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    - {fileID: 7631886176468429839, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    - {fileID: -5764680308730171185, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    seconds:
+    - 0.07
+    - 0.07
+    - 0.07
+    - 0.07
+  - name: jump
+    frames:
+    - {fileID: -2319764575184237334, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    - {fileID: 4900432393241515354, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    - {fileID: -7658815959721576937, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    - {fileID: 3407658811244542012, guid: 23c7c7418638b5b4e9df54356a424557, type: 3}
+    seconds:
+    - 0.09
+    - 0.09
+    - 0.09
+    - 0.11
+  facesRight: 1

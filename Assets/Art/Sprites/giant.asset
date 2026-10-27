@@ -1,0 +1,108 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d174b7bb8519b634ebabb86011786b4b, type: 3}
+  m_Name: giant
+  m_EditorClassIdentifier: BS.Runtime::BS.SpriteAnimSet
+  clips:
+  - name: idle
+    frames:
+    - {fileID: 1760257085626984693, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: 3910915654165781249, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: -8073305236442871636, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: 4631389242128831736, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: -5054977703682699897, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: 7033306527945127273, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: 8989390818784443110, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: -886638294478599294, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: -7808587686412939579, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    seconds:
+    - 0.11
+    - 0.11
+    - 0.11
+    - 0.11
+    - 0.11
+    - 0.11
+    - 0.11
+    - 0.11
+    - 0.11
+  - name: move
+    frames:
+    - {fileID: -1594091832751884093, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: -420125964237768693, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: -5951222183645416338, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: -3603846297521243706, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: 8842528928289005413, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: 5358347565288624674, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: -8415298914875951537, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    seconds:
+    - 0.09
+    - 0.09
+    - 0.09
+    - 0.09
+    - 0.09
+    - 0.09
+    - 0.09
+  - name: attack
+    frames:
+    - {fileID: 1495703065704992343, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: 3527289348207373971, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: 4788891287929979191, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: -5830889791531827817, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: 5493135468827485931, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: 3764984270664383922, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: -7257480733276876928, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: 435267471483261217, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    seconds:
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+  - name: skill
+    frames:
+    - {fileID: 1005264464488911993, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: 6079388112786742231, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: -6504427910340567205, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: 5442980408684336842, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: 2295259951721356379, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: 6829456763900786529, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    seconds:
+    - 0.15
+    - 0.15
+    - 0.15
+    - 0.15
+    - 0.15
+    - 0.15
+  - name: hit
+    frames:
+    - {fileID: -2778615875881771511, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: 3094848911822406032, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: -4741586881767907109, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    seconds:
+    - 0.08
+    - 0.08
+    - 0.14
+  - name: jump
+    frames:
+    - {fileID: -4784377096131234183, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: -2541945206460926775, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: -6886161877441304582, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    - {fileID: -8230463680971111959, guid: 32632d6e3d6f9904686f1acb85e6fbda, type: 3}
+    seconds:
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+  facesRight: 1

@@ -15,6 +15,9 @@ namespace BS
         NetworkManager nm;
 
         readonly List<SpriteRenderer> pool = new List<SpriteRenderer>();
+        // Per pool slot: where the mob was last frame and whether it faces right, so art that looks one way can be flipped.
+        readonly List<float> lastX = new List<float>();
+        readonly List<bool> facingRight = new List<bool>();
         Sprite square;
         int active;
 
@@ -50,13 +53,34 @@ namespace BS
                 Vector2 p = source.PositionAt(i);
                 sr.transform.localPosition = new Vector3(p.x, p.y, 0f);
 
-                // The type byte holds the origin and the kind: the color tells them apart and the size is the kind's body.
+                // The type byte holds the origin and the kind: the art tells them apart, and without art the color does and the size is the kind's body.
                 byte type = source.TypeAt(i);
-                sr.color = MobKinds.ColorOf(type);
-                float size = MobConfig.Radius * 2f * MobKinds.Get(MobKinds.KindOf(type)).RadiusMultiple;
-                sr.transform.localScale = new Vector3(size, size, 1f);
-                // A device is drawn as a diamond so it is told apart from every mob at a glance.
-                sr.transform.localRotation = MobKinds.IsDeviceType(type) ? Quaternion.Euler(0f, 0f, 45f) : Quaternion.identity;
+                SpriteAnimSet art = SpriteLibrary.Get(MobKinds.SpriteIdOf(type));
+                bool device = MobKinds.IsDeviceType(type);
+                if (art != null)
+                {
+                    SpriteAnimSet.Clip clip = device ? art.Find("idle") : art.FindAny("move", "idle");
+                    sr.sprite = SpriteAnimSet.SpriteAt(clip, Time.time + i * 0.137f, true);
+                    sr.color = Color.white;
+                    float scale = device ? 1f : MobKinds.Get(MobKinds.KindOf(type)).RadiusMultiple;
+                    sr.transform.localScale = new Vector3(scale, scale, 1f);
+                    sr.transform.localRotation = Quaternion.identity;
+
+                    float dx = p.x - lastX[i];
+                    if (Mathf.Abs(dx) > 0.002f) facingRight[i] = dx > 0f;
+                    sr.flipX = art.facesRight ? !facingRight[i] : facingRight[i];
+                }
+                else
+                {
+                    sr.sprite = square;
+                    sr.flipX = false;
+                    sr.color = MobKinds.ColorOf(type);
+                    float size = MobConfig.Radius * 2f * MobKinds.Get(MobKinds.KindOf(type)).RadiusMultiple;
+                    sr.transform.localScale = new Vector3(size, size, 1f);
+                    // A device is drawn as a diamond so it is told apart from every mob at a glance.
+                    sr.transform.localRotation = device ? Quaternion.Euler(0f, 0f, 45f) : Quaternion.identity;
+                }
+                lastX[i] = p.x;
             }
 
             for (int i = count; i < active; i++)
@@ -87,6 +111,8 @@ namespace BS
                 sr.sprite = square;
                 sr.sortingOrder = 5;
                 pool.Add(sr);
+                lastX.Add(0f);
+                facingRight.Add(true);
             }
         }
 

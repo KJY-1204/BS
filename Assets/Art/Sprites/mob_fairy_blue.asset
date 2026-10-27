@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d174b7bb8519b634ebabb86011786b4b, type: 3}
+  m_Name: mob_fairy_blue
+  m_EditorClassIdentifier: BS.Runtime::BS.SpriteAnimSet
+  clips:
+  - name: idle
+    frames:
+    - {fileID: -4152257072184771024, guid: 55959261bce721f45ba72b54ddba80a3, type: 3}
+    - {fileID: 9124922492714287490, guid: 55959261bce721f45ba72b54ddba80a3, type: 3}
+    - {fileID: -5356102312680989408, guid: 55959261bce721f45ba72b54ddba80a3, type: 3}
+    - {fileID: -2709646836091154655, guid: 55959261bce721f45ba72b54ddba80a3, type: 3}
+    - {fileID: -7083596420521335997, guid: 55959261bce721f45ba72b54ddba80a3, type: 3}
+    - {fileID: 5118019125164446797, guid: 55959261bce721f45ba72b54ddba80a3, type: 3}
+    seconds:
+    - 0.11
+    - 0.11
+    - 0.11
+    - 0.11
+    - 0.11
+    - 0.11
+  - name: move
+    frames:
+    - {fileID: -1513903525468127626, guid: 55959261bce721f45ba72b54ddba80a3, type: 3}
+    - {fileID: 8564533078890737999, guid: 55959261bce721f45ba72b54ddba80a3, type: 3}
+    - {fileID: -6566629569362850554, guid: 55959261bce721f45ba72b54ddba80a3, type: 3}
+    - {fileID: 2496634255357282875, guid: 55959261bce721f45ba72b54ddba80a3, type: 3}
+    - {fileID: -5550716719024958674, guid: 55959261bce721f45ba72b54ddba80a3, type: 3}
+    - {fileID: -7916520312973460628, guid: 55959261bce721f45ba72b54ddba80a3, type: 3}
+    seconds:
+    - 0.08
+    - 0.08
+    - 0.08
+    - 0.08
+    - 0.08
+    - 0.08
+  facesRight: 0

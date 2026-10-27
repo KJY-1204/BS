@@ -1,0 +1,107 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d174b7bb8519b634ebabb86011786b4b, type: 3}
+  m_Name: reimu
+  m_EditorClassIdentifier: BS.Runtime::BS.SpriteAnimSet
+  clips:
+  - name: idle
+    frames:
+    - {fileID: -4783776470344608501, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    - {fileID: -2048830364483646492, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    - {fileID: 6973811163470627257, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    - {fileID: -1709027220944223504, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    - {fileID: 6294600342077679141, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    - {fileID: 8440085914812743235, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    seconds:
+    - 0.12
+    - 0.12
+    - 0.12
+    - 0.12
+    - 0.12
+    - 0.12
+  - name: walk
+    frames:
+    - {fileID: -3497099117362022668, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    - {fileID: -8359552806053069184, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    - {fileID: 7337154784092887311, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    - {fileID: 3140764290486598827, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    - {fileID: -3355352157446676642, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    - {fileID: 8465632479084846818, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    - {fileID: 6823094972800110870, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    - {fileID: 1456264429820348860, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    seconds:
+    - 0.09
+    - 0.09
+    - 0.09
+    - 0.09
+    - 0.09
+    - 0.09
+    - 0.09
+    - 0.09
+  - name: attack
+    frames:
+    - {fileID: -5425684682266424973, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    - {fileID: -2085414386574335758, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    - {fileID: 188749464568781134, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    - {fileID: 4884675645428117443, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    - {fileID: -5684086761647187864, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    seconds:
+    - 0.09
+    - 0.08
+    - 0.07
+    - 0.09
+    - 0.1
+  - name: skill
+    frames:
+    - {fileID: -5030115898254913183, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    - {fileID: -5498250786745116292, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    - {fileID: 7735434639345953439, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    - {fileID: -2363311196912263255, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    - {fileID: -1335402344658697521, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    seconds:
+    - 0.1
+    - 0.09
+    - 0.09
+    - 0.14
+    - 0.11
+  - name: hit
+    frames:
+    - {fileID: 3451516188334087793, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    - {fileID: 2016393811908889612, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    - {fileID: -5655127470543279052, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    seconds:
+    - 0.08
+    - 0.08
+    - 0.14
+  - name: dash
+    frames:
+    - {fileID: -2580542869261807455, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    - {fileID: 3717975211236476360, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    - {fileID: 618041068233184544, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    - {fileID: -9075884247972941117, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    seconds:
+    - 0.07
+    - 0.07
+    - 0.07
+    - 0.07
+  - name: jump
+    frames:
+    - {fileID: -8578262988976265178, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    - {fileID: -5791135553867045881, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    - {fileID: 2847382411381677094, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    - {fileID: 475904014001560618, guid: 47d5965958388b34a97ff9a256c6f407, type: 3}
+    seconds:
+    - 0.09
+    - 0.09
+    - 0.09
+    - 0.11
+  facesRight: 1

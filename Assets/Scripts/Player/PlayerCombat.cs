@@ -26,6 +26,8 @@ namespace BS
         const float BossBarWidth = 2.6f;
         const float BossBarHeight = 0.2f;
         const float BossBarY = 1.5f;
+        /// <summary>Over the survivor's head: the art stands about 1.5 units tall around its center.</summary>
+        const float SurvivorBarY = 1.05f;
 
         PlayerAvatar avatar;
         ushort aimAngle;
@@ -63,9 +65,9 @@ namespace BS
             aimMarker.transform.localScale = new Vector3(0.22f, 0.22f, 1f);
             aimMarker.enabled = false;
 
-            healthBack.transform.localPosition = new Vector3(0f, 0.85f, 0f);
+            healthBack.transform.localPosition = new Vector3(0f, SurvivorBarY, 0f);
             healthBack.transform.localScale = new Vector3(BarWidth + 0.06f, BarHeight + 0.06f, 1f);
-            reviveBack.transform.localPosition = new Vector3(0f, 0.62f, 0f);
+            reviveBack.transform.localPosition = new Vector3(0f, SurvivorBarY - 0.23f, 0f);
             reviveBack.transform.localScale = new Vector3(BarWidth + 0.06f, BarHeight + 0.06f, 1f);
         }
 
@@ -87,10 +89,10 @@ namespace BS
             else
             {
                 float fraction = MaxHealth > 0 ? Mathf.Clamp01(health.Value / (float)MaxHealth) : 0f;
-                SetBar(healthFill, 0.85f, fraction);
+                SetBar(healthFill, SurvivorBarY, fraction);
                 healthFill.color = Color.Lerp(new Color(0.95f, 0.25f, 0.2f), new Color(0.3f, 0.9f, 0.35f), fraction);
 
-                if (dead) SetBar(reviveFill, 0.62f, ReviveGauge);
+                if (dead) SetBar(reviveFill, SurvivorBarY - 0.23f, ReviveGauge);
             }
 
             if (aimMarker.enabled)
@@ -102,12 +104,14 @@ namespace BS
         {
             float fraction = MaxHealth > 0 ? Mathf.Clamp01(health.Value / (float)MaxHealth) : 0f;
 
-            healthBack.transform.localPosition = new Vector3(0f, BossBarY, 0f);
+            // The boss's art is as much bigger as its kind's body is, so the bar rides up with it.
+            float barY = BossBarY * Mathf.Max(1f, BossCatalog.Current.Radius / BossCatalog.Default.Radius);
+            healthBack.transform.localPosition = new Vector3(0f, barY, 0f);
             healthBack.transform.localScale = new Vector3(BossBarWidth + 0.08f, BossBarHeight + 0.08f, 1f);
 
             float width = BossBarWidth * fraction;
             healthFill.transform.localScale = new Vector3(Mathf.Max(width, 0.0001f), BossBarHeight, 1f);
-            healthFill.transform.localPosition = new Vector3(-BossBarWidth * 0.5f + width * 0.5f, BossBarY, 0f);
+            healthFill.transform.localPosition = new Vector3(-BossBarWidth * 0.5f + width * 0.5f, barY, 0f);
             healthFill.color = Color.Lerp(new Color(0.95f, 0.25f, 0.2f), new Color(0.95f, 0.6f, 0.2f), fraction);
         }
 

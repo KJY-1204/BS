@@ -4,7 +4,7 @@
  "colors": 64,
  "rows": {
   "idle": {
-   "sheet": "E:/Unity/BS/ArtSource/Reference/\uc800\uaca9\uc218.png",
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/sniper_src_clean.png",
    "box": [
     188,
     0,
@@ -17,7 +17,7 @@
    "scale": 0.6351
   },
   "move": {
-   "sheet": "E:/Unity/BS/ArtSource/Reference/\uc800\uaca9\uc218.png",
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/sniper_src_clean.png",
    "box": [
     188,
     195,
@@ -30,7 +30,7 @@
    "scale": 0.8582
   },
   "hit": {
-   "sheet": "E:/Unity/BS/ArtSource/Reference/\uc800\uaca9\uc218.png",
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/sniper_src_clean.png",
    "box": [
     188,
     560,
@@ -42,7 +42,7 @@
    "scale": 0.8582
   },
   "dash": {
-   "sheet": "E:/Unity/BS/ArtSource/Reference/\uc800\uaca9\uc218.png",
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/sniper_src_clean.png",
    "box": [
     188,
     735,
@@ -61,7 +61,7 @@
    "scale": 0.8582
   },
   "jump": {
-   "sheet": "E:/Unity/BS/ArtSource/Reference/\uc800\uaca9\uc218.png",
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/sniper_src_clean.png",
    "box": [
     188,
     885,

@@ -31,6 +31,15 @@ namespace BS
         /// <summary>The body's scale as the prefab has it, remembered before a boss kind rescales it.</summary>
         Vector3? bodyBaseScale;
 
+        // The art of whoever this avatar is: chosen by the sprite id of its character or boss kind, and played by time.
+        SpriteAnimSet art;
+        string artKey;
+        string artClip;
+        float artClock;
+        Vector2 artLastPos;
+        float artSpeed;
+        bool facingRight = true;
+
         readonly NetworkVariable<Vector2> serverPos = new NetworkVariable<Vector2>(
             Vector2.zero, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
         readonly NetworkVariable<byte> role = new NetworkVariable<byte>(
@@ -304,12 +313,65 @@ namespace BS
                 body.transform.localScale = bodyBaseScale.Value * (kind.Radius / BossCatalog.Default.Radius);
             }
             if (!IsAlive) color = Color.Lerp(color, new Color(0.25f, 0.25f, 0.28f), 0.75f); // fallen survivors are shown greyed out
+            if (art != null) color = IsAlive ? Color.white : Color.Lerp(Color.white, new Color(0.3f, 0.3f, 0.35f), 0.7f); // the art keeps its own colors
             body.color = color;
         }
 
         void LateUpdate()
         {
-            if (IsSpawned) ApplyColor();
+            if (!IsSpawned) return;
+            ApplyColor();
+            UpdateArt();
+        }
+
+        string ArtId()
+        {
+            if (role.Value == RoleTable.BossRole) return BossCatalog.Current.SpriteId;
+            CharacterDef def = CharacterCatalog.Get(character.Value);
+            return def != null ? def.SpriteId : null;
+        }
+
+        /// <summary>Shows the frame of the current animation: down, firing, walking or standing; and faces the way it aims or moves.</summary>
+        void UpdateArt()
+        {
+            if (body == null) return;
+
+            string key = ArtId();
+            if (key != artKey)
+            {
+                artKey = key;
+                art = SpriteLibrary.Get(key);
+                artClip = null;
+                artLastPos = transform.position;
+                if (art != null && bodyBaseScale == null) bodyBaseScale = body.transform.localScale;
+            }
+            if (art == null) return;
+
+            Vector2 pos = transform.position;
+            float dt = Time.deltaTime;
+            float dx = pos.x - artLastPos.x;
+            if (dt > 0f) artSpeed = Mathf.Lerp(artSpeed, (pos - artLastPos).magnitude / dt, 1f - Mathf.Exp(-12f * dt));
+            artLastPos = pos;
+            artClock += dt;
+
+            bool boss = role.Value == RoleTable.BossRole;
+            bool down = !IsAlive;
+            bool firing = Combat != null && !down && (Combat.IsFiring || Time.time < Combat.MuzzleFlashUntil + 0.25f);
+
+            string clipName;
+            if (down) clipName = "hit";
+            else if (firing) clipName = "attack";
+            else if (artSpeed > 0.4f) clipName = boss ? "move" : "walk";
+            else clipName = "idle";
+
+            SpriteAnimSet.Clip clip = art.Find(clipName) ?? art.FindAny("idle", "move");
+            if (clip == null) return;
+            if (clip.name != artClip) { artClip = clip.name; artClock = 0f; }
+            body.sprite = SpriteAnimSet.SpriteAt(clip, artClock, !down);
+
+            if (firing && Combat != null) facingRight = AimMath.Direction(Combat.AimAngle).x >= 0f;
+            else if (Mathf.Abs(dx) > 1e-4f) facingRight = dx > 0f;
+            body.flipX = art.facesRight ? !facingRight : facingRight;
         }
 
         static Sprite CreateSquareSprite()

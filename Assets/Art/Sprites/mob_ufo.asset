@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d174b7bb8519b634ebabb86011786b4b, type: 3}
+  m_Name: mob_ufo
+  m_EditorClassIdentifier: BS.Runtime::BS.SpriteAnimSet
+  clips:
+  - name: idle
+    frames:
+    - {fileID: 5747198721762870865, guid: 7163029a7785f8046b5f260647f85568, type: 3}
+    - {fileID: -6805686137236822033, guid: 7163029a7785f8046b5f260647f85568, type: 3}
+    - {fileID: 593556860356966728, guid: 7163029a7785f8046b5f260647f85568, type: 3}
+    - {fileID: -6636663661593519436, guid: 7163029a7785f8046b5f260647f85568, type: 3}
+    - {fileID: 5182908781631786136, guid: 7163029a7785f8046b5f260647f85568, type: 3}
+    - {fileID: 1467075035545698864, guid: 7163029a7785f8046b5f260647f85568, type: 3}
+    seconds:
+    - 0.11
+    - 0.11
+    - 0.11
+    - 0.11
+    - 0.11
+    - 0.11
+  - name: move
+    frames:
+    - {fileID: -1081952694863022451, guid: 7163029a7785f8046b5f260647f85568, type: 3}
+    - {fileID: -1217674671555103050, guid: 7163029a7785f8046b5f260647f85568, type: 3}
+    - {fileID: -1932394860117913153, guid: 7163029a7785f8046b5f260647f85568, type: 3}
+    - {fileID: -4393701173002260417, guid: 7163029a7785f8046b5f260647f85568, type: 3}
+    - {fileID: 5150109816629077809, guid: 7163029a7785f8046b5f260647f85568, type: 3}
+    - {fileID: 7152028437314358399, guid: 7163029a7785f8046b5f260647f85568, type: 3}
+    seconds:
+    - 0.08
+    - 0.08
+    - 0.08
+    - 0.08
+    - 0.08
+    - 0.08
+  facesRight: 0

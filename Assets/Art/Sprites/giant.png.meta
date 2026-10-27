@@ -1,0 +1,1226 @@
+fileFormatVersion: 2
+guid: 32632d6e3d6f9904686f1acb85e6fbda
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7992795678392965532
+    second: giant_0
+  - first:
+      213: 2558723208160776176
+    second: giant_1
+  - first:
+      213: 3036695560442012720
+    second: giant_2
+  - first:
+      213: 7592548485292325738
+    second: giant_3
+  - first:
+      213: -514913814743972184
+    second: giant_4
+  - first:
+      213: 4051683506735786264
+    second: giant_5
+  - first:
+      213: 1678032569955524606
+    second: giant_6
+  - first:
+      213: -4611700234075528446
+    second: giant_7
+  - first:
+      213: -6071434970362387642
+    second: giant_8
+  - first:
+      213: 124174905436886057
+    second: giant_9
+  - first:
+      213: -420125964237768693
+    second: giant_10
+  - first:
+      213: -5951222183645416338
+    second: giant_11
+  - first:
+      213: -3603846297521243706
+    second: giant_12
+  - first:
+      213: 8842528928289005413
+    second: giant_13
+  - first:
+      213: 5358347565288624674
+    second: giant_14
+  - first:
+      213: -8415298914875951537
+    second: giant_15
+  - first:
+      213: 1495703065704992343
+    second: giant_16
+  - first:
+      213: 3527289348207373971
+    second: giant_17
+  - first:
+      213: 4788891287929979191
+    second: giant_18
+  - first:
+      213: -5830889791531827817
+    second: giant_19
+  - first:
+      213: 5493135468827485931
+    second: giant_20
+  - first:
+      213: 3764984270664383922
+    second: giant_21
+  - first:
+      213: -7257480733276876928
+    second: giant_22
+  - first:
+      213: 435267471483261217
+    second: giant_23
+  - first:
+      213: 1005264464488911993
+    second: giant_24
+  - first:
+      213: 6079388112786742231
+    second: giant_25
+  - first:
+      213: -6504427910340567205
+    second: giant_26
+  - first:
+      213: 5442980408684336842
+    second: giant_27
+  - first:
+      213: 2295259951721356379
+    second: giant_28
+  - first:
+      213: 6829456763900786529
+    second: giant_29
+  - first:
+      213: -2778615875881771511
+    second: giant_30
+  - first:
+      213: 3094848911822406032
+    second: giant_31
+  - first:
+      213: -4741586881767907109
+    second: giant_32
+  - first:
+      213: -4784377096131234183
+    second: giant_33
+  - first:
+      213: -2541945206460926775
+    second: giant_34
+  - first:
+      213: -6886161877441304582
+    second: giant_35
+  - first:
+      213: -8230463680971111959
+    second: giant_36
+  - first:
+      213: -8353377093370145404
+    second: giant_37
+  - first:
+      213: 7936926535137643900
+    second: giant_38
+  - first:
+      213: 3231579951038144711
+    second: giant_39
+  - first:
+      213: 2548983975713014994
+    second: giant_40
+  - first:
+      213: 1399696771989935935
+    second: giant_41
+  - first:
+      213: 5696293099152289081
+    second: giant_42
+  - first:
+      213: -4323877498976576250
+    second: giant_43
+  - first:
+      213: 5973449348951608747
+    second: giant_44
+  - first:
+      213: 2237662159313870244
+    second: giant_45
+  - first:
+      213: -75137491319588153
+    second: giant_46
+  - first:
+      213: 3058572678192841662
+    second: giant_47
+  - first:
+      213: 6964956699579211966
+    second: giant_48
+  - first:
+      213: 511612444639431508
+    second: giant_49
+  - first:
+      213: -5453764040705674380
+    second: giant_50
+  - first:
+      213: -52871291361285551
+    second: giant_51
+  - first:
+      213: 5084374137374101817
+    second: giant_52
+  - first:
+      213: 3103440939655645673
+    second: giant_53
+  - first:
+      213: 1760257085626984693
+    second: giant_00
+  - first:
+      213: 3910915654165781249
+    second: giant_01
+  - first:
+      213: -8073305236442871636
+    second: giant_02
+  - first:
+      213: 4631389242128831736
+    second: giant_03
+  - first:
+      213: -5054977703682699897
+    second: giant_04
+  - first:
+      213: 7033306527945127273
+    second: giant_05
+  - first:
+      213: 8989390818784443110
+    second: giant_06
+  - first:
+      213: -886638294478599294
+    second: giant_07
+  - first:
+      213: -7808587686412939579
+    second: giant_08
+  - first:
+      213: -1594091832751884093
+    second: giant_09
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 57.5
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 16384
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: giant_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f8292e3e70bd6810800000000000000
+      internalID: 1760257085626984693
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_01
+      rect:
+        serializedVersion: 2
+        x: 279
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 10bd019011d564630800000000000000
+      internalID: 3910915654165781249
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_02
+      rect:
+        serializedVersion: 2
+        x: 558
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ca8858269abd5ff80800000000000000
+      internalID: -8073305236442871636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_03
+      rect:
+        serializedVersion: 2
+        x: 837
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f497a14afff54040800000000000000
+      internalID: 4631389242128831736
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_04
+      rect:
+        serializedVersion: 2
+        x: 1116
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78d09789f8c19d9b0800000000000000
+      internalID: -5054977703682699897
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_05
+      rect:
+        serializedVersion: 2
+        x: 1395
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 965fa9ae5035b9160800000000000000
+      internalID: 7033306527945127273
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_06
+      rect:
+        serializedVersion: 2
+        x: 1674
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6eafdc4625bb0cc70800000000000000
+      internalID: 8989390818784443110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_07
+      rect:
+        serializedVersion: 2
+        x: 1953
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 28b48553b2702b3f0800000000000000
+      internalID: -886638294478599294
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_08
+      rect:
+        serializedVersion: 2
+        x: 2232
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ce0ed1fed252a390800000000000000
+      internalID: -7808587686412939579
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_09
+      rect:
+        serializedVersion: 2
+        x: 2511
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c8f8798ce5a0e9e0800000000000000
+      internalID: -1594091832751884093
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_10
+      rect:
+        serializedVersion: 2
+        x: 2790
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b0870b459a96b2af0800000000000000
+      internalID: -420125964237768693
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_11
+      rect:
+        serializedVersion: 2
+        x: 3069
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e64f36474f2096da0800000000000000
+      internalID: -5951222183645416338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_12
+      rect:
+        serializedVersion: 2
+        x: 3348
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c9b32be2e09cfdc0800000000000000
+      internalID: -3603846297521243706
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_13
+      rect:
+        serializedVersion: 2
+        x: 3627
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56f18c6e539f6ba70800000000000000
+      internalID: 8842528928289005413
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_14
+      rect:
+        serializedVersion: 2
+        x: 3906
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2229b1c88bcac5a40800000000000000
+      internalID: 5358347565288624674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_15
+      rect:
+        serializedVersion: 2
+        x: 4185
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f46b61c193ad63b80800000000000000
+      internalID: -8415298914875951537
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_16
+      rect:
+        serializedVersion: 2
+        x: 4464
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75e0fc0830ec1c410800000000000000
+      internalID: 1495703065704992343
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_17
+      rect:
+        serializedVersion: 2
+        x: 4743
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39e6beb49f273f030800000000000000
+      internalID: 3527289348207373971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_18
+      rect:
+        serializedVersion: 2
+        x: 5022
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7318705f04f857240800000000000000
+      internalID: 4788891287929979191
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_19
+      rect:
+        serializedVersion: 2
+        x: 5301
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79d3b43c0a4841fa0800000000000000
+      internalID: -5830889791531827817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_20
+      rect:
+        serializedVersion: 2
+        x: 5580
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be6af82ea998b3c40800000000000000
+      internalID: 5493135468827485931
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_21
+      rect:
+        serializedVersion: 2
+        x: 5859
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2bd32e51f39ef3430800000000000000
+      internalID: 3764984270664383922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_22
+      rect:
+        serializedVersion: 2
+        x: 6138
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 08f4ac099bf384b90800000000000000
+      internalID: -7257480733276876928
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_23
+      rect:
+        serializedVersion: 2
+        x: 6417
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 121da0c85716a0600800000000000000
+      internalID: 435267471483261217
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_24
+      rect:
+        serializedVersion: 2
+        x: 6696
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9745f2f44ba63fd00800000000000000
+      internalID: 1005264464488911993
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_25
+      rect:
+        serializedVersion: 2
+        x: 6975
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7dbd26257435e5450800000000000000
+      internalID: 6079388112786742231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_26
+      rect:
+        serializedVersion: 2
+        x: 7254
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5f93090741abb5a0800000000000000
+      internalID: -6504427910340567205
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_27
+      rect:
+        serializedVersion: 2
+        x: 7533
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac65a03f7d9598b40800000000000000
+      internalID: 5442980408684336842
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_28
+      rect:
+        serializedVersion: 2
+        x: 7812
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5c1889e3c66adf10800000000000000
+      internalID: 2295259951721356379
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_29
+      rect:
+        serializedVersion: 2
+        x: 8091
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 167f1352eba17ce50800000000000000
+      internalID: 6829456763900786529
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_30
+      rect:
+        serializedVersion: 2
+        x: 8370
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 90e5ec6259f5079d0800000000000000
+      internalID: -2778615875881771511
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_31
+      rect:
+        serializedVersion: 2
+        x: 8649
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 091cda620bc13fa20800000000000000
+      internalID: 3094848911822406032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_32
+      rect:
+        serializedVersion: 2
+        x: 8928
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd062906adf723eb0800000000000000
+      internalID: -4741586881767907109
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_33
+      rect:
+        serializedVersion: 2
+        x: 9207
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9763599316a7a9db0800000000000000
+      internalID: -4784377096131234183
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_34
+      rect:
+        serializedVersion: 2
+        x: 9486
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c4b3627d4239bcd0800000000000000
+      internalID: -2541945206460926775
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_35
+      rect:
+        serializedVersion: 2
+        x: 9765
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af72645c1407f60a0800000000000000
+      internalID: -6886161877441304582
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: giant_36
+      rect:
+        serializedVersion: 2
+        x: 10044
+        y: 0
+        width: 279
+        height: 201
+      alignment: 9
+      pivot: {x: 0.41935483, y: 0.47139305}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e186f693e487cd80800000000000000
+      internalID: -8230463680971111959
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      giant_0: -7992795678392965532
+      giant_00: 1760257085626984693
+      giant_01: 3910915654165781249
+      giant_02: -8073305236442871636
+      giant_03: 4631389242128831736
+      giant_04: -5054977703682699897
+      giant_05: 7033306527945127273
+      giant_06: 8989390818784443110
+      giant_07: -886638294478599294
+      giant_08: -7808587686412939579
+      giant_09: -1594091832751884093
+      giant_1: 2558723208160776176
+      giant_10: -420125964237768693
+      giant_11: -5951222183645416338
+      giant_12: -3603846297521243706
+      giant_13: 8842528928289005413
+      giant_14: 5358347565288624674
+      giant_15: -8415298914875951537
+      giant_16: 1495703065704992343
+      giant_17: 3527289348207373971
+      giant_18: 4788891287929979191
+      giant_19: -5830889791531827817
+      giant_2: 3036695560442012720
+      giant_20: 5493135468827485931
+      giant_21: 3764984270664383922
+      giant_22: -7257480733276876928
+      giant_23: 435267471483261217
+      giant_24: 1005264464488911993
+      giant_25: 6079388112786742231
+      giant_26: -6504427910340567205
+      giant_27: 5442980408684336842
+      giant_28: 2295259951721356379
+      giant_29: 6829456763900786529
+      giant_3: 7592548485292325738
+      giant_30: -2778615875881771511
+      giant_31: 3094848911822406032
+      giant_32: -4741586881767907109
+      giant_33: -4784377096131234183
+      giant_34: -2541945206460926775
+      giant_35: -6886161877441304582
+      giant_36: -8230463680971111959
+      giant_37: -8353377093370145404
+      giant_38: 7936926535137643900
+      giant_39: 3231579951038144711
+      giant_4: -514913814743972184
+      giant_40: 2548983975713014994
+      giant_41: 1399696771989935935
+      giant_42: 5696293099152289081
+      giant_43: -4323877498976576250
+      giant_44: 5973449348951608747
+      giant_45: 2237662159313870244
+      giant_46: -75137491319588153
+      giant_47: 3058572678192841662
+      giant_48: 6964956699579211966
+      giant_49: 511612444639431508
+      giant_5: 4051683506735786264
+      giant_50: -5453764040705674380
+      giant_51: -52871291361285551
+      giant_52: 5084374137374101817
+      giant_53: 3103440939655645673
+      giant_6: 1678032569955524606
+      giant_7: -4611700234075528446
+      giant_8: -6071434970362387642
+      giant_9: 124174905436886057
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

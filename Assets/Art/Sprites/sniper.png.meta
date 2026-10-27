@@ -1,0 +1,1226 @@
+fileFormatVersion: 2
+guid: 23c7c7418638b5b4e9df54356a424557
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7627819191866995224
+    second: sniper_0
+  - first:
+      213: -3204378973150756632
+    second: sniper_1
+  - first:
+      213: -2496896242779019915
+    second: sniper_2
+  - first:
+      213: -8618887537795532009
+    second: sniper_3
+  - first:
+      213: -8413370820732960543
+    second: sniper_4
+  - first:
+      213: 5626237240675328758
+    second: sniper_5
+  - first:
+      213: 3661435221361237583
+    second: sniper_6
+  - first:
+      213: 9053908894261832788
+    second: sniper_7
+  - first:
+      213: 3062846882995537502
+    second: sniper_8
+  - first:
+      213: -3704956333977570874
+    second: sniper_9
+  - first:
+      213: -1149225576057212129
+    second: sniper_10
+  - first:
+      213: -4368441124444164293
+    second: sniper_11
+  - first:
+      213: -5396067675519349251
+    second: sniper_12
+  - first:
+      213: -7242826965737003249
+    second: sniper_13
+  - first:
+      213: -7978331350518992790
+    second: sniper_14
+  - first:
+      213: 5943659364005314267
+    second: sniper_15
+  - first:
+      213: 6697126706255016218
+    second: sniper_16
+  - first:
+      213: 3434727043307543663
+    second: sniper_17
+  - first:
+      213: 117317098620887993
+    second: sniper_18
+  - first:
+      213: -4189620420274829145
+    second: sniper_19
+  - first:
+      213: -5633268724543447966
+    second: sniper_20
+  - first:
+      213: 7658690325202072548
+    second: sniper_21
+  - first:
+      213: -513842784080332941
+    second: sniper_22
+  - first:
+      213: 2341027347892781989
+    second: sniper_23
+  - first:
+      213: -521647548871316734
+    second: sniper_24
+  - first:
+      213: -7062870629639108748
+    second: sniper_25
+  - first:
+      213: 4426011579061683968
+    second: sniper_26
+  - first:
+      213: 1065140710877573827
+    second: sniper_27
+  - first:
+      213: 89980073660342804
+    second: sniper_28
+  - first:
+      213: 7631886176468429839
+    second: sniper_29
+  - first:
+      213: -5764680308730171185
+    second: sniper_30
+  - first:
+      213: -2319764575184237334
+    second: sniper_31
+  - first:
+      213: 4900432393241515354
+    second: sniper_32
+  - first:
+      213: -7658815959721576937
+    second: sniper_33
+  - first:
+      213: 3407658811244542012
+    second: sniper_34
+  - first:
+      213: -7065573809676265733
+    second: sniper_35
+  - first:
+      213: 5500670809084011745
+    second: sniper_36
+  - first:
+      213: 4406472120089450350
+    second: sniper_37
+  - first:
+      213: 8124994158456932035
+    second: sniper_38
+  - first:
+      213: 4062337033978370592
+    second: sniper_39
+  - first:
+      213: 5968676363178858593
+    second: sniper_40
+  - first:
+      213: -3817620623078158505
+    second: sniper_41
+  - first:
+      213: -7688290002577049838
+    second: sniper_42
+  - first:
+      213: 1299036958071590088
+    second: sniper_43
+  - first:
+      213: 4448965042252696274
+    second: sniper_44
+  - first:
+      213: -4908036160686087871
+    second: sniper_45
+  - first:
+      213: -3719940251033973991
+    second: sniper_46
+  - first:
+      213: 4856412683729394657
+    second: sniper_47
+  - first:
+      213: 493275673819711902
+    second: sniper_48
+  - first:
+      213: 1752345611155515688
+    second: sniper_49
+  - first:
+      213: -5214075923836796797
+    second: sniper_50
+  - first:
+      213: 8421149070279149648
+    second: sniper_51
+  - first:
+      213: -642196735138433160
+    second: sniper_52
+  - first:
+      213: -1211673639329376426
+    second: sniper_53
+  - first:
+      213: 4772055460832102963
+    second: sniper_54
+  - first:
+      213: -5712397059587157324
+    second: sniper_55
+  - first:
+      213: -500350093576526936
+    second: sniper_56
+  - first:
+      213: -8137520561202016561
+    second: sniper_57
+  - first:
+      213: 752528921712520545
+    second: sniper_58
+  - first:
+      213: -3630062485229184498
+    second: sniper_59
+  - first:
+      213: -5777125647122922083
+    second: sniper_60
+  - first:
+      213: 5327805583306801561
+    second: sniper_61
+  - first:
+      213: 5712663520664123006
+    second: sniper_62
+  - first:
+      213: 1832662653106098389
+    second: sniper_63
+  - first:
+      213: -875507632068149540
+    second: sniper_64
+  - first:
+      213: -5623537993542197556
+    second: sniper_00
+  - first:
+      213: -4444032205476429384
+    second: sniper_01
+  - first:
+      213: 2010185677934765129
+    second: sniper_02
+  - first:
+      213: -6799160771647150995
+    second: sniper_03
+  - first:
+      213: 8722313220800174576
+    second: sniper_04
+  - first:
+      213: 1234430287161148760
+    second: sniper_05
+  - first:
+      213: -3458580047298003154
+    second: sniper_06
+  - first:
+      213: -1316831795824288994
+    second: sniper_07
+  - first:
+      213: -2594840845313772842
+    second: sniper_08
+  - first:
+      213: -7449009153962863211
+    second: sniper_09
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 57.5
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 16384
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: sniper_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cce110a5dfd25f1b0800000000000000
+      internalID: -5623537993542197556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_01
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b18e2e2140a352c0800000000000000
+      internalID: -4444032205476429384
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_02
+      rect:
+        serializedVersion: 2
+        x: 610
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94421e1493d95eb10800000000000000
+      internalID: 2010185677934765129
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_03
+      rect:
+        serializedVersion: 2
+        x: 915
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d64633b3d4784a1a0800000000000000
+      internalID: -6799160771647150995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_04
+      rect:
+        serializedVersion: 2
+        x: 1220
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f9dc7959a1eb0970800000000000000
+      internalID: 8722313220800174576
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_05
+      rect:
+        serializedVersion: 2
+        x: 1525
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 855493e4ec3912110800000000000000
+      internalID: 1234430287161148760
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_06
+      rect:
+        serializedVersion: 2
+        x: 1830
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2f7c8575c7a000d0800000000000000
+      internalID: -3458580047298003154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_07
+      rect:
+        serializedVersion: 2
+        x: 2135
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e1b14f4657ca9bde0800000000000000
+      internalID: -1316831795824288994
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_08
+      rect:
+        serializedVersion: 2
+        x: 2440
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d2f56ecff54dfbd0800000000000000
+      internalID: -2594840845313772842
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_09
+      rect:
+        serializedVersion: 2
+        x: 2745
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 595196914adcf9890800000000000000
+      internalID: -7449009153962863211
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_10
+      rect:
+        serializedVersion: 2
+        x: 3050
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f13f05c6d612d00f0800000000000000
+      internalID: -1149225576057212129
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_11
+      rect:
+        serializedVersion: 2
+        x: 3355
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3f2c4b31fd2063c0800000000000000
+      internalID: -4368441124444164293
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_12
+      rect:
+        serializedVersion: 2
+        x: 3660
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dfd83b8e9015d15b0800000000000000
+      internalID: -5396067675519349251
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_13
+      rect:
+        serializedVersion: 2
+        x: 3965
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0720a1bf3f4c7b90800000000000000
+      internalID: -7242826965737003249
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_14
+      rect:
+        serializedVersion: 2
+        x: 4270
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a60f3ff58e5474190800000000000000
+      internalID: -7978331350518992790
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_15
+      rect:
+        serializedVersion: 2
+        x: 4575
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bdef57163be1c7250800000000000000
+      internalID: 5943659364005314267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_16
+      rect:
+        serializedVersion: 2
+        x: 4880
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a11bc16a149f0fc50800000000000000
+      internalID: 6697126706255016218
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_17
+      rect:
+        serializedVersion: 2
+        x: 5185
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6c16c44c0a9aaf20800000000000000
+      internalID: 3434727043307543663
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_18
+      rect:
+        serializedVersion: 2
+        x: 5490
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b3a065974bc0a100800000000000000
+      internalID: 117317098620887993
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_19
+      rect:
+        serializedVersion: 2
+        x: 5795
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a8cbc1ec6a7bd5c0800000000000000
+      internalID: -4189620420274829145
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_20
+      rect:
+        serializedVersion: 2
+        x: 6100
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 26c154df0fb92d1b0800000000000000
+      internalID: -5633268724543447966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_21
+      rect:
+        serializedVersion: 2
+        x: 6405
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e3f366f542294a60800000000000000
+      internalID: 7658690325202072548
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_22
+      rect:
+        serializedVersion: 2
+        x: 6710
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3777e78d5b67ed8f0800000000000000
+      internalID: -513842784080332941
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_23
+      rect:
+        serializedVersion: 2
+        x: 7015
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a3cf9838fffc7020800000000000000
+      internalID: 2341027347892781989
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_24
+      rect:
+        serializedVersion: 2
+        x: 7320
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 20b629f615cb2c8f0800000000000000
+      internalID: -521647548871316734
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_25
+      rect:
+        serializedVersion: 2
+        x: 7625
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47742d14594abfd90800000000000000
+      internalID: -7062870629639108748
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_26
+      rect:
+        serializedVersion: 2
+        x: 7930
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 007ccb5c41a5c6d30800000000000000
+      internalID: 4426011579061683968
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_27
+      rect:
+        serializedVersion: 2
+        x: 8235
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c23aab45d328ce00800000000000000
+      internalID: 1065140710877573827
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_28
+      rect:
+        serializedVersion: 2
+        x: 8540
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4126367766caf3100800000000000000
+      internalID: 89980073660342804
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_29
+      rect:
+        serializedVersion: 2
+        x: 8845
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0c6d92ca08e9e960800000000000000
+      internalID: 7631886176468429839
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_30
+      rect:
+        serializedVersion: 2
+        x: 9150
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc0f2724dcdbfffa0800000000000000
+      internalID: -5764680308730171185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_31
+      rect:
+        serializedVersion: 2
+        x: 9455
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aeccb95d86a8ecfd0800000000000000
+      internalID: -2319764575184237334
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_32
+      rect:
+        serializedVersion: 2
+        x: 9760
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a555afc4c45d10440800000000000000
+      internalID: 4900432393241515354
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_33
+      rect:
+        serializedVersion: 2
+        x: 10065
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 716f3b8767b66b590800000000000000
+      internalID: -7658815959721576937
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sniper_34
+      rect:
+        serializedVersion: 2
+        x: 10370
+        y: 0
+        width: 305
+        height: 158
+      alignment: 9
+      pivot: {x: 0.43278688, y: 0.43512657}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c38f5ff52af6a4f20800000000000000
+      internalID: 3407658811244542012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      sniper_0: -7627819191866995224
+      sniper_00: -5623537993542197556
+      sniper_01: -4444032205476429384
+      sniper_02: 2010185677934765129
+      sniper_03: -6799160771647150995
+      sniper_04: 8722313220800174576
+      sniper_05: 1234430287161148760
+      sniper_06: -3458580047298003154
+      sniper_07: -1316831795824288994
+      sniper_08: -2594840845313772842
+      sniper_09: -7449009153962863211
+      sniper_1: -3204378973150756632
+      sniper_10: -1149225576057212129
+      sniper_11: -4368441124444164293
+      sniper_12: -5396067675519349251
+      sniper_13: -7242826965737003249
+      sniper_14: -7978331350518992790
+      sniper_15: 5943659364005314267
+      sniper_16: 6697126706255016218
+      sniper_17: 3434727043307543663
+      sniper_18: 117317098620887993
+      sniper_19: -4189620420274829145
+      sniper_2: -2496896242779019915
+      sniper_20: -5633268724543447966
+      sniper_21: 7658690325202072548
+      sniper_22: -513842784080332941
+      sniper_23: 2341027347892781989
+      sniper_24: -521647548871316734
+      sniper_25: -7062870629639108748
+      sniper_26: 4426011579061683968
+      sniper_27: 1065140710877573827
+      sniper_28: 89980073660342804
+      sniper_29: 7631886176468429839
+      sniper_3: -8618887537795532009
+      sniper_30: -5764680308730171185
+      sniper_31: -2319764575184237334
+      sniper_32: 4900432393241515354
+      sniper_33: -7658815959721576937
+      sniper_34: 3407658811244542012
+      sniper_35: -7065573809676265733
+      sniper_36: 5500670809084011745
+      sniper_37: 4406472120089450350
+      sniper_38: 8124994158456932035
+      sniper_39: 4062337033978370592
+      sniper_4: -8413370820732960543
+      sniper_40: 5968676363178858593
+      sniper_41: -3817620623078158505
+      sniper_42: -7688290002577049838
+      sniper_43: 1299036958071590088
+      sniper_44: 4448965042252696274
+      sniper_45: -4908036160686087871
+      sniper_46: -3719940251033973991
+      sniper_47: 4856412683729394657
+      sniper_48: 493275673819711902
+      sniper_49: 1752345611155515688
+      sniper_5: 5626237240675328758
+      sniper_50: -5214075923836796797
+      sniper_51: 8421149070279149648
+      sniper_52: -642196735138433160
+      sniper_53: -1211673639329376426
+      sniper_54: 4772055460832102963
+      sniper_55: -5712397059587157324
+      sniper_56: -500350093576526936
+      sniper_57: -8137520561202016561
+      sniper_58: 752528921712520545
+      sniper_59: -3630062485229184498
+      sniper_6: 3661435221361237583
+      sniper_60: -5777125647122922083
+      sniper_61: 5327805583306801561
+      sniper_62: 5712663520664123006
+      sniper_63: 1832662653106098389
+      sniper_64: -875507632068149540
+      sniper_7: 9053908894261832788
+      sniper_8: 3062846882995537502
+      sniper_9: -3704956333977570874
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

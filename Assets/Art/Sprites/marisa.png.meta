@@ -1,0 +1,1308 @@
+fileFormatVersion: 2
+guid: 0eb75e12c55915042b68e999065f0b91
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -902364467999623418
+    second: marisa_0
+  - first:
+      213: 8869041598143994322
+    second: marisa_1
+  - first:
+      213: -461340630365659585
+    second: marisa_2
+  - first:
+      213: -8068787277913856504
+    second: marisa_3
+  - first:
+      213: 6791995799333448587
+    second: marisa_4
+  - first:
+      213: 6964786723052325984
+    second: marisa_5
+  - first:
+      213: -6988340224430564789
+    second: marisa_6
+  - first:
+      213: 8659211852988555387
+    second: marisa_7
+  - first:
+      213: -8317653385999246874
+    second: marisa_8
+  - first:
+      213: -881569969782580437
+    second: marisa_9
+  - first:
+      213: -4863484811660636035
+    second: marisa_10
+  - first:
+      213: 8395645758834435643
+    second: marisa_11
+  - first:
+      213: 8449126827430307337
+    second: marisa_12
+  - first:
+      213: 5751386277333965645
+    second: marisa_13
+  - first:
+      213: 8438226170863272592
+    second: marisa_14
+  - first:
+      213: 5818457186586643601
+    second: marisa_15
+  - first:
+      213: 2004502037410062768
+    second: marisa_16
+  - first:
+      213: 309936478349288571
+    second: marisa_17
+  - first:
+      213: 8418033487785537283
+    second: marisa_18
+  - first:
+      213: -29308972737699990
+    second: marisa_19
+  - first:
+      213: -8364332370702806362
+    second: marisa_20
+  - first:
+      213: 7008659666198146615
+    second: marisa_21
+  - first:
+      213: -7834581502575804491
+    second: marisa_22
+  - first:
+      213: -5245349196108058998
+    second: marisa_23
+  - first:
+      213: -6935244929052780280
+    second: marisa_24
+  - first:
+      213: 98892404711643470
+    second: marisa_25
+  - first:
+      213: 4713376292312505006
+    second: marisa_26
+  - first:
+      213: -6542606510556692436
+    second: marisa_27
+  - first:
+      213: 8768211786636016904
+    second: marisa_28
+  - first:
+      213: 577854079365840295
+    second: marisa_29
+  - first:
+      213: -1691086143342959093
+    second: marisa_30
+  - first:
+      213: 8419310148142098282
+    second: marisa_31
+  - first:
+      213: 1651351080197641614
+    second: marisa_32
+  - first:
+      213: 3750508602440859189
+    second: marisa_33
+  - first:
+      213: 3861201290696466602
+    second: marisa_34
+  - first:
+      213: -2870479246288499305
+    second: marisa_35
+  - first:
+      213: 3005898815558861624
+    second: marisa_36
+  - first:
+      213: -780994058771737715
+    second: marisa_37
+  - first:
+      213: 6793606769977155851
+    second: marisa_38
+  - first:
+      213: -485724462305229602
+    second: marisa_39
+  - first:
+      213: -8058897613844224039
+    second: marisa_40
+  - first:
+      213: 137745060010273233
+    second: marisa_41
+  - first:
+      213: -7495630741065746260
+    second: marisa_42
+  - first:
+      213: -5579334962165687683
+    second: marisa_43
+  - first:
+      213: -8230812534412552376
+    second: marisa_44
+  - first:
+      213: 3845165001174132540
+    second: marisa_45
+  - first:
+      213: 5322701969783728271
+    second: marisa_46
+  - first:
+      213: 5116668459569471934
+    second: marisa_00
+  - first:
+      213: 7461197950086003522
+    second: marisa_01
+  - first:
+      213: 7290710999400927308
+    second: marisa_02
+  - first:
+      213: 6146612058980006461
+    second: marisa_03
+  - first:
+      213: -5505443112178427548
+    second: marisa_04
+  - first:
+      213: 1006431724835110207
+    second: marisa_05
+  - first:
+      213: -4077299010881967749
+    second: marisa_06
+  - first:
+      213: -8525660104807033105
+    second: marisa_07
+  - first:
+      213: 4119277177670295112
+    second: marisa_08
+  - first:
+      213: 1889711690450088511
+    second: marisa_09
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 83
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 16384
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: marisa_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb1651ecade020740800000000000000
+      internalID: 5116668459569471934
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_01
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 24bbfb521008b8760800000000000000
+      internalID: 7461197950086003522
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_02
+      rect:
+        serializedVersion: 2
+        x: 614
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c40535fa60fcd2560800000000000000
+      internalID: 7290710999400927308
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_03
+      rect:
+        serializedVersion: 2
+        x: 921
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3ab2abf9172d4550800000000000000
+      internalID: 6146612058980006461
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_04
+      rect:
+        serializedVersion: 2
+        x: 1228
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 469db7798acb893b0800000000000000
+      internalID: -5505443112178427548
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_05
+      rect:
+        serializedVersion: 2
+        x: 1535
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3dfa79425097fd00800000000000000
+      internalID: 1006431724835110207
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_06
+      rect:
+        serializedVersion: 2
+        x: 1842
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b79245de6268a67c0800000000000000
+      internalID: -4077299010881967749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_07
+      rect:
+        serializedVersion: 2
+        x: 2149
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe6d1493e45cea980800000000000000
+      internalID: -8525660104807033105
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_08
+      rect:
+        serializedVersion: 2
+        x: 2456
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84e596aa4cc9a2930800000000000000
+      internalID: 4119277177670295112
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_09
+      rect:
+        serializedVersion: 2
+        x: 2763
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f323e2535ca993a10800000000000000
+      internalID: 1889711690450088511
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_10
+      rect:
+        serializedVersion: 2
+        x: 3070
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d70d576e45e618cb0800000000000000
+      internalID: -4863484811660636035
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_11
+      rect:
+        serializedVersion: 2
+        x: 3377
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b36675be553538470800000000000000
+      internalID: 8395645758834435643
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_12
+      rect:
+        serializedVersion: 2
+        x: 3684
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 906e43b8514514570800000000000000
+      internalID: 8449126827430307337
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_13
+      rect:
+        serializedVersion: 2
+        x: 3991
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4b1c8ad85701df40800000000000000
+      internalID: 5751386277333965645
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_14
+      rect:
+        serializedVersion: 2
+        x: 4298
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 092c5b8aef99a1570800000000000000
+      internalID: 8438226170863272592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_15
+      rect:
+        serializedVersion: 2
+        x: 4605
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19cc053dbff4fb050800000000000000
+      internalID: 5818457186586643601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_16
+      rect:
+        serializedVersion: 2
+        x: 4912
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b1af539bfb61db10800000000000000
+      internalID: 2004502037410062768
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_17
+      rect:
+        serializedVersion: 2
+        x: 5219
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b74e1feb59d1d4400800000000000000
+      internalID: 309936478349288571
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_18
+      rect:
+        serializedVersion: 2
+        x: 5526
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 30facc24bdcd2d470800000000000000
+      internalID: 8418033487785537283
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_19
+      rect:
+        serializedVersion: 2
+        x: 5833
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a6fdc3305afd79ff0800000000000000
+      internalID: -29308972737699990
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_20
+      rect:
+        serializedVersion: 2
+        x: 6140
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a255f4660cebeb80800000000000000
+      internalID: -8364332370702806362
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_21
+      rect:
+        serializedVersion: 2
+        x: 6447
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73e295b35d2c34160800000000000000
+      internalID: 7008659666198146615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_22
+      rect:
+        serializedVersion: 2
+        x: 6754
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5bf7f1ff1a9f54390800000000000000
+      internalID: -7834581502575804491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_23
+      rect:
+        serializedVersion: 2
+        x: 7061
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8e291b72b6c437b0800000000000000
+      internalID: -5245349196108058998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_24
+      rect:
+        serializedVersion: 2
+        x: 7368
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 809da754b7f01cf90800000000000000
+      internalID: -6935244929052780280
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_25
+      rect:
+        serializedVersion: 2
+        x: 7675
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4952dd3e165f5100800000000000000
+      internalID: 98892404711643470
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_26
+      rect:
+        serializedVersion: 2
+        x: 7982
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eaad80ce3c6496140800000000000000
+      internalID: 4713376292312505006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_27
+      rect:
+        serializedVersion: 2
+        x: 8289
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c204c19fa0ef335a0800000000000000
+      internalID: -6542606510556692436
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_28
+      rect:
+        serializedVersion: 2
+        x: 8596
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80d35d9f922fea970800000000000000
+      internalID: 8768211786636016904
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_29
+      rect:
+        serializedVersion: 2
+        x: 8903
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ad7c9c3933f40800800000000000000
+      internalID: 577854079365840295
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_30
+      rect:
+        serializedVersion: 2
+        x: 9210
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b062575cc1e0888e0800000000000000
+      internalID: -1691086143342959093
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_31
+      rect:
+        serializedVersion: 2
+        x: 9517
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a67e9d9e8f567d470800000000000000
+      internalID: 8419310148142098282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_32
+      rect:
+        serializedVersion: 2
+        x: 9824
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8553a6ee07cae610800000000000000
+      internalID: 1651351080197641614
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_33
+      rect:
+        serializedVersion: 2
+        x: 10131
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53eb88fe3bb7c0430800000000000000
+      internalID: 3750508602440859189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_34
+      rect:
+        serializedVersion: 2
+        x: 10438
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa02e3acd1eb59530800000000000000
+      internalID: 3861201290696466602
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_35
+      rect:
+        serializedVersion: 2
+        x: 10745
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79dc7dd75520a28d0800000000000000
+      internalID: -2870479246288499305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_36
+      rect:
+        serializedVersion: 2
+        x: 11052
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 833472cfb0917b920800000000000000
+      internalID: 3005898815558861624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_37
+      rect:
+        serializedVersion: 2
+        x: 11359
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d83583b9a0a5925f0800000000000000
+      internalID: -780994058771737715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_38
+      rect:
+        serializedVersion: 2
+        x: 11666
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b016d2cfc5db74e50800000000000000
+      internalID: 6793606769977155851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_39
+      rect:
+        serializedVersion: 2
+        x: 11973
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed4449dcc2c5249f0800000000000000
+      internalID: -485724462305229602
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_40
+      rect:
+        serializedVersion: 2
+        x: 12280
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d7629d615b092090800000000000000
+      internalID: -8058897613844224039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_41
+      rect:
+        serializedVersion: 2
+        x: 12587
+        y: 0
+        width: 307
+        height: 194
+      alignment: 9
+      pivot: {x: 0.47557002, y: 0.50128865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d92a7bf66e59e100800000000000000
+      internalID: 137745060010273233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      marisa_0: -902364467999623418
+      marisa_00: 5116668459569471934
+      marisa_01: 7461197950086003522
+      marisa_02: 7290710999400927308
+      marisa_03: 6146612058980006461
+      marisa_04: -5505443112178427548
+      marisa_05: 1006431724835110207
+      marisa_06: -4077299010881967749
+      marisa_07: -8525660104807033105
+      marisa_08: 4119277177670295112
+      marisa_09: 1889711690450088511
+      marisa_1: 8869041598143994322
+      marisa_10: -4863484811660636035
+      marisa_11: 8395645758834435643
+      marisa_12: 8449126827430307337
+      marisa_13: 5751386277333965645
+      marisa_14: 8438226170863272592
+      marisa_15: 5818457186586643601
+      marisa_16: 2004502037410062768
+      marisa_17: 309936478349288571
+      marisa_18: 8418033487785537283
+      marisa_19: -29308972737699990
+      marisa_2: -461340630365659585
+      marisa_20: -8364332370702806362
+      marisa_21: 7008659666198146615
+      marisa_22: -7834581502575804491
+      marisa_23: -5245349196108058998
+      marisa_24: -6935244929052780280
+      marisa_25: 98892404711643470
+      marisa_26: 4713376292312505006
+      marisa_27: -6542606510556692436
+      marisa_28: 8768211786636016904
+      marisa_29: 577854079365840295
+      marisa_3: -8068787277913856504
+      marisa_30: -1691086143342959093
+      marisa_31: 8419310148142098282
+      marisa_32: 1651351080197641614
+      marisa_33: 3750508602440859189
+      marisa_34: 3861201290696466602
+      marisa_35: -2870479246288499305
+      marisa_36: 3005898815558861624
+      marisa_37: -780994058771737715
+      marisa_38: 6793606769977155851
+      marisa_39: -485724462305229602
+      marisa_4: 6791995799333448587
+      marisa_40: -8058897613844224039
+      marisa_41: 137745060010273233
+      marisa_42: -7495630741065746260
+      marisa_43: -5579334962165687683
+      marisa_44: -8230812534412552376
+      marisa_45: 3845165001174132540
+      marisa_46: 5322701969783728271
+      marisa_5: 6964786723052325984
+      marisa_6: -6988340224430564789
+      marisa_7: 8659211852988555387
+      marisa_8: -8317653385999246874
+      marisa_9: -881569969782580437
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

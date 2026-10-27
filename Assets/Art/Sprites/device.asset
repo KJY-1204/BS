@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d174b7bb8519b634ebabb86011786b4b, type: 3}
+  m_Name: device
+  m_EditorClassIdentifier: BS.Runtime::BS.SpriteAnimSet
+  clips:
+  - name: idle
+    frames:
+    - {fileID: 5893216663452347149, guid: fd6b32bd0be44164f8b4a9505af4db96, type: 3}
+    - {fileID: 3522133089543376547, guid: fd6b32bd0be44164f8b4a9505af4db96, type: 3}
+    - {fileID: -6078334096001472997, guid: fd6b32bd0be44164f8b4a9505af4db96, type: 3}
+    - {fileID: -7847042493101817441, guid: fd6b32bd0be44164f8b4a9505af4db96, type: 3}
+    - {fileID: 6571757070993562176, guid: fd6b32bd0be44164f8b4a9505af4db96, type: 3}
+    - {fileID: 3225971189236015717, guid: fd6b32bd0be44164f8b4a9505af4db96, type: 3}
+    seconds:
+    - 0.14
+    - 0.14
+    - 0.14
+    - 0.14
+    - 0.14
+    - 0.14
+  - name: ready
+    frames:
+    - {fileID: 1275920242267965379, guid: fd6b32bd0be44164f8b4a9505af4db96, type: 3}
+    seconds:
+    - 0.2
+  - name: summoning
+    frames:
+    - {fileID: -8509361315607115667, guid: fd6b32bd0be44164f8b4a9505af4db96, type: 3}
+    seconds:
+    - 0.2
+  - name: summoned
+    frames:
+    - {fileID: 1459159785466594375, guid: fd6b32bd0be44164f8b4a9505af4db96, type: 3}
+    seconds:
+    - 0.2
+  - name: attack
+    frames:
+    - {fileID: -2238278582529274631, guid: fd6b32bd0be44164f8b4a9505af4db96, type: 3}
+    - {fileID: -282654413727735171, guid: fd6b32bd0be44164f8b4a9505af4db96, type: 3}
+    - {fileID: -4978768038039389593, guid: fd6b32bd0be44164f8b4a9505af4db96, type: 3}
+    - {fileID: -5429884002790091786, guid: fd6b32bd0be44164f8b4a9505af4db96, type: 3}
+    - {fileID: 7062348153810050505, guid: fd6b32bd0be44164f8b4a9505af4db96, type: 3}
+    seconds:
+    - 0.11
+    - 0.11
+    - 0.11
+    - 0.09
+    - 0.13
+  - name: destroy
+    frames:
+    - {fileID: 4039472257649317716, guid: fd6b32bd0be44164f8b4a9505af4db96, type: 3}
+    - {fileID: 2907432995100497073, guid: fd6b32bd0be44164f8b4a9505af4db96, type: 3}
+    - {fileID: 8482559993444685341, guid: fd6b32bd0be44164f8b4a9505af4db96, type: 3}
+    - {fileID: 2876994523271134625, guid: fd6b32bd0be44164f8b4a9505af4db96, type: 3}
+    seconds:
+    - 0.12
+    - 0.1
+    - 0.11
+    - 0.15
+  facesRight: 1
