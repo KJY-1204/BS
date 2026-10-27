@@ -41,3 +41,17 @@ MonoBehaviour:
     set: {fileID: 11400000, guid: b11d935dc2e044e4ca221de7143cf658, type: 2}
   - key: mob_umbrella
     set: {fileID: 11400000, guid: a60fd52fba7e84b46b74f14b391a0b02, type: 2}
+  - key: shot_reimu
+    set: {fileID: 11400000, guid: 45f4d61da249d244fa87533b71e30245, type: 2}
+  - key: shot_marisa
+    set: {fileID: 11400000, guid: 40ce24ecdbfa30f4c9ab9b7bbc2f5bae, type: 2}
+  - key: shot_sakuya
+    set: {fileID: 11400000, guid: 7ef6ec4d3785d574e979f05561a3f526, type: 2}
+  - key: shot_sanae
+    set: {fileID: 11400000, guid: 9ae8cfd4f49a5b94592c59d03c6447a9, type: 2}
+  - key: shot_standard
+    set: {fileID: 11400000, guid: 8f309e1507c8d9745bcce53cbe6a5950, type: 2}
+  - key: shot_giant
+    set: {fileID: 11400000, guid: 3e1004bc207c5f242b675ab5be88841d, type: 2}
+  - key: shot_sniper
+    set: {fileID: 11400000, guid: 383058fd15197094bb5b439ae106d47e, type: 2}

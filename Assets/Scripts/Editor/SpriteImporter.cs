@@ -61,6 +61,12 @@ namespace BS.Editor
                 if (set != null) library.Add(new SpriteLibrary.Entry { key = source.Key, set = set });
             }
 
+            foreach (Shot shot in Shots())
+            {
+                SpriteAnimSet set = ImportShot(artRoot, shot);
+                if (set != null) library.Add(new SpriteLibrary.Entry { key = shot.Key, set = set });
+            }
+
             const string libraryPath = "Assets/Resources/SpriteLibrary.asset";
             var lib = AssetDatabase.LoadAssetAtPath<SpriteLibrary>(libraryPath);
             if (lib == null)
@@ -72,6 +78,73 @@ namespace BS.Editor
             EditorUtility.SetDirty(lib);
             AssetDatabase.SaveAssets();
             Debug.Log($"[BS] imported {library.Count} sprite sets");
+        }
+
+        struct Shot
+        {
+            public string Key;
+            /// <summary>How long the shot looks in the arena, in world units, along its long side.</summary>
+            public float WorldLength;
+            public bool Spins;
+        }
+
+        static Shot[] Shots() => new[]
+        {
+            new Shot { Key = "shot_reimu", WorldLength = 0.6f },
+            new Shot { Key = "shot_marisa", WorldLength = 1.0f, Spins = true },
+            new Shot { Key = "shot_sakuya", WorldLength = 0.8f },
+            new Shot { Key = "shot_sanae", WorldLength = 1.2f },
+            new Shot { Key = "shot_standard", WorldLength = 1.0f },
+            new Shot { Key = "shot_giant", WorldLength = 1.6f },
+            new Shot { Key = "shot_sniper", WorldLength = 0.6f },
+        };
+
+        /// <summary>A single-image shot: one sprite, pivot in the middle, sized so its long side is <see cref="Shot.WorldLength"/>.</summary>
+        static SpriteAnimSet ImportShot(string artRoot, Shot s)
+        {
+            string source = Path.Combine(artRoot, "Projectiles", s.Key + ".png");
+            if (!File.Exists(source))
+            {
+                Debug.LogWarning($"[BS] shot source missing for {s.Key}: {source}");
+                return null;
+            }
+
+            string assetPng = $"Assets/Art/Sprites/{s.Key}.png";
+            File.Copy(source, Path.GetFullPath(assetPng), true);
+            AssetDatabase.ImportAsset(assetPng, ImportAssetOptions.ForceUpdate);
+
+            var importer = (TextureImporter)AssetImporter.GetAtPath(assetPng);
+            importer.textureType = TextureImporterType.Sprite;
+            importer.spriteImportMode = SpriteImportMode.Single;
+            importer.filterMode = FilterMode.Point;
+            importer.textureCompression = TextureImporterCompression.Uncompressed;
+            importer.mipmapEnabled = false;
+            importer.alphaIsTransparency = true;
+            importer.spritePivot = new Vector2(0.5f, 0.5f);
+            var settings = new TextureImporterSettings();
+            importer.ReadTextureSettings(settings);
+            settings.spriteAlignment = (int)SpriteAlignment.Center;
+            importer.SetTextureSettings(settings);
+            importer.SaveAndReimport();
+
+            var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(assetPng);
+            float longSide = Mathf.Max(sprite.rect.width, sprite.rect.height);
+            importer.spritePixelsPerUnit = longSide / s.WorldLength;
+            importer.SaveAndReimport();
+            sprite = AssetDatabase.LoadAssetAtPath<Sprite>(assetPng);
+
+            string assetPath = $"Assets/Art/Sprites/{s.Key}.asset";
+            var set = AssetDatabase.LoadAssetAtPath<SpriteAnimSet>(assetPath);
+            if (set == null)
+            {
+                set = ScriptableObject.CreateInstance<SpriteAnimSet>();
+                AssetDatabase.CreateAsset(set, assetPath);
+            }
+            set.clips = new[] { new SpriteAnimSet.Clip { name = "fly", frames = new[] { sprite }, seconds = new[] { 1f } } };
+            set.facesRight = true;
+            set.spins = s.Spins;
+            EditorUtility.SetDirty(set);
+            return set;
         }
 
         static SpriteAnimSet Import(string artRoot, Source s)

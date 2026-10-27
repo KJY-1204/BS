@@ -70,6 +70,8 @@ namespace BS
         public byte SlotAt(int index) => visible[index].Slot;
         public ProjectileShape ShapeAt(int index) => visible[index].Shape;
         public Vector2 PositionAt(int index) => visiblePositions[index];
+        /// <summary>The way the shot flies (a unit vector), for art that points along its path.</summary>
+        public Vector2 DirectionAt(int index) => visible[index].Direction;
 
         /// <summary>Projectiles known to the replay, including ones that have not started yet.</summary>
         public int TrackedCount => tracks.Count;

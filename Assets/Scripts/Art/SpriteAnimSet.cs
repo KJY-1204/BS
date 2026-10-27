@@ -33,6 +33,9 @@ namespace BS
         /// <summary>The art looks to the right; views flip it when the figure moves the other way.</summary>
         public bool facesRight = true;
 
+        /// <summary>A shot's art turns around its center as it flies instead of pointing along its path.</summary>
+        public bool spins;
+
         public Clip Find(string clipName)
         {
             for (int i = 0; i < clips.Length; i++)

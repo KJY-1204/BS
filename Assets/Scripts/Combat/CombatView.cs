@@ -431,6 +431,21 @@ namespace BS
                 byte slot = replay.SlotAt(i);
                 RoleTable table = RoleTable.Instance;
                 CharacterDef character = slot != RoleTable.BossRole && slot != CombatServer.MobShooterSlot && table != null ? CharacterCatalog.Get(table.CharacterOfRole(slot)) : null;
+                SpriteAnimSet art = SpriteLibrary.Get(ProjectileArtKey(slot, character));
+                if (art != null && art.clips.Length > 0)
+                {
+                    // Art: sized by its own pixels, pointing along the path (or turning, for a star).
+                    sr.sprite = art.clips[0].frames[0];
+                    sr.color = Color.white;
+                    sr.transform.localScale = Vector3.one;
+                    Vector2 dir = replay.DirectionAt(i);
+                    float angle = art.spins ? Time.time * 540f + i * 47f : Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+                    sr.transform.localRotation = Quaternion.Euler(0f, 0f, angle);
+                    continue;
+                }
+
+                sr.sprite = SpriteFactory.Square;
+                sr.transform.localRotation = Quaternion.identity;
                 if (slot == RoleTable.BossRole) sr.color = BossCatalog.Current.Color;
                 else if (slot == CombatServer.MobShooterSlot) sr.color = MobKinds.Get(MobKinds.Ranged).Color;
                 else sr.color = character != null ? character.Color : SlotColors[Mathf.Min(slot, SlotColors.Length - 1)];
@@ -440,6 +455,14 @@ namespace BS
 
             for (int i = count; i < projectilesShown; i++) projectileSprites[i].enabled = false;
             projectilesShown = count;
+        }
+
+        /// <summary>The sprite set key of a shot: its character's, its boss kind's, or none for a mob's (which keeps its placeholder).</summary>
+        static string ProjectileArtKey(byte slot, CharacterDef character)
+        {
+            if (slot == RoleTable.BossRole) return "shot_" + BossCatalog.Current.SpriteId;
+            if (slot == CombatServer.MobShooterSlot) return null;
+            return character != null ? "shot_" + character.SpriteId : null;
         }
 
         // ---- Hits ----
