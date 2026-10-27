@@ -179,6 +179,63 @@ TextureImporter:
   - first:
       213: 2291075687177618963
     second: sanae_09
+  - first:
+      213: 3023341441921310096
+    second: sanae_49
+  - first:
+      213: -7128185760685869984
+    second: sanae_50
+  - first:
+      213: -7514981754088562398
+    second: sanae_51
+  - first:
+      213: -7916898869394619555
+    second: sanae_52
+  - first:
+      213: 87143026813603677
+    second: sanae_53
+  - first:
+      213: -6546979175382225775
+    second: sanae_54
+  - first:
+      213: -7091313117295144654
+    second: sanae_55
+  - first:
+      213: 3313269733377525906
+    second: sanae_56
+  - first:
+      213: 7106689275430515784
+    second: sanae_57
+  - first:
+      213: 4289493303357488385
+    second: sanae_58
+  - first:
+      213: 4696471363117003491
+    second: sanae_59
+  - first:
+      213: -8856192543634814786
+    second: sanae_60
+  - first:
+      213: -1949824713209348112
+    second: sanae_61
+  - first:
+      213: 2485348721475129962
+    second: sanae_62
+  - first:
+      213: 8776282660077445757
+    second: sanae_63
+  - first:
+      213: 8352110404310015114
+    second: sanae_64
+  - first:
+      213: -5870782750445398030
+    second: sanae_65
+  - first:
+      213: -6739542620927855684
+    second: sanae_66
+  - first:
+      213: -1268102356114440926
+    second: sanae_67
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -317,11 +374,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 687
-        width: 276
-        height: 229
+        y: 1914
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -338,12 +395,12 @@ TextureImporter:
       name: sanae_01
       rect:
         serializedVersion: 2
-        x: 276
-        y: 687
-        width: 276
-        height: 229
+        x: 596
+        y: 1914
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -360,12 +417,12 @@ TextureImporter:
       name: sanae_02
       rect:
         serializedVersion: 2
-        x: 552
-        y: 687
-        width: 276
-        height: 229
+        x: 1192
+        y: 1914
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -382,12 +439,12 @@ TextureImporter:
       name: sanae_03
       rect:
         serializedVersion: 2
-        x: 828
-        y: 687
-        width: 276
-        height: 229
+        x: 1788
+        y: 1914
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -404,12 +461,12 @@ TextureImporter:
       name: sanae_04
       rect:
         serializedVersion: 2
-        x: 1104
-        y: 687
-        width: 276
-        height: 229
+        x: 2384
+        y: 1914
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -426,12 +483,12 @@ TextureImporter:
       name: sanae_05
       rect:
         serializedVersion: 2
-        x: 1380
-        y: 687
-        width: 276
-        height: 229
+        x: 2980
+        y: 1914
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -448,12 +505,12 @@ TextureImporter:
       name: sanae_06
       rect:
         serializedVersion: 2
-        x: 1656
-        y: 687
-        width: 276
-        height: 229
+        x: 3576
+        y: 1914
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -470,12 +527,12 @@ TextureImporter:
       name: sanae_07
       rect:
         serializedVersion: 2
-        x: 1932
-        y: 687
-        width: 276
-        height: 229
+        x: 4172
+        y: 1914
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -492,12 +549,12 @@ TextureImporter:
       name: sanae_08
       rect:
         serializedVersion: 2
-        x: 2208
-        y: 687
-        width: 276
-        height: 229
+        x: 4768
+        y: 1914
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -514,12 +571,12 @@ TextureImporter:
       name: sanae_09
       rect:
         serializedVersion: 2
-        x: 2484
-        y: 687
-        width: 276
-        height: 229
+        x: 5364
+        y: 1914
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -537,11 +594,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 458
-        width: 276
-        height: 229
+        y: 1595
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -558,12 +615,12 @@ TextureImporter:
       name: sanae_11
       rect:
         serializedVersion: 2
-        x: 276
-        y: 458
-        width: 276
-        height: 229
+        x: 596
+        y: 1595
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -580,12 +637,12 @@ TextureImporter:
       name: sanae_12
       rect:
         serializedVersion: 2
-        x: 552
-        y: 458
-        width: 276
-        height: 229
+        x: 1192
+        y: 1595
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -602,12 +659,12 @@ TextureImporter:
       name: sanae_13
       rect:
         serializedVersion: 2
-        x: 828
-        y: 458
-        width: 276
-        height: 229
+        x: 1788
+        y: 1595
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -624,12 +681,12 @@ TextureImporter:
       name: sanae_14
       rect:
         serializedVersion: 2
-        x: 1104
-        y: 458
-        width: 276
-        height: 229
+        x: 2384
+        y: 1595
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -646,12 +703,12 @@ TextureImporter:
       name: sanae_15
       rect:
         serializedVersion: 2
-        x: 1380
-        y: 458
-        width: 276
-        height: 229
+        x: 2980
+        y: 1595
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -668,12 +725,12 @@ TextureImporter:
       name: sanae_16
       rect:
         serializedVersion: 2
-        x: 1656
-        y: 458
-        width: 276
-        height: 229
+        x: 3576
+        y: 1595
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -690,12 +747,12 @@ TextureImporter:
       name: sanae_17
       rect:
         serializedVersion: 2
-        x: 1932
-        y: 458
-        width: 276
-        height: 229
+        x: 4172
+        y: 1595
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -712,12 +769,12 @@ TextureImporter:
       name: sanae_18
       rect:
         serializedVersion: 2
-        x: 2208
-        y: 458
-        width: 276
-        height: 229
+        x: 4768
+        y: 1595
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -734,12 +791,12 @@ TextureImporter:
       name: sanae_19
       rect:
         serializedVersion: 2
-        x: 2484
-        y: 458
-        width: 276
-        height: 229
+        x: 5364
+        y: 1595
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -757,11 +814,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 229
-        width: 276
-        height: 229
+        y: 1276
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -778,12 +835,12 @@ TextureImporter:
       name: sanae_21
       rect:
         serializedVersion: 2
-        x: 276
-        y: 229
-        width: 276
-        height: 229
+        x: 596
+        y: 1276
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -800,12 +857,12 @@ TextureImporter:
       name: sanae_22
       rect:
         serializedVersion: 2
-        x: 552
-        y: 229
-        width: 276
-        height: 229
+        x: 1192
+        y: 1276
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -822,12 +879,12 @@ TextureImporter:
       name: sanae_23
       rect:
         serializedVersion: 2
-        x: 828
-        y: 229
-        width: 276
-        height: 229
+        x: 1788
+        y: 1276
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -844,12 +901,12 @@ TextureImporter:
       name: sanae_24
       rect:
         serializedVersion: 2
-        x: 1104
-        y: 229
-        width: 276
-        height: 229
+        x: 2384
+        y: 1276
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -866,12 +923,12 @@ TextureImporter:
       name: sanae_25
       rect:
         serializedVersion: 2
-        x: 1380
-        y: 229
-        width: 276
-        height: 229
+        x: 2980
+        y: 1276
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -888,12 +945,12 @@ TextureImporter:
       name: sanae_26
       rect:
         serializedVersion: 2
-        x: 1656
-        y: 229
-        width: 276
-        height: 229
+        x: 3576
+        y: 1276
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -910,12 +967,12 @@ TextureImporter:
       name: sanae_27
       rect:
         serializedVersion: 2
-        x: 1932
-        y: 229
-        width: 276
-        height: 229
+        x: 4172
+        y: 1276
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -932,12 +989,12 @@ TextureImporter:
       name: sanae_28
       rect:
         serializedVersion: 2
-        x: 2208
-        y: 229
-        width: 276
-        height: 229
+        x: 4768
+        y: 1276
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -954,12 +1011,12 @@ TextureImporter:
       name: sanae_29
       rect:
         serializedVersion: 2
-        x: 2484
-        y: 229
-        width: 276
-        height: 229
+        x: 5364
+        y: 1276
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -977,11 +1034,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 276
-        height: 229
+        y: 957
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -998,12 +1055,12 @@ TextureImporter:
       name: sanae_31
       rect:
         serializedVersion: 2
-        x: 276
-        y: 0
-        width: 276
-        height: 229
+        x: 596
+        y: 957
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1020,12 +1077,12 @@ TextureImporter:
       name: sanae_32
       rect:
         serializedVersion: 2
-        x: 552
-        y: 0
-        width: 276
-        height: 229
+        x: 1192
+        y: 957
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1042,12 +1099,12 @@ TextureImporter:
       name: sanae_33
       rect:
         serializedVersion: 2
-        x: 828
-        y: 0
-        width: 276
-        height: 229
+        x: 1788
+        y: 957
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1064,12 +1121,12 @@ TextureImporter:
       name: sanae_34
       rect:
         serializedVersion: 2
-        x: 1104
-        y: 0
-        width: 276
-        height: 229
+        x: 2384
+        y: 957
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1086,12 +1143,12 @@ TextureImporter:
       name: sanae_35
       rect:
         serializedVersion: 2
-        x: 1380
-        y: 0
-        width: 276
-        height: 229
+        x: 2980
+        y: 957
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1108,12 +1165,12 @@ TextureImporter:
       name: sanae_36
       rect:
         serializedVersion: 2
-        x: 1656
-        y: 0
-        width: 276
-        height: 229
+        x: 3576
+        y: 957
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1130,12 +1187,12 @@ TextureImporter:
       name: sanae_37
       rect:
         serializedVersion: 2
-        x: 1932
-        y: 0
-        width: 276
-        height: 229
+        x: 4172
+        y: 957
+        width: 596
+        height: 319
       alignment: 9
-      pivot: {x: 0.5072464, y: 0.3286026}
+      pivot: {x: 0.49832216, y: 0.35188088}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1144,6 +1201,666 @@ TextureImporter:
       bones: []
       spriteID: ec6aac1bfb7ae5d10800000000000000
       internalID: 2116313316674152142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sanae_38
+      rect:
+        serializedVersion: 2
+        x: 4768
+        y: 957
+        width: 596
+        height: 319
+      alignment: 9
+      pivot: {x: 0.49832216, y: 0.35188088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74a39812928a57810800000000000000
+      internalID: 1762499723795184199
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sanae_39
+      rect:
+        serializedVersion: 2
+        x: 5364
+        y: 957
+        width: 596
+        height: 319
+      alignment: 9
+      pivot: {x: 0.49832216, y: 0.35188088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f4b7dd4affc78320800000000000000
+      internalID: 2560243587138172145
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sanae_40
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 638
+        width: 596
+        height: 319
+      alignment: 9
+      pivot: {x: 0.49832216, y: 0.35188088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 222fa53b7cda54b70800000000000000
+      internalID: 8882696913277350434
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sanae_41
+      rect:
+        serializedVersion: 2
+        x: 596
+        y: 638
+        width: 596
+        height: 319
+      alignment: 9
+      pivot: {x: 0.49832216, y: 0.35188088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c51ca468a09aa3630800000000000000
+      internalID: 3907621489365139804
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sanae_42
+      rect:
+        serializedVersion: 2
+        x: 1192
+        y: 638
+        width: 596
+        height: 319
+      alignment: 9
+      pivot: {x: 0.49832216, y: 0.35188088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d710bdad8b3c5360800000000000000
+      internalID: 7159662987302672343
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sanae_43
+      rect:
+        serializedVersion: 2
+        x: 1788
+        y: 638
+        width: 596
+        height: 319
+      alignment: 9
+      pivot: {x: 0.49832216, y: 0.35188088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b8cab653b1a700260800000000000000
+      internalID: 7061778472995892363
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sanae_44
+      rect:
+        serializedVersion: 2
+        x: 2384
+        y: 638
+        width: 596
+        height: 319
+      alignment: 9
+      pivot: {x: 0.49832216, y: 0.35188088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af8c61959d7898c20800000000000000
+      internalID: 3209245577050507514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sanae_45
+      rect:
+        serializedVersion: 2
+        x: 2980
+        y: 638
+        width: 596
+        height: 319
+      alignment: 9
+      pivot: {x: 0.49832216, y: 0.35188088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d65603bbf8ee2dc80800000000000000
+      internalID: -8299308862202157715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sanae_46
+      rect:
+        serializedVersion: 2
+        x: 3576
+        y: 638
+        width: 596
+        height: 319
+      alignment: 9
+      pivot: {x: 0.49832216, y: 0.35188088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a004ff20886200230800000000000000
+      internalID: 3602922067504087050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sanae_47
+      rect:
+        serializedVersion: 2
+        x: 4172
+        y: 638
+        width: 596
+        height: 319
+      alignment: 9
+      pivot: {x: 0.49832216, y: 0.35188088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ac47fac02c722cf0800000000000000
+      internalID: -278523746657547103
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sanae_48
+      rect:
+        serializedVersion: 2
+        x: 4768
+        y: 638
+        width: 596
+        height: 319
+      alignment: 9
+      pivot: {x: 0.49832216, y: 0.35188088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e778913ad15444ab0800000000000000
+      internalID: -5024815290645903490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sanae_49
+      rect:
+        serializedVersion: 2
+        x: 5364
+        y: 638
+        width: 596
+        height: 319
+      alignment: 9
+      pivot: {x: 0.49832216, y: 0.35188088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09ddf68e50115f920800000000000000
+      internalID: 3023341441921310096
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sanae_50
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 319
+        width: 596
+        height: 319
+      alignment: 9
+      pivot: {x: 0.49832216, y: 0.35188088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 064325141d8931d90800000000000000
+      internalID: -7128185760685869984
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sanae_51
+      rect:
+        serializedVersion: 2
+        x: 596
+        y: 319
+        width: 596
+        height: 319
+      alignment: 9
+      pivot: {x: 0.49832216, y: 0.35188088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 221620629eb65b790800000000000000
+      internalID: -7514981754088562398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sanae_52
+      rect:
+        serializedVersion: 2
+        x: 1192
+        y: 319
+        width: 596
+        height: 319
+      alignment: 9
+      pivot: {x: 0.49832216, y: 0.35188088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d53ca0f7c66812290800000000000000
+      internalID: -7916898869394619555
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sanae_53
+      rect:
+        serializedVersion: 2
+        x: 1788
+        y: 319
+        width: 596
+        height: 319
+      alignment: 9
+      pivot: {x: 0.49832216, y: 0.35188088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5f80e50f18953100800000000000000
+      internalID: 87143026813603677
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sanae_54
+      rect:
+        serializedVersion: 2
+        x: 2384
+        y: 319
+        width: 596
+        height: 319
+      alignment: 9
+      pivot: {x: 0.49832216, y: 0.35188088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19c667b90257425a0800000000000000
+      internalID: -6546979175382225775
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sanae_55
+      rect:
+        serializedVersion: 2
+        x: 2980
+        y: 319
+        width: 596
+        height: 319
+      alignment: 9
+      pivot: {x: 0.49832216, y: 0.35188088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2311e8c8a48969d90800000000000000
+      internalID: -7091313117295144654
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sanae_56
+      rect:
+        serializedVersion: 2
+        x: 3576
+        y: 319
+        width: 596
+        height: 319
+      alignment: 9
+      pivot: {x: 0.49832216, y: 0.35188088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 298450f94491bfd20800000000000000
+      internalID: 3313269733377525906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sanae_57
+      rect:
+        serializedVersion: 2
+        x: 4172
+        y: 319
+        width: 596
+        height: 319
+      alignment: 9
+      pivot: {x: 0.49832216, y: 0.35188088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8443d1f3e3800a260800000000000000
+      internalID: 7106689275430515784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sanae_58
+      rect:
+        serializedVersion: 2
+        x: 4768
+        y: 319
+        width: 596
+        height: 319
+      alignment: 9
+      pivot: {x: 0.49832216, y: 0.35188088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 10d3a05ce67578b30800000000000000
+      internalID: 4289493303357488385
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sanae_59
+      rect:
+        serializedVersion: 2
+        x: 5364
+        y: 319
+        width: 596
+        height: 319
+      alignment: 9
+      pivot: {x: 0.49832216, y: 0.35188088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e2326062d73d2140800000000000000
+      internalID: 4696471363117003491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sanae_60
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 596
+        height: 319
+      alignment: 9
+      pivot: {x: 0.49832216, y: 0.35188088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb80f2ebdcb781580800000000000000
+      internalID: -8856192543634814786
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sanae_61
+      rect:
+        serializedVersion: 2
+        x: 596
+        y: 0
+        width: 596
+        height: 319
+      alignment: 9
+      pivot: {x: 0.49832216, y: 0.35188088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0fff0e201c4d0f4e0800000000000000
+      internalID: -1949824713209348112
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sanae_62
+      rect:
+        serializedVersion: 2
+        x: 1192
+        y: 0
+        width: 596
+        height: 319
+      alignment: 9
+      pivot: {x: 0.49832216, y: 0.35188088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a621f768e7bbd7220800000000000000
+      internalID: 2485348721475129962
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sanae_63
+      rect:
+        serializedVersion: 2
+        x: 1788
+        y: 0
+        width: 596
+        height: 319
+      alignment: 9
+      pivot: {x: 0.49832216, y: 0.35188088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d722652a49e9bc970800000000000000
+      internalID: 8776282660077445757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sanae_64
+      rect:
+        serializedVersion: 2
+        x: 2384
+        y: 0
+        width: 596
+        height: 319
+      alignment: 9
+      pivot: {x: 0.49832216, y: 0.35188088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8c1ebd4928a8e370800000000000000
+      internalID: 8352110404310015114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sanae_65
+      rect:
+        serializedVersion: 2
+        x: 2980
+        y: 0
+        width: 596
+        height: 319
+      alignment: 9
+      pivot: {x: 0.49832216, y: 0.35188088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f71636713ac68ea0800000000000000
+      internalID: -5870782750445398030
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sanae_66
+      rect:
+        serializedVersion: 2
+        x: 3576
+        y: 0
+        width: 596
+        height: 319
+      alignment: 9
+      pivot: {x: 0.49832216, y: 0.35188088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb37df2a1b55872a0800000000000000
+      internalID: -6739542620927855684
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sanae_67
+      rect:
+        serializedVersion: 2
+        x: 4172
+        y: 0
+        width: 596
+        height: 319
+      alignment: 9
+      pivot: {x: 0.49832216, y: 0.35188088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22d76f430abc66ee0800000000000000
+      internalID: -1268102356114440926
       vertices: []
       indices: 
       edges: []
@@ -1216,8 +1933,27 @@ TextureImporter:
       sanae_46: 3602922067504087050
       sanae_47: -278523746657547103
       sanae_48: -5024815290645903490
+      sanae_49: 3023341441921310096
       sanae_5: 5782941163641515634
+      sanae_50: -7128185760685869984
+      sanae_51: -7514981754088562398
+      sanae_52: -7916898869394619555
+      sanae_53: 87143026813603677
+      sanae_54: -6546979175382225775
+      sanae_55: -7091313117295144654
+      sanae_56: 3313269733377525906
+      sanae_57: 7106689275430515784
+      sanae_58: 4289493303357488385
+      sanae_59: 4696471363117003491
       sanae_6: 41078090302456407
+      sanae_60: -8856192543634814786
+      sanae_61: -1949824713209348112
+      sanae_62: 2485348721475129962
+      sanae_63: 8776282660077445757
+      sanae_64: 8352110404310015114
+      sanae_65: -5870782750445398030
+      sanae_66: -6739542620927855684
+      sanae_67: -1268102356114440926
       sanae_7: -6096157944013662202
       sanae_8: -5292182090557715530
       sanae_9: 3737455454358101111
