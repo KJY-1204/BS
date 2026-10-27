@@ -14,9 +14,22 @@ namespace BS
     public struct MobEvent
     {
         public bool IsSpawn;
+        /// <summary>0 for a spawn or removal; <see cref="DeviceReady"/> or <see cref="DeviceProduce"/> for a beat of a standing device.</summary>
+        public byte Device;
         public ushort Id;
         public byte Type;
         public Vector2 Position;
+
+        /// <summary>A device is about to make mobs (it is getting ready).</summary>
+        public const byte DeviceReady = 1;
+        /// <summary>A device just made mobs.</summary>
+        public const byte DeviceProduce = 2;
+    }
+
+    /// <summary>What shows the state of the devices: the beats they have had since the last time they were asked for.</summary>
+    public interface IDeviceBeatSource
+    {
+        void DrainDeviceBeats(List<MobEvent> into);
     }
 
     /// <summary>A shot a ranged mob wants to fire this step; the server turns it into a projectile.</summary>
@@ -51,7 +64,7 @@ namespace BS
     /// Server-side mob simulation as plain data: spawn, chase, separation and arena bounds.
     /// No GameObjects or physics, so it can be tested without a scene.
     /// </summary>
-    public sealed class MobSim : IMobSource
+    public sealed class MobSim : IMobSource, IDeviceBeatSource
     {
         /// <summary>
         /// Type of an automatically spawned basic mob. A mob's type is one byte that holds its origin (bit 0) and its kind (the
@@ -105,6 +118,10 @@ namespace BS
 
         readonly Dictionary<ushort, int> indexOf = new Dictionary<ushort, int>();
         readonly List<MobEvent> events = new List<MobEvent>();
+        /// <summary>Device beats waiting for the network, and a copy for the view of this machine to show.</summary>
+        readonly List<MobEvent> networkBeats = new List<MobEvent>();
+        readonly List<MobEvent> viewBeats = new List<MobEvent>();
+        const int MaxViewBeats = 64;
         readonly System.Random rng;
 
         // Spatial hash (counting sort, rebuilt every step)
@@ -669,6 +686,8 @@ namespace BS
             standingOrder = OverrideNone;
             indexOf.Clear();
             events.Clear();
+            networkBeats.Clear();
+            viewBeats.Clear();
             shotRequests.Clear();
             blasts.Clear();
             spawnAccumulator = 0f;
@@ -701,6 +720,28 @@ namespace BS
         {
             into.AddRange(events);
             events.Clear();
+        }
+
+        /// <summary>Moves the device beats queued for the network into the list and empties the queue.</summary>
+        public void DrainNetworkBeats(List<MobEvent> into)
+        {
+            into.AddRange(networkBeats);
+            networkBeats.Clear();
+        }
+
+        /// <summary>The beats this machine's view has not shown yet (the host draws from the simulation itself).</summary>
+        public void DrainDeviceBeats(List<MobEvent> into)
+        {
+            into.AddRange(viewBeats);
+            viewBeats.Clear();
+        }
+
+        void AddBeat(ushort id, byte kind, Vector2 position)
+        {
+            var beat = new MobEvent { Device = kind, Id = id, Type = types[indexOf[id]], Position = position };
+            networkBeats.Add(beat);
+            if (viewBeats.Count >= MaxViewBeats) viewBeats.RemoveAt(0); // nobody is drawing (a headless run): keep the newest only
+            viewBeats.Add(beat);
         }
 
         public void Step(float dt, IReadOnlyList<SurvivorInfo> survivors)
@@ -966,11 +1007,14 @@ namespace BS
                 lifetime[i] -= dt;
                 if (lifetime[i] <= 0f) { DevicesExpired++; Remove(deviceIds[d]); continue; }
 
+                float before = timer[i];
                 timer[i] -= dt;
+                if (before > cfg.ReadySeconds && timer[i] <= cfg.ReadySeconds && timer[i] > 0f) AddBeat(deviceIds[d], MobEvent.DeviceReady, positions[i]);
                 if (timer[i] > 0f) continue;
                 timer[i] += cfg.ProductionIntervalSeconds;
                 if (timer[i] <= 0f) timer[i] = cfg.ProductionIntervalSeconds;
 
+                AddBeat(deviceIds[d], MobEvent.DeviceProduce, positions[i]);
                 MakeMobs(positions[i], survivors, cfg);
             }
         }

@@ -8,7 +8,7 @@ namespace BS
     /// slightly in the past (about 130 ms) by blending between the two samples around the render clock.
     /// Plain C#, driven by Advance(dt), so it is testable without a scene.
     /// </summary>
-    public sealed class MobInterpolator : IMobSource
+    public sealed class MobInterpolator : IMobSource, IDeviceBeatSource
     {
         const int SampleCount = 4;
 
@@ -55,11 +55,32 @@ namespace BS
 
         public float RenderTime => renderTime;
 
+        // Beats of standing devices, kept until the display clock reaches their server time (so they show with the mobs they make).
+        readonly List<KeyValuePair<float, MobEvent>> pendingBeats = new List<KeyValuePair<float, MobEvent>>();
+        readonly List<MobEvent> dueBeats = new List<MobEvent>();
+
+        public void OnDeviceBeat(MobEvent beat, float serverTime)
+        {
+            ObserveServerTime(serverTime);
+            pendingBeats.Add(new KeyValuePair<float, MobEvent>(serverTime, beat));
+        }
+
+        public void DrainDeviceBeats(List<MobEvent> into)
+        {
+            for (int i = 0; i < pendingBeats.Count; i++)
+                if (pendingBeats[i].Key <= renderTime) dueBeats.Add(pendingBeats[i].Value);
+            pendingBeats.RemoveAll(p => p.Key <= renderTime);
+            into.AddRange(dueBeats);
+            dueBeats.Clear();
+        }
+
         public void Clear()
         {
             tracks.Clear();
             indexOf.Clear();
             tombstones.Clear();
+            pendingBeats.Clear();
+            dueBeats.Clear();
             hasClock = false;
             StaleRemovals = 0;
             ProvisionalCreations = 0;

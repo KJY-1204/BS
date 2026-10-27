@@ -17,6 +17,8 @@ namespace BS
         public float LifetimeSeconds = 25f;
         public float ProductionIntervalSeconds = 4f;
         public int MobsPerBatch = 3;
+        /// <summary>How long before making mobs a device gets ready; every screen is told so it can show it.</summary>
+        public float ReadySeconds = 0.9f;
         /// <summary>The mobs a device makes appear on a ring around it between these two distances.</summary>
         public float RingMin = 1.2f;
         public float RingMax = 2.4f;

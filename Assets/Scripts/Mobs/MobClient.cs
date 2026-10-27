@@ -162,7 +162,8 @@ namespace BS
             for (int i = 0; i < count; i++)
             {
                 MobEvent e = MobCodec.ReadEvent(scratch, i);
-                if (e.IsSpawn) Interpolator.OnSpawn(e.Id, e.Type, e.Position, serverTime);
+                if (e.Device != 0) Interpolator.OnDeviceBeat(e, serverTime);
+                else if (e.IsSpawn) Interpolator.OnSpawn(e.Id, e.Type, e.Position, serverTime);
                 else Interpolator.OnRemove(e.Id, serverTime);
             }
 

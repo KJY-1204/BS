@@ -183,6 +183,7 @@ namespace BS
 
             events.Clear();
             Sim.DrainEvents(events);
+            Sim.DrainNetworkBeats(events);
             if (events.Count == 0) return;
 
             CollectRemoteClients();

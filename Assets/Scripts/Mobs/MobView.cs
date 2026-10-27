@@ -19,13 +19,20 @@ namespace BS
         readonly List<float> lastX = new List<float>();
         readonly List<bool> facingRight = new List<bool>();
 
-        // A device is told apart by its id: clients only see its position, so its state is read from how long it has stood.
+        // A device is told apart by its id; its state follows the beats the server sends (getting ready, making mobs).
         sealed class DeviceTrack
         {
-            public float Born;
+            public float ReadyAt = float.NegativeInfinity;
+            public float ProducedAt = float.NegativeInfinity;
             public Vector2 Position;
             public bool Seen;
+            /// <summary>It has been drawn at least once; a beat that comes before its device is shown must not make a death.</summary>
+            public bool Shown;
         }
+
+        const float ReadySeconds = 0.6f;
+        const float SummonedSeconds = 0.6f;
+        readonly List<MobEvent> beatScratch = new List<MobEvent>();
 
         struct DeathPlay
         {
@@ -64,6 +71,7 @@ namespace BS
 
             if (count > pool.Count) Grow(count);
             if (source == null) devices.Clear();
+            ApplyDeviceBeats(source);
 
             for (int i = 0; i < count; i++)
             {
@@ -82,10 +90,10 @@ namespace BS
                     SpriteAnimSet.Clip clip;
                     if (device)
                     {
-                        if (!devices.TryGetValue(source.IdAt(i), out DeviceTrack track)) devices[source.IdAt(i)] = track = new DeviceTrack { Born = Time.time };
+                        if (!devices.TryGetValue(source.IdAt(i), out DeviceTrack track)) devices[source.IdAt(i)] = track = new DeviceTrack();
                         track.Position = p;
-                        track.Seen = true;
-                        clip = DeviceClip(art, Time.time - track.Born);
+                        track.Seen = track.Shown = true;
+                        clip = DeviceClip(art, track);
                     }
                     else clip = art.FindAny("move", "idle");
                     sr.sprite = SpriteAnimSet.SpriteAt(clip, Time.time + i * 0.137f, true);
@@ -119,20 +127,30 @@ namespace BS
             active = count;
         }
 
-        /// <summary>
-        /// The clip a standing device shows: it gets ready, makes mobs and shows them every production interval (counted from when it was
-        /// placed), and stands idle between.
-        /// </summary>
-        static SpriteAnimSet.Clip DeviceClip(SpriteAnimSet art, float age)
+        void ApplyDeviceBeats(IMobSource source)
         {
-            float interval = DeviceConfig.Default.ProductionIntervalSeconds;
-            float since = age % interval;
-            float untilNext = interval - since;
+            beatScratch.Clear();
+            (source as IDeviceBeatSource)?.DrainDeviceBeats(beatScratch);
+            for (int i = 0; i < beatScratch.Count; i++)
+            {
+                MobEvent beat = beatScratch[i];
+                if (!devices.TryGetValue(beat.Id, out DeviceTrack track)) devices[beat.Id] = track = new DeviceTrack { Position = beat.Position, Seen = true };
+                if (beat.Device == MobEvent.DeviceReady) track.ReadyAt = Time.time;
+                else track.ProducedAt = Time.time;
+            }
+        }
 
+        /// <summary>
+        /// The clip a standing device shows: ready when the server says it is about to make mobs, summoning until they appear,
+        /// the mobs shown on it for a moment after, and idle in between.
+        /// </summary>
+        static SpriteAnimSet.Clip DeviceClip(SpriteAnimSet art, DeviceTrack track)
+        {
+            float now = Time.time;
             string name = "idle";
-            if (untilNext < 0.3f) name = "summoning";
-            else if (untilNext < 0.9f) name = "ready";
-            else if (age >= interval && since < 0.6f) name = "summoned";
+            if (now - track.ProducedAt < SummonedSeconds) name = "summoned";
+            else if (track.ReadyAt > track.ProducedAt)
+                name = now - track.ReadyAt < ReadySeconds ? "ready" : "summoning";
             return art.Find(name) ?? art.Find("idle");
         }
 
@@ -151,6 +169,7 @@ namespace BS
             {
                 DeviceTrack track = devices[goneScratch[i]];
                 devices.Remove(goneScratch[i]);
+                if (!track.Shown) continue;
                 if (art == null || art.Find("destroy") == null) continue;
 
                 SpriteRenderer sr = null;

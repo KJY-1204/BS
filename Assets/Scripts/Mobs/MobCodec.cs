@@ -15,11 +15,13 @@ namespace BS
         public const int SnapshotHeaderSize = 8;
         public const int SnapshotEntrySize = 7;
 
-        // Event batch: server time in milliseconds u32, count u16, then count x { kind u8, id u16, type u8, x i16, y i16 }
+        // Event batch: server time in milliseconds u32, count u16, then count x { kind u8 (spawn, remove, device ready, device produce), id u16, type u8, x i16, y i16 }
         public const int EventHeaderSize = 6;
         public const int EventEntrySize = 8;
         public const byte KindSpawn = 1;
         public const byte KindRemove = 2;
+        public const byte KindDeviceReady = 3;
+        public const byte KindDeviceProduce = 4;
 
         /// <summary>No single snapshot message may be larger than this (well under the transport packet size).</summary>
         public const int MaxChunkBytes = 1000;
@@ -96,7 +98,7 @@ namespace BS
             for (int i = 0; i < count; i++)
             {
                 MobEvent e = events[start + i];
-                buffer[o++] = e.IsSpawn ? KindSpawn : KindRemove;
+                buffer[o++] = e.Device == MobEvent.DeviceReady ? KindDeviceReady : e.Device == MobEvent.DeviceProduce ? KindDeviceProduce : e.IsSpawn ? KindSpawn : KindRemove;
                 WriteU16(buffer, ref o, e.Id);
                 buffer[o++] = e.Type;
                 WriteI16(buffer, ref o, Quantize(e.Position.x));
@@ -144,7 +146,8 @@ namespace BS
             byte type = buffer[o++];
             float x = Dequantize(ReadI16(buffer, ref o));
             float y = Dequantize(ReadI16(buffer, ref o));
-            return new MobEvent { IsSpawn = kind == KindSpawn, Id = id, Type = type, Position = new Vector2(x, y) };
+            byte device = kind == KindDeviceReady ? MobEvent.DeviceReady : kind == KindDeviceProduce ? MobEvent.DeviceProduce : (byte)0;
+            return new MobEvent { IsSpawn = kind == KindSpawn, Device = device, Id = id, Type = type, Position = new Vector2(x, y) };
         }
 
         // ---- Little endian helpers ----
