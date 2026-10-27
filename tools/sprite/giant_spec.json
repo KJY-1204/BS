@@ -19,8 +19,49 @@
   },
   {
    "name": "skill",
-   "row": "skill",
-   "dur": 150
+   "row": "q1",
+   "dur": [
+    120,
+    120,
+    100,
+    90,
+    110
+   ]
+  },
+  {
+   "name": "skill",
+   "row": "q2",
+   "dur": [
+    80,
+    100,
+    120,
+    150,
+    180
+   ]
+  },
+  {
+   "name": "skill_e",
+   "row": "e1",
+   "dur": 100
+  },
+  {
+   "name": "skill_e",
+   "row": "e2",
+   "dur": [
+    120,
+    120,
+    200
+   ]
+  },
+  {
+   "name": "skill_f",
+   "row": "f1",
+   "dur": 80
+  },
+  {
+   "name": "skill_f",
+   "row": "f2",
+   "dur": 80
   },
   {
    "name": "hit",

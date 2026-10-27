@@ -20,8 +20,9 @@ one marisa marisa_spec $R/Survivors/Marisa marisa "qa qb ea"
 one sakuya sakuya_spec $R/Survivors/Sakuya sakuya "qa e1 e2 e3 r1 r2 r3"
 one sanae sanae_spec $R/Survivors/Sanae sanae "q1 q2 q3 e1 e2 e3 r1 r2"
 one sniper sniper_spec $R/Bosses/Sniper sniper "q1 q2 e1 e2 e3 f1 f2 f3"
-one giant giant_spec $R/Bosses/Giant giant
+one giant giant_spec $R/Bosses/Giant giant "q1 q2 e1 e2 f1 f2"
 one std std_spec $R/Bosses/Standard standard
 one dev dev_spec $R/Devices/SummonDevice device
+
 
 

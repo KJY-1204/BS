@@ -127,6 +127,118 @@
    ],
    "scale": 1.0542,
    "_orig": 1.0
+  },
+  "q1": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/g1_clean.png",
+   "box": [
+    0,
+    150,
+    1536,
+    425
+   ],
+   "scale": 0.42,
+   "glowmin": 120,
+   "cuts": [
+    0,
+    372,
+    678,
+    935,
+    1195,
+    1536
+   ]
+  },
+  "q2": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/g1_clean.png",
+   "box": [
+    0,
+    425,
+    1536,
+    750
+   ],
+   "scale": 0.42,
+   "glowmin": 120,
+   "cuts": [
+    0,
+    205,
+    478,
+    885,
+    1290,
+    1536
+   ]
+  },
+  "e1": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/g2_k.png",
+   "box": [
+    0,
+    10,
+    1536,
+    350
+   ],
+   "scale": 0.5,
+   "glowmin": 120,
+   "cuts": [
+    0,
+    200,
+    395,
+    590,
+    780,
+    970,
+    1148,
+    1536
+   ]
+  },
+  "e2": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/g2_k.png",
+   "box": [
+    0,
+    350,
+    1536,
+    700
+   ],
+   "scale": 0.5,
+   "glowmin": 120,
+   "cuts": [
+    0,
+    455,
+    875,
+    1536
+   ]
+  },
+  "f1": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/g3_src.png",
+   "box": [
+    0,
+    0,
+    1881,
+    250
+   ],
+   "scale": 0.8,
+   "glowmin": 120,
+   "n": 9
+  },
+  "f2": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/g3_src.png",
+   "box": [
+    0,
+    250,
+    1881,
+    480
+   ],
+   "scale": 0.8,
+   "glowmin": 120,
+   "n": 8
+  },
+  "f3": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/g3_src.png",
+   "box": [
+    0,
+    480,
+    1881,
+    680
+   ],
+   "scale": 0.8,
+   "glowmin": 120,
+   "n": 6
   }
  }
 }
