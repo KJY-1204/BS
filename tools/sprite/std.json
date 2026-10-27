@@ -95,6 +95,30 @@
     1215
    ],
    "_orig": 1.0
+  },
+  "f1": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/i1_src.png",
+   "box": [
+    0,
+    0,
+    1672,
+    380
+   ],
+   "n": 5,
+   "scale": 0.5,
+   "glowmin": 120
+  },
+  "f2": {
+   "sheet": "C:/Users/dbvcx/AppData/Local/Temp/claude/E--Unity-BS/fc87ff59-a7ed-4fab-a7e5-36cf195049a0/scratchpad/i1_src.png",
+   "box": [
+    0,
+    380,
+    1672,
+    700
+   ],
+   "n": 5,
+   "scale": 0.5,
+   "glowmin": 120
   }
  }
 }

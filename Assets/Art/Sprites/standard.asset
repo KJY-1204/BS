@@ -89,21 +89,44 @@ MonoBehaviour:
     - 0.11
     - 0.11
     - 0.11
-  - name: hit
+  - name: skill_f
     frames:
     - {fileID: -2120021744879588683, guid: 097440656ae7fe146ba5a160e31af8cb, type: 3}
     - {fileID: 2418233291331139710, guid: 097440656ae7fe146ba5a160e31af8cb, type: 3}
     - {fileID: 546668284032011118, guid: 097440656ae7fe146ba5a160e31af8cb, type: 3}
+    - {fileID: 377334449502320413, guid: 097440656ae7fe146ba5a160e31af8cb, type: 3}
+    - {fileID: -868363934589280662, guid: 097440656ae7fe146ba5a160e31af8cb, type: 3}
+    - {fileID: -9101924085200916696, guid: 097440656ae7fe146ba5a160e31af8cb, type: 3}
+    - {fileID: -8230727470606742014, guid: 097440656ae7fe146ba5a160e31af8cb, type: 3}
+    - {fileID: 7486651348411474246, guid: 097440656ae7fe146ba5a160e31af8cb, type: 3}
+    - {fileID: -7263967335509475094, guid: 097440656ae7fe146ba5a160e31af8cb, type: 3}
+    - {fileID: 5013759641447834706, guid: 097440656ae7fe146ba5a160e31af8cb, type: 3}
+    seconds:
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.11
+    - 0.13
+    - 0.11
+    - 0.11
+    - 0.11
+    - 0.11
+    - 0.16
+  - name: hit
+    frames:
+    - {fileID: 9117785598685486922, guid: 097440656ae7fe146ba5a160e31af8cb, type: 3}
+    - {fileID: -7749810248452444731, guid: 097440656ae7fe146ba5a160e31af8cb, type: 3}
+    - {fileID: -7462775448106889280, guid: 097440656ae7fe146ba5a160e31af8cb, type: 3}
     seconds:
     - 0.08
     - 0.08
     - 0.14
   - name: jump
     frames:
-    - {fileID: 377334449502320413, guid: 097440656ae7fe146ba5a160e31af8cb, type: 3}
-    - {fileID: -868363934589280662, guid: 097440656ae7fe146ba5a160e31af8cb, type: 3}
-    - {fileID: -9101924085200916696, guid: 097440656ae7fe146ba5a160e31af8cb, type: 3}
-    - {fileID: -8230727470606742014, guid: 097440656ae7fe146ba5a160e31af8cb, type: 3}
+    - {fileID: -3372800079212518585, guid: 097440656ae7fe146ba5a160e31af8cb, type: 3}
+    - {fileID: 3925266412673934894, guid: 097440656ae7fe146ba5a160e31af8cb, type: 3}
+    - {fileID: -506959376436487059, guid: 097440656ae7fe146ba5a160e31af8cb, type: 3}
+    - {fileID: -6885911196140257425, guid: 097440656ae7fe146ba5a160e31af8cb, type: 3}
     seconds:
     - 0.1
     - 0.1
